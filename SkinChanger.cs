@@ -1188,6 +1188,7 @@ namespace SAwareness
         ~SkinChanger()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            Skins = null;
         }
 
         public bool IsActive()
