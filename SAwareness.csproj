@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="Evade, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\\System\Evade.dll</HintPath>
+      <HintPath>FakesAssemblies\Evade.dll</HintPath>
     </Reference>
     <Reference Include="Evade.1.0.0.1.Fakes">
       <HintPath>H:\Programme\LeagueSharp\\System\Evade.1.0.0.1.Fakes.dll</HintPath>
