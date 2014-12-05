@@ -36,6 +36,7 @@ namespace SAwareness
         ~GankPotentialTracker()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            _enemies = null;
         }
 
         public bool IsActive()
@@ -164,6 +165,7 @@ namespace SAwareness
         ~GankDetector()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            Enemies = null;
         }
 
         public bool IsActive()
