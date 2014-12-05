@@ -142,6 +142,10 @@ namespace SAwareness
             GameObject.OnCreate -= GameObject_OnCreate;
             GameObject.OnDelete -= Obj_AI_Base_OnDelete;
             Drawing.OnDraw -= Drawing_OnDraw;
+            Game.OnGameUpdate += Game_OnGameUpdate;
+            
+            HidObjects = null;
+            Objects = null;
         }
 
         public bool IsActive()
@@ -605,6 +609,8 @@ namespace SAwareness
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Drawing.OnDraw -= Drawing_OnDraw;
+            
+            Enemies = null;
         }
 
         public bool IsActive()
@@ -856,6 +862,7 @@ namespace SAwareness
         ~SsCaller()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            Enemies = null;
         }
 
         public bool IsActive()
@@ -958,7 +965,7 @@ namespace SAwareness
     {
         public static readonly Dictionary<Obj_AI_Hero, ChampInfos> _allies = new Dictionary<Obj_AI_Hero, ChampInfos>();
         public static readonly Dictionary<Obj_AI_Hero, ChampInfos> _enemies = new Dictionary<Obj_AI_Hero, ChampInfos>();
-        private static Font _champF;
+        /*private static Font _champF;
         private static Render.Rectangle _recB;
         private static Font _recF;
         private static Render.Rectangle _recS;
@@ -967,9 +974,6 @@ namespace SAwareness
         private static Font _spellF;
         private static Font _sumF;
         private static Font _champIF;
-        private static Size _backBarSize = new Size(96, 10);
-        private static Size _champSize = new Size(64, 64);
-        private static Size _healthManaBarSize = new Size(96, 5);
         public static Render.Sprite _backBar;
         public static Render.Sprite _healthBar;
         public static Render.Sprite _manaBar;
@@ -980,7 +984,7 @@ namespace SAwareness
         public static Render.Sprite _overlaySpellItemGreen;
         public static Render.Sprite _overlaySummoner;
         public static Render.Sprite _overlaySummonerSpell;
-        public static Render.Sprite _overlayGoldCsLvl;
+        public static Render.Sprite _overlayGoldCsLvl;*/
         /*private Texture _backBar;
         private Texture _healthBar;
         private Texture _manaBar;
@@ -992,11 +996,14 @@ namespace SAwareness
         private Texture _overlaySummoner;
         private Texture _overlaySummonerSpell;
         private Texture _overlayGoldCsLvl;*/
+        //private static bool _drawActive = true;
+        private static Size _backBarSize = new Size(96, 10);
+        private static Size _champSize = new Size(64, 64);
+        private static Size _healthManaBarSize = new Size(96, 5);
         private static Size _recSize = new Size(64, 12);
         private static Vector2 _screen = new Vector2(Drawing.Width, Drawing.Height/2);
         private static Size _spellSize = new Size(16, 16);
         private static Size _sumSize = new Size(32, 32);
-        private static bool _drawActive = true;
 
 
         private Size _hudSize;
@@ -1041,8 +1048,27 @@ namespace SAwareness
             Drawing.OnPostReset += Drawing_OnPostReset;
             Drawing.OnEndScene += Drawing_OnEndScene;
             Game.OnWndProc += Game_OnWndProc;
-            AppDomain.CurrentDomain.DomainUnload += delegate { Drawing_OnPreReset(new EventArgs()); };
-            AppDomain.CurrentDomain.ProcessExit += delegate { Drawing_OnPreReset(new EventArgs()); };
+            //AppDomain.CurrentDomain.DomainUnload += delegate { Drawing_OnPreReset(new EventArgs()); };
+            //AppDomain.CurrentDomain.ProcessExit += delegate { Drawing_OnPreReset(new EventArgs()); };
+        }
+        
+         ~UiTracker()
+        {
+            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Drawing.OnPreReset -= Drawing_OnPreReset;
+            Drawing.OnPostReset -= Drawing_OnPostReset;
+            Drawing.OnEndScene -= Drawing_OnEndScene;
+            
+            _backBarSize = null;
+            _champSize = null;
+            _healthManaBarSize = null;
+            _recSize = null;
+            _screen = null;
+            _spellSize = null;
+            _sumSize = null;
+            _hudSize = null;
+            _lastCursorPos = null;
         }
 
         private void Game_OnWndProc(WndEventArgs args)
@@ -1203,16 +1229,6 @@ namespace SAwareness
             //_recNS.OnPostReset();
             _drawActive = false;
         }
-
-        ~UiTracker()
-        {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
-            Drawing.OnPreReset -= Drawing_OnPreReset;
-            Drawing.OnPostReset -= Drawing_OnPostReset;
-            Drawing.OnEndScene -= Drawing_OnEndScene;
-        }
-
         public bool IsActive()
         {
             return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive();
@@ -4346,6 +4362,8 @@ namespace SAwareness
 
         ~UimTracker()
         {
+            
+            _enemies = null;
         }
 
         public bool IsActive()
@@ -4600,6 +4618,7 @@ namespace SAwareness
         ~Killable()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            _enemies = null;
         }
 
         public bool IsActive()
