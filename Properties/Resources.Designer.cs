@@ -4613,6 +4613,16 @@ namespace SAwareness.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
+        internal static byte[] Evade {
+            get {
+                object obj = ResourceManager.GetObject("Evade", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
         internal static byte[] Evelynn {
             get {
                 object obj = ResourceManager.GetObject("Evelynn", resourceCulture);
