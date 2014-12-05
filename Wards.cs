@@ -111,6 +111,7 @@ namespace SAwareness
         ~InvisibleRevealer()
         {
             Obj_AI_Base.OnProcessSpellCast -= ObjAiBase_OnProcessSpellCast;
+            _spellList = null;
         }
 
         public bool IsActive()
@@ -183,6 +184,7 @@ namespace SAwareness
         ~BushRevealer()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            _playerInfo = null;
         }
 
         public bool IsActive()
@@ -441,6 +443,10 @@ namespace SAwareness
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnGameSendPacket -= Game_OnGameSendPacket;
             Drawing.OnDraw -= Drawing_OnDraw;
+            
+            WardSpots = null;
+            _latestSpellSlot = SpellSlot.Unknown;
+            _latestWardSpot = null;
         }
 
         public bool IsActive()
