@@ -57,7 +57,7 @@
       <HintPath>FakesAssemblies\Evade.dll</HintPath>
     </Reference>
     <Reference Include="Evade.1.0.0.1.Fakes">
-      <HintPath>H:\Programme\LeagueSharp\\System\Evade.1.0.0.1.Fakes.dll</HintPath>
+      <HintPath>FakesAssemblies\Evade.1.0.0.1.Fakes.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp">
       <HintPath>H:\Programme\LeagueSharp\\System\LeagueSharp.dll</HintPath>
