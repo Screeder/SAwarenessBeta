@@ -22,6 +22,7 @@ namespace SAwareness
         ~Health()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            healthConf = null;
         }
 
         public bool IsActive()
