@@ -27,6 +27,7 @@ namespace SAwareness
         ~RecallDetector()
         {
             Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Recalls = null;
         }
 
         public bool IsActive()
