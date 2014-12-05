@@ -627,7 +627,7 @@ namespace SAwareness
 
         ~FowWardPlacement()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnGameUpdate -= Game_OnGameUpdate;
         }
 
         public bool IsActive()
@@ -650,8 +650,8 @@ namespace SAwareness
                     {
                         if ((int)item.Id == wardItem.Id && wardItem.Type != Wards.WardType.Temp && wardItem.Type != Wards.WardType.TempVision && hero.Spellbook.CanUseSpell(item.SpellSlot) == SpellState.Ready)
                         {
-                            if (item.Charges < wardItem.Charges || item.Stacks < wardItem.Stacks)
-                                Console.Write("");
+                            /*if (item.Charges < wardItem.Charges || item.Stacks < wardItem.Stacks)
+                                Console.Write("");*/
                             if (item.Charges > 0 ? item.Charges >= wardItem.Charges : false || item.Stacks >= wardItem.Stacks) //Check for StackItems etc fail
                             {
                                 enemy.Value.Remove(wardItem);
