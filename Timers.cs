@@ -12,21 +12,21 @@ namespace SAwareness
 {
     internal class ImmuneTimer //TODO: Maybe add Packetcheck
     {
-        private static readonly Dictionary<Ability, Render.Text> Abilities = new Dictionary<Ability, Render.Text>();
+        private static Dictionary<Ability, Render.Text> Abilities = new Dictionary<Ability, Render.Text>();
         //private readonly Render.Text _textF = new Render.Text("", 0, 0, 24, SharpDX.Color.Goldenrod);
         //private bool _drawActive = true;
 
         public ImmuneTimer()
         {
             Ability zhonyaA = new Ability("zhonyas_ring_activate", 2.5f);
-            
-            Abilities.Add(zhonyaA, zhonyaT); //Zhonya
-            Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f)); //Aatrox Passive
-            Abilities.Add(new Ability("LifeAura", 4f)); //Zil und GA
-            Abilities.Add(new Ability("nickoftime_tar", 7f)); //Zil before death
-            Abilities.Add(new Ability("eyeforaneye", 2f)); // Kayle
-            Abilities.Add(new Ability("UndyingRage_buf", 5f)); //Tryn
-            Abilities.Add(new Ability("EggTimer", 6f)); //Anivia
+
+            Abilities.Add(new Ability("zhonyas_ring_activate", 2.5f), null); //Zhonya
+            Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f), null); //Aatrox Passive
+            Abilities.Add(new Ability("LifeAura", 4f), null); //Zil und GA
+            Abilities.Add(new Ability("nickoftime_tar", 7f), null); //Zil before death
+            Abilities.Add(new Ability("eyeforaneye", 2f), null); // Kayle
+            Abilities.Add(new Ability("UndyingRage_buf", 5f), null); //Tryn
+            Abilities.Add(new Ability("EggTimer", 6f), null); //Anivia
 
             foreach(var ability in Abilities)
             {
@@ -91,12 +91,12 @@ namespace SAwareness
         {
             if (!IsActive())
                 return;
-            foreach (Ability ability in Abilities)
+            foreach (var ability in Abilities)
             {
-                if ((ability.TimeCasted + ability.Delay) < Game.ClockTime)
+                if ((ability.Key.TimeCasted + ability.Key.Delay) < Game.ClockTime)
                 {
-                    ability.Casted = false;
-                    ability.TimeCasted = 0;
+                    ability.Key.Casted = false;
+                    ability.Key.TimeCasted = 0;
                 }
             }
         }
@@ -138,16 +138,16 @@ namespace SAwareness
             {
                 if (!hero.IsEnemy)
                 {
-                    foreach (Ability ability in Abilities)
+                    foreach (var ability in Abilities)
                     {
-                        if (sender.Name.Contains(ability.SpellName) &&                            
+                        if (sender.Name.Contains(ability.Key.SpellName) &&                            
                             /*variable*/ Vector3.Distance(sender.Position, ObjectManager.Player.ServerPosition) <= 4000)
                         {
-                            ability.Owner = hero;
-                            ability.Casted = true;
-                            ability.TimeCasted = (int) Game.ClockTime;
+                            ability.Key.Owner = hero;
+                            ability.Key.Casted = true;
+                            ability.Key.TimeCasted = (int)Game.ClockTime;
                             if (Vector3.Distance(sender.Position, hero.ServerPosition) <= 100)
-                                ability.Target = hero;
+                                ability.Key.Target = hero;
                         }
                     }
                 }
@@ -188,13 +188,13 @@ namespace SAwareness
     {
         private static readonly Utility.Map GMap = Utility.Map.GetMap();
         private static Inhibitor _inhibitors;
-        private static readonly List<Relic> Relics = new List<Relic>();
-        private static readonly List<Altar> Altars = new List<Altar>();
-        private static readonly List<Health> Healths = new List<Health>();
-        private static readonly List<JungleMob> JungleMobs = new List<JungleMob>();
-        private static readonly List<JungleCamp> JungleCamps = new List<JungleCamp>();
-        private static readonly List<Obj_AI_Minion> JungleMobList = new List<Obj_AI_Minion>();
-        private static readonly Dictionary<Obj_AI_Hero, Summoner> Summoners = new Dictionary<Obj_AI_Hero, Summoner>();
+        private static List<Relic> Relics = new List<Relic>();
+        private static List<Altar> Altars = new List<Altar>();
+        private static List<Health> Healths = new List<Health>();
+        private static List<JungleMob> JungleMobs = new List<JungleMob>();
+        private static List<JungleCamp> JungleCamps = new List<JungleCamp>();
+        private static List<Obj_AI_Minion> JungleMobList = new List<Obj_AI_Minion>();
+        private static Dictionary<Obj_AI_Hero, Summoner> Summoners = new Dictionary<Obj_AI_Hero, Summoner>();
 
         public Timers()
         {

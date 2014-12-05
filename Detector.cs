@@ -10,7 +10,7 @@ namespace SAwareness
 {
     internal class RecallDetector
     {
-        public readonly List<RecallInfo> Recalls = new List<RecallInfo>();
+        public List<RecallInfo> Recalls = new List<RecallInfo>();
 
         public RecallDetector()
         {

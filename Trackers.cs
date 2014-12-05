@@ -503,7 +503,7 @@ namespace SAwareness
 
     internal class DestinationTracker
     {
-        private static readonly Dictionary<Obj_AI_Hero, List<Ability>> Enemies =
+        private static Dictionary<Obj_AI_Hero, List<Ability>> Enemies =
             new Dictionary<Obj_AI_Hero, List<Ability>>();
 
         public DestinationTracker()
@@ -845,7 +845,7 @@ namespace SAwareness
 
     internal class SsCaller
     {
-        public static readonly Dictionary<Obj_AI_Hero, Time> Enemies = new Dictionary<Obj_AI_Hero, Time>();
+        public static Dictionary<Obj_AI_Hero, Time> Enemies = new Dictionary<Obj_AI_Hero, Time>();
 
         public SsCaller()
         {
@@ -1044,9 +1044,6 @@ namespace SAwareness
             ////}).Start();
             Game.OnGameUpdate += Game_OnGameUpdate;
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket; //TODO:Enable for Gold View currently bugged packet id never received
-            Drawing.OnPreReset += Drawing_OnPreReset;
-            Drawing.OnPostReset += Drawing_OnPostReset;
-            Drawing.OnEndScene += Drawing_OnEndScene;
             Game.OnWndProc += Game_OnWndProc;
             //AppDomain.CurrentDomain.DomainUnload += delegate { Drawing_OnPreReset(new EventArgs()); };
             //AppDomain.CurrentDomain.ProcessExit += delegate { Drawing_OnPreReset(new EventArgs()); };
@@ -1056,19 +1053,6 @@ namespace SAwareness
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
-            Drawing.OnPreReset -= Drawing_OnPreReset;
-            Drawing.OnPostReset -= Drawing_OnPostReset;
-            Drawing.OnEndScene -= Drawing_OnEndScene;
-            
-            _backBarSize = null;
-            _champSize = null;
-            _healthManaBarSize = null;
-            _recSize = null;
-            _screen = null;
-            _spellSize = null;
-            _sumSize = null;
-            _hudSize = null;
-            _lastCursorPos = null;
         }
 
         private void Game_OnWndProc(WndEventArgs args)
@@ -1202,33 +1186,33 @@ namespace SAwareness
             }
         }
 
-        private void Drawing_OnPostReset(EventArgs args)
-        {
-            if (Drawing.Direct3DDevice == null || Drawing.Direct3DDevice.IsDisposed)
-                return;
-            //_s.OnResetDevice();
-            //_champF.OnResetDevice();
-            //_spellF.OnResetDevice();
-            //_sumF.OnResetDevice();
-            //_recF.OnResetDevice();
-            //_recS.OnPostReset();
-            //_recB.OnPreReset();
-            //_recNS.OnPreReset();
-            _drawActive = true;
-        }
+        //private void Drawing_OnPostReset(EventArgs args)
+        //{
+        //    if (Drawing.Direct3DDevice == null || Drawing.Direct3DDevice.IsDisposed)
+        //        return;
+        //    //_s.OnResetDevice();
+        //    //_champF.OnResetDevice();
+        //    //_spellF.OnResetDevice();
+        //    //_sumF.OnResetDevice();
+        //    //_recF.OnResetDevice();
+        //    //_recS.OnPostReset();
+        //    //_recB.OnPreReset();
+        //    //_recNS.OnPreReset();
+        //    _drawActive = true;
+        //}
 
-        private void Drawing_OnPreReset(EventArgs args)
-        {
-            //_s.OnLostDevice();
-            //_champF.OnLostDevice();
-            //_spellF.OnLostDevice();
-            //_sumF.OnLostDevice();
-            //_recF.OnLostDevice();
-            //_recS.OnPreReset();
-            //_recB.OnPreReset();
-            //_recNS.OnPostReset();
-            _drawActive = false;
-        }
+        //private void Drawing_OnPreReset(EventArgs args)
+        //{
+        //    //_s.OnLostDevice();
+        //    //_champF.OnLostDevice();
+        //    //_spellF.OnLostDevice();
+        //    //_sumF.OnLostDevice();
+        //    //_recF.OnLostDevice();
+        //    //_recS.OnPreReset();
+        //    //_recB.OnPreReset();
+        //    //_recNS.OnPostReset();
+        //    _drawActive = false;
+        //}
         public bool IsActive()
         {
             return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive();
@@ -2805,65 +2789,65 @@ namespace SAwareness
 
         private void UpdateItems(bool enemy)
         {
-            if (!Menu.UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>())
-                return;
-            //var loc = Assembly.GetExecutingAssembly().Location;
-            //loc = loc.Remove(loc.LastIndexOf("\\", StringComparison.Ordinal));
-            //loc = loc + "\\Sprites\\SAwareness\\";
+            //if (!Menu.UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>())
+            //    return;
+            ////var loc = Assembly.GetExecutingAssembly().Location;
+            ////loc = loc.Remove(loc.LastIndexOf("\\", StringComparison.Ordinal));
+            ////loc = loc + "\\Sprites\\SAwareness\\";
 
-            Dictionary<Obj_AI_Hero, ChampInfos> heroes;
+            //Dictionary<Obj_AI_Hero, ChampInfos> heroes;
 
-            if (enemy)
-            {
-                heroes = _enemies;
-            }
-            else
-            {
-                heroes = _allies;
-            }
+            //if (enemy)
+            //{
+            //    heroes = _enemies;
+            //}
+            //else
+            //{
+            //    heroes = _allies;
+            //}
 
-            foreach (var hero in heroes)
-            {
-                InventorySlot[] i1 = hero.Key.InventoryItems;
-                ChampInfos champ = hero.Value;
-                var slot = new List<int>();
-                var unusedId = new List<int> {0, 1, 2, 3, 4, 5, 6};
-                foreach (InventorySlot inventorySlot in i1)
-                {
-                    slot.Add(inventorySlot.Slot);
-                    if (inventorySlot.Slot >= 0 && inventorySlot.Slot <= 6)
-                    {
-                        unusedId.Remove(inventorySlot.Slot);
-                        if (champ.Item[inventorySlot.Slot] == null)
-                            champ.Item[inventorySlot.Slot] = new ChampInfos.SpriteInfos();
-                        if (champ.Item[inventorySlot.Slot].Sprite == null ||
-                            champ.ItemId[inventorySlot.Slot] != inventorySlot.Id)
-                        {
-                            //SpriteHelper.LoadTexture(inventorySlot.Id + ".dds", "ITEMS/",
-                            //    loc + "ITEMS\\" + inventorySlot.Id + ".dds",
-                            //    ref champ.Item[inventorySlot.Slot].Texture, true);
-                            SpriteHelper.LoadTexture(inventorySlot.Id.ToString(),
-                                ref champ.Item[inventorySlot.Slot].Sprite[0].Sprite, SpriteHelper.DownloadType.Item);
-                            if (champ.Item[inventorySlot.Slot].Sprite != null)
-                                champ.ItemId[inventorySlot.Slot] = inventorySlot.Id;
-                        }
-                    }
-                }
+            //foreach (var hero in heroes)
+            //{
+            //    InventorySlot[] i1 = hero.Key.InventoryItems;
+            //    ChampInfos champ = hero.Value;
+            //    var slot = new List<int>();
+            //    var unusedId = new List<int> {0, 1, 2, 3, 4, 5, 6};
+            //    foreach (InventorySlot inventorySlot in i1)
+            //    {
+            //        slot.Add(inventorySlot.Slot);
+            //        if (inventorySlot.Slot >= 0 && inventorySlot.Slot <= 6)
+            //        {
+            //            unusedId.Remove(inventorySlot.Slot);
+            //            if (champ.Item[inventorySlot.Slot] == null)
+            //                champ.Item[inventorySlot.Slot] = new ChampInfos.SpriteInfos();
+            //            if (champ.Item[inventorySlot.Slot].Sprite == null ||
+            //                champ.ItemId[inventorySlot.Slot] != inventorySlot.Id)
+            //            {
+            //                //SpriteHelper.LoadTexture(inventorySlot.Id + ".dds", "ITEMS/",
+            //                //    loc + "ITEMS\\" + inventorySlot.Id + ".dds",
+            //                //    ref champ.Item[inventorySlot.Slot].Texture, true);
+            //                SpriteHelper.LoadTexture(inventorySlot.Id.ToString(),
+            //                    ref champ.Item[inventorySlot.Slot].Sprite[0].Sprite, SpriteHelper.DownloadType.Item);
+            //                if (champ.Item[inventorySlot.Slot].Sprite != null)
+            //                    champ.ItemId[inventorySlot.Slot] = inventorySlot.Id;
+            //            }
+            //        }
+            //    }
 
-                for (int i = 0; i < unusedId.Count; i++)
-                {
-                    int id = unusedId[i];
-                    champ.ItemId[id] = 0;
-                    if (champ.Item[id] == null)
-                        champ.Item[id] = new ChampInfos.SpriteInfos();
-                    champ.Item[id].Sprite = null;
-                    if ( /*id == i*/champ.Item[id].Sprite == null &&
-                                    champ.Item[id].Sprite[0].Sprite != _overlayEmptyItem)
-                    {
-                        champ.Item[id].Sprite[0].Sprite = _overlayEmptyItem;
-                    }
-                }
-            }
+            //    for (int i = 0; i < unusedId.Count; i++)
+            //    {
+            //        int id = unusedId[i];
+            //        champ.ItemId[id] = 0;
+            //        if (champ.Item[id] == null)
+            //            champ.Item[id] = new ChampInfos.SpriteInfos();
+            //        champ.Item[id].Sprite = null;
+            //        if ( /*id == i*/champ.Item[id].Sprite == null &&
+            //                        champ.Item[id].Sprite[0].Sprite != _overlayEmptyItem)
+            //        {
+            //            champ.Item[id].Sprite[0].Sprite = _overlayEmptyItem;
+            //        }
+            //    }
+            //}
         }
 
         private void UpdateCds(Dictionary<Obj_AI_Hero, ChampInfos> heroes)
@@ -3263,18 +3247,18 @@ namespace SAwareness
 
         private void AssingFonts(float percentScale, bool force = false)
         {
-            System.Drawing.Font font = CalcFont(12, percentScale);
-            if (font != null || force)
-                _recF = new Font(Drawing.Direct3DDevice, font);
-            font = CalcFont(8, percentScale);
-            if (font != null || force)
-                _spellF = new Font(Drawing.Direct3DDevice, font);
-            font = CalcFont(30, percentScale);
-            if (font != null || force)
-                _champF = new Font(Drawing.Direct3DDevice, font);
-            font = CalcFont(16, percentScale);
-            if (font != null || force)
-                _sumF = new Font(Drawing.Direct3DDevice, font);
+            //System.Drawing.Font font = CalcFont(12, percentScale);
+            //if (font != null || force)
+            //    _recF = new Font(Drawing.Direct3DDevice, font);
+            //font = CalcFont(8, percentScale);
+            //if (font != null || force)
+            //    _spellF = new Font(Drawing.Direct3DDevice, font);
+            //font = CalcFont(30, percentScale);
+            //if (font != null || force)
+            //    _champF = new Font(Drawing.Direct3DDevice, font);
+            //font = CalcFont(16, percentScale);
+            //if (font != null || force)
+            //    _sumF = new Font(Drawing.Direct3DDevice, font);
         }
 
         private static RecallDetector.RecallInfo GetRecall(int networkId)
@@ -4257,54 +4241,54 @@ namespace SAwareness
             }
         }
 
-        private void Drawing_OnEndScene(EventArgs args)
-        {
-            if (!IsActive() || !_drawActive)
-                return;
+        //private void Drawing_OnEndScene(EventArgs args)
+        //{
+        //    if (!IsActive() || !_drawActive)
+        //        return;
 
-            foreach (var enemy in _enemies)
-            {
-                //foreach (var sprite in enemy.Value.Champ.Sprite)
-                //{
-                //    if(sprite.Visible) sprite.OnEndScene();
-                //}
-                ////enemy.Value.Champ.Sprite[0].OnEndScene();
-                //foreach (var sprite in enemy.Value.SpellQ.Sprite)
-                //{
-                //    if (sprite.Visible) sprite.OnEndScene();
-                //}
-                ////enemy.Value.SpellQ.Sprite[0].OnEndScene();
-                //enemy.Value.SpellW.Sprite[0].OnEndScene();
-                //enemy.Value.SpellE.Sprite[0].OnEndScene();
-                //enemy.Value.SpellR.Sprite[0].OnEndScene();
-                //enemy.Value.SpellSum1.Sprite[0].OnEndScene();
-                //enemy.Value.SpellSum2.Sprite[0].OnEndScene();
-            }
+        //    foreach (var enemy in _enemies)
+        //    {
+        //        //foreach (var sprite in enemy.Value.Champ.Sprite)
+        //        //{
+        //        //    if(sprite.Visible) sprite.OnEndScene();
+        //        //}
+        //        ////enemy.Value.Champ.Sprite[0].OnEndScene();
+        //        //foreach (var sprite in enemy.Value.SpellQ.Sprite)
+        //        //{
+        //        //    if (sprite.Visible) sprite.OnEndScene();
+        //        //}
+        //        ////enemy.Value.SpellQ.Sprite[0].OnEndScene();
+        //        //enemy.Value.SpellW.Sprite[0].OnEndScene();
+        //        //enemy.Value.SpellE.Sprite[0].OnEndScene();
+        //        //enemy.Value.SpellR.Sprite[0].OnEndScene();
+        //        //enemy.Value.SpellSum1.Sprite[0].OnEndScene();
+        //        //enemy.Value.SpellSum2.Sprite[0].OnEndScene();
+        //    }
 
-            //if (Menu.UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker").GetActive())
-            //{
-            //    DrawInterface(true);
-            //    int teamGoldEnemy = 0;
-            //    foreach (var enemy in _enemies)
-            //    {
-            //        teamGoldEnemy += enemy.Value.Gold.Value;
-            //    }
-            //    //DirectXDrawer.DrawText(_sumF, teamGoldEnemy.ToString(),
-            //    //                _enemies.Last().Value.Champ.SizeSideBar, SharpDX.Color.Orange);
-            //}
-            //if (Menu.UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker").GetActive())
-            //{
-            //    DrawInterface(false);
-            //    int teamGoldAlly = 0;
-            //    foreach (var ally in ObjectManager.Get<Obj_AI_Hero>())
-            //    {
-            //        if(ally.IsAlly)
-            //            teamGoldAlly += (int)ally.GoldEarned;
-            //    }
-            //    //DirectXDrawer.DrawText(_sumF, teamGoldAlly.ToString(),
-            //    //                _allies.Last().Value.Champ.SizeSideBar, SharpDX.Color.Orange);
-            //}
-        }
+        //    //if (Menu.UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker").GetActive())
+        //    //{
+        //    //    DrawInterface(true);
+        //    //    int teamGoldEnemy = 0;
+        //    //    foreach (var enemy in _enemies)
+        //    //    {
+        //    //        teamGoldEnemy += enemy.Value.Gold.Value;
+        //    //    }
+        //    //    //DirectXDrawer.DrawText(_sumF, teamGoldEnemy.ToString(),
+        //    //    //                _enemies.Last().Value.Champ.SizeSideBar, SharpDX.Color.Orange);
+        //    //}
+        //    //if (Menu.UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker").GetActive())
+        //    //{
+        //    //    DrawInterface(false);
+        //    //    int teamGoldAlly = 0;
+        //    //    foreach (var ally in ObjectManager.Get<Obj_AI_Hero>())
+        //    //    {
+        //    //        if(ally.IsAlly)
+        //    //            teamGoldAlly += (int)ally.GoldEarned;
+        //    //    }
+        //    //    //DirectXDrawer.DrawText(_sumF, teamGoldAlly.ToString(),
+        //    //    //                _allies.Last().Value.Champ.SizeSideBar, SharpDX.Color.Orange);
+        //    //}
+        //}
 
         public class ChampInfos
         {
@@ -4352,7 +4336,7 @@ namespace SAwareness
 
     public class UimTracker
     {
-        private static readonly Dictionary<Obj_AI_Hero, SpriteHelper.SpriteInfo> _enemies = new Dictionary<Obj_AI_Hero, SpriteHelper.SpriteInfo>();
+        private static Dictionary<Obj_AI_Hero, SpriteHelper.SpriteInfo> _enemies = new Dictionary<Obj_AI_Hero, SpriteHelper.SpriteInfo>();
 
         public UimTracker()
         {

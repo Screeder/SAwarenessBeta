@@ -88,7 +88,7 @@ namespace SAwareness
 
     internal class InvisibleRevealer //TODO: Check for other Wards
     {
-        private readonly List<String> _spellList = new List<string>();
+        private List<String> _spellList = new List<string>();
         private int _lastTimeVayne;
         private int _lastTimeWarded;
 
@@ -172,7 +172,7 @@ namespace SAwareness
 
     internal class BushRevealer //By Beaving & Blm95
     {
-        private readonly List<PlayerInfo> _playerInfo = new List<PlayerInfo>();
+        private List<PlayerInfo> _playerInfo = new List<PlayerInfo>();
         private int _lastTimeWarded;
 
         public BushRevealer()
@@ -326,7 +326,7 @@ namespace SAwareness
 
     internal class WardCorrector
     {
-        private static readonly List<WardSpot> WardSpots = new List<WardSpot>();
+        private static List<WardSpot> WardSpots = new List<WardSpot>();
 
         private bool _drawSpots;
         private SpellSlot _latestSpellSlot = SpellSlot.Unknown;

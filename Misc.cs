@@ -16,7 +16,7 @@ namespace SAwareness
 
     internal class DisconnectDetector
     {
-        private readonly Dictionary<Obj_AI_Hero, bool> _disconnects = new Dictionary<Obj_AI_Hero, bool>();
+        private Dictionary<Obj_AI_Hero, bool> _disconnects = new Dictionary<Obj_AI_Hero, bool>();
 
         public DisconnectDetector()
         {
@@ -168,7 +168,7 @@ namespace SAwareness
         {
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
             Game.OnGameSendPacket -= Game_OnGameSendPacket;
-            _lastMove = null;
+            _lastMove = new Vector2();
             _lastTime = 0;
         }
 
@@ -255,7 +255,7 @@ namespace SAwareness
 
     internal class AutoJump //DONT PLACE COUR CURSOR ON A WALL IT WILL FAIL
     {
-        private readonly Spell _jumpSpell;
+        private Spell _jumpSpell;
         private readonly bool _onlyAlly;
         private readonly bool _onlyEnemy;
         private readonly bool _useWard = true;

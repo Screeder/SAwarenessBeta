@@ -10,7 +10,7 @@ namespace SAwareness
 {
     internal class GankPotentialTracker
     {
-        private readonly Dictionary<Obj_AI_Hero, InternalGankTracker> _enemies = new Dictionary<Obj_AI_Hero, InternalGankTracker>();
+        private Dictionary<Obj_AI_Hero, InternalGankTracker> _enemies = new Dictionary<Obj_AI_Hero, InternalGankTracker>();
 
         public GankPotentialTracker()
         {
@@ -121,7 +121,7 @@ namespace SAwareness
 
     internal class GankDetector
     {
-        private static readonly Dictionary<Obj_AI_Hero, InternalGankDetector> Enemies = new Dictionary<Obj_AI_Hero, InternalGankDetector>();
+        private static Dictionary<Obj_AI_Hero, InternalGankDetector> Enemies = new Dictionary<Obj_AI_Hero, InternalGankDetector>();
 
         public GankDetector()
         {
