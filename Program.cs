@@ -1314,10 +1314,10 @@ namespace SAwareness
                     Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Ranged Jungle Spots", "SAwarenessEasyRangedJungle"));
                 Menu.EasyRangedJungle.MenuItems.Add(
                     Menu.EasyRangedJungle.Menu.AddItem(new MenuItem("SAwarenessEasyRangedJungleActive", "Active").SetValue(false)));
-                //Menu.FowWardPlacement.Menu =
-                //    Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Fow Ward Placement", "SAwarenessFowWardPlacement")); //Heavy Fps Drops
-                //Menu.FowWardPlacement.MenuItems.Add(
-                //    Menu.FowWardPlacement.Menu.AddItem(new MenuItem("SAwarenessFowWardPlacementActive", "Active").SetValue(false)));
+                Menu.FowWardPlacement.Menu =
+                    Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Fow Ward Placement", "SAwarenessFowWardPlacement")); //Heavy Fps Drops
+                Menu.FowWardPlacement.MenuItems.Add(
+                    Menu.FowWardPlacement.Menu.AddItem(new MenuItem("SAwarenessFowWardPlacementActive", "Active").SetValue(false)));
                 Menu.RealTime.Menu =
                     Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Real Time", "SAwarenessRealTime"));
                 Menu.RealTime.MenuItems.Add(
@@ -1433,7 +1433,7 @@ namespace SAwareness
                         var item = (Menu.MenuItemSettings)p.GetValue(null);
                         if (item.GetActive() == false && item.Item != null)
                         {
-                            //item.Item = null;
+                            item.Item = null;
                         }
                         else if (item.GetActive() && item.Item == null && !item.ForceDisable && item.Type != null)
                         {
