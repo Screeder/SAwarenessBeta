@@ -26,6 +26,7 @@ namespace SAwareness
         ~AutoLevler()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            sLevler = null;
         }
 
         public bool IsActive()
