@@ -17,6 +17,7 @@ namespace SAwareness
     internal class DisconnectDetector
     {
         private Dictionary<Obj_AI_Hero, bool> _disconnects = new Dictionary<Obj_AI_Hero, bool>();
+        private Dictionary<Obj_AI_Hero, bool> _reconnects = new Dictionary<Obj_AI_Hero, bool>();
 
         public DisconnectDetector()
         {
@@ -27,6 +28,7 @@ namespace SAwareness
         {
             Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
             _disconnects = null;
+            _reconnects = null;
         }
 
         public bool IsActive()
@@ -79,25 +81,25 @@ namespace SAwareness
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != Packet.S2C.PlayerDisconnect.Header)
+                if (packetId != Packet.S2C.PlayerReconnected.Header)
                     return;
-                Packet.S2C.PlayerDisconnect.Struct disconnect = Packet.S2C.PlayerDisconnect.Decoded(args.PacketData);
-                if (disconnect.Player == null)
+                Packet.S2C.PlayerReconnected.Struct reconnect = Packet.S2C.PlayerReconnected.Decoded(args.PacketData);
+                if (reconnect.Player == null)
                     return;
-                if (_disconnects.ContainsKey(disconnect.Player))
+                if (_reconnects.ContainsKey(reconnect.Player))
                 {
-                    _disconnects[disconnect.Player] = true;
+                    _reconnects[reconnect.Player] = true;
                 }
                 else
                 {
-                    _disconnects.Add(disconnect.Player, true);
+                    _reconnects.Add(reconnect.Player, true);
                 }
                 if (
                     Menu.DisconnectDetector.GetMenuItem("SAwarenessDisconnectDetectorChatChoice")
                         .GetValue<StringList>()
                         .SelectedIndex == 1)
                 {
-                    Game.PrintChat("Champion " + disconnect.Player.ChampionName + " has reconnected!");
+                    Game.PrintChat("Champion " + reconnect.Player.ChampionName + " has reconnected!");
                 }
                 else if (
                     Menu.DisconnectDetector.GetMenuItem("SAwarenessDisconnectDetectorChatChoice")
@@ -105,7 +107,7 @@ namespace SAwareness
                         .SelectedIndex == 2 &&
                     Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
-                    Game.Say("Champion " + disconnect.Player.ChampionName + " has reconnected!");
+                    Game.Say("Champion " + reconnect.Player.ChampionName + " has reconnected!");
                 }
             }
             catch (Exception ex)
