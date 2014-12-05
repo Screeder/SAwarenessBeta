@@ -26,6 +26,7 @@ namespace SAwareness
         ~DisconnectDetector()
         {
             Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            _disconnects = null;
         }
 
         public bool IsActive()
@@ -159,16 +160,16 @@ namespace SAwareness
 
         public TurnAround()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
             Game.OnGameSendPacket += Game_OnGameSendPacket;
         }
 
         ~TurnAround()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
             Game.OnGameSendPacket -= Game_OnGameSendPacket;
+            _lastMove = null;
+            _lastTime = 0;
         }
 
         public bool IsActive()
@@ -250,12 +251,6 @@ namespace SAwareness
                 Console.WriteLine("MovementSend: " + ex);
             }
         }
-
-        private void Game_OnGameUpdate(EventArgs args)
-        {
-            if (!IsActive())
-                return;
-        }
     }
 
     internal class AutoJump //DONT PLACE COUR CURSOR ON A WALL IT WILL FAIL
@@ -299,6 +294,9 @@ namespace SAwareness
         ~AutoJump()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
+            _jumpSpell = null;
+            _lastCast = 0;
         }
 
         public bool IsActive()
@@ -628,6 +626,8 @@ namespace SAwareness
         ~FowWardPlacement()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
+            enemiesUsed = null;
+            enemiesRefilled = null;
         }
 
         public bool IsActive()
@@ -799,6 +799,8 @@ namespace SAwareness
         ~PingerName()
         {
             Drawing.OnDraw -= Drawing_OnDraw;
+            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            pingInfo = null;
         }
 
         public bool IsActive()
