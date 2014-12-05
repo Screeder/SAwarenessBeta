@@ -12,13 +12,15 @@ namespace SAwareness
 {
     internal class ImmuneTimer //TODO: Maybe add Packetcheck
     {
-        private static readonly List<Ability> Abilities = new List<Ability>();
-        private readonly Render.Text _textF = new Render.Text("", 0, 0, 24, SharpDX.Color.Goldenrod);
-        private bool _drawActive = true;
+        private static readonly Dictionary<Ability, Render.Text> Abilities = new Dictionary<Ability, Render.Text>();
+        //private readonly Render.Text _textF = new Render.Text("", 0, 0, 24, SharpDX.Color.Goldenrod);
+        //private bool _drawActive = true;
 
         public ImmuneTimer()
         {
-            Abilities.Add(new Ability("zhonyas_ring_activate", 2.5f)); //Zhonya
+            Ability zhonyaA = new Ability("zhonyas_ring_activate", 2.5f);
+            
+            Abilities.Add(zhonyaA, zhonyaT); //Zhonya
             Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f)); //Aatrox Passive
             Abilities.Add(new Ability("LifeAura", 4f)); //Zil und GA
             Abilities.Add(new Ability("nickoftime_tar", 7f)); //Zil before death
@@ -26,12 +28,47 @@ namespace SAwareness
             Abilities.Add(new Ability("UndyingRage_buf", 5f)); //Tryn
             Abilities.Add(new Ability("EggTimer", 6f)); //Anivia
 
+            foreach(var ability in Abilities)
+            {
+                Render.Text text = new Render.Text(new Vector2(0,0), "", 28, SharpDX.Color.Goldenrod);
+                text.OutLined = true;
+                text.Centered = true;
+                text.TextUpdate = delegate
+                {
+                    float endTime = ability.Key.TimeCasted - (int)Game.ClockTime + ability.Key.Delay;
+                    var m = (float)Math.Floor(endTime / 60);
+                    var s = (float)Math.Ceiling(endTime % 60);
+                    return (s < 10 ? m + ":0" + s : m + ":" + s);
+                };
+                text.PositionUpdate = delegate
+                {
+                    Vector2 hpPos = new Vector2();
+                    if (ability.Key.Target != null)
+                    {
+                        hpPos = ability.Key.Target.HPBarPosition;
+                    }
+                    if (ability.Key.Owner != null)
+                    {
+                        hpPos = ability.Key.Owner.HPBarPosition;
+                    }
+                    hpPos.X = hpPos.X + 80;
+                    return hpPos;
+                };
+                text.VisibleCondition = delegate
+                {
+                    return Menu.Timers.GetActive() && Menu.ImmuneTimer.GetActive() && 
+                            ability.Key.Casted && ability.Key.TimeCasted > 0;
+                };
+                text.Add();
+                Abilities[ability.Key] = text;
+            }
+
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
             Game.OnGameUpdate += Game_OnGameUpdate;
             //Drawing.OnDraw += Drawing_OnDraw;
-            Drawing.OnEndScene += Drawing_OnEndScene;
-            Drawing.OnPreReset += Drawing_OnPreReset;
-            Drawing.OnPostReset += Drawing_OnPostReset;
+            //Drawing.OnEndScene += Drawing_OnEndScene;
+            //Drawing.OnPreReset += Drawing_OnPreReset;
+            //Drawing.OnPostReset += Drawing_OnPostReset;
         }
 
         ~ImmuneTimer()
@@ -39,9 +76,10 @@ namespace SAwareness
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Game.OnGameUpdate -= Game_OnGameUpdate;
             //Drawing.OnDraw -= Drawing_OnDraw;
-            Drawing.OnEndScene -= Drawing_OnEndScene;
-            Drawing.OnPreReset -= Drawing_OnPreReset;
-            Drawing.OnPostReset -= Drawing_OnPostReset;
+            //Drawing.OnEndScene -= Drawing_OnEndScene;
+            //Drawing.OnPreReset -= Drawing_OnPreReset;
+            //Drawing.OnPostReset -= Drawing_OnPostReset;
+            Abilities = null;
         }
 
         public bool IsActive()
@@ -63,7 +101,7 @@ namespace SAwareness
             }
         }
 
-        private void Drawing_OnEndScene(EventArgs args)
+        /*private void Drawing_OnEndScene(EventArgs args)
         {
             if (!IsActive() || !_drawActive)
                 return;
@@ -90,7 +128,7 @@ namespace SAwareness
                     _textF.OnEndScene();
                 }
             }
-        }
+        }*/
 
         private void Obj_AI_Base_OnCreate(GameObject sender, EventArgs args)
         {
@@ -116,7 +154,7 @@ namespace SAwareness
             }
         }
 
-        private void Drawing_OnPostReset(EventArgs args)
+        /*private void Drawing_OnPostReset(EventArgs args)
         {
             _textF.OnPostReset();
             _drawActive = true;
@@ -126,7 +164,7 @@ namespace SAwareness
         {
             _textF.OnPreReset();
             _drawActive = false;
-        }
+        }*/
 
         public class Ability
         {
@@ -171,6 +209,15 @@ namespace SAwareness
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            
+            _inhibitors = null;
+            Relics = null;
+            Altars = null;
+            Healths = null;
+            JungleMobs = null;
+            JungleCamps = null;
+            JungleMobList = null;
+            Summoners = null;
         }
 
         public bool IsActive()
