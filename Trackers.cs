@@ -1333,6 +1333,8 @@ namespace SAwareness
 
         private async static Task<ChampInfos> CreateSideHud(Obj_AI_Hero hero, ChampInfos champ, float percentScale)
         {
+            float percentHealth = CalcHpBar(hero);
+            float percentMana = CalcManaBar(hero);
             //SpriteHelper.LoadTexture("ItemSlotEmpty", ref _overlayEmptyItem, SpriteHelper.TextureType.Default);
             Console.WriteLine(hero.ChampionName);
             Console.WriteLine("Champ");
@@ -1504,8 +1506,10 @@ namespace SAwareness
             champ.HealthBar.Sprite[0] = new SpriteHelper.SpriteInfo();
             SpriteHelper.LoadTexture("HealthBar", ref champ.HealthBar.Sprite[0], SpriteHelper.TextureType.Default);
             SetScale(ref champ.HealthBar.Sprite[0].Sprite, _healthManaBarSize, percentScale);
+            //SetScaleX(ref champ.HealthBar.Sprite[0].Sprite, _healthManaBarSize, percentScale * percentHealth);
             champ.HealthBar.Sprite[0].Sprite.PositionUpdate = delegate
             {
+                //SetScaleX(ref champ.HealthBar.Sprite[0].Sprite, _healthManaBarSize, percentScale * CalcHpBar(hero));
                 return new Vector2(champ.HealthBar.SizeSideBar.Width, champ.HealthBar.SizeSideBar.Height);
             };
             champ.HealthBar.Sprite[0].Sprite.VisibleCondition = delegate
@@ -1518,8 +1522,10 @@ namespace SAwareness
             champ.ManaBar.Sprite[0] = new SpriteHelper.SpriteInfo();
             SpriteHelper.LoadTexture("ManaBar", ref champ.ManaBar.Sprite[0], SpriteHelper.TextureType.Default);
             SetScale(ref champ.ManaBar.Sprite[0].Sprite, _healthManaBarSize, percentScale);
+            //SetScaleX(ref champ.ManaBar.Sprite[0].Sprite, _healthManaBarSize, percentScale * percentMana);
             champ.ManaBar.Sprite[0].Sprite.PositionUpdate = delegate
             {
+                //SetScaleX(ref champ.ManaBar.Sprite[0].Sprite, _healthManaBarSize, percentScale * CalcManaBar(hero));
                 return new Vector2(champ.ManaBar.SizeSideBar.Width, champ.ManaBar.SizeSideBar.Height);
             };
             champ.ManaBar.Sprite[0].Sprite.VisibleCondition = delegate
@@ -2042,7 +2048,7 @@ namespace SAwareness
             champ.SpellQ.Text[1].VisibleCondition = sender =>
             {
                 return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive() &&
-                    champ.SpellQ.Value > 0.0f;
+                    champ.SpellQ.Value > 0.0f && hero.IsVisible && !hero.IsDead;
             };
             champ.SpellQ.Text[1].OutLined = true;
             champ.SpellQ.Text[1].Centered = true;
@@ -2060,7 +2066,7 @@ namespace SAwareness
             champ.SpellW.Text[1].VisibleCondition = sender =>
             {
                 return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellW.Value > 0.0f;
+                    champ.SpellW.Value > 0.0f && hero.IsVisible && !hero.IsDead;
             };
             champ.SpellW.Text[1].OutLined = true;
             champ.SpellW.Text[1].Centered = true;
@@ -2078,7 +2084,7 @@ namespace SAwareness
             champ.SpellE.Text[1].VisibleCondition = sender =>
             {
                 return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellE.Value > 0.0f;
+                    champ.SpellE.Value > 0.0f && hero.IsVisible && !hero.IsDead;
             };
             champ.SpellE.Text[1].OutLined = true;
             champ.SpellE.Text[1].Centered = true;
@@ -2096,7 +2102,7 @@ namespace SAwareness
             champ.SpellR.Text[1].VisibleCondition = sender =>
             {
                 return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellR.Value > 0.0f;
+                    champ.SpellR.Value > 0.0f && hero.IsVisible && !hero.IsDead;
             };
             champ.SpellR.Text[1].OutLined = true;
             champ.SpellR.Text[1].Centered = true;
@@ -2114,7 +2120,7 @@ namespace SAwareness
             champ.SpellSum1.Text[1].VisibleCondition = sender =>
             {
                 return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum1.Value > 0.0f;
+                    champ.SpellSum1.Value > 0.0f && hero.IsVisible && !hero.IsDead;
             };
             champ.SpellSum1.Text[1].OutLined = true;
             champ.SpellSum1.Text[1].Centered = true;
@@ -2132,7 +2138,7 @@ namespace SAwareness
             champ.SpellSum2.Text[1].VisibleCondition = sender =>
             {
                 return Menu.Tracker.GetActive() && Menu.UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum2.Value > 0.0f;
+                    champ.SpellSum2.Value > 0.0f && hero.IsVisible && !hero.IsDead;
             };
             champ.SpellSum2.Text[1].OutLined = true;
             champ.SpellSum2.Text[1].Centered = true;
@@ -2332,29 +2338,29 @@ namespace SAwareness
 
                         hero.Value.SpellSum1.CoordsSideBar =
                             new Size(hero.Value.SpellSum1.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2,
-                                hero.Value.SpellSum1.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 8);
+                                hero.Value.SpellSum1.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
                         hero.Value.SpellSum2.CoordsSideBar =
                             new Size(hero.Value.SpellSum2.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2,
-                                hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 8);
+                                hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
                         hero.Value.Champ.CoordsSideBar =
                             new Size(hero.Value.Champ.SizeSideBar.Width + (int)(_champSize.Width * percentScale) / 2,
-                                hero.Value.Champ.SizeSideBar.Height + (int)(_champSize.Height * percentScale) / 5);
+                                hero.Value.Champ.SizeSideBar.Height + (int)(_champSize.Height * percentScale) / 2);
                         hero.Value.SpellPassive.CoordsSideBar =
                             new Size(
                                 hero.Value.SpellPassive.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
-                                hero.Value.SpellPassive.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 8);
+                                hero.Value.SpellPassive.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
                         hero.Value.SpellQ.CoordsSideBar =
                             new Size(hero.Value.SpellQ.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
-                                hero.Value.SpellQ.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 8);
+                                hero.Value.SpellQ.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
                         hero.Value.SpellW.CoordsSideBar =
                             new Size(hero.Value.SpellW.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
-                                hero.Value.SpellW.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 8);
+                                hero.Value.SpellW.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
                         hero.Value.SpellE.CoordsSideBar =
                             new Size(hero.Value.SpellE.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
-                                hero.Value.SpellE.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 8);
+                                hero.Value.SpellE.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
                         hero.Value.SpellR.CoordsSideBar =
                             new Size(hero.Value.SpellR.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
-                                hero.Value.SpellR.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 8);
+                                hero.Value.SpellR.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
 
                         hero.Value.BackBar.SizeSideBar = new Size(hero.Value.Champ.SizeSideBar.Width,
                             hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale));
@@ -2369,12 +2375,12 @@ namespace SAwareness
                                 hero.Value.HealthBar.SizeSideBar.Width +
                                 (int)(_healthManaBarSize.Width * percentScale) / 2,
                                 hero.Value.HealthBar.SizeSideBar.Height -
-                                (int)(_healthManaBarSize.Height * percentScale) / 2);
+                                (int)(_healthManaBarSize.Height * percentScale) / 4);
                         hero.Value.ManaBar.CoordsSideBar =
                             new Size(
                                 hero.Value.ManaBar.SizeSideBar.Width + (int)(_healthManaBarSize.Width * percentScale) / 2,
                                 hero.Value.ManaBar.SizeSideBar.Height -
-                                (int)(_healthManaBarSize.Height * percentScale) / 2);
+                                (int)(_healthManaBarSize.Height * percentScale) / 4);
 
                         if (hero.Value.Item[0] == null)
                             hero.Value.Item[0] = new ChampInfos.SpriteInfos();
@@ -2394,25 +2400,25 @@ namespace SAwareness
                             hero.Value.BackBar.SizeSideBar.Height - (int)(_champSize.Height * percentScale) / 4);
                         hero.Value.RecallBar.CoordsSideBar =
                             new Size(hero.Value.RecallBar.SizeSideBar.Width + (int)(_recSize.Width * percentScale) / 2,
-                                hero.Value.RecallBar.SizeSideBar.Height - (int)(_recSize.Height * percentScale) / 2);
+                                hero.Value.RecallBar.SizeSideBar.Height + (int)(_recSize.Height * percentScale) / 4);
 
                         hero.Value.Level.SizeSideBar = new Size(hero.Value.Champ.SizeSideBar.Width,
                             hero.Value.Champ.SizeSideBar.Height);
                         hero.Value.Level.CoordsSideBar =
                             new Size(hero.Value.Champ.SizeSideBar.Width + (int)(_champSize.Width * percentScale) / 8,
-                                hero.Value.Champ.SizeSideBar.Height);
+                                hero.Value.Champ.SizeSideBar.Height + (int)(_recSize.Height * percentScale) / 2);
 
                         hero.Value.Cs.SizeSideBar = new Size(hero.Value.Champ.SizeSideBar.Width,
                             hero.Value.Champ.SizeSideBar.Height);
                         hero.Value.Cs.CoordsSideBar =
                             new Size(hero.Value.Champ.SizeSideBar.Width + (int)((_champSize.Width * percentScale) / 1.2),
-                                hero.Value.Champ.SizeSideBar.Height);
+                                hero.Value.Champ.SizeSideBar.Height + (int)(_recSize.Height * percentScale) / 2);
 
                         hero.Value.Gold.SizeSideBar = new Size(hero.Value.Champ.SizeSideBar.Width,
                             hero.Value.Champ.SizeSideBar.Height);
                         hero.Value.Gold.CoordsSideBar =
                             new Size(hero.Value.Champ.SizeSideBar.Width + (int)(_champSize.Width * percentScale) / 2,
-                                hero.Value.Champ.SizeSideBar.Height);
+                                hero.Value.Champ.SizeSideBar.Height + (int)(_recSize.Height * percentScale) / 2);
 
                         yOffsetAdd += (int)(5 * percentScale);
                         Size nSize = (hero.Value.Item[hero.Value.Item.Length - 1].SizeSideBar) -
@@ -2442,16 +2448,16 @@ namespace SAwareness
 
                         hero.Value.SpellSum1.CoordsSideBar =
                             new Size(hero.Value.SpellSum1.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2,
-                                hero.Value.SpellSum1.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 8);
+                                hero.Value.SpellSum1.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
                         hero.Value.SpellSum2.CoordsSideBar =
                             new Size(hero.Value.SpellSum2.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2,
-                                hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 8);
+                                hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
                         hero.Value.Champ.CoordsSideBar =
                             new Size(hero.Value.Champ.SizeSideBar.Width + (int)(_champSize.Width * percentScale) / 2,
-                                hero.Value.Champ.SizeSideBar.Height + (int)(_champSize.Height * percentScale) / 8);
+                                hero.Value.Champ.SizeSideBar.Height + (int)(_champSize.Height * percentScale) / 2);
                         hero.Value.SpellR.CoordsSideBar =
                             new Size(hero.Value.SpellR.SizeSideBar.Width + (int)(_spellSize.Width * percentScale),
-                                hero.Value.SpellR.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 8);
+                                hero.Value.SpellR.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
 
                         hero.Value.BackBar.SizeSideBar = new Size(hero.Value.SpellSum1.SizeSideBar.Width,
                             hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale));
@@ -2466,12 +2472,12 @@ namespace SAwareness
                                 hero.Value.HealthBar.SizeSideBar.Width +
                                 (int)(_healthManaBarSize.Width * percentScale) / 2,
                                 hero.Value.HealthBar.SizeSideBar.Height -
-                                (int)(_healthManaBarSize.Height * percentScale) / 2);
+                                (int)(_healthManaBarSize.Height * percentScale) / 4);
                         hero.Value.ManaBar.CoordsSideBar =
                             new Size(
                                 hero.Value.ManaBar.SizeSideBar.Width + (int)(_healthManaBarSize.Width * percentScale) / 2,
                                 hero.Value.ManaBar.SizeSideBar.Height -
-                                (int)(_healthManaBarSize.Height * percentScale) / 2);
+                                (int)(_healthManaBarSize.Height * percentScale) / 4);
 
                         //For champ click/move
                         hero.Value.SpellPassive.SizeSideBar = hero.Value.SpellSum1.SizeSideBar;
@@ -2523,25 +2529,25 @@ namespace SAwareness
 
                         hero.Value.SpellSum1.CoordsHpBar =
                             new Size(hero.Value.SpellSum1.SizeHpBar.Width + _sumSize.Width/2,
-                                hero.Value.SpellSum1.SizeHpBar.Height + _sumSize.Height/8);
+                                hero.Value.SpellSum1.SizeHpBar.Height + _sumSize.Height/2);
                         hero.Value.SpellSum2.CoordsHpBar =
                             new Size(hero.Value.SpellSum2.SizeHpBar.Width + _sumSize.Width/2,
-                                hero.Value.SpellSum2.SizeHpBar.Height + _sumSize.Height/8);
+                                hero.Value.SpellSum2.SizeHpBar.Height + _sumSize.Height/2);
                         hero.Value.SpellPassive.CoordsHpBar =
                             new Size(hero.Value.SpellPassive.SizeHpBar.Width + _spellSize.Width/2,
-                                hero.Value.SpellPassive.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellPassive.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellQ.CoordsHpBar =
                             new Size(hero.Value.SpellQ.SizeHpBar.Width + _spellSize.Width/2,
-                                hero.Value.SpellQ.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellQ.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellW.CoordsHpBar =
                             new Size(hero.Value.SpellW.SizeHpBar.Width + _spellSize.Width/2,
-                                hero.Value.SpellW.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellW.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellE.CoordsHpBar =
                             new Size(hero.Value.SpellE.SizeHpBar.Width + _spellSize.Width/2,
-                                hero.Value.SpellE.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellE.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellR.CoordsHpBar =
                             new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width/2,
-                                hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height/2);
                     }
                     else
                     {
@@ -2584,19 +2590,19 @@ namespace SAwareness
                                 hero.Value.SpellSum2.SizeHpBar.Height + _sumSize.Height/8);
                         hero.Value.SpellPassive.CoordsHpBar =
                             new Size(hero.Value.SpellPassive.SizeHpBar.Width + (int) (_spellSize.Width/1.7),
-                                hero.Value.SpellPassive.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellPassive.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellQ.CoordsHpBar =
                             new Size(hero.Value.SpellQ.SizeHpBar.Width + (int) (_spellSize.Width/1.3),
-                                hero.Value.SpellQ.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellQ.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellW.CoordsHpBar =
                             new Size(hero.Value.SpellW.SizeHpBar.Width + (int) (_spellSize.Width/1.3),
-                                hero.Value.SpellW.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellW.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellE.CoordsHpBar =
                             new Size(hero.Value.SpellE.SizeHpBar.Width + (int) (_spellSize.Width/1.3),
-                                hero.Value.SpellE.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellE.SizeHpBar.Height + _spellSize.Height/2);
                         hero.Value.SpellR.CoordsHpBar =
                             new Size(hero.Value.SpellR.SizeHpBar.Width + (int) (_spellSize.Width/1.3),
-                                hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height/8);
+                                hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height/2);
                     }
                 }
             }
@@ -2620,6 +2626,20 @@ namespace SAwareness
                         return;
                     sprite.UpdateTextureBitmap((Bitmap) bitmap.Clone());
                 }
+                //sprite.Reset();
+                sprite.Scale = nScale;
+            }
+        }
+
+        private static void SetScaleX(ref Render.Sprite sprite, Size size, float scale)
+        {
+            if (sprite != null && size.Width != 0 && size.Height != 0 && scale.CompareTo(0.0f) != 0)
+            {
+                var nScale = new Vector2(
+                                ((float)size.Width / sprite.Width) * scale,
+                                1);
+                if (sprite.Scale.X.CompareTo(nScale.X) == 0)
+                    return;
                 //sprite.Reset();
                 sprite.Scale = nScale;
             }
