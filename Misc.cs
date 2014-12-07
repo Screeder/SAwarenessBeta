@@ -860,4 +860,90 @@ namespace SAwareness
             }
         }
     }
+
+    internal class AntiVisualScreenStealth
+    {
+        private static int Header = 0xDB;
+
+        public AntiVisualScreenStealth()
+        {
+            bool available = false;
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                switch (hero.ChampionName)
+                {
+                    case "Akali":
+                        available = true;
+                        break;
+
+                    case "Khazix":
+                        available = true;
+                        break;
+
+                    case "Leblanc":
+                        available = true;
+                        break;
+
+                    case "MonkeyKing":
+                        available = true;
+                        break;
+
+                    case "Nocturne":
+                        available = true;
+                        break;
+
+                    case "Shaco":
+                        available = true;
+                        break;
+
+                    case "Talon":
+                        available = true;
+                        break;
+
+                    case "Teemo":
+                        available = true;
+                        break;
+
+                    case "Twitch":
+                        available = true;
+                        break;
+
+                    case "Vayne":
+                        available = true;
+                        break;
+                }
+                if (available)
+                    break;
+            }
+            if (available)
+                Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+        }
+
+        ~AntiVisualScreenStealth()
+        {
+            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+        }
+
+        public bool IsActive()
+        {
+            return Menu.Misc.GetActive() && Menu.AntiVisualScreenStealth.GetActive();
+        }
+
+        void Game_OnGameProcessPacket(GamePacketEventArgs args)
+        {
+            if (!IsActive())
+                return;
+
+            var reader = new BinaryReader(new MemoryStream(args.PacketData));
+
+            byte packetId = reader.ReadByte();
+            if (packetId == Header)
+            {
+                reader.ReadInt32();
+                byte visualStealthActive = reader.ReadByte();
+                if (visualStealthActive == 1)
+                    args.Process = false;
+            }
+        }
+    }
 }

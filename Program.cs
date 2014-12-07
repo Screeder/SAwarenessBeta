@@ -112,6 +112,8 @@ namespace SAwareness
         public static MenuItemSettings RealTime = new MenuItemSettings(typeof(RealTime));
         public static MenuItemSettings ShowPing = new MenuItemSettings(typeof(ShowPing));
         public static MenuItemSettings PingerName = new MenuItemSettings(typeof(PingerName));
+        public static MenuItemSettings AntiVisualScreenStealth = new MenuItemSettings(typeof(AntiVisualScreenStealth));
+        
 
         public static MenuItemSettings GlobalSettings = new MenuItemSettings();
 
@@ -1279,7 +1281,7 @@ namespace SAwareness
                 Menu.AutoJump.MenuItems.Add(
                     Menu.AutoJump.Menu.AddItem(new MenuItem("SAwarenessAutoJumpActive", "Active").SetValue(false)));
                 Menu.DisconnectDetector.Menu =
-                    Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Disconnect Detector",
+                    Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Dis/Reconnect Detector",
                         "SAwarenessDisconnectDetector"));
                 Menu.DisconnectDetector.MenuItems.Add(
                     Menu.DisconnectDetector.Menu.AddItem(
@@ -1330,7 +1332,11 @@ namespace SAwareness
                     Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Pinger Name", "SAwarenessPingerName"));
                 Menu.PingerName.MenuItems.Add(
                     Menu.PingerName.Menu.AddItem(new MenuItem("SAwarenessPingerNameActive", "Active").SetValue(false)));
-
+                Menu.AntiVisualScreenStealth.Menu =
+                    Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Anti Visual Screen Stealth", "SAwarenessAntiVisualScreenStealth"));
+                Menu.AntiVisualScreenStealth.MenuItems.Add(
+                    Menu.AntiVisualScreenStealth.Menu.AddItem(new MenuItem("SAwarenessAntiVisualScreenStealthActive", "Active").SetValue(false)));
+                
                 Menu.GlobalSettings.Menu =
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));
                 Menu.GlobalSettings.MenuItems.Add(
@@ -1428,12 +1434,12 @@ namespace SAwareness
                     Type classType = typeof(Menu);
                     BindingFlags flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
                     FieldInfo[] fields = classType.GetFields(flags);
-                    foreach (FieldInfo p in fields)
+                    foreach (FieldInfo p in fields.ToList())
                     {
                         var item = (Menu.MenuItemSettings)p.GetValue(null);
                         if (item.GetActive() == false && item.Item != null)
                         {
-                            item.Item = null;
+                            //item.Item = null;
                         }
                         else if (item.GetActive() && item.Item == null && !item.ForceDisable && item.Type != null)
                         {
