@@ -1795,20 +1795,20 @@ namespace SAwareness
                 {
                     float time = Game.Time + info.Recall.Duration / 1000 - info.StartTime;
                     if (time > 0.0f &&
-                        (info.Recall.Status == Packet.S2C.Recall.RecallStatus.TeleportStart ||
-                         info.Recall.Status == Packet.S2C.Recall.RecallStatus.RecallStarted))
+                        (info.Recall.Status == Recall.RecallStatus.TeleportStart ||
+                         info.Recall.Status == Recall.RecallStatus.RecallStarted))
                     {
                         return "Porting";
                     }
                     else if (time < 30.0f &&
-                             (info.Recall.Status == Packet.S2C.Recall.RecallStatus.TeleportEnd ||
-                              info.Recall.Status == Packet.S2C.Recall.RecallStatus.RecallFinished))
+                             (info.Recall.Status == Recall.RecallStatus.TeleportEnd ||
+                              info.Recall.Status == Recall.RecallStatus.RecallFinished))
                     {
                         return "Ported";
                     }
                     else if (time < 30.0f &&
-                             (info.Recall.Status == Packet.S2C.Recall.RecallStatus.TeleportAbort ||
-                              info.Recall.Status == Packet.S2C.Recall.RecallStatus.RecallAborted))
+                             (info.Recall.Status == Recall.RecallStatus.TeleportAbort ||
+                              info.Recall.Status == Recall.RecallStatus.RecallAborted))
                     {
                         return "Canceled";
                     }
