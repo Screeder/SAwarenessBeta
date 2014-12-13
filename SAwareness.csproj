@@ -105,6 +105,7 @@
     <Compile Include="Database.cs" />
     <Compile Include="Detector.cs" />
     <Compile Include="Activator\EmbeddedAssembly.cs" />
+	<Compile Include="EloDisplayer.cs" />
     <Compile Include="FlashJuke.cs" />
     <Compile Include="Ganks.cs" />
     <Compile Include="Health.cs" />
@@ -3900,6 +3901,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\EXT\QuestionMark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EXT\EloGui.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EXT\SkillOrderGuiCancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EXT\SkillOrderGuiSave.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
