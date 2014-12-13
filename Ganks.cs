@@ -27,6 +27,10 @@ namespace SAwareness
                     {
                         return Drawing.WorldToScreen(hero.Position);
                     };
+                    line.VisibleCondition = delegate
+                    {
+                        return Menu.GankTracker.GetMenuItem("SAwarenessGankTrackerDraw").GetValue<bool>();
+                    };
                     _enemies.Add(hero, new InternalGankTracker(line));
                 }
             }
@@ -103,6 +107,16 @@ namespace SAwareness
                 else if (enemy.Key.Health/enemy.Key.MaxHealth < 0.1)
                 {
                     _enemies[enemy.Key].Line.Color = Color.Red;
+                    if (!_enemies[enemy.Key].Pinged && Menu.GankTracker.GetMenuItem("SAwarenessGankTrackerPing").GetValue<bool>())
+                    {
+                        Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(enemy.Key.ServerPosition[0],
+                            enemy.Key.ServerPosition[1], 0, 0, Packet.PingType.Normal)).Process();
+                        _enemies[enemy.Key].Pinged = true;
+                    }
+                }
+                else if (enemy.Key.Health / enemy.Key.MaxHealth > 0.1)
+                {
+                    _enemies[enemy.Key].Pinged = false;
                 }
             }
         }
@@ -111,6 +125,7 @@ namespace SAwareness
         {
             public double Damage = 0;
             public Render.Line Line;
+            public bool Pinged = false;
 
             public InternalGankTracker(Render.Line line)
             {
