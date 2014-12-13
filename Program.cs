@@ -113,7 +113,7 @@ namespace SAwareness
         public static MenuItemSettings ShowPing = new MenuItemSettings(typeof(ShowPing));
         public static MenuItemSettings PingerName = new MenuItemSettings(typeof(PingerName));
         public static MenuItemSettings AntiVisualScreenStealth = new MenuItemSettings(typeof(AntiVisualScreenStealth));
-        
+        public static MenuItemSettings EloDisplayer = new MenuItemSettings(typeof(EloDisplayer));
 
         public static MenuItemSettings GlobalSettings = new MenuItemSettings();
 
@@ -558,6 +558,10 @@ namespace SAwareness
                         new MenuItem("SAwarenessGankTrackerTrackRange", "Track Range").SetValue(new Slider(1, 20000, 1))));
                 Menu.GankTracker.MenuItems.Add(
                    Menu.GankTracker.Menu.AddItem(new MenuItem("SAwarenessGankTrackerKillable", "Only Killable").SetValue(false)));
+                Menu.GankTracker.MenuItems.Add(
+                   Menu.GankTracker.Menu.AddItem(new MenuItem("SAwarenessGankTrackerDraw", "Draw Lines").SetValue(false)));
+                Menu.GankTracker.MenuItems.Add(
+                   Menu.GankTracker.Menu.AddItem(new MenuItem("SAwarenessGankTrackerPing", "Ping LowHP").SetValue(false)));
                 Menu.GankTracker.MenuItems.Add(
                     Menu.GankTracker.Menu.AddItem(new MenuItem("SAwarenessGankTrackerActive", "Active").SetValue(false)));
                 Menu.GankDetector.Menu =
@@ -1336,6 +1340,10 @@ namespace SAwareness
                     Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Anti Visual Screen Stealth", "SAwarenessAntiVisualScreenStealth"));
                 Menu.AntiVisualScreenStealth.MenuItems.Add(
                     Menu.AntiVisualScreenStealth.Menu.AddItem(new MenuItem("SAwarenessAntiVisualScreenStealthActive", "Active").SetValue(false)));
+                //Menu.EloDisplayer.Menu =
+                //    Menu.Misc.Menu.AddSubMenu(new LeagueSharp.Common.Menu("Elo Displayer", "SAwarenessEloDisplayer"));
+                //Menu.EloDisplayer.MenuItems.Add(
+                //    Menu.EloDisplayer.Menu.AddItem(new MenuItem("SAwarenessEloDisplayerActive", "Active").SetValue(false)));
                 
                 Menu.GlobalSettings.Menu =
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));
