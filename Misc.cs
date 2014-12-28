@@ -338,7 +338,7 @@ namespace SAwareness
                 if (_lastCast + 1 > Game.Time)
                     return;
                 InventorySlot slot = Wards.GetWardSlot();
-                slot.UseItem(Game.CursorPos);
+                ObjectManager.Player.Spellbook.CastSpell(slot.SpellSlot, Game.CursorPos);
                 _jumpSpell.Cast(Game.CursorPos, true);
                 _lastCast = Game.Time;
             }

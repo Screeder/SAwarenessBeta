@@ -890,9 +890,9 @@ namespace SAwareness
                 foreach (var hero in Summoners)
                 {
                     Obj_AI_Hero enemy = hero.Key;
-                    for (int i = 0; i < enemy.SummonerSpellbook.Spells.Count(); i++)
+                    for (int i = 0; i < enemy.Spellbook.Spells.Count(); i++)
                     {
-                        SpellDataInst spellData = enemy.SummonerSpellbook.Spells[i];
+                        SpellDataInst spellData = enemy.Spellbook.Spells[i];
                         if (hero.Value.Called[i])
                         {
                             if (Menu.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value < spellData.CooldownExpires - Game.ClockTime)
