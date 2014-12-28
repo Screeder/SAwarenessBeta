@@ -513,7 +513,7 @@ namespace SAwareness
                 if (hero.IsEnemy)
                 {
                     var abilities = new List<Ability>();
-                    foreach (SpellDataInst spell in hero.SummonerSpellbook.Spells)
+                    foreach (SpellDataInst spell in hero.Spellbook.Spells)
                     {
                         if (spell.Name.Contains("Flash"))
                         {
@@ -1445,7 +1445,7 @@ namespace SAwareness
                 champ.SpellR.Sprite[0].Sprite.Add();
             }
 
-            SpellDataInst[] s2 = hero.SummonerSpellbook.Spells;
+            SpellDataInst[] s2 = hero.Spellbook.Spells;
             Console.WriteLine("Spell1");
             taskInfo = SpriteHelper.LoadTextureAsync(s2[0].Name, champ.SpellSum1.Sprite[0], SpriteHelper.DownloadType.Summoner);
             champ.SpellSum1.Sprite[0] = await taskInfo;
@@ -1845,7 +1845,7 @@ namespace SAwareness
             float scaleSum = GetHeadMode(hero.IsEnemy).SelectedIndex == 1 ? 1.0f : 0.8f;
 
             SpellDataInst[] s1 = hero.Spellbook.Spells;
-            SpellDataInst[] s2 = hero.SummonerSpellbook.Spells;
+            SpellDataInst[] s2 = hero.Spellbook.Spells;
 
             Task<SpriteHelper.SpriteInfo> taskInfo = null;
             taskInfo = SpriteHelper.LoadTextureAsync(s2[0].Name, champ.SpellSum1.Sprite[1], SpriteHelper.DownloadType.Summoner);
@@ -2771,7 +2771,7 @@ namespace SAwareness
 
         private async static void UpdateSummonerSpellImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, SpellSlot slot, UpdateMethod method)
         {
-            SpellDataInst[] s2 = hero.SummonerSpellbook.Spells;
+            SpellDataInst[] s2 = hero.Spellbook.Spells;
             Task<SpriteHelper.SpriteInfo> taskInfo = null;
             switch (slot)
             {
@@ -3001,7 +3001,7 @@ namespace SAwareness
                             {
                                 enemy.Value.SpellR.Value = 0;
                             }
-                            SpellDataInst[] s2 = hero.SummonerSpellbook.Spells;
+                            SpellDataInst[] s2 = hero.Spellbook.Spells;
                             if (s2[0].CooldownExpires - Game.Time > 0.0f)
                             {
                                 enemy.Value.SpellSum1.Value = (int)(s2[0].CooldownExpires - Game.Time);

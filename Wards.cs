@@ -161,7 +161,7 @@ namespace SAwareness
                                 Environment.TickCount >= _lastTimeVayne)
                                 return;
 
-                            invSlot.UseItem(args.End);
+                            ObjectManager.Player.Spellbook.CastSpell(invSlot.SpellSlot, args.End); // not sure about this one, might need to specify a starting point too
                             _lastTimeWarded = Environment.TickCount;
                         }
                     }
@@ -226,7 +226,7 @@ namespace SAwareness
 
                             if (wardSlot != null && wardSlot.Id != ItemId.Unknown)
                             {
-                                wardSlot.UseItem(bestWardPos);
+                                ObjectManager.Player.Spellbook.CastSpell(wardSlot.SpellSlot, bestWardPos);
                                 _lastTimeWarded = Environment.TickCount;
                             }
                         }
