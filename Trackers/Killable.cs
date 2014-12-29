@@ -30,7 +30,8 @@ namespace SAwareness.Trackers
                     text.OutLined = true;
                     text.VisibleCondition = sender =>
                     {
-                        return killable.Combo != null ? killable.Combo.Killable : false && enemy.IsVisible && !enemy.IsDead;
+                        return (killable.Combo != null ? killable.Combo.Killable : false) && enemy.IsVisible && !enemy.IsDead &&
+                            Tracker.Trackers.GetActive() && KillableTracker.GetActive();
                     };
                     text.PositionUpdate = delegate
                     {

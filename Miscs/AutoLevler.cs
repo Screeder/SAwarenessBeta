@@ -273,14 +273,14 @@ namespace SAwareness.Miscs
                     if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
                         .GetMenuItem("SAwarenessMiscsAutoLevlerPriorityFirstSpellsActive").GetValue<bool>())
                     {
-                        player.Spellbook.LevelUpSpell(GetCurrentSpell());
+                        player.Spellbook.LevelSpell(GetCurrentSpell());
                         return;
                     }
                     SpellSlot[] spellSlots = GetSortedPriotitySlots();
                     for (int slotId = 0; slotId <= 3; slotId++)
                     {
                         int spellLevel = player.Spellbook.GetSpell(spellSlots[slotId]).Level;
-                        player.Spellbook.LevelUpSpell(spellSlots[slotId]);
+                        player.Spellbook.LevelSpell(spellSlots[slotId]);
                         if (player.Spellbook.GetSpell(spellSlots[slotId]).Level != spellLevel)
                             break;
                     }
@@ -291,7 +291,7 @@ namespace SAwareness.Miscs
                         .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").GetValue<bool>())
                     {
                         SpellSlot spellSlot = gui.CurrentLevler.Sequence[player.Level - 1];
-                        player.Spellbook.LevelUpSpell(spellSlot);
+                        player.Spellbook.LevelSpell(spellSlot);
                     }
                 }
                 else
@@ -302,7 +302,7 @@ namespace SAwareness.Miscs
                             ObjectManager.Player.Level == 11 ||
                             ObjectManager.Player.Level == 16)
                         {
-                            player.Spellbook.LevelUpSpell(SpellSlot.R);
+                            player.Spellbook.LevelSpell(SpellSlot.R);
                         }
                     }
                 }

@@ -33,7 +33,8 @@ namespace SAwareness.Trackers
                     };
                     line.VisibleCondition = delegate
                     {
-                        return GankTracker.GetMenuItem("SAwarenessTrackersGankDraw").GetValue<bool>() &&
+                        return Tracker.Trackers.GetActive() && GankTracker.GetActive() &&
+                                GankTracker.GetMenuItem("SAwarenessTrackersGankDraw").GetValue<bool>() &&
                                hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
                                GankTracker.GetMenuItem("SAwarenessTrackersGankTrackRange").GetValue<Slider>().Value &&
                                hero.IsVisible && !hero.IsDead &&
