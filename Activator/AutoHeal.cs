@@ -28,7 +28,7 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.ActivatorAutoHeal.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.ActivatorAutoHeal.GetActive();
         }
 
         private static void Init()
@@ -81,7 +81,7 @@ namespace SAwareness
             {
                 if (hero.IsMe || hero.IsAlly)
                 {
-                    if ((hero.Health/hero.MaxHealth)*100 < Menu.ActivatorAutoHeal.GetMenuItem(
+                    if ((hero.Health/hero.MaxHealth)*100 < MainMenu.ActivatorAutoHeal.GetMenuItem(
                         "SAwarenessActivatorAutoHealPercent").GetValue<Slider>().Value)
                     {
                         if (hero.IsMe && !_heal.SelfCast)

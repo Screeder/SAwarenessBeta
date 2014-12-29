@@ -29,7 +29,7 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.ActivatorAutoHeal.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.ActivatorAutoHeal.GetActive();
         }
 
         private static void Init()
@@ -63,7 +63,7 @@ namespace SAwareness
             List<BuffInstance> buffList = Activator.GetActiveCcBuffs(_buffs);
 
             if (buffList.Count() >=
-                Menu.ActivatorAutoQss.GetMenuItem("SAwarenessActivatorAutoQssMinSpells")
+                MainMenu.ActivatorAutoQss.GetMenuItem("SAwarenessActivatorAutoQssMinSpells")
                     .GetValue<Slider>()
                     .Value)
             {
@@ -80,51 +80,51 @@ namespace SAwareness
         {
             _buffs.Clear();
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigStun")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigStun")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Stun);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSilence")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSilence")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Silence);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigTaunt")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigTaunt")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Taunt);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigFear")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigFear")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Fear);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigCharm")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigCharm")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Charm);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigBlind")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigBlind")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Blind);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigDisarm")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigDisarm")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Disarm);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSuppress")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSuppress")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Suppression);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSlow")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSlow")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Slow);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem(
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem(
                     "SAwarenessActivatorAutoQssConfigCombatDehancer").GetValue<bool>())
                 _buffs.Add(BuffType.CombatDehancer);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSnare")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigSnare")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Snare);
             if (
-                Menu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigPoison")
+                MainMenu.ActivatorAutoQssConfig.GetMenuItem("SAwarenessActivatorAutoQssConfigPoison")
                     .GetValue<bool>())
                 _buffs.Add(BuffType.Poison);
         }

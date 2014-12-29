@@ -5,7 +5,9 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Resources;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -20,6 +22,124 @@ using Rectangle = SharpDX.Rectangle;
 
 namespace SAwareness
 {
+    class Menu
+    {
+        public static MenuItemSettings GlobalSettings = new MenuItemSettings();
+
+        public class MenuItemSettings
+        {
+            public bool ForceDisable;
+            public dynamic Item;
+            public LeagueSharp.Common.Menu Menu;
+            public List<MenuItem> MenuItems = new List<MenuItem>();
+            public String Name;
+            public List<MenuItemSettings> SubMenus = new List<MenuItemSettings>();
+            public Type Type;
+
+            public MenuItemSettings(Type type, dynamic item)
+            {
+                Type = type;
+                Item = item;
+            }
+
+            public MenuItemSettings(dynamic item)
+            {
+                Item = item;
+            }
+
+            public MenuItemSettings(Type type)
+            {
+                Type = type;
+            }
+
+            public MenuItemSettings(String name)
+            {
+                Name = name;
+            }
+
+            public MenuItemSettings()
+            {
+            }
+
+            public MenuItemSettings AddMenuItemSettings(String displayName, String name)
+            {
+                SubMenus.Add(new MenuItemSettings(name));
+                MenuItemSettings tempSettings = GetMenuSettings(name);
+                if (tempSettings == null)
+                {
+                    throw new NullReferenceException(name + " not found");
+                }
+                tempSettings.Menu = Menu.AddSubMenu(new LeagueSharp.Common.Menu(displayName, name));
+                return tempSettings;
+            }
+
+            public bool GetActive()
+            {
+                if (Menu == null)
+                    return false;
+                foreach (MenuItem item in Menu.Items)
+                {
+                    if (item.DisplayName == Language.GetString("GLOBAL_ACTIVE"))
+                    {
+                        if (item.GetValue<bool>())
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            public void SetActive(bool active)
+            {
+                if (Menu == null)
+                    return;
+                foreach (MenuItem item in Menu.Items)
+                {
+                    if (item.DisplayName == Language.GetString("GLOBAL_ACTIVE"))
+                    {
+                        item.SetValue(active);
+                        return;
+                    }
+                }
+            }
+
+            public MenuItem GetMenuItem(String menuName)
+            {
+                if (Menu == null)
+                    return null;
+                foreach (MenuItem item in Menu.Items)
+                {
+                    if (item.Name == menuName)
+                    {
+                        return item;
+                    }
+                }
+                return null;
+            }
+
+            public LeagueSharp.Common.Menu GetSubMenu(String menuName)
+            {
+                if (Menu == null)
+                    return null;
+                return Menu.SubMenu(menuName);
+            }
+
+            public MenuItemSettings GetMenuSettings(String name)
+            {
+                foreach (MenuItemSettings menu in SubMenus)
+                {
+                    if (menu.Name.Contains(name))
+                        return menu;
+                }
+                return null;
+            }
+        }
+
+        //public static MenuItemSettings  = new MenuItemSettings();
+    }
+
     internal static class Log
     {
         public static String File = "C:\\SAwareness.log";
@@ -55,6 +175,7 @@ namespace SAwareness
 
         public static void LogPacket(byte[] data, String file = null, String prefix = null)
         {
+            if (!(data[0].ToHexString().Equals("AE") || data[0].ToHexString().Equals("29") || data[0].ToHexString().Equals("1A") || data[0].ToHexString().Equals("34") || data[0].ToHexString().Equals("6E") || data[0].ToHexString().Equals("85") || data[0].ToHexString().Equals("C4") || data[0].ToHexString().Equals("61") || data[0].ToHexString().Equals("38") || data[0].ToHexString().Equals("FE")))
             LogWrite(BitConverter.ToString(data), file, prefix);
         }
 
@@ -101,6 +222,11 @@ namespace SAwareness
         public static bool IsInside(Vector2 mousePos, Size windowPos, int width, int height)
         {
             return Utils.IsUnderRectangle(mousePos, windowPos.Width, windowPos.Height, width, height);
+        }
+
+        public static bool IsInside(Vector2 mousePos, Vector2 windowPos, int width, int height)
+        {
+            return Utils.IsUnderRectangle(mousePos, windowPos.X, windowPos.Y, width, height);
         }
     }
 
@@ -637,6 +763,7 @@ namespace SAwareness
 
                 if (Bitmap != null)
                     Bitmap.Dispose();
+
             }
 
             ~SpriteInfo()
@@ -821,6 +948,133 @@ namespace SAwareness
                 Position = pos;
                 Color = col;
             }
+        }
+    }
+
+    static class Language
+    {
+
+        private static System.Resources.ResourceManager resMgr;
+        private static System.Resources.ResourceManager resMgrAlt;
+
+        public static void UpdateLanguage(string langID)
+        {
+            try
+            {
+                resMgr = new System.Resources.ResourceManager("SAwareness.Resources.TRANSLATIONS.Translation-" + langID, typeof(Program).Assembly);
+                resMgrAlt = new System.Resources.ResourceManager("SAwareness.Resources.TRANSLATIONS.Translation-en-US", typeof(Program).Assembly);
+            }
+            catch (Exception)
+            {
+                resMgr = new System.Resources.ResourceManager("SAwareness.Resources.TRANSLATIONS.Translation-en-US", typeof(Program).Assembly);
+                resMgrAlt = resMgr;
+            }
+        }
+ 
+        public static string GetString(String pattern)
+        {
+            try
+            {
+                if (resMgr == null || resMgr.GetString(pattern) == null || resMgr.GetString(pattern).Equals(""))
+                {
+                    return resMgrAlt.GetString(pattern) ?? "";
+                }
+                return resMgr.GetString(pattern);
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    return resMgrAlt.GetString(pattern);
+                }
+                catch (Exception)
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static void SetLanguage()
+        {
+            switch (Config.SelectedLanguage)
+            {
+                case "Arabic":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar-SA");
+                    break;
+
+                case "Chinese":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
+                    break;
+
+                case "Dutch":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("nl-NL");
+                    break;
+
+                case "English":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+                    break;
+
+                case "French":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
+                    break;
+
+                case "German":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
+                    break;
+
+                case "Greek":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("el-GR");
+                    break;
+
+                case "Italian":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("it-IT");
+                    break;
+
+                case "Korean":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("ko-KR");
+                    break;
+
+                case "Polish":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pl-PL");
+                    break;
+
+                case "Portuguese":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-PT");
+                    break;
+
+                case "Romanian":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+                    break;
+
+                case "Russian":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
+                    break;
+
+                case "Spanish":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("es-ES");
+                    break;
+
+                case "Swedish":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("sv-SE");
+                    break;
+
+                case "Thai":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("th-TH");
+                    break;
+
+                case "Turkish":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("tr-TR");
+                    break;
+
+                case "Vietnamese":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("vi-VN");
+                    break;
+
+                default:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+                    break;
+            }
+            UpdateLanguage(Thread.CurrentThread.CurrentUICulture.Name);
         }
     }
 }

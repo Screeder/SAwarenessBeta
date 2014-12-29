@@ -28,7 +28,7 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.ActivatorAutoHeal.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.ActivatorAutoHeal.GetActive();
         }
 
         private static void Init()
@@ -83,7 +83,7 @@ namespace SAwareness
             {
                 Obj_AI_Hero hero = damage.Key;
 
-                if (!Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldAlly").GetValue<bool>())
+                if (!MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldAlly").GetValue<bool>())
                     if (hero.NetworkId != ObjectManager.Player.NetworkId)
                         continue;
             }
@@ -93,7 +93,7 @@ namespace SAwareness
                 if (Activator.CalcMaxDamage(damage.Key) > damage.Key.Health &&
                     (damage.Key.Distance(ObjectManager.Player.ServerPosition) < _ult.Range))
                 {
-                    if (!Menu.ActivatorAutoUlt.GetMenuItem("SAwarenessActivatorAutoUltAlly").GetValue<bool>() &&
+                    if (!MainMenu.ActivatorAutoUlt.GetMenuItem("SAwarenessActivatorAutoUltAlly").GetValue<bool>() &&
                         damage.Key.NetworkId != ObjectManager.Player.NetworkId)
                     {
                         continue;

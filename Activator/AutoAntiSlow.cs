@@ -28,7 +28,7 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.ActivatorAutoHeal.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.ActivatorAutoHeal.GetActive();
         }
 
         private static void Init()

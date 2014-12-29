@@ -22,10 +22,10 @@ namespace SAwareness
         {
             "GreatWraith", "Wraith", "AncientGolem", "GiantWolf", "LizardElder",
             "Golem", "Worm", "Dragon", "Wight", "TT_Spiderboss", "TTNGolem", "TTNWolf", "TTNWraith",
-            "SRU_BaronSpawn", "SRU_Dragon", "SRU_Blue", "SRU_Red", "SRU_Gromp", "SRU_Krug", "SRU_Murkwolf", "SRU_Razorbeak" //Need to check
+            "SRU_BaronSpawn", "SRU_Baron", "SRU_Dragon", "SRU_Blue", "SRU_Red", "SRU_Gromp", "SRU_Krug", "SRU_Murkwolf", "SRU_Razorbeak" //Need to check
         };
 
-        private readonly String[] _usefulMonsters = { "AncientGolem", "LizardElder", "Worm", "Dragon", "TT_Spiderboss", "SRU_Baron", "SRU_Dragon", "SRU_Blue", "SRU_Red" };
+        private readonly String[] _usefulMonsters = { "AncientGolem", "LizardElder", "Worm", "Dragon", "TT_Spiderboss", "SRU_BaronSpawn", "SRU_Baron", "SRU_Dragon", "SRU_Blue", "SRU_Red" };
 
         public AutoSmite()
         {
@@ -55,7 +55,7 @@ namespace SAwareness
                             Vector2 pos = Drawing.WorldToScreen(minion.ServerPosition);
                             String health = minion.Health != 0 ? (((int) minion.Health - smiteDamage)).ToString() : "";
                             health =
-                                !Menu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteKeyActive")
+                                !MainMenu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteKeyActive")
                                     .GetValue<KeyBind>()
                                     .Active
                                     ? health + " Disabled"
@@ -78,12 +78,12 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.AutoSmite.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.AutoSmite.GetActive();
         }
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || !Menu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteKeyActive").GetValue<KeyBind>().Active)
+            if (!IsActive() || !MainMenu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteKeyActive").GetValue<KeyBind>().Active)
                 return;
             foreach (Obj_AI_Minion minion in ObjectManager.Get<Obj_AI_Minion>())
             {
@@ -94,7 +94,7 @@ namespace SAwareness
                     int smiteDamage = GetSmiteDamage();
                     ExtraDamage extraDamageInfo = null;
                     int extraDamage = 0;
-                    if (Menu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteAutoSpell").GetValue<bool>())
+                    if (MainMenu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteAutoSpell").GetValue<bool>())
                     {
                         extraDamageInfo = GetExtraDamage(minion);
                         if (extraDamageInfo != null)
@@ -102,7 +102,7 @@ namespace SAwareness
                     }
                     if (minion.Health <= smiteDamage)
                     {
-                        if (!Menu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteSmallCampsActive").GetValue<bool>())
+                        if (!MainMenu.AutoSmite.GetMenuItem("SAwarenessAutoSmiteSmallCampsActive").GetValue<bool>())
                         {
                             foreach (string monster in _usefulMonsters)
                             {
@@ -151,7 +151,7 @@ namespace SAwareness
                     GamePacket gPacketT =
                         Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(minion.NetworkId, smiteSlot));
                     gPacketT.Send();
-                    ObjectManager.Player.SummonerSpellbook.CastSpell(smiteSlot, minion);
+                    ObjectManager.Player.Spellbook.CastSpell(smiteSlot, minion);
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace SAwareness
                                 Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(minion.NetworkId,
                                     extraDamageInfo.Slot));
                             gPacketT.Send();
-                            ObjectManager.Player.SummonerSpellbook.CastSpell(smiteSlot, minion);
+                            ObjectManager.Player.Spellbook.CastSpell(smiteSlot, minion);
                             break;
 
                         case SpellType.Skillshot:
@@ -171,14 +171,14 @@ namespace SAwareness
                                 Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(0, extraDamageInfo.Slot, -1, 0, 0,
                                     minion.ServerPosition.X, minion.ServerPosition.Y));
                             gPacketT.Send();
-                            ObjectManager.Player.SummonerSpellbook.CastSpell(smiteSlot, minion.ServerPosition);
+                            ObjectManager.Player.Spellbook.CastSpell(smiteSlot, minion.ServerPosition);
                             break;
 
                         case SpellType.Target:
                             gPacketT =
                                 Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(minion.NetworkId,
                                     extraDamageInfo.Slot));
-                            ObjectManager.Player.SummonerSpellbook.CastSpell(smiteSlot, minion);
+                            ObjectManager.Player.Spellbook.CastSpell(smiteSlot, minion);
                             gPacketT.Send();
                             break;
                     }
@@ -188,7 +188,7 @@ namespace SAwareness
                         () =>
                             Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(minion.NetworkId, smiteSlot))
                                 .Send());
-                    ObjectManager.Player.SummonerSpellbook.CastSpell(smiteSlot, minion);
+                    ObjectManager.Player.Spellbook.CastSpell(smiteSlot, minion);
                     //gPacketT = Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(minion.NetworkId, (SpellSlot)slot));
                     //gPacketT.Send();
                 }
@@ -325,7 +325,7 @@ namespace SAwareness
 
         private SpellSlot GetSmiteSlot()
         {
-            foreach (SpellDataInst spell in ObjectManager.Player.SummonerSpellbook.Spells)
+            foreach (SpellDataInst spell in ObjectManager.Player.Spellbook.Spells)
             {
                 if (spell.Name.ToLower().Contains("smite") && spell.State == SpellState.Ready)
                     return spell.Slot;

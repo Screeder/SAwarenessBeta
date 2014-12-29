@@ -26,7 +26,7 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.AutoShield.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.AutoShield.GetActive();
         }
 
         private static void Init()
@@ -157,7 +157,7 @@ namespace SAwareness
             {
                 Obj_AI_Hero hero = damage.Key;
 
-                if (!Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldAlly").GetValue<bool>())
+                if (!MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldAlly").GetValue<bool>())
                     if(hero.NetworkId != ObjectManager.Player.NetworkId)
                         continue;
 
@@ -182,7 +182,7 @@ namespace SAwareness
                                     continue;
                                 }
                                 if (
-                                    Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockCC")
+                                    MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockCC")
                                         .GetValue<bool>() &&
                                     !ContainsCc(tDamage.SpellName))
                                 {
@@ -196,19 +196,19 @@ namespace SAwareness
                                 continue;
                             }
                         }
-                        if (!Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockAA")
+                        if (!MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockAA")
                             .GetValue<bool>() && IsAutoAttack(tDamage.SpellName))
                         {
                             tempDamages[hero].Remove(tDamage);
                             continue;
                         }
-                        if (Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockableSpellsActive")
+                        if (MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockableSpellsActive")
                                 .GetValue<bool>())
                         {
                             foreach (var blockableSpell in GetBlockableSpells())
                             {
-                                if (Menu.AutoShieldBlockableSpells.GetMenuItem("SAwarenessAutoShieldBlockableSpells" + spell) == null ||
-                                    !Menu.AutoShieldBlockableSpells.GetMenuItem("SAwarenessAutoShieldBlockableSpells" + spell)
+                                if (MainMenu.AutoShieldBlockableSpells.GetMenuItem("SAwarenessAutoShieldBlockableSpells" + spell) == null ||
+                                    !MainMenu.AutoShieldBlockableSpells.GetMenuItem("SAwarenessAutoShieldBlockableSpells" + spell)
                                     .GetValue<bool>())
                                 {
                                     tempDamages[hero].Remove(tDamage);
@@ -225,7 +225,7 @@ namespace SAwareness
                 //Vector2 d2 = Drawing.WorldToScreen(damage.Key.ServerPosition);
                 //Drawing.DrawText(d2.X, d2.Y, System.Drawing.Color.Aquamarine, Activator.CalcMaxDamage(damage.Key).ToString());
 
-                if (Activator.CalcMaxDamage(damage.Key) > Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockMinDamageAmount")
+                if (Activator.CalcMaxDamage(damage.Key) > MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockMinDamageAmount")
                                     .GetValue<Slider>().Value &&
                     (_shield.OnlySelf || damage.Key.Distance(ObjectManager.Player.ServerPosition) < _shield.Spell.Range))
                 {
@@ -273,7 +273,7 @@ namespace SAwareness
                 if (spell.Name.Contains(spellName))
                 {
                     if (
-                        Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockDamageAmount")
+                        MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockDamageAmount")
                             .GetValue<StringList>()
                             .SelectedIndex == 0)
                     {
@@ -283,7 +283,7 @@ namespace SAwareness
                             return true;
                     }
                     else if (
-                        Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockDamageAmount")
+                        MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockDamageAmount")
                             .GetValue<StringList>()
                             .SelectedIndex == 1)
                     {
@@ -292,7 +292,7 @@ namespace SAwareness
                             return true;
                     }
                     if (
-                        Menu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockDamageAmount")
+                        MainMenu.AutoShield.GetMenuItem("SAwarenessAutoShieldBlockDamageAmount")
                             .GetValue<StringList>()
                             .SelectedIndex == 2)
                     {

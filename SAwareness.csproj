@@ -52,14 +52,14 @@
     <StartupObject>SAwareness.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Evade, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>FakesAssemblies\Evade.dll</HintPath>
+    <Reference Include="Evade">
+      <HintPath>H:\Programme\LeagueSharp\\System\Evade.dll</HintPath>
     </Reference>
     <Reference Include="Evade.1.0.0.1.Fakes">
-      <HintPath>FakesAssemblies\Evade.1.0.0.1.Fakes.dll</HintPath>
+      <HintPath>H:\Programme\LeagueSharp\\System\Evade.1.0.0.1.Fakes.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp">
+    <Reference Include="LeagueSharp, Version=1.0.0.25, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\Programme\LeagueSharp\\System\LeagueSharp.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.Common, Version=1.0.0.2, Culture=neutral, processorArchitecture=x86">
@@ -86,6 +86,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -98,19 +99,45 @@
     <Compile Include="Activator\AutoHeal.cs" />
     <Compile Include="Activator\AutoQSS.cs" />
     <Compile Include="Activator\AutoUlt.cs" />
-    <Compile Include="AutoLevler.cs" />
+    <Compile Include="Detectors\DisReconnect.cs" />
+    <Compile Include="Detectors\Recall.cs" />
+    <Compile Include="Detectors\Vision.cs" />
+    <Compile Include="Detectors\Gank.cs" />
+    <Compile Include="Miscs\AntiVisualScreenStealth.cs" />
+    <Compile Include="Miscs\AutoJump.cs" />
+    <Compile Include="Miscs\AutoLatern.cs" />
+    <Compile Include="Miscs\EasyRangedJungle.cs" />
+    <Compile Include="Miscs\PingerName.cs" />
+    <Compile Include="Miscs\RealTime.cs" />
+    <Compile Include="Timers\Altar.cs" />
+    <Compile Include="Timers\Health.cs" />
+    <Compile Include="Timers\Immune.cs" />
+    <Compile Include="Timers\Inhibitor.cs" />
+    <Compile Include="Timers\Jungle.cs" />
+    <Compile Include="Timers\Relic.cs" />
+    <Compile Include="Timers\Summoner.cs" />
+    <Compile Include="Timers\Timer.cs" />
+    <Compile Include="Wards\FowWardPlacement.cs" />
+    <Compile Include="Miscs\MinionBars.cs" />
+    <Compile Include="Miscs\MinionLocation.cs" />
+    <Compile Include="Miscs\TurnAround.cs" />
+    <Compile Include="Trackers\Clone.cs" />
+    <Compile Include="Trackers\Destination.cs" />
+    <Compile Include="Trackers\Gank.cs" />
+    <Compile Include="Healths\Inhibitor.cs" />
+    <Compile Include="Healths\Turret.cs" />
+    <Compile Include="Miscs\AutoLevler.cs" />
     <Compile Include="Activator\AutoPot.cs" />
     <Compile Include="Activator\AutoShield.cs" />
     <Compile Include="Activator\AutoSmite.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="Detector.cs" />
+    <Compile Include="Detectors\Detector.cs" />
     <Compile Include="Activator\EmbeddedAssembly.cs" />
-	<Compile Include="EloDisplayer.cs" />
-    <Compile Include="FlashJuke.cs" />
-    <Compile Include="Ganks.cs" />
-    <Compile Include="Health.cs" />
-    <Compile Include="Misc.cs" />
-    <Compile Include="MoveToMouse.cs" />
+    <Compile Include="Miscs\EloDisplayer.cs" />
+    <Compile Include="Miscs\FlashJuke.cs" />
+    <Compile Include="Healths\Health.cs" />
+    <Compile Include="Miscs\Misc.cs" />
+    <Compile Include="Miscs\MoveToMouse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -118,20 +145,43 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Ranges.cs" />
-    <Compile Include="SafeMovement.cs" />
-    <Compile Include="SkinChanger.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Ranges\Attack.cs" />
+    <Compile Include="Ranges\Experience.cs" />
+    <Compile Include="Ranges\SpellE.cs" />
+    <Compile Include="Ranges\SpellQ.cs" />
+    <Compile Include="Ranges\Range.cs" />
+    <Compile Include="Miscs\SafeMovement.cs" />
+    <Compile Include="Miscs\SkinChanger.cs" />
+    <Compile Include="Miscs\SmartPingImprove.cs" />
+    <Compile Include="Ranges\SpellR.cs" />
+    <Compile Include="Ranges\Shop.cs" />
+    <Compile Include="Ranges\SpellW.cs" />
+    <Compile Include="Ranges\Turret.cs" />
+    <Compile Include="Ranges\Vision.cs" />
     <Compile Include="Spectator\Blowfish.cs" />
     <Compile Include="Spectator\Packet.cs" />
     <Compile Include="Spectator\SpectatorDecoder.cs" />
     <Compile Include="Spectator\SpectatorDownloader.cs" />
     <Compile Include="Spectator\SpecUtils.cs" />
-    <Compile Include="SurrenderVote.cs" />
-    <Compile Include="Timers.cs" />
-    <Compile Include="Trackers.cs" />
+    <Compile Include="Miscs\SurrenderVote.cs" />
+    <Compile Include="Trackers\Killable.cs" />
+    <Compile Include="Trackers\SsCaller.cs" />
+    <Compile Include="Trackers\Tracker.cs" />
+    <Compile Include="Trackers\Ui.cs" />
+    <Compile Include="Trackers\Uim.cs" />
+    <Compile Include="Trackers\Waypoint.cs" />
     <Compile Include="Updater.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Wards.cs" />
+    <Compile Include="Wards\BushRevealer.cs" />
+    <Compile Include="Wards\InvisibleRevealer.cs" />
+    <Compile Include="Miscs\ShowPing.cs" />
+    <Compile Include="Wards\WardCorrector.cs" />
+    <Compile Include="Wards\Ward.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -139,12 +189,19 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-de-DE.resx" />
+    <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-en-US.resx" />
+    <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-fr-FR.resx" />
   </ItemGroup>
   <ItemGroup>
     <Fakes Include="Fakes\Evade.fakes" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\CHAMP\Aatrox.dds" />
   </ItemGroup>
   <ItemGroup>
@@ -503,21 +560,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CHAMP\Zyra.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\BarBackground.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\HealthBar.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\ItemSlotEmpty.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\ManaBar.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\RecallBar.dds" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ITEMS\1001.dds" />
@@ -3708,9 +3750,6 @@
     <None Include="Resources\SUMMONERS\SpellTintRed.dds" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\EXT\GoldCsLvlBar.dds" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\SPELLS\luxlightstriketoggle.dds" />
   </ItemGroup>
   <ItemGroup>
@@ -3911,6 +3950,7 @@
   <ItemGroup>
     <None Include="Resources\EXT\SkillOrderGuiSave.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Screeder93\AppData\Roaming\LeagueSharp\Assemblies\C14BF944SAwareness.exe"</PostBuildEvent>

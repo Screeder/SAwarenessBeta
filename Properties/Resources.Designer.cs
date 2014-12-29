@@ -4591,6 +4591,16 @@ namespace SAwareness.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EloGui {
+            get {
+                object obj = ResourceManager.GetObject("EloGui", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
         internal static byte[] EnchantedCrystalArrow {
@@ -9766,6 +9776,26 @@ namespace SAwareness.Properties {
         internal static System.Drawing.Bitmap SkillOrderGui {
             get {
                 object obj = ResourceManager.GetObject("SkillOrderGui", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SkillOrderGuiCancel {
+            get {
+                object obj = ResourceManager.GetObject("SkillOrderGuiCancel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SkillOrderGuiSave {
+            get {
+                object obj = ResourceManager.GetObject("SkillOrderGuiSave", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

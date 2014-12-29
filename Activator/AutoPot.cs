@@ -28,7 +28,7 @@ namespace SAwareness
 
         public bool IsActive()
         {
-            return Menu.Activator.GetActive() && Menu.AutoPot.GetActive();
+            return MainMenu.Activator.GetActive() && MainMenu.AutoPot.GetActive();
         }
 
         private void Game_OnGameUpdate(EventArgs args)
@@ -40,7 +40,7 @@ namespace SAwareness
                 return;
             Pot myPot = null;
             if (
-                Menu.AutoPot.GetMenuSettings("SAwarenessAutoPotHealthPot")
+                MainMenu.AutoPot.GetMenuSettings("SAwarenessAutoPotHealthPot")
                     .GetMenuItem("SAwarenessAutoPotHealthPotActive")
                     .GetValue<bool>())
             {
@@ -49,11 +49,11 @@ namespace SAwareness
                     if (pot.Type == Pot.PotType.Health || pot.Type == Pot.PotType.Both)
                     {
                         if (ObjectManager.Player.Health/ObjectManager.Player.MaxHealth*100 <=
-                            Menu.AutoPot.GetMenuSettings("SAwarenessAutoPotHealthPot")
+                            MainMenu.AutoPot.GetMenuSettings("SAwarenessAutoPotHealthPot")
                                 .GetMenuItem("SAwarenessAutoPotHealthPotPercent")
                                 .GetValue<Slider>().Value)
                         {
-                            if (Menu.AutoPot.GetMenuItem("SAwarenessAutoPotOverusage").GetValue<bool>() &&
+                            if (MainMenu.AutoPot.GetMenuItem("SAwarenessAutoPotOverusage").GetValue<bool>() &&
                                 ObjectManager.Player.Health + pot.Health >= ObjectManager.Player.MaxHealth)
                                 continue;
                             if (!Items.HasItem(pot.Id))
@@ -69,7 +69,7 @@ namespace SAwareness
             if (myPot != null)
                 UsePot(myPot);
             if (
-                Menu.AutoPot.GetMenuSettings("SAwarenessAutoPotManaPot")
+                MainMenu.AutoPot.GetMenuSettings("SAwarenessAutoPotManaPot")
                     .GetMenuItem("SAwarenessAutoPotManaPotActive")
                     .GetValue<bool>())
             {
@@ -78,11 +78,11 @@ namespace SAwareness
                     if (pot.Type == Pot.PotType.Mana || pot.Type == Pot.PotType.Both)
                     {
                         if (ObjectManager.Player.Mana/ObjectManager.Player.MaxMana*100 <=
-                            Menu.AutoPot.GetMenuSettings("SAwarenessAutoPotManaPot")
+                            MainMenu.AutoPot.GetMenuSettings("SAwarenessAutoPotManaPot")
                                 .GetMenuItem("SAwarenessAutoPotManaPotPercent")
                                 .GetValue<Slider>().Value)
                         {
-                            if (Menu.AutoPot.GetMenuItem("SAwarenessAutoPotOverusage").GetValue<bool>() &&
+                            if (MainMenu.AutoPot.GetMenuItem("SAwarenessAutoPotOverusage").GetValue<bool>() &&
                                 ObjectManager.Player.Mana + pot.Mana >= ObjectManager.Player.MaxMana)
                                 continue;
                             if (!Items.HasItem(pot.Id))
