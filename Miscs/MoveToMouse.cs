@@ -23,12 +23,6 @@ namespace SAwareness.Miscs
             return Misc.Miscs.GetActive() && MoveToMouseMisc.GetActive();
         }
 
-        private void FreeReferences()
-        {
-            if (MoveToMouseMisc.Item == null)
-                Game.OnGameUpdate -= Game_OnGameUpdate;
-        }
-
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             MoveToMouseMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MOVETOMOUSE_MAIN"), "SAwarenessMiscsMoveToMouse"));
@@ -41,7 +35,6 @@ namespace SAwareness.Miscs
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            FreeReferences();
             if (!IsActive() || !MoveToMouseMisc.GetMenuItem("SAwarenessMiscsMoveToMouseKey").GetValue<KeyBind>().Active)
                 return;
 

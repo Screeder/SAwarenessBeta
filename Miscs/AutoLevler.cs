@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using LeagueSharp;
 using LeagueSharp.Common;
+using Newtonsoft.Json;
 using SharpDX;
 using SharpDX.Direct3D9;
 
@@ -26,18 +27,20 @@ namespace SAwareness.Miscs
         {
             //LoadLevelFile();
             gui = new SequenceLevlerGUI();
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged += ChangeBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged += ShowBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged += NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
 
             Game.OnGameUpdate += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
-            AppDomain.CurrentDomain.DomainUnload += delegate { WriteLevelFile(); };
-            AppDomain.CurrentDomain.ProcessExit += delegate { WriteLevelFile(); };
+            AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
         }
 
         ~AutoLevler()
         {
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
@@ -52,8 +55,20 @@ namespace SAwareness.Miscs
             return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive();
         }
 
+        private void FreeReferences()
+        {
+            if (AutoLevlerMisc.Item == null)
+            {
+                Game.OnGameUpdate -= Game_OnGameUpdate;
+                Game.OnWndProc -= Game_OnWndProc;
+                AppDomain.CurrentDomain.DomainUnload -= CurrentDomain_DomainUnload;
+                AppDomain.CurrentDomain.ProcessExit -= CurrentDomain_ProcessExit;
+            }
+        }
+
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
+            LoadLevelFile();
             Menu.MenuItemSettings tempSettings;
             AutoLevlerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOLEVLER_MAIN"), "SAwarenessMiscsAutoLevler"));
             tempSettings = AutoLevlerMisc.AddMenuItemSettings(Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MAIN"), "SAwarenessMiscsAutoLevlerPriority");
@@ -104,13 +119,23 @@ namespace SAwareness.Miscs
             AutoLevlerMisc.MenuItems.Add(
                 AutoLevlerMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerSMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
                 {
-                    Language.GetString("MISCS_AUTOLEVLER_MODE_SEQUENCE"), 
                     Language.GetString("MISCS_AUTOLEVLER_MODE_PRIORITY"), 
+                    Language.GetString("MISCS_AUTOLEVLER_MODE_SEQUENCE"), 
                     Language.GetString("MISCS_AUTOLEVLER_MODE_R")
                 }))));
             AutoLevlerMisc.MenuItems.Add(
                 AutoLevlerMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return AutoLevlerMisc;
+        }
+
+        void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            WriteLevelFile();
+        }
+
+        void CurrentDomain_DomainUnload(object sender, EventArgs e)
+        {
+            WriteLevelFile();
         }
 
         private void Game_OnWndProc(WndEventArgs args)
@@ -131,19 +156,19 @@ namespace SAwareness.Miscs
 
         private void HandleMainFrameClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP)
+            if (message != WindowsMessages.WM_LBUTTONUP || !gui.MainFrame.Sprite.Visible)
             {
                 return;
             }
             if (Common.IsInside(cursorPos, gui.MainFrame.Sprite.Position, gui.MainFrame.Bitmap.Width, gui.MainFrame.Bitmap.Height))
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     var row = SequenceLevlerGUI.SkillBlock[i];
-                    for (int j = 0; j < 17; j++)
+                    for (int j = 0; j < 18; j++)
                     {
                         var column = row[j];
-                        if (Common.IsInside(cursorPos, column, SequenceLevlerGUI.SkillBlockSize.Width,
+                        if (Common.IsInside(cursorPos, gui.MainFrame.Sprite.Position + column, SequenceLevlerGUI.SkillBlockSize.Width,
                             SequenceLevlerGUI.SkillBlockSize.Height))
                         {
                             gui.CurrentLevler.Sequence[j] = GetSpellSlot(i);
@@ -155,20 +180,20 @@ namespace SAwareness.Miscs
 
         private void HandleSaveClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP)
+            if (message != WindowsMessages.WM_LBUTTONUP || !gui.Save.Sprite.Visible)
             {
                 return;
             }
             if (Common.IsInside(cursorPos, gui.Save.Sprite.Position, gui.Save.Bitmap.Width, gui.Save.Bitmap.Height))
             {
-                SaveSequence();
+                SaveSequence(gui.CurrentLevler.New);
                 ResetMenuEntries();
             }
         }
 
         private void HandleCancelClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP)
+            if (message != WindowsMessages.WM_LBUTTONUP || !gui.Cancel.Sprite.Visible)
             {
                 return;
             }
@@ -191,6 +216,27 @@ namespace SAwareness.Miscs
                 .SetValue(false);
         }
 
+        private void ChangeBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            StringList list = onValueChangeEventArgs.GetNewValue<StringList>();
+            SequenceLevler curLevler = null;
+            foreach (SequenceLevler levler in sLevler.ToArray())
+            {
+                if (levler.Name.Contains(list.SList[list.SelectedIndex]))
+                {
+                    curLevler = levler;
+                }
+            }
+            if (curLevler != null)
+            {
+                gui.CurrentLevler = new SequenceLevler(curLevler.Name, curLevler.Sequence);
+            }
+            else
+            {
+                gui.CurrentLevler = new SequenceLevler();
+            }
+        }
+
         private void ShowBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
             if (onValueChangeEventArgs.GetNewValue<bool>())
@@ -207,7 +253,15 @@ namespace SAwareness.Miscs
                         curLevler = levler;
                     }
                 }
-                gui.CurrentLevler = curLevler ?? new SequenceLevler();
+                if (curLevler != null)
+                {
+                    gui.CurrentLevler = new SequenceLevler(curLevler.Name, curLevler.Sequence);
+                }
+                else
+                {
+                    gui.CurrentLevler = new SequenceLevler();
+                }
+                //gui.CurrentLevler = curLevler ?? new SequenceLevler();
             }
         }
 
@@ -217,6 +271,7 @@ namespace SAwareness.Miscs
             {
                 gui.CurrentLevler = new SequenceLevler();
                 gui.CurrentLevler.Name = GetFreeSequenceName();
+                gui.CurrentLevler.ChampionName = ObjectManager.Player.ChampionName;
             }
         }
 
@@ -226,14 +281,13 @@ namespace SAwareness.Miscs
             {
                 DeleteSequence();
                 gui.CurrentLevler = new SequenceLevler();
-                AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                    .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
-                    .SetValue(false);
+                onValueChangeEventArgs.Process = false;
             }
         }
 
         private void Game_OnGameUpdate(EventArgs args)
         {
+            FreeReferences();
             if (!IsActive())
                 return;
 
@@ -317,37 +371,72 @@ namespace SAwareness.Miscs
             _sequence[3] = priorityR;
         }
 
-        private static void SaveSequence()
+        private static void SaveSequence(bool newEntry)
         {
             StringList list = AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").GetValue<StringList>();
-            SpellSlot[] dummy = new SpellSlot[18];
-            String name = ObjectManager.Player.ChampionName;
-            foreach (SequenceLevler levler in sLevler)
+            //SpellSlot[] dummy = new SpellSlot[18];
+            //String name = ObjectManager.Player.ChampionName;
+            //foreach (SequenceLevler levler in sLevler)
+            //{
+            //    if (levler.Name.Contains(ObjectManager.Player.ChampionName))
+            //    {
+            //        name = levler.Name;
+            //    }
+            //}
+            //int value = Convert.ToInt32(name[name.Length - 1]);
+            //name = name.Remove(name.Length - 1);
+            //name += value.ToString();
+            if (gui.CurrentLevler.New)
             {
-                if (levler.Name.Contains(ObjectManager.Player.ChampionName))
+                gui.CurrentLevler.New = false;
+                sLevler.Add(gui.CurrentLevler);
+                List<String> temp = list.SList.ToList();
+                if (temp.Count == 1)
                 {
-                    name = levler.Name;
+                    if (temp[0].Equals(""))
+                    {
+                        temp.RemoveAt(0);
+                    }
+                    else
+                    {
+                        list.SelectedIndex += 1;
+                    }
+                }
+                else
+                {
+                    list.SelectedIndex += 1;
+                }
+                temp.Add(gui.CurrentLevler.Name);
+                list.SList = temp.ToArray();
+            }
+            else
+            {
+                foreach (var levler in sLevler.ToArray())
+                {
+                    if (levler.Name.Equals(gui.CurrentLevler.Name))
+                    {
+                        sLevler[list.SelectedIndex] = gui.CurrentLevler;
+                    }
                 }
             }
-            int value = Convert.ToInt32(name[name.Length - 1]);
-            name = name.Remove(name.Length - 1);
-            name += value.ToString();
-            sLevler.Add(gui.CurrentLevler);
-            String[] newList = new string[list.SList.Length + 1];
-            newList[0] = name;
-            list.SList.SetValue(gui.CurrentLevler.Name, list.SList.Length);
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").SetValue<StringList>(list);
         }
 
         private static void WriteLevelFile()
         {
-            string loc = Config.LeagueSharpDirectory;
-            loc = loc.Remove(loc.LastIndexOf("\\", StringComparison.Ordinal));
-            loc = loc + "\\Config\\SAwareness\\autolevel.conf";
+            string loc = Path.Combine(new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "Config",
+                "SAwareness", "autolevel.conf"
+            });
             try
             {
-                Serialize.Save(loc, sLevler);
+                String output = JsonConvert.SerializeObject(sLevler);
+                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp",
+                        "Assemblies", "Config", "SAwareness"));
+                File.WriteAllText(loc, output);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Console.WriteLine("Couldn't save autolevel.conf.");
             }
@@ -355,52 +444,75 @@ namespace SAwareness.Miscs
 
         private static void LoadLevelFile()
         {
-            string loc = Config.LeagueSharpDirectory;
-            loc = loc.Remove(loc.LastIndexOf("\\", StringComparison.Ordinal));
-            loc = loc + "\\Config\\SAwareness\\autolevel.conf";
+            string loc = Path.Combine(new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "Config",
+                "SAwareness", "autolevel.conf"
+            });
             try
             {
-                sLevler = Serialize.Load<SequenceLevler>(loc);
+                sLevler = JsonConvert.DeserializeObject<List<SequenceLevler>>(File.ReadAllText(loc));
             }
             catch (Exception)
             {
-                Console.WriteLine("Couldn't load autolevel.conf. Using priority mode.");
-                _useMode = 0;
+                //Console.WriteLine("Couldn't load autolevel.conf.");
             }
         }
 
         public static StringList GetBuildNames()
         {
             StringList list = new StringList();
-            list.SList = new[] {""};
-            //List<String> elements = new List<string>();
-            //LoadLevelFile();
-            //foreach (SequenceLevler levler in sLevler)
-            //{
-            //    if (levler.Name.Contains(ObjectManager.Player.ChampionName))
-            //    {
-            //        elements.Add(levler.Name);
-            //    }
-            //}
-            //list = new StringList(elements.ToArray());
+            if (sLevler == null)
+            {
+                sLevler = new List<SequenceLevler>();
+            }
+            if (sLevler.Count == 0)
+            {
+                list.SList = new[] { "" };
+            }
+            else
+            {
+                List<String> elements = new List<string>();
+                foreach (SequenceLevler levler in sLevler)
+                {
+                    if (levler.ChampionName.Contains(ObjectManager.Player.ChampionName))
+                    {
+                        elements.Add(levler.Name);
+                    }
+                }
+                if (elements.Count == 0)
+                {
+                    list.SList = new[] { "" };
+                }
+                else
+                {
+                    list = new StringList(elements.ToArray());
+                }
+            }
             return list;
         }
 
         private void DeleteSequence()
         {
             StringList list = AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").GetValue<StringList>();
-            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").GetValue<bool>())
+            foreach (SequenceLevler levler in sLevler.ToArray())
             {
-                foreach (SequenceLevler levler in sLevler.ToArray())
+                if (levler.Name.Contains(list.SList[list.SelectedIndex]))
                 {
-                    if (levler.Name.Contains(list.SList[list.SelectedIndex]))
+                    sLevler.Remove(levler);
+                    List<String> temp = list.SList.ToList();
+                    temp.RemoveAt(list.SelectedIndex);
+                    if (temp.Count == 0)
                     {
-                        sLevler.Remove(levler);
-                        List<String> temp = list.SList.ToList();
-                        temp.RemoveAt(list.SelectedIndex);
-                        list.SList = temp.ToArray();
+                        temp.Add("");
                     }
+                    if (list.SelectedIndex > 0)
+                    {
+                        list.SelectedIndex -= 1;
+                    }
+                    list.SList = temp.ToArray();
+                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").SetValue<StringList>(list);
+                    break;
                 }
             }
         }
@@ -575,12 +687,16 @@ namespace SAwareness.Miscs
         private class SequenceLevler
         {
             public String Name;
+            public String ChampionName;
             public SpellSlot[] Sequence = new SpellSlot[18];
+            public bool New = true;
 
             public SequenceLevler(String name, SpellSlot[] sequence)
             {
                 Name = name;
                 Sequence = sequence;
+                New = false;
+                ChampionName = ObjectManager.Player.ChampionName;
             }
 
             public SequenceLevler()
@@ -598,17 +714,17 @@ namespace SAwareness.Miscs
             public Render.Text[] Text = new Render.Text[4];
             public SequenceLevler CurrentLevler = new SequenceLevler();
             public Vector2 SkillStart = new Vector2(225,45);
-            public Vector2 SkillIncrement = new Vector2(35, 35);
+            public Vector2 SkillIncrement = new Vector2(32.5f, 33); //35,35
             public static Vector2[][] SkillBlock;
-            public static Size SkillBlockSize = new Size(30, 30);
+            public static Size SkillBlockSize = new Size(28, 28); //30,30
 
             static SequenceLevlerGUI()
             {
                 Vector2[][] list = new Vector2[4][];
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     list[j] = new Vector2[18];
-                    for (int i = 0; i < 17; i++)
+                    for (int i = 0; i < 18; i++)
                     {
                         list[j][i] = new Vector2(215 + ((i * SkillBlockSize.Width) + (i * 5)), 35 + ((j * SkillBlockSize.Height) + (j * 5)));
                     }
@@ -630,13 +746,13 @@ namespace SAwareness.Miscs
                         (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
-                MainFrame.Sprite.Add();
+                MainFrame.Sprite.Add(1);
 
                 Save = new SpriteHelper.SpriteInfo();
                 SpriteHelper.LoadTexture("SkillOrderGuiSave", ref Save, SpriteHelper.TextureType.Default);
                 Save.Sprite.PositionUpdate = delegate
                 {
-                    return new Vector2(MainFrame.Sprite.Position.X, MainFrame.Sprite.Position.Y - 30);
+                    return new Vector2(MainFrame.Sprite.Position.X, MainFrame.Sprite.Position.Y + MainFrame.Sprite.Height - Save.Sprite.Height);
                 };
                 Save.Sprite.VisibleCondition = delegate
                 {
@@ -644,13 +760,13 @@ namespace SAwareness.Miscs
                         (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
-                Save.Sprite.Add();
+                Save.Sprite.Add(1);
 
                 Cancel = new SpriteHelper.SpriteInfo();
-                SpriteHelper.LoadTexture("SkillOrderGuiCancel", ref Save, SpriteHelper.TextureType.Default);
+                SpriteHelper.LoadTexture("SkillOrderGuiCancel", ref Cancel, SpriteHelper.TextureType.Default);
                 Cancel.Sprite.PositionUpdate = delegate
                 {
-                    return new Vector2(MainFrame.Sprite.Position.X - 100, MainFrame.Sprite.Position.Y - 30);
+                    return new Vector2(MainFrame.Sprite.Position.X + MainFrame.Sprite.Width - Cancel.Sprite.Width, MainFrame.Sprite.Position.Y + MainFrame.Sprite.Height - Cancel.Sprite.Height);
                 };
                 Cancel.Sprite.VisibleCondition = delegate
                 {
@@ -658,18 +774,19 @@ namespace SAwareness.Miscs
                         (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
-                Cancel.Sprite.Add();
+                Cancel.Sprite.Add(1);
 
-                for (int i = 0; i < 3; i++)
+                for (int index = 0; index <= 3; index++)
                 {
-                    Text[i] = new Render.Text(0, 0, "", 14, SharpDX.Color.LawnGreen);
+                    int i = 0 + index;
+                    Text[i] = new Render.Text(0, 0, "", 20, SharpDX.Color.LawnGreen);
                     Text[i].TextUpdate = delegate
                     {
                         return ObjectManager.Player.Spellbook.GetSpell(GetSpellSlot(i)).Name;
                     };
                     Text[i].PositionUpdate = delegate
                     {
-                        return new Vector2(MainFrame.Sprite.Position.X + 30, MainFrame.Sprite.Position.Y + 55 + (i * 35));
+                        return new Vector2(MainFrame.Sprite.Position.X + 30, MainFrame.Sprite.Position.Y + 40 + (i * 33));
                     };
                     Text[i].VisibleCondition = sender =>
                     {
@@ -678,12 +795,13 @@ namespace SAwareness.Miscs
                         AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
                     Text[i].OutLined = true;
-                    Text[i].Centered = true;
-                    Text[i].Add();
+                    Text[i].Centered = false;
+                    Text[i].Add(2);
                 }
 
-                for (int i = 0; i < 17; i++)
+                for (int index = 0; index < 18; index++)
                 {
+                    int i = 0 + index;
                     Skill[i] = new SpriteHelper.SpriteInfo();
                     SpriteHelper.LoadTexture("SkillPoint", ref Skill[i], SpriteHelper.TextureType.Default);
                     Skill[i].Sprite.PositionUpdate = delegate
@@ -696,13 +814,13 @@ namespace SAwareness.Miscs
                             (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
-                    Skill[i].Sprite.Add();
+                    Skill[i].Sprite.Add(3);
                 }
             }
 
             private Vector2 GetSpellSlotPosition(int row, int column)
             {
-                return new Vector2(MainFrame.Sprite.X + SkillStart.X + (SkillIncrement.X * row), MainFrame.Sprite.Y + SkillStart.Y + (SkillIncrement.Y * column));
+                return new Vector2(MainFrame.Sprite.X + SkillStart.X + (SkillIncrement.X * column), MainFrame.Sprite.Y + SkillStart.Y + (SkillIncrement.Y * row));
             }
         }
     }
