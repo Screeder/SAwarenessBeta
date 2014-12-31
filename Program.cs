@@ -1267,7 +1267,7 @@ namespace SAwareness
                 //MainMenu.AntiVisualScreenStealth = Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoJump = Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
+                MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.EasyRangedJungle = Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.EloDisplayer = Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.FlashJuke = Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu);
@@ -1280,7 +1280,7 @@ namespace SAwareness
                 MainMenu.ShowPing = Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SkinChanger = Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SmartPingImprove = Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.SurrenderVote = Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.SurrenderVote = Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
 
                 Menu.GlobalSettings.Menu =
@@ -1302,15 +1302,15 @@ namespace SAwareness
         {
             //try
             //{
-                CreateMenu();
-                Game.PrintChat("SAwareness loaded!");
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
+            AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
+            CreateMenu();
+            Game.PrintChat("SAwareness loaded!");
 
-                new Thread(GameOnOnGameUpdate).Start();
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-                AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
-                AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
-                await Trackers.Uim.Init();
-                await Trackers.Ui.Init();    
+            new Thread(GameOnOnGameUpdate).Start();
+            await Trackers.Uim.Init();
+            await Trackers.Ui.Init();    
 
                 //new Thread(UiTracker.Init).Start();
             //}
@@ -1415,18 +1415,34 @@ namespace SAwareness
         }
 
         private static Assembly evadeAssembly;
+        private static Assembly jsonAssembly;
 
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (evadeAssembly == null)
-                evadeAssembly = Load();
-            return evadeAssembly;
+            string name = args.Name.Split(',')[0];
+            if (name.ToLower().Contains("evade"))
+            {
+                if (evadeAssembly == null)
+                {
+                    evadeAssembly = Load("SAwareness.Resources.DLL.Evade.dll");
+                }
+                return evadeAssembly;
+            }
+            else if (name.ToLower().Contains("newtonsoft"))
+            {
+                if (jsonAssembly == null)
+                {
+                    jsonAssembly = Load("SAwareness.Resources.DLL.Newtonsoft.Json.dll");
+                }
+                return jsonAssembly;
+            }
+            return null;
         }
 
-        public static Assembly Load()
+        public static Assembly Load(String assemblyName)
         {
             byte[] ba = null;
-            string resource = "SAwareness.Resources.DLL.Evade.dll";
+            string resource = assemblyName;
             Assembly curAsm = Assembly.GetExecutingAssembly();
             using (Stream stm = curAsm.GetManifestResourceStream(resource))
             {
