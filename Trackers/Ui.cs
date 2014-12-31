@@ -341,26 +341,32 @@ namespace SAwareness.Trackers
             float percentScale =
                     (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
 
+            int i = 0;
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
                 if(hero.IsMe)
                     continue;
+                i++;
                 var champ = new ChampInfos();
 
+                Console.WriteLine((i) + ". Loading Sprites for " + hero.ChampionName);
                 Task<ChampInfos> champInfos = CreateSideHud(hero, champ, percentScale);
                 champ = await champInfos;
+                Console.WriteLine("Loaded CreateSideHud Sprites");
                 champInfos = CreateOverHeadHud(hero, champ, percentScale);
                 champ = await champInfos;
+                Console.WriteLine("Loaded CreateOverHeadHud Sprites");
                 champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
 
                 if (hero.IsEnemy)
                 {
-                  _enemies.Add(hero, champ);
+                    _enemies.Add(hero, champ);
                 }
                 if (!hero.IsEnemy)
                 {
                     _allies.Add(hero, champ);
                 }
+                Console.WriteLine("Created all Sprites");
             }      
         }
 
@@ -386,9 +392,9 @@ namespace SAwareness.Trackers
                 };
                 champ.Champ.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
                 };
-                champ.Champ.Sprite[0].Sprite.Add();
+                champ.Champ.Sprite[0].Sprite.Add(0);
             }
 
             //SpriteHelper.LoadTexture(s1[0].Name + ".dds", "PASSIVE/", loc + "PASSIVE\\" + s1[0].Name + ".dds", ref champ.Passive.Texture);
@@ -407,9 +413,10 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellQ.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && 
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
-                champ.SpellQ.Sprite[0].Sprite.Add();
+                champ.SpellQ.Sprite[0].Sprite.Add(0);
             }
 
             Console.WriteLine("SpellW");
@@ -427,9 +434,10 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellW.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
-                champ.SpellW.Sprite[0].Sprite.Add();
+                champ.SpellW.Sprite[0].Sprite.Add(0);
             }
 
             Console.WriteLine("SpellE");
@@ -447,9 +455,10 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellE.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
-                champ.SpellE.Sprite[0].Sprite.Add();
+                champ.SpellE.Sprite[0].Sprite.Add(0);
             }
 
             Console.WriteLine("SpellR");
@@ -467,9 +476,10 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellR.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
-                champ.SpellR.Sprite[0].Sprite.Add();
+                champ.SpellR.Sprite[0].Sprite.Add(0);
             }
 
             Console.WriteLine("Spell1");
@@ -487,9 +497,9 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellSum1.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
                 };
-                champ.SpellSum1.Sprite[0].Sprite.Add();
+                champ.SpellSum1.Sprite[0].Sprite.Add(0);
             }
 
             Console.WriteLine("Spell2");
@@ -507,9 +517,9 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellSum2.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
                 };
-                champ.SpellSum2.Sprite[0].Sprite.Add();
+                champ.SpellSum2.Sprite[0].Sprite.Add(0);
             }
 
             Console.WriteLine("Backbar");
@@ -521,9 +531,9 @@ namespace SAwareness.Trackers
             };
             champ.BackBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
-            champ.BackBar.Sprite[0].Sprite.Add();
+            champ.BackBar.Sprite[0].Sprite.Add(0);
 
             Console.WriteLine("Healthbar");
             champ.HealthBar.Sprite[0] = new SpriteHelper.SpriteInfo();
@@ -536,9 +546,9 @@ namespace SAwareness.Trackers
             };
             champ.HealthBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
-            champ.HealthBar.Sprite[0].Sprite.Add();
+            champ.HealthBar.Sprite[0].Sprite.Add(1);
 
             Console.WriteLine("Manabar");
             champ.ManaBar.Sprite[0] = new SpriteHelper.SpriteInfo();
@@ -551,9 +561,9 @@ namespace SAwareness.Trackers
             };
             champ.ManaBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
-            champ.ManaBar.Sprite[0].Sprite.Add();
+            champ.ManaBar.Sprite[0].Sprite.Add(1);
 
             Console.WriteLine("Recallbar");
             champ.RecallBar.Sprite[0] = new SpriteHelper.SpriteInfo();
@@ -564,10 +574,11 @@ namespace SAwareness.Trackers
             };
             champ.RecallBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && 
+                    GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.RecallBar.Sprite[0].Sprite.Color = new ColorBGRA(Color3.White, 0.55f);
-            champ.RecallBar.Sprite[0].Sprite.Add();
+            champ.RecallBar.Sprite[0].Sprite.Add(1);
 
             Console.WriteLine("Goldbar");
             champ.GoldCsLvlBar.Sprite[0] = new SpriteHelper.SpriteInfo();
@@ -578,10 +589,27 @@ namespace SAwareness.Trackers
             };
             champ.GoldCsLvlBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.GoldCsLvlBar.Sprite[0].Sprite.Color = new ColorBGRA(Color3.White, 0.55f);
-            champ.GoldCsLvlBar.Sprite[0].Sprite.Add();
+            champ.GoldCsLvlBar.Sprite[0].Sprite.Add(1);
+
+            ///////
+
+            champ.SpellR.Rectangle[0] = new Render.Rectangle(champ.SpellR.SizeSideBar.Width, champ.SpellR.SizeSideBar.Height,
+                _sumSize.Width, _sumSize.Height, SharpDX.Color.Red);
+            champ.SpellR.Rectangle[0].PositionUpdate = delegate
+            {
+                return new Vector2(champ.SpellR.SizeSideBar.Width, champ.SpellR.SizeSideBar.Height);
+            };
+            champ.SpellR.Rectangle[0].VisibleCondition = sender =>
+            {
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 1;
+            };
+            champ.SpellR.Rectangle[0].Add(1);
 
             ///////
 
@@ -596,11 +624,11 @@ namespace SAwareness.Trackers
             };
             champ.HealthBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.HealthBar.Text[0].OutLined = true;
             champ.HealthBar.Text[0].Centered = true;
-            champ.HealthBar.Text[0].Add();
+            champ.HealthBar.Text[0].Add(4);
 
             champ.ManaBar.Text[0] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.ManaBar.Text[0].TextUpdate = delegate
@@ -613,11 +641,11 @@ namespace SAwareness.Trackers
             };
             champ.ManaBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.ManaBar.Text[0].OutLined = true;
             champ.ManaBar.Text[0].Centered = true;
-            champ.ManaBar.Text[0].Add();
+            champ.ManaBar.Text[0].Add(4);
 
             champ.SpellQ.Text[0] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellQ.Text[0].TextUpdate = delegate
@@ -631,11 +659,11 @@ namespace SAwareness.Trackers
             champ.SpellQ.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellQ.Value > 0.0f;
+                    champ.SpellQ.Value > 0.0f && GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.SpellQ.Text[0].OutLined = true;
             champ.SpellQ.Text[0].Centered = true;
-            champ.SpellQ.Text[0].Add();
+            champ.SpellQ.Text[0].Add(4);
 
             champ.SpellW.Text[0] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellW.Text[0].TextUpdate = delegate
@@ -649,11 +677,11 @@ namespace SAwareness.Trackers
             champ.SpellW.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellW.Value > 0.0f;
+                    champ.SpellW.Value > 0.0f && GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.SpellW.Text[0].OutLined = true;
             champ.SpellW.Text[0].Centered = true;
-            champ.SpellW.Text[0].Add();
+            champ.SpellW.Text[0].Add(4);
 
             champ.SpellE.Text[0] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellE.Text[0].TextUpdate = delegate
@@ -667,11 +695,11 @@ namespace SAwareness.Trackers
             champ.SpellE.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellE.Value > 0.0f;
+                    champ.SpellE.Value > 0.0f && GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.SpellE.Text[0].OutLined = true;
             champ.SpellE.Text[0].Centered = true;
-            champ.SpellE.Text[0].Add();
+            champ.SpellE.Text[0].Add(4);
 
             champ.SpellR.Text[0] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellR.Text[0].TextUpdate = delegate
@@ -685,11 +713,11 @@ namespace SAwareness.Trackers
             champ.SpellR.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellR.Value > 0.0f;
+                    champ.SpellR.Value > 0.0f && GetUiActive(hero.IsEnemy);
             };
             champ.SpellR.Text[0].OutLined = true;
             champ.SpellR.Text[0].Centered = true;
-            champ.SpellR.Text[0].Add();
+            champ.SpellR.Text[0].Add(4);
 
             champ.Champ.Text[0] = new Render.Text(0, 0, "", 30, SharpDX.Color.Orange);
             champ.Champ.Text[0].TextUpdate = delegate
@@ -707,11 +735,12 @@ namespace SAwareness.Trackers
             champ.Champ.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    ((champ.DeathTimeDisplay > 0.0f && hero.IsDead) || (champ.InvisibleTime > 0.0f && !hero.IsVisible));
+                    ((champ.DeathTimeDisplay > 0.0f && hero.IsDead) || (champ.InvisibleTime > 0.0f && !hero.IsVisible)) && 
+                    GetUiActive(hero.IsEnemy);
             };
             champ.Champ.Text[0].OutLined = true;
             champ.Champ.Text[0].Centered = true;
-            champ.Champ.Text[0].Add();
+            champ.Champ.Text[0].Add(4);
 
             champ.SpellSum1.Text[0] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
             champ.SpellSum1.Text[0].TextUpdate = delegate
@@ -725,11 +754,11 @@ namespace SAwareness.Trackers
             champ.SpellSum1.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum1.Value > 0.0f;
+                    champ.SpellSum1.Value > 0.0f && GetUiActive(hero.IsEnemy);
             };
             champ.SpellSum1.Text[0].OutLined = true;
             champ.SpellSum1.Text[0].Centered = true;
-            champ.SpellSum1.Text[0].Add();
+            champ.SpellSum1.Text[0].Add(4);
 
             champ.SpellSum2.Text[0] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
             champ.SpellSum2.Text[0].TextUpdate = delegate
@@ -743,11 +772,11 @@ namespace SAwareness.Trackers
             champ.SpellSum2.Text[0].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum2.Value > 0.0f;
+                    champ.SpellSum2.Value > 0.0f && GetUiActive(hero.IsEnemy);
             };
             champ.SpellSum2.Text[0].OutLined = true;
             champ.SpellSum2.Text[0].Centered = true;
-            champ.SpellSum2.Text[0].Add();
+            champ.SpellSum2.Text[0].Add(4);
 
             foreach (var item in champ.Item)
             {
@@ -765,11 +794,12 @@ namespace SAwareness.Trackers
                 item.Text[0].VisibleCondition = sender =>
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                        item.Value > 0.0f && UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>();
+                        item.Value > 0.0f && UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>() &&
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
                 item.Text[0].OutLined = true;
                 item.Text[0].Centered = true;
-                item.Text[0].Add();
+                item.Text[0].Add(4);
             }
 
             champ.Level.Text[0] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
@@ -783,11 +813,12 @@ namespace SAwareness.Trackers
             };
             champ.Level.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0; 
             };
             champ.Level.Text[0].OutLined = true;
             champ.Level.Text[0].Centered = true;
-            champ.Level.Text[0].Add();
+            champ.Level.Text[0].Add(4);
 
             champ.Cs.Text[0] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
             champ.Cs.Text[0].TextUpdate = delegate
@@ -800,11 +831,12 @@ namespace SAwareness.Trackers
             };
             champ.Cs.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.Cs.Text[0].OutLined = true;
             champ.Cs.Text[0].Centered = true;
-            champ.Cs.Text[0].Add();
+            champ.Cs.Text[0].Add(4);
 
             champ.RecallBar.Text[0] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
             champ.RecallBar.Text[0].TextUpdate = delegate
@@ -836,11 +868,12 @@ namespace SAwareness.Trackers
             };
             champ.RecallBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.RecallBar.Text[0].OutLined = true;
             champ.RecallBar.Text[0].Centered = true;
-            champ.RecallBar.Text[0].Add();
+            champ.RecallBar.Text[0].Add(4);
 
             //champ.Champ.Text[0].TextFontDescription = new FontDescription()
             //{
@@ -873,7 +906,7 @@ namespace SAwareness.Trackers
                 };
                 champ.SpellSum1.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead;
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellSum1.Sprite[1].Sprite.Add();
             }
@@ -894,7 +927,7 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 0 &&
-                           hero.IsVisible && !hero.IsDead;
+                           hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellSum2.Sprite[1].Sprite.Add();
             }      
@@ -917,7 +950,7 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
-                            hero.IsVisible && !hero.IsDead;
+                            hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellQ.Sprite[1].Sprite.Add();
             }
@@ -938,7 +971,7 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
-                            hero.IsVisible && !hero.IsDead;
+                            hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellW.Sprite[1].Sprite.Add();
             }
@@ -959,7 +992,7 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
-                            hero.IsVisible && !hero.IsDead;
+                            hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellE.Sprite[1].Sprite.Add();
             }
@@ -980,65 +1013,68 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
-                            hero.IsVisible && !hero.IsDead;
+                            hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellR.Sprite[1].Sprite.Add();
             }                
 
             //////
 
-            champ.SpellQ.Rectangle[0] = new Render.Rectangle(champ.SpellQ.SizeHpBar.Width, champ.SpellQ.SizeHpBar.Height,
+            champ.SpellQ.Rectangle[1] = new Render.Rectangle(champ.SpellQ.SizeHpBar.Width, champ.SpellQ.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
-            champ.SpellQ.Rectangle[0].PositionUpdate = delegate
+            champ.SpellQ.Rectangle[1].PositionUpdate = delegate
             {
                 return new Vector2(champ.SpellQ.SizeHpBar.Width, champ.SpellQ.SizeHpBar.Height);
             };
-            champ.SpellQ.Rectangle[0].VisibleCondition = sender =>
+            champ.SpellQ.Rectangle[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead;
+                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
-            champ.SpellQ.Rectangle[0].Add();
-            champ.SpellW.Rectangle[0] = new Render.Rectangle(champ.SpellW.SizeHpBar.Width, champ.SpellW.SizeHpBar.Height,
+            champ.SpellQ.Rectangle[1].Add();
+
+            champ.SpellW.Rectangle[1] = new Render.Rectangle(champ.SpellW.SizeHpBar.Width, champ.SpellW.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
-            champ.SpellW.Rectangle[0].PositionUpdate = delegate
+            champ.SpellW.Rectangle[1].PositionUpdate = delegate
             {
                 return new Vector2(champ.SpellW.SizeHpBar.Width, champ.SpellW.SizeHpBar.Height);
             };
-            champ.SpellW.Rectangle[0].VisibleCondition = sender =>
+            champ.SpellW.Rectangle[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead;
+                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
-            champ.SpellW.Rectangle[0].Add();
-            champ.SpellE.Rectangle[0] = new Render.Rectangle(champ.SpellE.SizeHpBar.Width, champ.SpellE.SizeHpBar.Height,
+            champ.SpellW.Rectangle[1].Add();
+
+            champ.SpellE.Rectangle[1] = new Render.Rectangle(champ.SpellE.SizeHpBar.Width, champ.SpellE.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
-            champ.SpellE.Rectangle[0].PositionUpdate = delegate
+            champ.SpellE.Rectangle[1].PositionUpdate = delegate
             {
                 return new Vector2(champ.SpellE.SizeHpBar.Width, champ.SpellE.SizeHpBar.Height);
             };
-            champ.SpellE.Rectangle[0].VisibleCondition = sender =>
+            champ.SpellE.Rectangle[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead;
+                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
-            champ.SpellE.Rectangle[0].Add();
-            champ.SpellR.Rectangle[0] = new Render.Rectangle(champ.SpellR.SizeHpBar.Width, champ.SpellR.SizeHpBar.Height,
+            champ.SpellE.Rectangle[1].Add();
+
+            champ.SpellR.Rectangle[1] = new Render.Rectangle(champ.SpellR.SizeHpBar.Width, champ.SpellR.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
-            champ.SpellR.Rectangle[0].PositionUpdate = delegate
+            champ.SpellR.Rectangle[1].PositionUpdate = delegate
             {
                 return new Vector2(champ.SpellR.SizeHpBar.Width, champ.SpellR.SizeHpBar.Height);
             };
-            champ.SpellR.Rectangle[0].VisibleCondition = sender =>
+            champ.SpellR.Rectangle[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead;
+                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
-            champ.SpellR.Rectangle[0].Add();
+            champ.SpellR.Rectangle[1].Add();
 
             ///////
              
@@ -1054,7 +1090,7 @@ namespace SAwareness.Trackers
             champ.SpellQ.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
-                    champ.SpellQ.Value > 0.0f && hero.IsVisible && !hero.IsDead;
+                    champ.SpellQ.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellQ.Text[1].OutLined = true;
             champ.SpellQ.Text[1].Centered = true;
@@ -1072,7 +1108,7 @@ namespace SAwareness.Trackers
             champ.SpellW.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellW.Value > 0.0f && hero.IsVisible && !hero.IsDead;
+                    champ.SpellW.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellW.Text[1].OutLined = true;
             champ.SpellW.Text[1].Centered = true;
@@ -1090,7 +1126,7 @@ namespace SAwareness.Trackers
             champ.SpellE.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellE.Value > 0.0f && hero.IsVisible && !hero.IsDead;
+                    champ.SpellE.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellE.Text[1].OutLined = true;
             champ.SpellE.Text[1].Centered = true;
@@ -1108,7 +1144,7 @@ namespace SAwareness.Trackers
             champ.SpellR.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellR.Value > 0.0f && hero.IsVisible && !hero.IsDead;
+                    champ.SpellR.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellR.Text[1].OutLined = true;
             champ.SpellR.Text[1].Centered = true;
@@ -1126,7 +1162,7 @@ namespace SAwareness.Trackers
             champ.SpellSum1.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum1.Value > 0.0f && hero.IsVisible && !hero.IsDead;
+                    champ.SpellSum1.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellSum1.Text[1].OutLined = true;
             champ.SpellSum1.Text[1].Centered = true;
@@ -1144,13 +1180,25 @@ namespace SAwareness.Trackers
             champ.SpellSum2.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum2.Value > 0.0f && hero.IsVisible && !hero.IsDead;
+                    champ.SpellSum2.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy); 
             };
             champ.SpellSum2.Text[1].OutLined = true;
             champ.SpellSum2.Text[1].Centered = true;
             champ.SpellSum2.Text[1].Add();
 
             return champ;
+        }
+
+        private static bool GetUiActive(bool enemy)
+        {
+            if (enemy)
+            {
+                return UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker").GetActive();
+            }
+            else
+            {
+                return UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker").GetActive();
+            }
         }
 
         private static StringList GetMode(bool enemy)
@@ -2137,7 +2185,7 @@ namespace SAwareness.Trackers
         {
             foreach (var champ in heroes)
             {
-                if (champ.Value.SpellQ.Rectangle[0] != null && 
+                if (champ.Value.SpellQ.Rectangle[1] != null && 
                     champ.Value.SpellQ.Sprite[0] != null && champ.Value.SpellQ.Sprite[0].Sprite != null &&
                     champ.Value.SpellQ.Sprite[1] != null && champ.Value.SpellQ.Sprite[1].Sprite != null)
                 {
@@ -2146,16 +2194,16 @@ namespace SAwareness.Trackers
                     {
                         //champ.Value.SpellQ.Sprite[0].Sprite.GrayScale();
                         //champ.Value.SpellQ.Sprite[1].Sprite.GrayScale();
-                        champ.Value.SpellQ.Rectangle[0].Color = SharpDX.Color.Red;
+                        champ.Value.SpellQ.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
                         //champ.Value.SpellQ.Sprite[0].Sprite.Complement();
                         //champ.Value.SpellQ.Sprite[1].Sprite.Complement();
-                        champ.Value.SpellQ.Rectangle[0].Color = SharpDX.Color.Green;
+                        champ.Value.SpellQ.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
-                if (champ.Value.SpellW.Rectangle[0] != null &&
+                if (champ.Value.SpellW.Rectangle[1] != null &&
                     champ.Value.SpellW.Sprite[0] != null && champ.Value.SpellW.Sprite[0].Sprite != null &&
                     champ.Value.SpellW.Sprite[1] != null && champ.Value.SpellW.Sprite[1].Sprite != null)
                 {
@@ -2164,16 +2212,16 @@ namespace SAwareness.Trackers
                     {
                         //champ.Value.SpellW.Sprite[0].Sprite.GrayScale();
                         //champ.Value.SpellW.Sprite[1].Sprite.GrayScale();
-                        champ.Value.SpellW.Rectangle[0].Color = SharpDX.Color.Red;
+                        champ.Value.SpellW.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
                         //champ.Value.SpellW.Sprite[0].Sprite.SetSaturation(1.0f);
                         //champ.Value.SpellW.Sprite[1].Sprite.SetSaturation(1.0f);
-                        champ.Value.SpellW.Rectangle[0].Color = SharpDX.Color.Green;
+                        champ.Value.SpellW.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
-                if (champ.Value.SpellE.Rectangle[0] != null &&
+                if (champ.Value.SpellE.Rectangle[1] != null &&
                     champ.Value.SpellE.Sprite[0] != null && champ.Value.SpellE.Sprite[0].Sprite != null &&
                     champ.Value.SpellE.Sprite[1] != null && champ.Value.SpellE.Sprite[1].Sprite != null)
                 {
@@ -2182,16 +2230,16 @@ namespace SAwareness.Trackers
                     {
                         //champ.Value.SpellE.Sprite[0].Sprite.GrayScale();
                         //champ.Value.SpellE.Sprite[1].Sprite.GrayScale();
-                        champ.Value.SpellE.Rectangle[0].Color = SharpDX.Color.Red;
+                        champ.Value.SpellE.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
                         //champ.Value.SpellE.Sprite[0].Sprite.SetSaturation(1.0f);
                         //champ.Value.SpellE.Sprite[1].Sprite.SetSaturation(1.0f);
-                        champ.Value.SpellE.Rectangle[0].Color = SharpDX.Color.Green;
+                        champ.Value.SpellE.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
-                if (champ.Value.SpellR.Rectangle[0] != null &&
+                if (champ.Value.SpellR.Rectangle[0] != null && champ.Value.SpellR.Rectangle[1] != null &&
                     champ.Value.SpellR.Sprite[0] != null && champ.Value.SpellR.Sprite[0].Sprite != null &&
                     champ.Value.SpellR.Sprite[1] != null && champ.Value.SpellR.Sprite[1].Sprite != null)
                 {
@@ -2201,12 +2249,14 @@ namespace SAwareness.Trackers
                         //champ.Value.SpellR.Sprite[0].Sprite.GrayScale();
                         //champ.Value.SpellR.Sprite[1].Sprite.GrayScale();
                         champ.Value.SpellR.Rectangle[0].Color = SharpDX.Color.Red;
+                        champ.Value.SpellR.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
                         //champ.Value.SpellR.Sprite[0].Sprite.SetSaturation(1.0f);
                         //champ.Value.SpellR.Sprite[1].Sprite.SetSaturation(1.0f);
                         champ.Value.SpellR.Rectangle[0].Color = SharpDX.Color.Green;
+                        champ.Value.SpellR.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
             }

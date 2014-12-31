@@ -105,11 +105,11 @@ namespace SAwareness.Trackers
             creationSpellList.Add(e);
             creationSpellList.Add(r);
 
-            var dfg = new Item(3128, 1000, "Dfg");
-            var bilgewater = new Item(3144, 1000, "Bilgewater");
-            var hextechgun = new Item(3146, 1000, "Hextech");
-            var blackfire = new Item(3188, 1000, "Blackfire");
-            var botrk = new Item(3153, 1000, "Botrk");
+            var dfg = new Item(3128, 1000, "Dfg");//Items.Deathfire_Grasp;
+            var bilgewater = new Item(3144, 1000, "Bilgewater");//Items.Bilgewater_Cutlass;//
+            var hextechgun = new Item(3146, 1000, "Hextech");//Items.Hextech_Gunblade;//
+            var blackfire = new Item(3188, 1000, "Blackfire");//Items.Blackfire_Torch;//
+            var botrk = new Item(3153, 1000, "Botrk");//Items.Blade_of_the_Ruined_King;//
             creationItemList.Add(dfg, Damage.DamageItems.Dfg);
             creationItemList.Add(bilgewater, Damage.DamageItems.Bilgewater);
             creationItemList.Add(hextechgun, Damage.DamageItems.Hexgun);

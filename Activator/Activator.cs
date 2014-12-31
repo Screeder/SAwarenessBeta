@@ -1245,13 +1245,13 @@ namespace SAwareness
             Items.Item item = null;
 
             if (MainMenu.ActivatorDefensiveWoogletZhonya.GetMenuItem(
-                    "SAwarenessActivatorDefensiveWoogletZhonyaWooglet").GetValue<bool>())
-                item = new Items.Item(3090, 0);
+                "SAwarenessActivatorDefensiveWoogletZhonyaWooglet").GetValue<bool>())
+                item = new Items.Item(3090, 0); //Items.Wooglets_Witchcap;//
             if (item == null && MainMenu.ActivatorDefensiveWoogletZhonya.GetMenuItem(
-                    "SAwarenessActivatorDefensiveWoogletZhonyaZhonya").GetValue<bool>())
-                item = new Items.Item(3157, 0);
+                "SAwarenessActivatorDefensiveWoogletZhonyaZhonya").GetValue<bool>())
+                item = new Items.Item(3157, 0); //Items.Zhonyas_Hourglass;//
 
-            if(item == null)
+            if (item == null)
                 return;
 
             foreach (var damage in Damages)

@@ -21,7 +21,7 @@ namespace SAwareness.Wards
         private WardSpot _latestWardSpot;
         private bool _wardAlreadyCorrected;
 
-        public WardCorrector() //TODO: Add SpellNames for WardItems
+        public WardCorrector() //Coords by DrunkenNinja
         {
             //WardSpots.Add(new WardSpot("BlueGolem", new Vector3(3274f, 7772f, 52f)));
             //WardSpots.Add(new WardSpot("BlueLizard", new Vector3(7422f, 3282f, 46.53f)));
@@ -119,6 +119,59 @@ namespace SAwareness.Wards
             WardSpots.Add(new WardSpot("", new Vector3(12235f, 4068f, -68f), new Vector3(12235f, 4068f, -68f), new Vector3(12235f, 4068f, -68f), new Vector3(12372f, 4508f, 51f)));
             WardSpots.Add(new WardSpot("", new Vector3(12443f, 4021f, -7f), new Vector3(12443f, 4021f, -7f), new Vector3(12443f, 4021f, -7f), new Vector3(13003f, 3818f, 51f)));
 
+            WardSpots.Add(new WardSpot("Blue Golem", new Vector3(3261.93f, 7773.65f, 60.0f)));
+            WardSpots.Add(new WardSpot("Blue Lizard", new Vector3(7831.46f, 3501.13f, 60.0f)));
+            WardSpots.Add(new WardSpot("Blue Tri Bush", new Vector3(10586.62f, 3067.93f, 60.0f)));
+            WardSpots.Add(new WardSpot("Blue Pass Bush", new Vector3(6483.73f, 4606.57f, 60.0f)));
+            WardSpots.Add(new WardSpot("Blue River Entrance", new Vector3(7610.46f, 5000.0f, 60.0f)));
+            WardSpots.Add(new WardSpot("Blue Round Bush", new Vector3(4717.09f, 7142.35f, 50.83f)));
+            WardSpots.Add(new WardSpot("Blue River Round Bush", new Vector3(4882.86f, 8393.77f, 27.83f)));
+            WardSpots.Add(new WardSpot("Blue Split Push Bush", new Vector3(6951.01f, 3040.55f, 52.26f)));
+            WardSpots.Add(new WardSpot("Blue Riveer Center Close", new Vector3(5583.74f, 3573.83f, 51.43f)));
+            WardSpots.Add(new WardSpot("Purple Golem", new Vector3(11600.35f, 7090.37f, 51.73f)));
+            WardSpots.Add(new WardSpot("Purple Golem2", new Vector3(11573.9f, 6457.76f, 51.71f)));
+            WardSpots.Add(new WardSpot("Purple Tri Bush2", new Vector3(12629.72f, 4908.16f, 48.62f)));
+            WardSpots.Add(new WardSpot("Purple Lizard", new Vector3(7018.75f, 11362.12f, 54.76f)));
+            WardSpots.Add(new WardSpot("Purple Tri Bush", new Vector3(4232.69f, 11869.25f, 47.56f)));
+            WardSpots.Add(new WardSpot("Purple Pass Bush", new Vector3(8198.22f, 10267.89f, 49.38f)));
+            WardSpots.Add(new WardSpot("Purple River Entrance", new Vector3(7202.43f, 9881.83f, 53.18f)));
+            WardSpots.Add(new WardSpot("Purple Round Bush", new Vector3(10074.63f, 7761.62f, 51.74f)));
+            WardSpots.Add(new WardSpot("Purple River Round Bush", new Vector3(9795.85f, 6355.15f, -12.21f)));
+            WardSpots.Add(new WardSpot("Purple Split Push Bush", new Vector3(7836.85f, 11906.34f, 56.48f)));
+            WardSpots.Add(new WardSpot("Dragon", new Vector3(10546.35f, 5019.06f, -60.0f)));
+            WardSpots.Add(new WardSpot("Dragon Bush", new Vector3(9344.95f, 5703.43f, -64.07f)));
+            WardSpots.Add(new WardSpot("Baron", new Vector3(4334.98f, 9714.54f, -60.42f)));
+            WardSpots.Add(new WardSpot("Baron Bush", new Vector3(5363.31f, 9157.05f, -62.70f)));
+            WardSpots.Add(new WardSpot("Purple Bot T2", new Vector3(12731.25f, 9132.66f, 50.32f)));
+            WardSpots.Add(new WardSpot("Purple Bot T2", new Vector3(8036.52f, 12882.94f, 45.19f)));
+            WardSpots.Add(new WardSpot("Purple Mid T1", new Vector3(9757.9f, 8768.25f, 50.73f)));
+            WardSpots.Add(new WardSpot("Blue Mid T1", new Vector3(4749.79f, 5890.76f, 53.59f)));
+            WardSpots.Add(new WardSpot("Blue Bot T2", new Vector3(5983.58f, 1547.98f, 52.99f)));
+            WardSpots.Add(new WardSpot("Blue Top T2", new Vector3(1213.70f, 5324.73f, 58.77f)));
+            WardSpots.Add(new WardSpot("Blue MidLane", new Vector3(6523.58f, 6743.31f, 60.0f)));
+            WardSpots.Add(new WardSpot("Purple Nidlane", new Vector3(8223.67f, 8110.15f, 60.0f)));
+            WardSpots.Add(new WardSpot("Purple Mid Path", new Vector3(9736.8f, 6916.26f, 51.98f)));
+            WardSpots.Add(new WardSpot("Blue Tri Top", new Vector3(2222.31f, 9964.1f, 53.2f)));
+
+            WardSpots.Add(new WardSpot("Dragon -> Tri Bush", new Vector3(10072.0f, 3908.0f, -71.24f), new Vector3(10297.93f, 3358.59f, 49.03f), new Vector3(10273.9f, 3257.76f, 49.03f), new Vector3(10072.0f, 3908.0f, -71.24f)));
+            WardSpots.Add(new WardSpot("Nashor -> Tri Bush", new Vector3(4724.0f, 10856.0f, -71.24f), new Vector3(4627.26f, 11311.69f, -71.24f), new Vector3(4473.9f, 11457.76f, 51.4f), new Vector3(4724.0f, 10856.0f, -71.24f)));
+            WardSpots.Add(new WardSpot("Blue Top -> Solo Bush", new Vector3(2824.0f, 10356.0f, 54.33f), new Vector3(3078.62f, 10868.39f, 54.33f), new Vector3(3078.62f, 10868.39f, -67.95f), new Vector3(2824.0f, 10356.0f, 54.33f)));
+            WardSpots.Add(new WardSpot("Blue Mid -> round Bush", new Vector3(5474.0f, 7906.0f, 51.67f), new Vector3(5132.65f, 8373.2f, 51.67f), new Vector3(5123.9f, 8457.76f, -21.23f), new Vector3(5474.0f, 7906.0f, 51.67f)));
+            WardSpots.Add(new WardSpot("Blue Mid -> River Lane Bush", new Vector3(5874.0f, 7656.0f, 51.65f), new Vector3(6202.24f, 8132.12f, 51.65f), new Vector3(6202.24f, 8132.12f, -67.39f), new Vector3(5874.0f, 7656.0f, 51.65f)));
+            WardSpots.Add(new WardSpot("Blue Lizard -> Dragon Pass Bush", new Vector3(8022.0f, 4258.0f, 53.72f), new Vector3(8400.68f, 4657.41f, 53.72f), new Vector3(8523.9f, 4707.76f, 51.24f), new Vector3(8022.0f, 4258.0f, 53.72f)));
+            WardSpots.Add(new WardSpot("Purple Mid -> Round Bush", new Vector3(9372.0f, 7008.0f, 52.63f), new Vector3(9703.5f, 6589.9f, 52.63f), new Vector3(9823.9f, 6507.76f, 23.47f), new Vector3(9372.0f, 7008.0f, 52.63f)));
+            WardSpots.Add(new WardSpot("Purple Mid -> River Round Bush", new Vector3(9072.0f, 7158.0f, 53.04f), new Vector3(8705.95f, 6819.1f, 53.04f), new Vector3(8718.88f, 6764.86f, 95.75f), new Vector3(9072.0f, 7158.0f, 53.04f)));
+            WardSpots.Add(new WardSpot("Purple Mid -> River Lane Bush", new Vector3(8530.27f, 6637.38f, 46.98f), new Vector3(8539.27f, 6637.38f, 46.98f), new Vector3(8396.10f, 6464.81f, 46.98f), new Vector3(8779.17f, 6804.70f, 46.98f)));
+            WardSpots.Add(new WardSpot("Purple Bottom -> Solo Bush", new Vector3(12422.0f, 4508.0f, 51.73f), new Vector3(12353.94f, 4031.58f, 51.73f), new Vector3(12023.9f, 3757.76f, -66.25f), new Vector3(12422.0f, 4508.0f, 51.73f)));
+            WardSpots.Add(new WardSpot("Purple Lizard -> Nashor Pass Bush", new Vector3(6824.0f, 10656.0f, 56.0f), new Vector3(6370.69f, 10359.92f, 56.0f), new Vector3(6273.9f, 10307.76f, 53.67f), new Vector3(6824.0f, 10656.0f, 56.0f)));
+            WardSpots.Add(new WardSpot("Blue Golem -> Blue Lizard", new Vector3(8272.0f, 2908.0f, 51.13f), new Vector3(8163.7056f, 3436.0476f, 51.13f), new Vector3(8163.71f, 3436.05f, 51.6628f), new Vector3(8272.0f, 2908.0f, 51.13f)));
+            WardSpots.Add(new WardSpot("Red Golem -> Red Lizard", new Vector3(6574.0f, 12006.0f, 56.48f), new Vector3(6678.08f, 11477.83f, 56.48f), new Vector3(6678.08f, 11477.83f, 53.85f), new Vector3(6574.0f, 12006.0f, 56.48f)));
+            WardSpots.Add(new WardSpot("Blue Top Side Brush", new Vector3(1774.0f, 10756.0f, 52.84f), new Vector3(2302.36f, 10874.22f, 52.84f), new Vector3(2773.9f, 11307.76f, -71.24f), new Vector3(1774.0f, 10756.0f, 52.84f)));
+            WardSpots.Add(new WardSpot("Mid Lane Death Brush", new Vector3(5874.0f, 8306.0f, -70.12f), new Vector3(5332.9f, 8275.21f, -70.12f), new Vector3(5123.9f, 8457.76f, -21.23f), new Vector3(5874.0f, 8306.0f, -70.12f)));
+            WardSpots.Add(new WardSpot("Mid Lane Death Brush Right Side", new Vector3(9022.0f, 6558.0f, 71.24f), new Vector3(9540.43f, 6657.68f, 71.24f), new Vector3(9773.9f, 6457.76f, 9.56f), new Vector3(9022.0f, 6558.0f, 71.24f)));
+            WardSpots.Add(new WardSpot("Blue Inner Turret Jungle", new Vector3(6874.0f, 1708.0f, 50.52f), new Vector3(6849.11f, 2252.01f, 50.52f), new Vector3(6723.9f, 2507.76f, 52.17f), new Vector3(6874.0f, 1708.0f, 50.52f)));
+            WardSpots.Add(new WardSpot("Purple Inner Turret Jungle", new Vector3(8122.0f, 13206.0f, 52.84f), new Vector3(8128.53f, 12658.41f, 52.84f), new Vector3(8323.9f, 12457.76f, 56.48f), new Vector3(8122.0f, 13206.0f, 52.84f)));
+
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnGameUpdate += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
@@ -163,15 +216,16 @@ namespace SAwareness.Wards
             byte packetId = reader.ReadByte(); //PacketId
             if (packetId == 0x9A) //OLD 0x9A
             {
-                int mNetworkId = BitConverter.ToInt32(reader.ReadBytes(4), 0);
-                byte spellId = reader.ReadByte();
-                byte unknown = reader.ReadByte();
-                float fromX = BitConverter.ToSingle(reader.ReadBytes(4), 0);
-                float fromY = BitConverter.ToSingle(reader.ReadBytes(4), 0);
-                float toX = BitConverter.ToSingle(reader.ReadBytes(4), 0);
-                float toY = BitConverter.ToSingle(reader.ReadBytes(4), 0);
-                int tNetworkId = BitConverter.ToInt32(reader.ReadBytes(4), 0);
-                PacketSpellId nSpellId = PacketSpellId.ConvertPacketCastToId(spellId);
+                //int mNetworkId = BitConverter.ToInt32(reader.ReadBytes(4), 0);
+                //byte spellId = reader.ReadByte();
+                //byte unknown = reader.ReadByte();
+                //float fromX = BitConverter.ToSingle(reader.ReadBytes(4), 0);
+                //float fromY = BitConverter.ToSingle(reader.ReadBytes(4), 0);
+                //float toX = BitConverter.ToSingle(reader.ReadBytes(4), 0);
+                //float toY = BitConverter.ToSingle(reader.ReadBytes(4), 0);
+                //int tNetworkId = BitConverter.ToInt32(reader.ReadBytes(4), 0);
+                Packet.C2S.Cast.Struct decoded = Packet.C2S.Cast.Decoded(args.PacketData);
+                //PacketSpellId nSpellId = PacketSpellId.ConvertPacketCastToId(spellId);
                 if (/*_latestSpellSlot == nSpellId.SSpellSlot && */_latestSpellSlot != SpellSlot.Unknown)
                 {
                     _drawSpots = false;
@@ -179,31 +233,33 @@ namespace SAwareness.Wards
                     {
                         if (!wardSpot.SafeWard &&
                             Vector3.Distance(wardSpot.Pos,
-                                new Vector3(fromX, fromY, ObjectManager.Player.ServerPosition.Z)) <= 250 &&
+                                new Vector3(decoded.FromX, decoded.FromY, ObjectManager.Player.ServerPosition.Z)) <= 250 &&
                             !_wardAlreadyCorrected)
                         {
                             args.Process = false;
                             _wardAlreadyCorrected = true;
                             //SendPacket
-                            var sCastPacket = new byte[28];
-                            var writer = new BinaryWriter(new MemoryStream(sCastPacket));
-                            writer.Write((byte)0x9A);
-                            writer.Write(mNetworkId);
-                            writer.Write(spellId);
-                            writer.Write(unknown);
-                            writer.Write(wardSpot.Pos.X);
-                            writer.Write(wardSpot.Pos.Y);
-                            writer.Write(wardSpot.Pos.X);
-                            writer.Write(wardSpot.Pos.Y);
-                            writer.Write(tNetworkId);
-                            Game.SendPacket(sCastPacket, PacketChannel.C2S, PacketProtocolFlags.Reliable);
+                            //var sCastPacket = new byte[28];
+                            //var writer = new BinaryWriter(new MemoryStream(sCastPacket));
+                            //writer.Write((byte)0x9A);
+                            //writer.Write(mNetworkId);
+                            //writer.Write(spellId);
+                            //writer.Write(unknown);
+                            //writer.Write(wardSpot.Pos.X);
+                            //writer.Write(wardSpot.Pos.Y);
+                            //writer.Write(wardSpot.Pos.X);
+                            //writer.Write(wardSpot.Pos.Y);
+                            //writer.Write(tNetworkId);
+                            //Game.SendPacket(sCastPacket, PacketChannel.C2S, PacketProtocolFlags.Reliable);
+                            Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(decoded.TargetNetworkId, decoded.Slot, decoded.SourceNetworkId, 
+                                wardSpot.Pos.X, wardSpot.Pos.Y, wardSpot.Pos.X, wardSpot.Pos.Y, decoded.SpellFlag)).Send();
                             //TODO: Check if its correct
                             _wardAlreadyCorrected = false;
                             return;
                         }
                         if (wardSpot.SafeWard &&
                             Vector3.Distance(wardSpot.MagneticPos,
-                                new Vector3(fromX, fromY, ObjectManager.Player.ServerPosition.Z)) <=
+                                new Vector3(decoded.FromX, decoded.FromY, ObjectManager.Player.ServerPosition.Z)) <=
                             250 &&
                             !_wardAlreadyCorrected)
                         {

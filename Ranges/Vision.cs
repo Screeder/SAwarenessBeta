@@ -11,7 +11,25 @@ namespace SAwareness.Ranges
 {
     class Vision
     {
-        public static Menu.MenuItemSettings VisionRange = new Menu.MenuItemSettings(typeof(Ranges.Vision));
+        public static Menu.MenuItemSettings VisionRange = new Menu.MenuItemSettings(typeof(Vision));
+
+        List<String> _wards = new List<String>(new[]
+        {
+            "Feral Flare",
+            "Vision Ward",
+            "Stealth Ward",
+            "Wriggle's Lantern",
+            "Ruby Sightstone",
+            "Sightstone",
+            "Explorer's Ward",
+            "Greater Stealth Totem",
+            "Greater Stealth Totem",
+            "Greater Vision Totem",
+            "Bonetooth Necklace",
+            "Head of Kha'Zix",
+            "Quill Coat",
+            "Spirit of the Ancient Golem"
+        });
 
         public Vision()
         {
@@ -39,6 +57,16 @@ namespace SAwareness.Ranges
                     Language.GetString("RANGES_ALL_MODE_BOTH")
                 }))));
             VisionRange.MenuItems.Add(
+                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayMe", Language.GetString("RANGES_VISION_ME")).SetValue(false)));
+            VisionRange.MenuItems.Add(
+                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayChampion", Language.GetString("RANGES_VISION_CHAMPION")).SetValue(false)));
+            VisionRange.MenuItems.Add(
+                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayTurret", Language.GetString("RANGES_VISION_TURRET")).SetValue(false)));
+            VisionRange.MenuItems.Add(
+                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayMinion", Language.GetString("RANGES_VISION_MINION")).SetValue(false)));
+            VisionRange.MenuItems.Add(
+                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayWard", Language.GetString("RANGES_VISION_WARD")).SetValue(false)));
+            VisionRange.MenuItems.Add(
                 VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.Indigo)));
             VisionRange.MenuItems.Add(
                 VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.Indigo)));
@@ -55,58 +83,185 @@ namespace SAwareness.Ranges
             switch (mode.SelectedIndex)
             {
                 case 0:
-                    Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayChampion").GetValue<bool>())
+                    {
+                        foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+                        {
+                            if (!hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
+                            {
+                                Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                            }
+                        }
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayTurret").GetValue<bool>())
+                    {
+                        foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
+                        {
+                            if (!turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
+                            {
+                                Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                            }
+                        }
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMinion").GetValue<bool>())
+                    {
+                        foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
+                        {
+                            if (!minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
+                            {
+                                Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                            }
+                        }
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayWard").GetValue<bool>())
+                    {
+                        foreach (var ward in ObjectManager.Get<GameObject>())
+                        {
+                            foreach (var wards in _wards)
+                            {
+                                if (ward.Name.Contains(wards) && !ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead &&
+                                    ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
+                                {
+                                    Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                }
+                            }
+                        }
+                    }
                     break;
                 case 1:
-                    foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayChampion").GetValue<bool>())
                     {
-                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead &&
-                            ObjectManager.Player.ServerPosition.Distance(enemy.ServerPosition) < 1800)
+                        foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
-                            Utility.DrawCircle(enemy.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            if (hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
+                            {
+                                Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            }
                         }
                     }
-                    foreach (Obj_AI_Turret turret in ObjectManager.Get<Obj_AI_Turret>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayTurret").GetValue<bool>())
                     {
-                        if (turret.IsVisible && !turret.IsDead && turret.IsEnemy && turret.IsValid &&
-                            ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
+                        foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
-                            Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            if (turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
+                            {
+                                Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            }
                         }
                     }
-                    foreach (Obj_AI_Minion minion in ObjectManager.Get<Obj_AI_Minion>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMinion").GetValue<bool>())
                     {
-                        if (minion.IsEnemy && minion.Team != GameObjectTeam.Neutral && minion.IsVisible && minion.IsValid && !minion.IsDead &&
-                            ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800)
+                        foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
-                            Utility.DrawCircle(minion.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            if (minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
+                            {
+                                Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            }
+                        }
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayWard").GetValue<bool>())
+                    {
+                        foreach (var ward in ObjectManager.Get<GameObject>())
+                        {
+                            foreach (var wards in _wards)
+                            {
+                                if (ward.Name.Contains(wards) && ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead &&
+                                    ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
+                                {
+                                    Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                }
+                            }
                         }
                     }
                     break;
                 case 2:
-                    Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
-                    foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>())
                     {
-                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead &&
-                            ObjectManager.Player.ServerPosition.Distance(enemy.ServerPosition) < 1800)
+                        Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayChampion").GetValue<bool>())
+                    {
+                        foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
-                            Utility.DrawCircle(enemy.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            if (hero.IsVisible && hero.IsValid && !hero.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
+                            {
+                                if (!hero.IsEnemy)
+                                {
+                                    Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                }
+                                else
+                                {
+                                    Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                }
+                            }
                         }
                     }
-                    foreach (Obj_AI_Turret turret in ObjectManager.Get<Obj_AI_Turret>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayTurret").GetValue<bool>())
                     {
-                        if (turret.IsVisible && !turret.IsDead && turret.IsEnemy && turret.IsValid &&
-                            ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
+                        foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
-                            Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            if (turret.IsVisible && turret.IsValid && !turret.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
+                            {
+                                if (!turret.IsEnemy)
+                                {
+                                    Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                }
+                                else
+                                {
+                                    Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                }
+                            }
                         }
                     }
-                    foreach (Obj_AI_Minion minion in ObjectManager.Get<Obj_AI_Minion>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMinion").GetValue<bool>())
                     {
-                        if (minion.IsEnemy && minion.Team != GameObjectTeam.Neutral && minion.IsVisible && minion.IsValid && !minion.IsDead &&
-                            ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800)
+                        foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
-                            Utility.DrawCircle(minion.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                            if (minion.IsVisible && minion.IsValid && !minion.IsDead &&
+                                ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
+                            {
+                                if (!minion.IsEnemy)
+                                {
+                                    Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                }
+                                else
+                                {
+                                    Utility.DrawCircle(minion.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                }
+                            }
+                        }
+                    }
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayWard").GetValue<bool>())
+                    {
+                        foreach (var ward in ObjectManager.Get<GameObject>())
+                        {
+                            foreach (var wards in _wards)
+                            {
+                                if (ward.Name.Contains(wards) && ward.IsVisible && ward.IsValid && !ward.IsDead &&
+                                    ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
+                                {
+                                    if (!ward.IsEnemy)
+                                    {
+                                        Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                    }
+                                    else
+                                    {
+                                        Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                    }
+                                }
+                            }
                         }
                     }
                     break;

@@ -21,12 +21,10 @@ namespace SAwareness.Miscs
         private int[] _sequence;
         private static int _useMode;
         private static List<SequenceLevler> sLevler = new List<SequenceLevler>();
-        private static SequenceLevlerGUI gui;
 
         public AutoLevler()
         {
             //LoadLevelFile();
-            gui = new SequenceLevlerGUI();
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged += ChangeBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged += ShowBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged += NewBuild_OnValueChanged;
@@ -53,17 +51,6 @@ namespace SAwareness.Miscs
         public bool IsActive()
         {
             return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive();
-        }
-
-        private void FreeReferences()
-        {
-            if (AutoLevlerMisc.Item == null)
-            {
-                Game.OnGameUpdate -= Game_OnGameUpdate;
-                Game.OnWndProc -= Game_OnWndProc;
-                AppDomain.CurrentDomain.DomainUnload -= CurrentDomain_DomainUnload;
-                AppDomain.CurrentDomain.ProcessExit -= CurrentDomain_ProcessExit;
-            }
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
@@ -135,6 +122,14 @@ namespace SAwareness.Miscs
 
         void CurrentDomain_DomainUnload(object sender, EventArgs e)
         {
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+
+            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnWndProc -= Game_OnWndProc;
+            sLevler = null;
             WriteLevelFile();
         }
 
@@ -156,11 +151,11 @@ namespace SAwareness.Miscs
 
         private void HandleMainFrameClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP || !gui.MainFrame.Sprite.Visible)
+            if (message != WindowsMessages.WM_LBUTTONUP || !SequenceLevlerGUI.MainFrame.Sprite.Visible)
             {
                 return;
             }
-            if (Common.IsInside(cursorPos, gui.MainFrame.Sprite.Position, gui.MainFrame.Bitmap.Width, gui.MainFrame.Bitmap.Height))
+            if (Common.IsInside(cursorPos, SequenceLevlerGUI.MainFrame.Sprite.Position, SequenceLevlerGUI.MainFrame.Bitmap.Width, SequenceLevlerGUI.MainFrame.Bitmap.Height))
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -168,10 +163,10 @@ namespace SAwareness.Miscs
                     for (int j = 0; j < 18; j++)
                     {
                         var column = row[j];
-                        if (Common.IsInside(cursorPos, gui.MainFrame.Sprite.Position + column, SequenceLevlerGUI.SkillBlockSize.Width,
+                        if (Common.IsInside(cursorPos, SequenceLevlerGUI.MainFrame.Sprite.Position + column, SequenceLevlerGUI.SkillBlockSize.Width,
                             SequenceLevlerGUI.SkillBlockSize.Height))
                         {
-                            gui.CurrentLevler.Sequence[j] = GetSpellSlot(i);
+                            SequenceLevlerGUI.CurrentLevler.Sequence[j] = GetSpellSlot(i);
                         }
                     }
                 }
@@ -180,24 +175,24 @@ namespace SAwareness.Miscs
 
         private void HandleSaveClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP || !gui.Save.Sprite.Visible)
+            if (message != WindowsMessages.WM_LBUTTONUP || !SequenceLevlerGUI.Save.Sprite.Visible)
             {
                 return;
             }
-            if (Common.IsInside(cursorPos, gui.Save.Sprite.Position, gui.Save.Bitmap.Width, gui.Save.Bitmap.Height))
+            if (Common.IsInside(cursorPos, SequenceLevlerGUI.Save.Sprite.Position, SequenceLevlerGUI.Save.Bitmap.Width, SequenceLevlerGUI.Save.Bitmap.Height))
             {
-                SaveSequence(gui.CurrentLevler.New);
+                SaveSequence(SequenceLevlerGUI.CurrentLevler.New);
                 ResetMenuEntries();
             }
         }
 
         private void HandleCancelClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP || !gui.Cancel.Sprite.Visible)
+            if (message != WindowsMessages.WM_LBUTTONUP || !SequenceLevlerGUI.Cancel.Sprite.Visible)
             {
                 return;
             }
-            if (Common.IsInside(cursorPos, gui.Cancel.Sprite.Position, gui.Cancel.Bitmap.Width, gui.Cancel.Bitmap.Height))
+            if (Common.IsInside(cursorPos, SequenceLevlerGUI.Cancel.Sprite.Position, SequenceLevlerGUI.Cancel.Bitmap.Width, SequenceLevlerGUI.Cancel.Bitmap.Height))
             {
                 ResetMenuEntries();
             }
@@ -229,11 +224,11 @@ namespace SAwareness.Miscs
             }
             if (curLevler != null)
             {
-                gui.CurrentLevler = new SequenceLevler(curLevler.Name, curLevler.Sequence);
+                SequenceLevlerGUI.CurrentLevler = new SequenceLevler(curLevler.Name, curLevler.Sequence);
             }
             else
             {
-                gui.CurrentLevler = new SequenceLevler();
+                SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
             }
         }
 
@@ -255,11 +250,11 @@ namespace SAwareness.Miscs
                 }
                 if (curLevler != null)
                 {
-                    gui.CurrentLevler = new SequenceLevler(curLevler.Name, curLevler.Sequence);
+                    SequenceLevlerGUI.CurrentLevler = new SequenceLevler(curLevler.Name, curLevler.Sequence);
                 }
                 else
                 {
-                    gui.CurrentLevler = new SequenceLevler();
+                    SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
                 }
                 //gui.CurrentLevler = curLevler ?? new SequenceLevler();
             }
@@ -269,9 +264,9 @@ namespace SAwareness.Miscs
         {
             if (onValueChangeEventArgs.GetNewValue<bool>())
             {
-                gui.CurrentLevler = new SequenceLevler();
-                gui.CurrentLevler.Name = GetFreeSequenceName();
-                gui.CurrentLevler.ChampionName = ObjectManager.Player.ChampionName;
+                SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
+                SequenceLevlerGUI.CurrentLevler.Name = GetFreeSequenceName();
+                SequenceLevlerGUI.CurrentLevler.ChampionName = ObjectManager.Player.ChampionName;
             }
         }
 
@@ -280,14 +275,13 @@ namespace SAwareness.Miscs
             if (onValueChangeEventArgs.GetNewValue<bool>())
             {
                 DeleteSequence();
-                gui.CurrentLevler = new SequenceLevler();
+                SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
                 onValueChangeEventArgs.Process = false;
             }
         }
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            FreeReferences();
             if (!IsActive())
                 return;
 
@@ -344,7 +338,7 @@ namespace SAwareness.Miscs
                     if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
                         .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").GetValue<bool>())
                     {
-                        SpellSlot spellSlot = gui.CurrentLevler.Sequence[player.Level - 1];
+                        SpellSlot spellSlot = SequenceLevlerGUI.CurrentLevler.Sequence[player.Level - 1];
                         player.Spellbook.LevelSpell(spellSlot);
                     }
                 }
@@ -386,10 +380,10 @@ namespace SAwareness.Miscs
             //int value = Convert.ToInt32(name[name.Length - 1]);
             //name = name.Remove(name.Length - 1);
             //name += value.ToString();
-            if (gui.CurrentLevler.New)
+            if (SequenceLevlerGUI.CurrentLevler.New)
             {
-                gui.CurrentLevler.New = false;
-                sLevler.Add(gui.CurrentLevler);
+                SequenceLevlerGUI.CurrentLevler.New = false;
+                sLevler.Add(SequenceLevlerGUI.CurrentLevler);
                 List<String> temp = list.SList.ToList();
                 if (temp.Count == 1)
                 {
@@ -406,16 +400,16 @@ namespace SAwareness.Miscs
                 {
                     list.SelectedIndex += 1;
                 }
-                temp.Add(gui.CurrentLevler.Name);
+                temp.Add(SequenceLevlerGUI.CurrentLevler.Name);
                 list.SList = temp.ToArray();
             }
             else
             {
                 foreach (var levler in sLevler.ToArray())
                 {
-                    if (levler.Name.Equals(gui.CurrentLevler.Name))
+                    if (levler.Name.Equals(SequenceLevlerGUI.CurrentLevler.Name))
                     {
-                        sLevler[list.SelectedIndex] = gui.CurrentLevler;
+                        sLevler[list.SelectedIndex] = SequenceLevlerGUI.CurrentLevler;
                     }
                 }
             }
@@ -673,14 +667,30 @@ namespace SAwareness.Miscs
 
         private String GetFreeSequenceName()
         {
+            List<int> endings = new List<int>();
+            List<SequenceLevler> sequences = new List<SequenceLevler>();
             for (int i = 0; i < sLevler.Count; i++)
             {
-                if (!sLevler[i].Name.Contains(ObjectManager.Player.ChampionName + i))
+                if (sLevler[i].ChampionName.Contains(ObjectManager.Player.ChampionName))
+                {
+                    String ending = sLevler[i].Name.Substring(ObjectManager.Player.ChampionName.Length);
+                    try
+                    {
+                        endings.Add(Convert.ToInt32(ending));
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            for (int i = 0; i < 10000; i++)
+            {
+                if (!endings.Contains(i))
                 {
                     return ObjectManager.Player.ChampionName + i;
                 }
             }
-            return ObjectManager.Player.ChampionName + sLevler.Count;
+            return ObjectManager.Player.ChampionName + 0;
         }
 
         [Serializable]
@@ -707,14 +717,14 @@ namespace SAwareness.Miscs
 
         private class SequenceLevlerGUI
         {
-            public SpriteHelper.SpriteInfo MainFrame;
-            public SpriteHelper.SpriteInfo Save;
-            public SpriteHelper.SpriteInfo Cancel;
-            public SpriteHelper.SpriteInfo[] Skill = new SpriteHelper.SpriteInfo[18];
-            public Render.Text[] Text = new Render.Text[4];
-            public SequenceLevler CurrentLevler = new SequenceLevler();
-            public Vector2 SkillStart = new Vector2(225,45);
-            public Vector2 SkillIncrement = new Vector2(32.5f, 33); //35,35
+            public static SpriteHelper.SpriteInfo MainFrame;
+            public static SpriteHelper.SpriteInfo Save;
+            public static SpriteHelper.SpriteInfo Cancel;
+            public static SpriteHelper.SpriteInfo[] Skill = new SpriteHelper.SpriteInfo[18];
+            public static Render.Text[] Text = new Render.Text[4];
+            public static SequenceLevler CurrentLevler = new SequenceLevler();
+            public static Vector2 SkillStart = new Vector2(225, 45);
+            public static Vector2 SkillIncrement = new Vector2(32.5f, 33); //35,35
             public static Vector2[][] SkillBlock;
             public static Size SkillBlockSize = new Size(28, 28); //30,30
 
@@ -730,10 +740,7 @@ namespace SAwareness.Miscs
                     }
                 }
                 SkillBlock = list;
-            }
 
-            public SequenceLevlerGUI()
-            {
                 MainFrame = new SpriteHelper.SpriteInfo();
                 SpriteHelper.LoadTexture("SkillOrderGui", ref MainFrame, SpriteHelper.TextureType.Default);
                 MainFrame.Sprite.PositionUpdate = delegate
@@ -818,7 +825,12 @@ namespace SAwareness.Miscs
                 }
             }
 
-            private Vector2 GetSpellSlotPosition(int row, int column)
+            public SequenceLevlerGUI()
+            {
+                
+            }
+
+            private static Vector2 GetSpellSlotPosition(int row, int column)
             {
                 return new Vector2(MainFrame.Sprite.X + SkillStart.X + (SkillIncrement.X * column), MainFrame.Sprite.Y + SkillStart.Y + (SkillIncrement.Y * row));
             }

@@ -26,17 +26,6 @@ namespace SAwareness.Trackers
             Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
-        void Game_OnGameUpdate(EventArgs args)
-        {
-            foreach (var enemy in _enemies)
-            {
-                if (enemy.Key.IsVisible)
-                {
-                    enemy.Value.LastPosition = enemy.Key.ServerPosition;
-                }
-            }
-        }
-
         ~Uim()
         {
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
@@ -58,6 +47,17 @@ namespace SAwareness.Trackers
             UimTracker.MenuItems.Add(
                 UimTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersUimActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return UimTracker;
+        }
+
+        void Game_OnGameUpdate(EventArgs args)
+        {
+            foreach (var enemy in _enemies)
+            {
+                if (enemy.Key.IsVisible)
+                {
+                    enemy.Value.LastPosition = enemy.Key.ServerPosition;
+                }
+            }
         }
 
         void Obj_AI_Base_OnTeleport(GameObject sender, GameObjectTeleportEventArgs args)
