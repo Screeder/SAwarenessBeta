@@ -1248,7 +1248,7 @@ namespace SAwareness
                 MainMenu.BushRevealer = Wards.BushRevealer.SetupMenu(MainMenu.Wards.Menu);
                 MainMenu.InvisibleRevealer = Wards.InvisibleRevealer.SetupMenu(MainMenu.Wards.Menu);
                 //MainMenu.WardCorrector = Wards.WardCorrector.SetupMenu(MainMenu.Wards.Menu);
-                MainMenu.FowWardPlacement = Wards.FowWardPlacement.SetupMenu(MainMenu.Wards.Menu);
+                //MainMenu.FowWardPlacement = Wards.FowWardPlacement.SetupMenu(MainMenu.Wards.Menu);
 
                 MainMenu.Range = Ranges.Range.SetupMenu(menu);
                 MainMenu.SpellQRange = Ranges.SpellQ.SetupMenu(MainMenu.Range.Menu);
@@ -1276,7 +1276,7 @@ namespace SAwareness
                 //MainMenu.MinionBars = Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.MinionLocation = Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.MoveToMouse = Miscs.MoveToMouse.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.PingerName = Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.PingerName = Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.RealTime = Miscs.RealTime.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.SafeMovement = Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.ShowPing = Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu);
