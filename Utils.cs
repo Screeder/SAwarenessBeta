@@ -815,12 +815,25 @@ namespace SAwareness
 
         private static Dictionary<String, Bitmap> cachedMaps = new Dictionary<string, Bitmap>();
 
+        public static String ConvertNames(String name)
+        {
+            switch (name)
+            {
+                case "viw":
+                    return "ViW";
+                    
+                default:
+                    return name;
+            }
+        }
+
         public static void DownloadImage(string name, DownloadType type, String subFolder)
         {
             String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
             String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
             WebRequest request = null;
             WebRequest requestSize = null;
+            name = ConvertNames(name);
             if (type == DownloadType.Champion)
             {
                 request =
@@ -888,7 +901,6 @@ namespace SAwareness
             catch (Exception ex)
             {
                 Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-                throw;
             }
         }
 
@@ -929,6 +941,7 @@ namespace SAwareness
             if (spriteInfo == null)
                 spriteInfo = new SpriteInfo();
             Byte[] bitmap = null;
+            name = ConvertNames(name);
             string loc = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
