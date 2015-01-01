@@ -466,7 +466,7 @@ namespace SAwareness.Trackers
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellQ.Rectangle[1].Add();
 
@@ -480,7 +480,7 @@ namespace SAwareness.Trackers
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellW.Rectangle[1].Add();
 
@@ -494,7 +494,7 @@ namespace SAwareness.Trackers
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellE.Rectangle[1].Add();
 
@@ -508,7 +508,7 @@ namespace SAwareness.Trackers
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
-                        hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellR.Rectangle[1].Add();
 
@@ -526,7 +526,7 @@ namespace SAwareness.Trackers
             champ.SpellQ.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
-                    champ.SpellQ.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    champ.SpellQ.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellQ.Text[1].OutLined = true;
             champ.SpellQ.Text[1].Centered = true;
@@ -544,7 +544,7 @@ namespace SAwareness.Trackers
             champ.SpellW.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellW.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    champ.SpellW.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellW.Text[1].OutLined = true;
             champ.SpellW.Text[1].Centered = true;
@@ -562,7 +562,7 @@ namespace SAwareness.Trackers
             champ.SpellE.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellE.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    champ.SpellE.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellE.Text[1].OutLined = true;
             champ.SpellE.Text[1].Centered = true;
@@ -580,7 +580,7 @@ namespace SAwareness.Trackers
             champ.SpellR.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellR.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    champ.SpellR.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellR.Text[1].OutLined = true;
             champ.SpellR.Text[1].Centered = true;
@@ -598,7 +598,7 @@ namespace SAwareness.Trackers
             champ.SpellSum1.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum1.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    champ.SpellSum1.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellSum1.Text[1].OutLined = true;
             champ.SpellSum1.Text[1].Centered = true;
@@ -616,7 +616,7 @@ namespace SAwareness.Trackers
             champ.SpellSum2.Text[1].VisibleCondition = sender =>
             {
                 return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                    champ.SpellSum2.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    champ.SpellSum2.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellSum2.Text[1].OutLined = true;
             champ.SpellSum2.Text[1].Centered = true;
@@ -2479,58 +2479,65 @@ namespace SAwareness.Trackers
                     else
                     {
                         //yOffsetAdd = (int) (20*percentScale);
-                        hero.Value.Champ.SizeSideBar =
+                        if (hero.Value.Champ != null && hero.Value.Champ.Sprite[0] != null && hero.Value.Champ.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.Champ.SizeSideBar =
                             new Size(
                                 xOffset - (int)(_champSize.Width * percentScale),
                                 yOffset - count * (int)(_champSize.Height * percentScale) -
                             count * (int)(_backBarSize.Height * percentScale) - yOffsetAdd);
-                        hero.Value.Champ.Sprite[0].Sprite.Scale = new Vector2(((float)_champSize.Width / hero.Value.Champ.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
-                        hero.Value.SpellSum1.SizeSideBar =
-                            new Size(hero.Value.Champ.SizeSideBar.Width - (int)(_sumSize.Width * percentScale),
-                                hero.Value.Champ.SizeSideBar.Height);
-                        hero.Value.SpellSum1.Sprite[0].Sprite.Scale = new Vector2(((float)_sumSize.Width / hero.Value.SpellSum1.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
-                        hero.Value.SpellSum2.SizeSideBar = new Size(hero.Value.SpellSum1.SizeSideBar.Width,
-                            hero.Value.Champ.SizeSideBar.Height + (int)(_sumSize.Height * percentScale));
-                        hero.Value.SpellSum2.Sprite[0].Sprite.Scale = new Vector2(((float)_sumSize.Width / hero.Value.SpellSum2.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
-                        hero.Value.SpellR.SizeSideBar = new Size(xOffset - (int)(_sumSize.Width * percentScale),
-                            hero.Value.Champ.SizeSideBar.Height);
-                        hero.Value.SpellR.Sprite[0].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellR.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.Champ.Sprite[0].Sprite.Scale = new Vector2(((float)_champSize.Width / hero.Value.Champ.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.Champ.CoordsSideBar = new Size(hero.Value.Champ.SizeSideBar.Width + (int)(_champSize.Width * percentScale) / 2, hero.Value.Champ.SizeSideBar.Height + (int)(_champSize.Height * percentScale) / 2);
+                        }
+                        
 
-                        hero.Value.SpellSum1.CoordsSideBar =
-                            new Size(hero.Value.SpellSum1.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2,
-                                hero.Value.SpellSum1.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
-                        hero.Value.SpellSum2.CoordsSideBar =
-                            new Size(hero.Value.SpellSum2.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2,
-                                hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
-                        hero.Value.Champ.CoordsSideBar =
-                            new Size(hero.Value.Champ.SizeSideBar.Width + (int)(_champSize.Width * percentScale) / 2,
-                                hero.Value.Champ.SizeSideBar.Height + (int)(_champSize.Height * percentScale) / 2);
-                        hero.Value.SpellR.CoordsSideBar =
-                            new Size(hero.Value.SpellR.SizeSideBar.Width + (int)(_spellSize.Width * percentScale),
-                                hero.Value.SpellR.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
+                        if (hero.Value.SpellSum1 != null && hero.Value.SpellSum1.Sprite[0] != null && hero.Value.SpellSum1.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.SpellSum1.SizeSideBar = new Size(hero.Value.Champ.SizeSideBar.Width - (int)(_sumSize.Width * percentScale), hero.Value.Champ.SizeSideBar.Height);
+                            hero.Value.SpellSum1.Sprite[0].Sprite.Scale = new Vector2(((float)_sumSize.Width / hero.Value.SpellSum1.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.SpellSum1.CoordsSideBar = new Size(hero.Value.SpellSum1.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2, hero.Value.SpellSum1.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
+                        }
+                        
 
-                        hero.Value.BackBar.SizeSideBar = new Size(hero.Value.SpellSum1.SizeSideBar.Width,
-                            hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale));
-                        hero.Value.BackBar.Sprite[0].Sprite.Scale = new Vector2(((float)_backBarSize.Width / hero.Value.BackBar.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
-                        hero.Value.HealthBar.SizeSideBar = new Size(hero.Value.BackBar.SizeSideBar.Width,
-                            hero.Value.BackBar.SizeSideBar.Height);
-                        hero.Value.HealthBar.Sprite[0].Sprite.Scale = new Vector2(((float)_healthManaBarSize.Width / hero.Value.HealthBar.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
-                        hero.Value.ManaBar.SizeSideBar = new Size(hero.Value.BackBar.SizeSideBar.Width,
-                            hero.Value.BackBar.SizeSideBar.Height + (int)(_healthManaBarSize.Height * percentScale) + 3);
-                        hero.Value.ManaBar.Sprite[0].Sprite.Scale = new Vector2(((float)_healthManaBarSize.Width / hero.Value.ManaBar.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                        if (hero.Value.SpellSum2 != null && hero.Value.SpellSum2.Sprite[0] != null && hero.Value.SpellSum2.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.SpellSum2.SizeSideBar = new Size(hero.Value.SpellSum1.SizeSideBar.Width, hero.Value.Champ.SizeSideBar.Height + (int)(_sumSize.Height * percentScale));
+                            hero.Value.SpellSum2.Sprite[0].Sprite.Scale = new Vector2(((float)_sumSize.Width / hero.Value.SpellSum2.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.SpellSum2.CoordsSideBar = new Size(hero.Value.SpellSum2.SizeSideBar.Width + (int)(_sumSize.Width * percentScale) / 2, hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale) / 2);
+                        }
+                        
+
+                        if (hero.Value.SpellR != null && hero.Value.SpellR.Sprite[0] != null && hero.Value.SpellR.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.SpellR.SizeSideBar = new Size(xOffset - (int)(_sumSize.Width * percentScale), hero.Value.Champ.SizeSideBar.Height);
+                            hero.Value.SpellR.Sprite[0].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellR.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.SpellR.CoordsSideBar = new Size(hero.Value.SpellR.SizeSideBar.Width + (int)(_spellSize.Width * percentScale), hero.Value.SpellR.SizeSideBar.Height + (int)(_spellSize.Height * percentScale) / 2);
+                        }
+
+                        if (hero.Value.BackBar != null && hero.Value.BackBar.Sprite[0] != null && hero.Value.BackBar.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.BackBar.SizeSideBar = new Size(hero.Value.SpellSum1.SizeSideBar.Width, hero.Value.SpellSum2.SizeSideBar.Height + (int)(_sumSize.Height * percentScale));
+                            hero.Value.BackBar.Sprite[0].Sprite.Scale = new Vector2(((float)_backBarSize.Width / hero.Value.BackBar.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                        }
+                        
+
+                        if (hero.Value.HealthBar != null && hero.Value.HealthBar.Sprite[0] != null && hero.Value.HealthBar.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.HealthBar.SizeSideBar = new Size(hero.Value.BackBar.SizeSideBar.Width, hero.Value.BackBar.SizeSideBar.Height);
+                            hero.Value.HealthBar.Sprite[0].Sprite.Scale = new Vector2(((float)_healthManaBarSize.Width / hero.Value.HealthBar.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.HealthBar.CoordsSideBar = new Size(hero.Value.HealthBar.SizeSideBar.Width + (int)(_healthManaBarSize.Width * percentScale) / 2, hero.Value.HealthBar.SizeSideBar.Height - (int)(_healthManaBarSize.Height * percentScale) / 4);
+                        }
+                        
+
+                        if (hero.Value.ManaBar != null && hero.Value.ManaBar.Sprite[0] != null && hero.Value.ManaBar.Sprite[0].Sprite != null)
+                        {
+                            hero.Value.ManaBar.SizeSideBar = new Size(hero.Value.BackBar.SizeSideBar.Width, hero.Value.BackBar.SizeSideBar.Height + (int)(_healthManaBarSize.Height * percentScale) + 3);
+                            hero.Value.ManaBar.Sprite[0].Sprite.Scale = new Vector2(((float)_healthManaBarSize.Width / hero.Value.ManaBar.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.ManaBar.CoordsSideBar = new Size(hero.Value.ManaBar.SizeSideBar.Width + (int)(_healthManaBarSize.Width * percentScale) / 2, hero.Value.ManaBar.SizeSideBar.Height - (int)(_healthManaBarSize.Height * percentScale) / 4);
+                        }
+                        
                         hero.Value.SHealth = ((int)hero.Key.Health) + "/" + ((int)hero.Key.MaxHealth);
                         hero.Value.SMana = ((int)hero.Key.Mana) + "/" + ((int)hero.Key.MaxMana);
-                        hero.Value.HealthBar.CoordsSideBar =
-                            new Size(
-                                hero.Value.HealthBar.SizeSideBar.Width +
-                                (int)(_healthManaBarSize.Width * percentScale) / 2,
-                                hero.Value.HealthBar.SizeSideBar.Height -
-                                (int)(_healthManaBarSize.Height * percentScale) / 4);
-                        hero.Value.ManaBar.CoordsSideBar =
-                            new Size(
-                                hero.Value.ManaBar.SizeSideBar.Width + (int)(_healthManaBarSize.Width * percentScale) / 2,
-                                hero.Value.ManaBar.SizeSideBar.Height -
-                                (int)(_healthManaBarSize.Height * percentScale) / 4);
 
                         //For champ click/move
                         hero.Value.SpellPassive.SizeSideBar = hero.Value.SpellSum1.SizeSideBar;

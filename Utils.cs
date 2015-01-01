@@ -832,7 +832,6 @@ namespace SAwareness
                 case "vayneinquisition":
                     return "VayneInquisition";
 
-                case name.Contains(""):
 
 
                 default:
