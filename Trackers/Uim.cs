@@ -27,6 +27,7 @@ namespace SAwareness.Trackers
                 if (hero.IsEnemy)
                 {
                     InternalUimTracker champ = new InternalUimTracker(hero);
+                    champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
                     champ = LoadTexts(champ);
                     _enemies.Add(hero, champ);
                 }

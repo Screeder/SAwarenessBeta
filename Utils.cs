@@ -885,9 +885,9 @@ namespace SAwareness
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
                 throw;
             }
         }
@@ -941,11 +941,10 @@ namespace SAwareness
                 spriteInfo.Sprite = new Render.Sprite(bitmap, new Vector2(0, 0));
                 spriteInfo.DownloadFinished = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
             }
-            
         }
 
         public static void LoadTexture(String name, ref Texture texture, TextureType type)
