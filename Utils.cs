@@ -817,11 +817,24 @@ namespace SAwareness
 
         public static String ConvertNames(String name)
         {
+            if (name.ToLower().Contains("summonersmite"))
+            {
+                return "SummonerSmite";
+            }
             switch (name)
             {
                 case "viw":
                     return "ViW";
                     
+                case "zedult":
+                    return "ZedUlt";
+
+                case "vayneinquisition":
+                    return "VayneInquisition";
+
+                case name.Contains(""):
+
+
                 default:
                     return name;
             }
