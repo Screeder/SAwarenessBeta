@@ -1283,7 +1283,7 @@ namespace SAwareness
                 //MainMenu.SkinChanger = Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SmartPingImprove = Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SurrenderVote = Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
 
                 Menu.GlobalSettings.Menu =
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));
