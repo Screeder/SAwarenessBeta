@@ -6,8 +6,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using LeagueSharp;
 using LeagueSharp.Common;
+using MenuItem = LeagueSharp.Common.MenuItem;
 
 namespace SAwareness
 {
@@ -1300,8 +1302,6 @@ namespace SAwareness
 
         private async static void Game_OnGameLoad(EventArgs args)
         {
-            //try
-            //{
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
             AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
@@ -1309,16 +1309,8 @@ namespace SAwareness
             Game.PrintChat("SAwareness loaded!");
 
             new Thread(GameOnOnGameUpdate).Start();
-            await Trackers.Uim.Init();
-            await Trackers.Ui.Init();    
-
-                //new Thread(UiTracker.Init).Start();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("SAwareness: " + e);
-            //}
         }
+
 
         private static bool threadActive = true;
 
