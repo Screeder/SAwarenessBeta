@@ -32,6 +32,8 @@ namespace SAwareness.Trackers
         private static Size _spellSize = new Size(16, 16);
         private static Size _sumSize = new Size(32, 32);
 
+        private static Size _lvlIconSize = new Size(17, 17);
+
         private Size _hudSize;
         private Vector2 _lastCursorPos;
         private bool _moveActive;
@@ -621,6 +623,76 @@ namespace SAwareness.Trackers
             champ.SpellSum2.Text[1].OutLined = true;
             champ.SpellSum2.Text[1].Centered = true;
             champ.SpellSum2.Text[1].Add(4);
+
+            /////
+
+            champ.Exp[0].Line[1] = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 2, SharpDX.Color.Yellow);
+            champ.Exp[0].Line[1].StartPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[0].SizeHpBar.Width, champ.Exp[0].SizeHpBar.Height);
+            };
+            champ.Exp[0].Line[1].EndPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[0].SizeHpBar.Width + _lvlIconSize.Width * CalcExpBar(hero, 0), champ.Exp[0].SizeHpBar.Height);
+            };
+            champ.Exp[0].Line[1].VisibleCondition = sender =>
+            {
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                        GetMode(hero.IsEnemy).SelectedIndex != 0 &&
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+            };
+            champ.Exp[0].Line[1].Add(3);
+
+            champ.Exp[1].Line[1] = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 2, SharpDX.Color.Yellow);
+            champ.Exp[1].Line[1].StartPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[1].SizeHpBar.Width, champ.Exp[1].SizeHpBar.Height );
+            };
+            champ.Exp[1].Line[1].EndPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[1].SizeHpBar.Width, champ.Exp[1].SizeHpBar.Height + _lvlIconSize.Height * CalcExpBar(hero, 1));
+            };
+            champ.Exp[1].Line[1].VisibleCondition = sender =>
+            {
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                        GetMode(hero.IsEnemy).SelectedIndex != 0 &&
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+            };
+            champ.Exp[1].Line[1].Add(3);
+
+            champ.Exp[2].Line[1] = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 2, SharpDX.Color.Yellow);
+            champ.Exp[2].Line[1].StartPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[2].SizeHpBar.Width, champ.Exp[2].SizeHpBar.Height);
+            };
+            champ.Exp[2].Line[1].EndPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[2].SizeHpBar.Width - _lvlIconSize.Width * CalcExpBar(hero, 2), champ.Exp[2].SizeHpBar.Height);
+            };
+            champ.Exp[2].Line[1].VisibleCondition = sender =>
+            {
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                        GetMode(hero.IsEnemy).SelectedIndex != 0 &&
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+            };
+            champ.Exp[2].Line[1].Add(3);
+
+            champ.Exp[3].Line[1] = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 2, SharpDX.Color.Yellow);
+            champ.Exp[3].Line[1].StartPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[3].SizeHpBar.Width, champ.Exp[3].SizeHpBar.Height);
+            };
+            champ.Exp[3].Line[1].EndPositionUpdate = delegate
+            {
+                return new Vector2(champ.Exp[3].SizeHpBar.Width, champ.Exp[3].SizeHpBar.Height - _lvlIconSize.Width * CalcExpBar(hero, 3));
+            };
+            champ.Exp[3].Line[1].VisibleCondition = sender =>
+            {
+                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                        GetMode(hero.IsEnemy).SelectedIndex != 0 &&
+                        enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+            };
+            champ.Exp[3].Line[1].Add(3);
         }
 
         void LoadObjectsSyncSideHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
@@ -2608,6 +2680,12 @@ namespace SAwareness.Trackers
                             hero.Value.SpellR.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellR.Sprite[1].Sprite.Bitmap.Width) * (scaleSpell * percentScale));
                             hero.Value.SpellR.CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
                         }
+
+                        if (hero.Value.Exp[0] != null && hero.Value.Exp[0].Line[1] != null && hero.Value.Exp[0].Line[1] != null)
+                        {
+                            hero.Value.Exp[0].SizeHpBar = new Size((int)hpPos.X, (int)hpPos.Y);
+                            hero.Value.Exp[0].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
                     }
                     else
                     {
@@ -2662,6 +2740,30 @@ namespace SAwareness.Trackers
                             hero.Value.SpellR.SizeHpBar = new Size(hero.Value.SpellE.SizeHpBar.Width + (int)(_spellSize.Width * hpPosScale), hero.Value.SpellE.SizeHpBar.Height);
                             hero.Value.SpellR.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellR.Sprite[1].Sprite.Bitmap.Width) * (scaleSpell * percentScale));
                             hero.Value.SpellR.CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + (int)(_spellSize.Width / 1.3), hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[0] != null && hero.Value.Exp[0].Line[1] != null && hero.Value.Exp[0].Line[1] != null)
+                        {
+                            hero.Value.Exp[0].SizeHpBar = new Size((int)hpPos.X + 119, (int)hpPos.Y + 17);
+                            hero.Value.Exp[0].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[1] != null && hero.Value.Exp[1].Line[1] != null && hero.Value.Exp[1].Line[1] != null)
+                        {
+                            hero.Value.Exp[1].SizeHpBar = new Size((int)hpPos.X + 119 + _lvlIconSize.Width, (int)hpPos.Y + 17);
+                            hero.Value.Exp[1].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[2] != null && hero.Value.Exp[2].Line[1] != null && hero.Value.Exp[2].Line[1] != null)
+                        {
+                            hero.Value.Exp[2].SizeHpBar = new Size((int)hpPos.X + 119 + _lvlIconSize.Width, (int)hpPos.Y + 17 + _lvlIconSize.Height);
+                            hero.Value.Exp[2].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[3] != null && hero.Value.Exp[3].Line[1] != null && hero.Value.Exp[3].Line[1] != null)
+                        {
+                            hero.Value.Exp[3].SizeHpBar = new Size((int)hpPos.X + 119, (int)hpPos.Y + 17 + _lvlIconSize.Width);
+                            hero.Value.Exp[3].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
                         }
                     }
                 }
@@ -3251,6 +3353,37 @@ namespace SAwareness.Trackers
             return (percent <= 100 ? percent/100 : 1f);
         }
 
+        private static float CalcExpBar(Obj_AI_Hero hero, int id)
+        {
+            int[] Exp = { 0, 280, 660, 1140, 1720, 2400, 3180, 4060, 5040, 6120, 7300, 8580, 9960, 11440, 13020, 14700, 16480, 18360 };
+            float neededExp = Exp[hero.Level];
+            float percent = (100 / (neededExp - Exp[hero.Level - 1]) * (hero.Experience - Exp[hero.Level - 1]));
+            float idPercent = (percent <= 0 || Single.IsNaN(percent) ? 0.01f : percent / 100);
+            switch (id)
+            {
+                case 0:
+                    idPercent = idPercent > 0.25f ? 1 : idPercent / 0.25f;
+                    break;
+
+                case 1:
+                    idPercent = idPercent > 0.50f ? 1 : (idPercent - 0.25f) / 0.25f;
+                    break;
+
+                case 2:
+                    idPercent = idPercent > 0.75f ? 1 : (idPercent - 0.50f) / 0.25f;
+                    break;
+
+                case 3:
+                    idPercent = idPercent > 1.0f ? 1 : (idPercent - 0.75f) / 0.25f;
+                    break;
+
+                default:
+                    idPercent = 0;
+                    break;
+            }
+            return (idPercent <= 0 || Single.IsNaN(percent) ? 0.0f : idPercent); ;
+        }
+
         private System.Drawing.Font CalcFont(int size, float scale)
         {
             double calcSize = (int) (size*scale);
@@ -3312,6 +3445,7 @@ namespace SAwareness.Trackers
             public SpriteInfos Gold = new SpriteInfos();
             public SpriteInfos Level = new SpriteInfos();
             public SpriteInfos Cs = new SpriteInfos();
+            public SpriteInfos[] Exp = new SpriteInfos[] { new SpriteInfos(), new SpriteInfos(), new SpriteInfos(), new SpriteInfos() };
             public int DeathTime;
             public int DeathTimeDisplay;
             public bool Dead;
@@ -3350,6 +3484,7 @@ namespace SAwareness.Trackers
                 public SpriteHelper.SpriteInfo[] Sprite = new SpriteHelper.SpriteInfo[10];
                 public Render.Rectangle[] Rectangle = new Render.Rectangle[10];
                 public Render.Text[] Text = new Render.Text[10];
+                public Render.Line[] Line = new Render.Line[10];
                 public int Value;
                 public Size CoordsHpBar;
                 public Size CoordsSideBar;
