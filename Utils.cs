@@ -817,7 +817,7 @@ namespace SAwareness
 
         public static String ConvertNames(String name)
         {
-            if (name.ToLower().Contains("summonersmite"))
+            if (name.ToLower().Contains("smite"))
             {
                 return "SummonerSmite";
             }
