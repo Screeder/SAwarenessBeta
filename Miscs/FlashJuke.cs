@@ -21,65 +21,67 @@ namespace SAwareness.Miscs
 
          public FlashJuke()
         {
-             if(Game.MapId != GameMapId.SummonersRift)
-                 return;
-            spotsStart.Add(new Vector3(5976, 12584, 40));
-            spotsStart.Add(new Vector3(8145, 1915, 54));
-            spotsStart.Add(new Vector3(5815, 11397, 53));
-            spotsStart.Add(new Vector3(8135, 3058, 57));
-            spotsStart.Add(new Vector3(11530, 4733, 53));
-            spotsStart.Add(new Vector3(2485, 9683, 53));
-            spotsStart.Add(new Vector3(9963, 6435, 55));
-            spotsStart.Add(new Vector3(4123, 7979, 52));
-            spotsStart.Add(new Vector3(3935, 7214, 53));
-            spotsStart.Add(new Vector3(8926, 2402, 64));
-            spotsStart.Add(new Vector3(5718, 3502, 53));
-            spotsStart.Add(new Vector3(7052, 3223, 55));
-            spotsStart.Add(new Vector3(7059, 3081, 55));
-            spotsStart.Add(new Vector3(5054, 11998, 41));
-            spotsStart.Add(new Vector3(6966, 11282, 53));
-            spotsStart.Add(new Vector3(6959, 11416, 53));
-            spotsStart.Add(new Vector3(8265, 11103, 50));
-            spotsStart.Add(new Vector3(9949, 7249, 55));
-            spotsStart.Add(new Vector3(11361, 4257, -62));
-            spotsStart.Add(new Vector3(5240, 9233, -65));
-            spotsStart.Add(new Vector3(5405, 9926, 55));
-            spotsStart.Add(new Vector3(8655, 5195, -64));
-            spotsStart.Add(new Vector3(8583, 4408, 55));
-            spotsStart.Add(new Vector3(2788, 10204, -65));  
-            spotsStart.Add(new Vector3(3513, 7555, 55));
-            spotsStart.Add(new Vector3(10595, 6915, 54));
-            spotsStart.Add(new Vector3(5924, 4975, 51));
-            spotsStart.Add(new Vector3(8042, 9542, 53));
+            if (Game.MapId != (GameMapId)11)
+                return;
 
-            spotsEnd.Add(new Vector3(5571, 12561, 40));
-            spotsEnd.Add(new Vector3(8537, 1963, 55));
-            spotsEnd.Add(new Vector3(6109, 11204, 54));
-            spotsEnd.Add(new Vector3(7867, 3293, 56));
-            spotsEnd.Add(new Vector3(11885, 4933, 45));
-            spotsEnd.Add(new Vector3(2171, 9569, 53));
-            spotsEnd.Add(new Vector3(9614, 6339, 51));
-            spotsEnd.Add(new Vector3(4446, 8148, 34));
-            spotsEnd.Add(new Vector3(4273, 7017, 54));
-            spotsEnd.Add(new Vector3(8875, 2061, 55));
-            spotsEnd.Add(new Vector3(5375, 3293, 54));
-            spotsEnd.Add(new Vector3(7391, 3297, 55));
-            spotsEnd.Add(new Vector3(6729, 2911, 55));
-            spotsEnd.Add(new Vector3(5082, 12374, 40));
-            spotsEnd.Add(new Vector3(6619, 11165, 54));
-            spotsEnd.Add(new Vector3(7303, 11525, 52));
-            spotsEnd.Add(new Vector3(8604, 11161, 54));
-            spotsEnd.Add(new Vector3(9665, 7497, 54));
-            spotsEnd.Add(new Vector3(11435, 3881, -55));
-            spotsEnd.Add(new Vector3(4942, 8970, -63));
-            spotsEnd.Add(new Vector3(5772, 10033, 54));
-            spotsEnd.Add(new Vector3(8935, 5417, -64));
-            spotsEnd.Add(new Vector3(8267, 4415, 55));
-            spotsEnd.Add(new Vector3(2685, 10567, -64));
-            spotsEnd.Add(new Vector3(3153, 7534, 56));
-            spotsEnd.Add(new Vector3(10936, 6865, 54));
-            spotsEnd.Add(new Vector3(6101, 4621, 51));
-            spotsEnd.Add(new Vector3(7917, 9885, 53));
+            spotsStart.Add(new Vector3(5351, 12775, 40));
+            spotsStart.Add(new Vector3(8580, 2160, 54));
+            spotsStart.Add(new Vector3(6240, 11632, 53));
+            spotsStart.Add(new Vector3(8560, 3333, 57));
+            spotsStart.Add(new Vector3(11955, 5008, 53));
+            spotsStart.Add(new Vector3(2910, 9918, 53));
+            spotsStart.Add(new Vector3(10368, 6690, 55));
+            spotsStart.Add(new Vector3(4548, 8254, 52));
+            spotsStart.Add(new Vector3(4360, 7445, 53));
+            spotsStart.Add(new Vector3(9325, 2655, 64));
+            spotsStart.Add(new Vector3(6143, 3777, 53));
+            spotsStart.Add(new Vector3(7477, 3498, 55));
+            spotsStart.Add(new Vector3(7484, 3356, 55));
+            spotsStart.Add(new Vector3(5479, 12273, 41));
+            spotsStart.Add(new Vector3(7391, 11557, 53));
+            spotsStart.Add(new Vector3(7384, 11691, 53));
+            spotsStart.Add(new Vector3(8610, 11378, 50));
+            spotsStart.Add(new Vector3(10374, 7524, 55));
+            spotsStart.Add(new Vector3(11786, 4465, -62));
+            spotsStart.Add(new Vector3(5625, 9465, -65));
+            spotsStart.Add(new Vector3(5830, 10201, 55));
+            spotsStart.Add(new Vector3(9080, 5470, -64));
+            spotsStart.Add(new Vector3(9008, 4683, 55));
+            spotsStart.Add(new Vector3(3213, 10479, -65));
+            spotsStart.Add(new Vector3(3885, 7800, 55));
+            spotsStart.Add(new Vector3(11020, 7190, 54));
+            spotsStart.Add(new Vector3(6349, 5250, 51));
+            spotsStart.Add(new Vector3(8427, 9735, 53));
+
+            spotsEnd.Add(new Vector3(5946, 12786, 40));
+            spotsEnd.Add(new Vector3(8962, 2175, 55));
+            spotsEnd.Add(new Vector3(6534, 11435, 54));
+            spotsEnd.Add(new Vector3(8292, 3568, 56));
+            spotsEnd.Add(new Vector3(12310, 5208, 45));
+            spotsEnd.Add(new Vector3(2545, 9794, 53));
+            spotsEnd.Add(new Vector3(10019, 6594, 51));
+            spotsEnd.Add(new Vector3(4871, 8423, 34));
+            spotsEnd.Add(new Vector3(4698, 7255, 54));
+            spotsEnd.Add(new Vector3(9300, 2275, 55));
+            spotsEnd.Add(new Vector3(5800, 3568, 54));
+            spotsEnd.Add(new Vector3(7816, 3572, 55));
+            spotsEnd.Add(new Vector3(7154, 3186, 55));
+            spotsEnd.Add(new Vector3(5507, 12649, 40));
+            spotsEnd.Add(new Vector3(7015, 11420, 54));
+            spotsEnd.Add(new Vector3(7728, 11775, 52));
+            spotsEnd.Add(new Vector3(9005, 11436, 54));
+            spotsEnd.Add(new Vector3(10090, 7772, 54));
+            spotsEnd.Add(new Vector3(11860, 4095, -55));
+            spotsEnd.Add(new Vector3(5325, 9215, -63));
+            spotsEnd.Add(new Vector3(6197, 10308, 54));
+            spotsEnd.Add(new Vector3(9360, 5692, -64));
+            spotsEnd.Add(new Vector3(8692, 4690, 55));
+            spotsEnd.Add(new Vector3(3110, 10842, -64));
+            spotsEnd.Add(new Vector3(3525, 7809, 56));
+            spotsEnd.Add(new Vector3(11361, 7140, 54));
+            spotsEnd.Add(new Vector3(6526, 4896, 51));
+            spotsEnd.Add(new Vector3(8305, 10120, 53));
+
 
             Game.OnGameUpdate += Game_OnGameUpdate;
             Drawing.OnEndScene += Drawing_OnEndScene;
@@ -137,7 +139,6 @@ namespace SAwareness.Miscs
             if(ObjectManager.Player.Spellbook.CanUseSpell(spell) != SpellState.Ready)
                 return;
 
-            spell = Activator.GetPacketSlot(spell);
             Vector3 nearestPosStart = GetNearestPos(spotsStart);
 
             if (Game.Time > flashedTime + 5)
@@ -151,7 +152,8 @@ namespace SAwareness.Miscs
                 Vector3 nearestPosEnd = GetNearestPos(spotsEnd);
                 if (nearestPosEnd.X != 0)
                 {
-                    Activator.FixedSummonerCast.Encoded(new Packet.C2S.Cast.Struct(0, spell, -1, nearestPosEnd.X, nearestPosEnd.Y, nearestPosEnd.X, nearestPosEnd.Y)).Send();
+                    Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(0, spell, -1, nearestPosEnd.X, nearestPosEnd.Y, nearestPosEnd.X, nearestPosEnd.Y)).Send();
+                    ObjectManager.Player.Spellbook.CastSpell(spell, nearestPosEnd);
                     flashedTime = Game.Time;
                     if (FlashJukeMisc.GetMenuItem("SAwarenessMiscsFlashJukeRecall").GetValue<bool>())
                     {
@@ -159,6 +161,7 @@ namespace SAwareness.Miscs
                         {
                             ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, nearestPosEnd);
                             Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(0, SpellSlot.Recall)).Send();
+                            ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall);
                         });
                     }
                 }                

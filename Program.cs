@@ -1272,7 +1272,7 @@ namespace SAwareness
                 MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.EasyRangedJungle = Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.EloDisplayer = Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.FlashJuke = Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu);
+                MainMenu.FlashJuke = Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.MinionBars = Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.MinionLocation = Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.MoveToMouse = Miscs.MoveToMouse.SetupMenu(MainMenu.Misc.Menu);
