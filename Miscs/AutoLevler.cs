@@ -129,8 +129,8 @@ namespace SAwareness.Miscs
 
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
-            sLevler = null;
             WriteLevelFile();
+            sLevler = null;
         }
 
         private void Game_OnWndProc(WndEventArgs args)

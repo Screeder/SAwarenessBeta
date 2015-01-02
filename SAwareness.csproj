@@ -116,7 +116,7 @@
     <Compile Include="Miscs\EasyRangedJungle.cs" />
     <Compile Include="Miscs\PingerName.cs" />
     <Compile Include="Miscs\RealTime.cs" />
-    <Compile Include="Miscs\WallTumbler.cs" />
+    <Compile Include="Miscs\WallJump.cs" />
     <Compile Include="Timers\Altar.cs" />
     <Compile Include="Timers\Health.cs" />
     <Compile Include="Timers\Immune.cs" />

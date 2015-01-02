@@ -8,31 +8,31 @@ using SharpDX;
 
 namespace SAwareness.Miscs
 {
-    class WallTumbler
+    class WallJump
     {
 
-        InternalWallTumbler _positions = null;
+        InternalWallJump _positions = null;
 
-        public WallTumbler()
+        public WallJump()
         {
             switch (ObjectManager.Player.ChampionName)
             {
                 case "Vayne":
-                    _positions = new InternalWallTumbler(ObjectManager.Player.ChampionName, new List<InternalWallTumbler.Positions>(new[]
+                    _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new List<InternalWallJump.Positions>(new[]
                     {
-                        new InternalWallTumbler.Positions(new Vector3(12050f, 50f, 4830f), new Vector3(11510f, 50f, 4460f)), 
-                        new InternalWallTumbler.Positions(new Vector3(6960f, 50f, 8940f), new Vector3(6700f, 50f, 8800f)), 
+                        new InternalWallJump.Positions(new Vector3(12050f, 50f, 4830f), new Vector3(11510f, 50f, 4460f)), 
+                        new InternalWallJump.Positions(new Vector3(6960f, 50f, 8940f), new Vector3(6700f, 50f, 8800f)), 
                     }));
                     break;
             }
         }
 
-        class InternalWallTumbler
+        class InternalWallJump
         {
             public String ChampionName;
             public List<Positions> Position;
 
-            public InternalWallTumbler(String championName, List<Positions> position)
+            public InternalWallJump(String championName, List<Positions> position)
             {
                 ChampionName = championName;
                 Position = position;

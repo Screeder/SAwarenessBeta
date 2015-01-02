@@ -17,8 +17,6 @@ namespace SAwareness.Timers
 
         public Immune()
         {
-            Ability zhonyaA = new Ability("zhonyas_ring_activate", 2.5f);
-
             Abilities.Add(new Ability("zhonyas_ring_activate", 2.5f), null); //Zhonya
             Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f), null); //Aatrox Passive
             Abilities.Add(new Ability("LifeAura", 4f), null); //Zil und GA
