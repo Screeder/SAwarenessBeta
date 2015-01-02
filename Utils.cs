@@ -832,7 +832,8 @@ namespace SAwareness
                 case "vayneinquisition":
                     return "VayneInquisition";
 
-
+                case "reksaie":
+                    return "RekSaiE";
 
                 default:
                     return name;

@@ -468,7 +468,7 @@ namespace SAwareness.Trackers
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
-            champ.SpellQ.Rectangle[1].Add();
+            champ.SpellQ.Rectangle[1].Add(1);
 
             champ.SpellW.Rectangle[1] = new Render.Rectangle(champ.SpellW.SizeHpBar.Width, champ.SpellW.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
@@ -482,7 +482,7 @@ namespace SAwareness.Trackers
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
-            champ.SpellW.Rectangle[1].Add();
+            champ.SpellW.Rectangle[1].Add(1);
 
             champ.SpellE.Rectangle[1] = new Render.Rectangle(champ.SpellE.SizeHpBar.Width, champ.SpellE.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
@@ -496,7 +496,7 @@ namespace SAwareness.Trackers
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
-            champ.SpellE.Rectangle[1].Add();
+            champ.SpellE.Rectangle[1].Add(1);
 
             champ.SpellR.Rectangle[1] = new Render.Rectangle(champ.SpellR.SizeHpBar.Width, champ.SpellR.SizeHpBar.Height,
                 _spellSize.Width, _spellSize.Height, SharpDX.Color.Red);
@@ -510,7 +510,7 @@ namespace SAwareness.Trackers
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
-            champ.SpellR.Rectangle[1].Add();
+            champ.SpellR.Rectangle[1].Add(1);
 
             ///////
 
@@ -530,7 +530,7 @@ namespace SAwareness.Trackers
             };
             champ.SpellQ.Text[1].OutLined = true;
             champ.SpellQ.Text[1].Centered = true;
-            champ.SpellQ.Text[1].Add();
+            champ.SpellQ.Text[1].Add(4);
 
             champ.SpellW.Text[1] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellW.Text[1].TextUpdate = delegate
@@ -548,7 +548,7 @@ namespace SAwareness.Trackers
             };
             champ.SpellW.Text[1].OutLined = true;
             champ.SpellW.Text[1].Centered = true;
-            champ.SpellW.Text[1].Add();
+            champ.SpellW.Text[1].Add(4);
 
             champ.SpellE.Text[1] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellE.Text[1].TextUpdate = delegate
@@ -566,7 +566,7 @@ namespace SAwareness.Trackers
             };
             champ.SpellE.Text[1].OutLined = true;
             champ.SpellE.Text[1].Centered = true;
-            champ.SpellE.Text[1].Add();
+            champ.SpellE.Text[1].Add(4);
 
             champ.SpellR.Text[1] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
             champ.SpellR.Text[1].TextUpdate = delegate
@@ -584,7 +584,7 @@ namespace SAwareness.Trackers
             };
             champ.SpellR.Text[1].OutLined = true;
             champ.SpellR.Text[1].Centered = true;
-            champ.SpellR.Text[1].Add();
+            champ.SpellR.Text[1].Add(4);
 
             champ.SpellSum1.Text[1] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
             champ.SpellSum1.Text[1].TextUpdate = delegate
@@ -602,7 +602,7 @@ namespace SAwareness.Trackers
             };
             champ.SpellSum1.Text[1].OutLined = true;
             champ.SpellSum1.Text[1].Centered = true;
-            champ.SpellSum1.Text[1].Add();
+            champ.SpellSum1.Text[1].Add(4);
 
             champ.SpellSum2.Text[1] = new Render.Text(0, 0, "", 16, SharpDX.Color.Orange);
             champ.SpellSum2.Text[1].TextUpdate = delegate
@@ -620,7 +620,7 @@ namespace SAwareness.Trackers
             };
             champ.SpellSum2.Text[1].OutLined = true;
             champ.SpellSum2.Text[1].Centered = true;
-            champ.SpellSum2.Text[1].Add();
+            champ.SpellSum2.Text[1].Add(4);
         }
 
         void LoadObjectsSyncSideHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
