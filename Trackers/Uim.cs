@@ -102,7 +102,7 @@ namespace SAwareness.Trackers
             };
             champ.Text.OutLined = true;
             champ.Text.Centered = true;
-            champ.Text.Add();
+            champ.Text.Add(4);
             return champ;
         }
 
@@ -142,7 +142,7 @@ namespace SAwareness.Trackers
                     {
                         return Tracker.Trackers.GetActive() && UimTracker.GetActive() && !enemy.Key.IsVisible;
                     };
-                    enemy.Value.SpriteInfo.Sprite.Add();
+                    enemy.Value.SpriteInfo.Sprite.Add(1);
                     enemy.Value.SpriteInfo.LoadingFinished = true;
                 }
             }

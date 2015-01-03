@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace SAwareness.Timers
 {
@@ -126,7 +127,7 @@ namespace SAwareness.Timers
 
             var minions =
                 ObjectManager.Get<Obj_AI_Base>()
-                    .Where(minion => !minion.IsDead && minion.IsValid && minion.Name.ToUpper().StartsWith("SRU"));
+                    .Where(minion => !minion.IsDead && minion.IsValid && (minion.Name.ToUpper().StartsWith("SRU") || minion.Name.ToUpper().StartsWith("TT_")));
             foreach (var jungleCamp in JungleCamps)
             {
                 if (!jungleCamp.Dead)
@@ -211,6 +212,12 @@ namespace SAwareness.Timers
                     }
                 }
             }
+
+            //foreach (var objectType in ObjectManager.Get<GameObject>())
+            //{                
+            //    var pos = Drawing.WorldToScreen(objectType.Position);
+            //    Drawing.DrawText(pos.X, pos.Y, Color.Blue, objectType.Name);
+            //}
         }
 
         private void UpdateCamps(int networkId, int campId/*, byte emptyType*/)
@@ -326,11 +333,27 @@ namespace SAwareness.Timers
             JungleMobs.Add(new JungleMob("SRU_BlueMini27.1.3", null, false, false, false, Utility.Map.MapType.SummonersRift));
 
             //Twisted Treeline
-            JungleMobs.Add(new JungleMob("TT_NWraith", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
-            JungleMobs.Add(new JungleMob("TT_NGolem", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
-            JungleMobs.Add(new JungleMob("TT_NWolf", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
-            JungleMobs.Add(new JungleMob("TT_Spiderboss", null, true, true, true, Utility.Map.MapType.TwistedTreeline));
-            JungleMobs.Add(new JungleMob("TT_Relic", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_Spiderboss8.1.1", null, true, true, true, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_Relic7.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+
+            JungleMobs.Add(new JungleMob("TT_NWraith1.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWraith21.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWraith21.1.3", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NGolem2.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NGolem22.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWolf3.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWolf23.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWolf23.1.3", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+
+            JungleMobs.Add(new JungleMob("TT_NWraith4.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWraith24.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWraith24.1.3", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NGolem5.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NGolem25.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWolf6.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWolf26.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            JungleMobs.Add(new JungleMob("TT_NWolf26.1.3", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
+            
 
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Order, 1, 115, 300, Utility.Map.MapType.SummonersRift,
                 new Vector3(3570, 7670, 54), new Vector3(3641.058f, 8144.426f, 1105.46f),
@@ -479,7 +502,7 @@ namespace SAwareness.Timers
                 }));
             JungleCamps.Add(new JungleCamp("heal", GameObjectTeam.Neutral, 7, 115, 90,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(7711, 6722, 60), new Vector3(7711, 6722, 60),
-                new[] { GetJungleMobByName("TT_Relic", Utility.Map.MapType.TwistedTreeline) }));
+                new[] { GetJungleMobByName("TT_Relic7.1.1", Utility.Map.MapType.TwistedTreeline) }));
             JungleCamps.Add(new JungleCamp("vilemaw", GameObjectTeam.Neutral, 8, 10 * 60, 300,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(7711, 10080, 60), new Vector3(7711, 10080, 60),
                 new[] { GetJungleMobByName("TT_Spiderboss8.1.1", Utility.Map.MapType.TwistedTreeline) }));
@@ -490,18 +513,18 @@ namespace SAwareness.Timers
                 Obj_AI_Base_OnCreate(objAiBase, new EventArgs());
             }
 
-            foreach (JungleCamp jungleCamp in JungleCamps) //Game.ClockTime BUGGED
-            {
-                if (Game.ClockTime > 30) //TODO: Reduce when Game.ClockTime got fixed
-                {
-                    jungleCamp.NextRespawnTime = 0;
-                }
-                int nextRespawnTime = jungleCamp.SpawnTime - (int)Game.ClockTime;
-                if (nextRespawnTime > 0)
-                {
-                    jungleCamp.NextRespawnTime = nextRespawnTime;
-                }
-            }
+            //foreach (JungleCamp jungleCamp in JungleCamps) //Game.ClockTime BUGGED
+            //{
+            //    if (Game.ClockTime > 30) //TODO: Reduce when Game.ClockTime got fixed
+            //    {
+            //        jungleCamp.NextRespawnTime = 0;
+            //    }
+            //    int nextRespawnTime = jungleCamp.SpawnTime - (int)Game.ClockTime;
+            //    if (nextRespawnTime > 0)
+            //    {
+            //        jungleCamp.NextRespawnTime = nextRespawnTime;
+            //    }
+            //}
         }
 
         public class JungleCamp
