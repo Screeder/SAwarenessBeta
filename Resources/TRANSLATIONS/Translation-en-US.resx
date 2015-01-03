@@ -363,8 +363,23 @@
   <data name="RANGES_TURRET_RANGE" xml:space="preserve">
     <value>Display Range</value>
   </data>
+  <data name="RANGES_VISION_CHAMPION" xml:space="preserve">
+    <value>Champion</value>
+  </data>
   <data name="RANGES_VISION_MAIN" xml:space="preserve">
     <value>Vision</value>
+  </data>
+  <data name="RANGES_VISION_ME" xml:space="preserve">
+    <value>Me</value>
+  </data>
+  <data name="RANGES_VISION_MINION" xml:space="preserve">
+    <value>Minion</value>
+  </data>
+  <data name="RANGES_VISION_TURRET" xml:space="preserve">
+    <value>Turret</value>
+  </data>
+  <data name="RANGES_VISION_WARD" xml:space="preserve">
+    <value>Ward</value>
   </data>
   <data name="TIMERS_ALTAR_MAIN" xml:space="preserve">
     <value>Altar</value>
