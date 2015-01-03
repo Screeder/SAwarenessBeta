@@ -454,7 +454,7 @@ namespace SAwareness.Timers
                 Utility.Map.MapType.SummonersRift, new Vector3(4620, 10265, -63), new Vector3(4951.034f, 10831.035f, 1027.482f),
                 new[] { GetJungleMobByName("SRU_Baron12.1.1", Utility.Map.MapType.SummonersRift) }));
 
-            JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 1, 100, 50,
+            JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 1, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(4414, 5774, 60), new Vector3(4414, 5774, 60),
                 new[]
                 {
@@ -462,14 +462,14 @@ namespace SAwareness.Timers
                     GetJungleMobByName("TT_NWraith21.1.2", Utility.Map.MapType.TwistedTreeline),
                     GetJungleMobByName("TT_NWraith21.1.3", Utility.Map.MapType.TwistedTreeline)
                 }));
-            JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Order, 2, 100, 50,
+            JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Order, 2, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(5088, 8065, 60), new Vector3(5088, 8065, 60),
                 new[]
                 {
                     GetJungleMobByName("TT_NGolem2.1.1", Utility.Map.MapType.TwistedTreeline),
                     GetJungleMobByName("TT_NGolem22.1.2", Utility.Map.MapType.TwistedTreeline)
                 }));
-            JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Order, 3, 100, 50,
+            JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Order, 3, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(6148, 5993, 60), new Vector3(6148, 5993, 60),
                 new[]
                 {
@@ -477,7 +477,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("TT_NWolf23.1.2", Utility.Map.MapType.TwistedTreeline),
                     GetJungleMobByName("TT_NWolf23.1.3", Utility.Map.MapType.TwistedTreeline)
                 }));
-            JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Chaos, 4, 100, 50,
+            JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Chaos, 4, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(11008, 5775, 60), new Vector3(11008, 5775, 60),
                 new[]
                 {
@@ -485,14 +485,14 @@ namespace SAwareness.Timers
                     GetJungleMobByName("TT_NWraith24.1.2", Utility.Map.MapType.TwistedTreeline),
                     GetJungleMobByName("TT_NWraith24.1.3", Utility.Map.MapType.TwistedTreeline)
                 }));
-            JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Chaos, 5, 100, 50,
+            JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Chaos, 5, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(10341, 8084, 60), new Vector3(10341, 8084, 60),
                 new[]
                 {
                     GetJungleMobByName("TT_NGolem5.1.1", Utility.Map.MapType.TwistedTreeline),
                     GetJungleMobByName("TT_NGolem25.1.2", Utility.Map.MapType.TwistedTreeline)
                 }));
-            JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Chaos, 6, 100, 50,
+            JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Chaos, 6, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(9239, 6022, 60), new Vector3(9239, 6022, 60),
                 new[]
                 {
