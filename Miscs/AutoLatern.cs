@@ -47,12 +47,13 @@ namespace SAwareness.Miscs
                 if (gObject.Name.Contains("ThreshLantern") && gObject.IsAlly &&
                     gObject.Position.Distance(ObjectManager.Player.ServerPosition) < 400 &&
                     !ObjectManager.Player.ChampionName.Contains("Thresh"))
-                {
-                    GamePacket gPacket =
-                        Packet.C2S.InteractObject.Encoded(
-                            new Packet.C2S.InteractObject.Struct(ObjectManager.Player.NetworkId,
-                                gObject.NetworkId));
-                    gPacket.Send();
+
+                {                    
+                    //GamePacket gPacket =
+                    //    Packet.C2S.InteractObject.Encoded(
+                    //        new Packet.C2S.InteractObject.Struct(ObjectManager.Player.NetworkId,
+                    //            gObject.NetworkId));
+                    //gPacket.Send();
                 }
             }
         }

@@ -80,6 +80,7 @@ namespace SAwareness
         public static MenuItemSettings AntiVisualScreenStealth;
         public static MenuItemSettings EloDisplayer;
         public static MenuItemSettings SmartPingImprove;
+        public static MenuItemSettings WallJump;
 
         public static MenuItemSettings AutoSmite;
         public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
@@ -1234,7 +1235,7 @@ namespace SAwareness
                 MainMenu.HealthTimer = Timers.Health.SetupMenu(MainMenu.Timers.Menu);
                 MainMenu.ImmuneTimer = Timers.Immune.SetupMenu(MainMenu.Timers.Menu);
                 MainMenu.InhibitorTimer = Timers.Inhibitor.SetupMenu(MainMenu.Timers.Menu);
-                //MainMenu.JungleTimer = Timers.Jungle.SetupMenu(MainMenu.Timers.Menu);
+                MainMenu.JungleTimer = Timers.Jungle.SetupMenu(MainMenu.Timers.Menu);
                 MainMenu.RelictTimer = Timers.Relic.SetupMenu(MainMenu.Timers.Menu);
                 MainMenu.SummonerTimer = Timers.Summoner.SetupMenu(MainMenu.Timers.Menu);
 
@@ -1268,7 +1269,7 @@ namespace SAwareness
                 MainMenu.Misc = Miscs.Misc.SetupMenu(menu);
                 //MainMenu.AntiVisualScreenStealth = Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoJump = Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.EasyRangedJungle = Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.EloDisplayer = Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu);
@@ -1284,6 +1285,7 @@ namespace SAwareness
                 //MainMenu.SmartPingImprove = Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SurrenderVote = Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.WallJump = Miscs.WallJump.SetupMenu(MainMenu.Misc.Menu);
 
                 Menu.GlobalSettings.Menu =
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));

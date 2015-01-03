@@ -312,6 +312,9 @@
   <data name="MISCS_TURNAROUND_MAIN" xml:space="preserve">
     <value>Turn Around</value>
   </data>
+  <data name="MISCS_WALLJUMP_MAIN" xml:space="preserve">
+    <value>Wall Jump</value>
+  </data>
   <data name="RANGES_ALL_COLORENEMY" xml:space="preserve">
     <value>Color Enemy</value>
   </data>
