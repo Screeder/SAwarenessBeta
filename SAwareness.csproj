@@ -107,6 +107,7 @@
     <Compile Include="Activator\AutoQSS.cs" />
     <Compile Include="Activator\AutoUlt.cs" />
     <Compile Include="Detectors\DisReconnect.cs" />
+    <Compile Include="Detectors\FoWSpellEnemy.cs" />
     <Compile Include="Detectors\Recall.cs" />
     <Compile Include="Detectors\Vision.cs" />
     <Compile Include="Detectors\Gank.cs" />

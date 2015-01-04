@@ -1014,25 +1014,25 @@ namespace SAwareness.Trackers
         private void LoadSpritesAsyncOverHeadHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            SpriteHelper.DownloadImage(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
         }
 
         void LoadSpritesAsyncSideHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            SpriteHelper.DownloadImage(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
-            SpriteHelper.DownloadImage(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
+            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
         }
 
         void Game_OnGameUpdateAsyncSprites(EventArgs args)

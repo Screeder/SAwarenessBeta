@@ -53,6 +53,7 @@ namespace SAwareness.Timers
                 foreach (HealthObject health in Healths)
                 {
                     if (health.Obj.IsValid)
+                    {
                         if (health.Obj.Health > 0)
                         {
                             health.Locked = false;
@@ -64,16 +65,16 @@ namespace SAwareness.Timers
                             health.Locked = true;
                             health.NextRespawnTime = health.RespawnTime + (int)Game.ClockTime;
                         }
-                        else
-                        {
-                            if (health.NextRespawnTime < (int)Game.ClockTime)
-                            {
-                                healthDestroyed = health;
-                            }
-                        }
+                    }
+                    if (health.NextRespawnTime < (int)Game.ClockTime && health.Locked)
+                    {
+                        healthDestroyed = health;
+                    }
                 }
-                if (healthDestroyed != null && Healths.Remove(healthDestroyed))
+                if (healthDestroyed != null)
                 {
+                    healthDestroyed.Text.Remove();
+                    Healths.Remove(healthDestroyed);
                 }
                 foreach (Obj_AI_Minion health in ObjectManager.Get<Obj_AI_Minion>())
                 {

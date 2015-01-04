@@ -409,7 +409,7 @@ namespace SAwareness
     //    //    }
     //    //}
         
-    //    public static Bitmap DownloadImage(string name, DownloadType type)
+    //    public static Bitmap DownloadImageRiot(string name, DownloadType type)
     //    {
     //        String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
     //        String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
@@ -631,7 +631,7 @@ namespace SAwareness
     //            Bitmap map;
     //            if (!cachedMaps.ContainsKey(name))
     //            {
-    //                map = DownloadImage(name, type);
+    //                map = DownloadImageRiot(name, type);
     //                cachedMaps.Add(name, (Bitmap)map.Clone());
     //            }
     //            else
@@ -840,7 +840,49 @@ namespace SAwareness
             }
         }
 
-        public static void DownloadImage(string name, DownloadType type, String subFolder)
+        public static void DownloadImageOpGg(string name, String subFolder)
+        {
+            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+            String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+            WebRequest request = null;
+            WebRequest requestSize = null;
+            request =
+            WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
+            requestSize =
+            WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
+            requestSize.Method = "HEAD";
+            if (request == null || requestSize == null)
+                return;
+            try
+            {
+                long fileSize = 0;
+                using (WebResponse resp = requestSize.GetResponse())
+                {
+                    fileSize = resp.ContentLength;
+                }
+                if (fileSize == GetFileSize(name, subFolder))
+                    return;
+                Stream responseStream;
+                using (WebResponse response = request.GetResponse())
+                using (responseStream = response.GetResponseStream())
+                {
+                    if (responseStream != null)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            responseStream.CopyTo(memoryStream);
+                            SaveImage(name, memoryStream.ToArray(), subFolder);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+            }
+        }
+
+        public static void DownloadImageRiot(string name, DownloadType type, String subFolder)
         {
             String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
             String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
@@ -937,7 +979,7 @@ namespace SAwareness
             return size;
         }
 
-        private static void SaveImage(String name, /*Bitmap*/byte[] bitmap, String subFolder)
+        public static void SaveImage(String name, /*Bitmap*/byte[] bitmap, String subFolder)
         {
             string loc = Path.Combine(new[]
             {
@@ -1101,7 +1143,7 @@ namespace SAwareness
                 Bitmap map = null;
                 if (!cachedMaps.ContainsKey(name))
                 {
-                    //map = DownloadImage(name, type);
+                    //map = DownloadImageRiot(name, type);
                     cachedMaps.Add(name, (Bitmap)map.Clone());
                 }
                 else

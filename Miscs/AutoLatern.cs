@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
+using LeagueSharp.Network.Packets;
 
 namespace SAwareness.Miscs
 {
@@ -48,7 +49,11 @@ namespace SAwareness.Miscs
                     gObject.Position.Distance(ObjectManager.Player.ServerPosition) < 400 &&
                     !ObjectManager.Player.ChampionName.Contains("Thresh"))
 
-                {                    
+                {
+                    //PKT_InteractReq packet = new PKT_InteractReq();
+                    //packet.TargetNetworkId = gObject.NetworkId;
+                    //new GamePacket(packet.Encode()).Send();
+                    //new GamePacket(new PKT_InteractReq().TargetPosition.Encode()).Send();
                     //GamePacket gPacket =
                     //    Packet.C2S.InteractObject.Encoded(
                     //        new Packet.C2S.InteractObject.Struct(ObjectManager.Player.NetworkId,

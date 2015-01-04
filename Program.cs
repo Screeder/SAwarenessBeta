@@ -39,6 +39,7 @@ namespace SAwareness
         public static MenuItemSettings RecallDetector;
         public static MenuItemSettings GankDetector;
         public static MenuItemSettings DisconnectDetector;
+        public static MenuItemSettings FoWSpellEnemyDetector;
 
         public static MenuItemSettings Health;
         public static MenuItemSettings TurretHealth;
@@ -1244,6 +1245,7 @@ namespace SAwareness
                 MainMenu.RecallDetector = Detectors.Recall.SetupMenu(MainMenu.Detector.Menu);
                 MainMenu.GankDetector = Detectors.Gank.SetupMenu(MainMenu.Detector.Menu);
                 MainMenu.DisconnectDetector = Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu);
+                MainMenu.FoWSpellEnemyDetector = Detectors.FoWSpellEnemy.SetupMenu(MainMenu.Detector.Menu);
 
                 MainMenu.Wards = Wards.Ward.SetupMenu(menu);
                 MainMenu.BushRevealer = Wards.BushRevealer.SetupMenu(MainMenu.Wards.Menu);

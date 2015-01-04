@@ -110,7 +110,7 @@ namespace SAwareness.Trackers
         {
             foreach (var enemy in _enemies)
             {
-                SpriteHelper.DownloadImage(enemy.Key.ChampionName, SpriteHelper.DownloadType.Champion, "UIM");
+                SpriteHelper.DownloadImageRiot(enemy.Key.ChampionName, SpriteHelper.DownloadType.Champion, "UIM");
             }
         }
 

@@ -123,6 +123,9 @@
   <data name="DETECTORS_DISRECONNECT_MAIN" xml:space="preserve">
     <value>Dis/Reconnect</value>
   </data>
+  <data name="DETECTORS_FOWSPELLENEMY_MAIN" xml:space="preserve">
+    <value>Fow Spell Enemy</value>
+  </data>
   <data name="DETECTORS_GANK_DISABLETIME" xml:space="preserve">
     <value>Disable Time</value>
   </data>
