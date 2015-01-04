@@ -1271,7 +1271,7 @@ namespace SAwareness
                 MainMenu.Misc = Miscs.Misc.SetupMenu(menu);
                 //MainMenu.AntiVisualScreenStealth = Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoJump = Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
+                MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.EasyRangedJungle = Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.EloDisplayer = Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu);

@@ -50,15 +50,12 @@ namespace SAwareness.Miscs
                     !ObjectManager.Player.ChampionName.Contains("Thresh"))
 
                 {
-                    //PKT_InteractReq packet = new PKT_InteractReq();
-                    //packet.TargetNetworkId = gObject.NetworkId;
-                    //new GamePacket(packet.Encode()).Send();
-                    //new GamePacket(new PKT_InteractReq().TargetPosition.Encode()).Send();
-                    //GamePacket gPacket =
-                    //    Packet.C2S.InteractObject.Encoded(
-                    //        new Packet.C2S.InteractObject.Struct(ObjectManager.Player.NetworkId,
-                    //            gObject.NetworkId));
-                    //gPacket.Send();
+                    Game.SendPacket(
+                    new PKT_InteractReq
+                    {
+                        NetworkId = ObjectManager.Player.NetworkId,
+                        TargetNetworkId = gObject.NetworkId
+                    }.Encode(), PacketChannel.C2S, PacketProtocolFlags.NoFlags);
                 }
             }
         }
