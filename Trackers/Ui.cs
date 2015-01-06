@@ -3364,7 +3364,7 @@ namespace SAwareness.Trackers
 
         private static float CalcExpBar(Obj_AI_Hero hero, int id)
         {
-            int[] Exp = { 0, 280, 660, 1140, 1720, 2400, 3180, 4060, 5040, 6120, 7300, 8580, 9960, 11440, 13020, 14700, 16480, 18360 };
+            int[] Exp = { 0, 280, 660, 1140, 1720, 2400, 3180, 4060, 5040, 6120, 7300, 8580, 9960, 11440, 13020, 14700, 16480, 18360, Int32.MaxValue };
             float neededExp = Exp[hero.Level];
             float percent = (100 / (neededExp - Exp[hero.Level - 1]) * (hero.Experience - Exp[hero.Level - 1]));
             float idPercent = (percent <= 0 || Single.IsNaN(percent) ? 0.01f : percent / 100);
