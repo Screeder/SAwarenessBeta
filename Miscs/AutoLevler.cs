@@ -433,12 +433,19 @@ namespace SAwareness.Miscs
             {
                 String output = JsonConvert.SerializeObject(sLevler);
                 Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp",
-                        "Assemblies", "Config", "SAwareness"));
-                File.WriteAllText(loc, output);
+                        "Config", "SAwareness"));
+                if (output.Contains("[]"))
+                {
+                    throw new Exception("[], your latest changes are not getting saved!");
+                }
+                else
+                {
+                    File.WriteAllText(loc, output);
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Couldn't save autolevel.conf.");
+                Console.WriteLine("Couldn't save autolevel.conf. Ex; {0}", ex);
             }
         }
 
@@ -446,7 +453,7 @@ namespace SAwareness.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "Config",
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Config",
                 "SAwareness", "autolevel.conf"
             });
             try
