@@ -243,9 +243,12 @@ namespace SAwareness.Miscs
                 SequenceLevler curLevler = null;
                 foreach (SequenceLevler levler in sLevler.ToArray())
                 {
+                    if (list.SList[list.SelectedIndex].Equals(""))
+                        continue;
                     if (levler.Name.Contains(list.SList[list.SelectedIndex]))
                     {
                         curLevler = levler;
+                        break;
                     }
                 }
                 if (curLevler != null)
