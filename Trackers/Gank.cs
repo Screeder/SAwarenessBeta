@@ -14,6 +14,7 @@ namespace SAwareness.Trackers
         public static Menu.MenuItemSettings GankTracker = new Menu.MenuItemSettings(typeof(Gank));
 
         private Dictionary<Obj_AI_Hero, InternalGankTracker> _enemies = new Dictionary<Obj_AI_Hero, InternalGankTracker>();
+        private int lastGameUpdateTime = 0;
 
         public Gank()
         {
@@ -77,8 +78,10 @@ namespace SAwareness.Trackers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             Obj_AI_Hero player = ObjectManager.Player;
             foreach (var enemy in _enemies.ToList())
             {

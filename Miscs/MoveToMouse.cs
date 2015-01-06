@@ -8,6 +8,8 @@ namespace SAwareness.Miscs
     {
         public static Menu.MenuItemSettings MoveToMouseMisc = new Menu.MenuItemSettings(typeof(MoveToMouse));
 
+        private int lastGameUpdateTime = 0;
+
         public MoveToMouse()
         {
             Game.OnGameUpdate += Game_OnGameUpdate;
@@ -35,8 +37,10 @@ namespace SAwareness.Miscs
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || !MoveToMouseMisc.GetMenuItem("SAwarenessMiscsMoveToMouseKey").GetValue<KeyBind>().Active)
+            if (!IsActive() || !MoveToMouseMisc.GetMenuItem("SAwarenessMiscsMoveToMouseKey").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
         }

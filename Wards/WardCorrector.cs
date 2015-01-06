@@ -20,6 +20,7 @@ namespace SAwareness.Wards
         private SpellSlot _latestSpellSlot = SpellSlot.Unknown;
         private WardSpot _latestWardSpot;
         private bool _wardAlreadyCorrected;
+        private int lastGameUpdateTime = 0;
 
         public WardCorrector() //Coords by DrunkenNinja
         {
@@ -397,8 +398,10 @@ namespace SAwareness.Wards
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             if (_latestWardSpot != null && _latestSpellSlot != SpellSlot.Unknown)
             {
                 if (Vector3.Distance(ObjectManager.Player.ServerPosition, _latestWardSpot.ClickPos) <= 650)

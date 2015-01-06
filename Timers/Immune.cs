@@ -14,6 +14,7 @@ namespace SAwareness.Timers
         public static Menu.MenuItemSettings ImmuneTimer = new Menu.MenuItemSettings(typeof(Immune));
 
         private static Dictionary<Ability, Render.Text> Abilities = new Dictionary<Ability, Render.Text>();
+        private int lastGameUpdateTime = 0;
 
         public Immune()
         {
@@ -86,8 +87,10 @@ namespace SAwareness.Timers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             foreach (var ability in Abilities)
             {
                 if ((ability.Key.TimeCasted + ability.Key.Delay) < Game.ClockTime)

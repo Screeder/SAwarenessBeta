@@ -18,6 +18,7 @@ namespace SAwareness.Miscs
         List<Vector3> spotsEnd = new List<Vector3>();
 
         private double flashedTime = Game.Time;
+        private int lastGameUpdateTime = 0;
 
          public FlashJuke()
         {
@@ -132,8 +133,10 @@ namespace SAwareness.Miscs
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || !FlashJukeMisc.GetMenuItem("SAwarenessMiscsFlashJukeKeyActive").GetValue<KeyBind>().Active)
+            if (!IsActive() || !FlashJukeMisc.GetMenuItem("SAwarenessMiscsFlashJukeKeyActive").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             SpellSlot spell = Activator.GetFlashSlot();
             if(ObjectManager.Player.Spellbook.CanUseSpell(spell) != SpellState.Ready)

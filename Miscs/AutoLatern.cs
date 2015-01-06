@@ -12,6 +12,7 @@ namespace SAwareness.Miscs
     class AutoLatern
     {
         public static Menu.MenuItemSettings AutoLaternMisc = new Menu.MenuItemSettings(typeof(AutoLatern));
+        private int lastGameUpdateTime = 0;
 
         public AutoLatern()
         {
@@ -40,8 +41,10 @@ namespace SAwareness.Miscs
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || !AutoLaternMisc.GetMenuItem("SAwarenessMiscsAutoLaternKey").GetValue<KeyBind>().Active)
+            if (!IsActive() || !AutoLaternMisc.GetMenuItem("SAwarenessMiscsAutoLaternKey").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             foreach (GameObject gObject in ObjectManager.Get<GameObject>())
             {

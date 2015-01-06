@@ -18,6 +18,7 @@ namespace SAwareness.Miscs
         private readonly bool _onlyEnemy;
         private readonly bool _useWard = true;
         private float _lastCast = Game.Time;
+        private int lastGameUpdateTime = 0;
 
         public AutoJump()
         {
@@ -75,8 +76,10 @@ namespace SAwareness.Miscs
         private void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || !AutoJumpMisc.GetMenuItem("SAwarenessMiscsAutoJumpKey").GetValue<KeyBind>().Active ||
-                !_jumpSpell.IsReady())
+                !_jumpSpell.IsReady() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             foreach (GameObject gObject in ObjectManager.Get<GameObject>())
             {

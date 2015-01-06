@@ -16,6 +16,7 @@ namespace SAwareness.Trackers
         public static Menu.MenuItemSettings UimTracker = new Menu.MenuItemSettings(typeof(Uim));
 
         private static Dictionary<Obj_AI_Hero, InternalUimTracker> _enemies = new Dictionary<Obj_AI_Hero, InternalUimTracker>();
+        private int lastGameUpdateTime = 0;
 
         public Uim()
         {
@@ -116,6 +117,11 @@ namespace SAwareness.Trackers
 
         void Game_OnGameUpdate(EventArgs args)
         {
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+                return;
+
+            lastGameUpdateTime = Environment.TickCount;
+
             float percentScale = (float)UimTracker.GetMenuItem("SAwarenessTrackersUimScale").GetValue<Slider>().Value / 100;
             foreach (var enemy in _enemies)
             {

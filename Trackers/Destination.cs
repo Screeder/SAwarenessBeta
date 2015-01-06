@@ -17,6 +17,8 @@ namespace SAwareness.Trackers
         private static Dictionary<Obj_AI_Hero, List<Ability>> Enemies =
             new Dictionary<Obj_AI_Hero, List<Ability>>();
 
+        private int lastGameUpdateTime = 0;
+
         public Destination()
         {
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
@@ -111,7 +113,6 @@ namespace SAwareness.Trackers
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Drawing.OnDraw -= Drawing_OnDraw;
-            
             Enemies = null;
         }
 
@@ -299,8 +300,10 @@ namespace SAwareness.Trackers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             foreach (var abilities in Enemies)
             {
                 foreach (Ability ability in abilities.Value)

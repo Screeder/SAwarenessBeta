@@ -44,6 +44,9 @@ namespace SAwareness.Trackers
         private float _scalePc = 1.0f;
         private bool _shiftActive;
 
+        private int lastGameUpdateTime = 0;
+        private int lastGameUpdateSpritesTime = 0;
+
         public Ui()
         {
             if (
@@ -1037,6 +1040,10 @@ namespace SAwareness.Trackers
 
         void Game_OnGameUpdateAsyncSprites(EventArgs args)
         {
+            if (!IsActive() || lastGameUpdateSpritesTime + new Random().Next(500, 1000) > Environment.TickCount)
+                return;
+
+            lastGameUpdateSpritesTime = Environment.TickCount;
             foreach (var enemy in _enemies)
             {
                 Game_OnGameUpdateAsyncSpritesSideHud(enemy);
@@ -3243,8 +3250,10 @@ namespace SAwareness.Trackers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + 10 > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             UpdateCds(_enemies);
             UpdateCds(_allies);

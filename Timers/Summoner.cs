@@ -15,6 +15,7 @@ namespace SAwareness.Timers
 
         private static readonly Utility.Map GMap = Utility.Map.GetMap();
         private static Dictionary<Obj_AI_Hero, SummonerObject> Summoners = new Dictionary<Obj_AI_Hero, SummonerObject>();
+        private int lastGameUpdateTime = 0;
 
         public Summoner()
         {
@@ -25,7 +26,6 @@ namespace SAwareness.Timers
         ~Summoner()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
-
             Summoners = null;
         }
 
@@ -55,8 +55,10 @@ namespace SAwareness.Timers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             if (SummonerTimer.GetActive())
             {

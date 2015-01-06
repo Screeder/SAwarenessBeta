@@ -15,6 +15,7 @@ namespace SAwareness.Timers
 
         private static readonly Utility.Map GMap = Utility.Map.GetMap();
         private static InhibitorObject _inhibitors;
+        private int lastGameUpdateTime = 0;
 
         public Inhibitor()
         {
@@ -25,7 +26,6 @@ namespace SAwareness.Timers
         ~Inhibitor()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
-
             _inhibitors = null;
         }
 
@@ -44,8 +44,10 @@ namespace SAwareness.Timers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             if (InhibitorTimer.GetActive())
             {

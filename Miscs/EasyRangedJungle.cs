@@ -52,7 +52,6 @@ namespace SAwareness.Miscs
             Utility.DrawCircle(new Vector3(11550f, 6230f, 60f), 50, System.Drawing.Color.Fuchsia);
             Utility.DrawCircle(new Vector3(7120f, 12800f, 60f), 50, System.Drawing.Color.Fuchsia);
             Utility.DrawCircle(new Vector3(10930f, 5400f, 60f), 50, System.Drawing.Color.Fuchsia);
-            //Utility.DrawCircle(new Vector3(6900f, 12400f, 60f), 50, System.Drawing.Color.Fuchsia);
         }
     }
 }

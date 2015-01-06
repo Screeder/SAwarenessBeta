@@ -14,6 +14,7 @@ namespace SAwareness.Trackers
         public static Menu.MenuItemSettings SsCallerTracker = new Menu.MenuItemSettings(typeof(SsCaller));
 
         public static Dictionary<Obj_AI_Hero, Time> Enemies = new Dictionary<Obj_AI_Hero, Time>();
+        private int lastGameUpdateTime = 0;
 
         public SsCaller()
         {
@@ -107,8 +108,10 @@ namespace SAwareness.Trackers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             foreach (var enemy in Enemies)
             {
                 UpdateTime(enemy);

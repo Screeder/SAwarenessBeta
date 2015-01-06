@@ -14,6 +14,7 @@ namespace SAwareness.Detectors
         public static Menu.MenuItemSettings GankDetector = new Menu.MenuItemSettings(typeof(Gank));
 
         private static Dictionary<Obj_AI_Hero, InternalGankDetector> Enemies = new Dictionary<Obj_AI_Hero, InternalGankDetector>();
+        private int lastGameUpdateTime = 0;
 
         public Gank()
         {
@@ -106,8 +107,10 @@ namespace SAwareness.Detectors
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             foreach (var enemy in Enemies)
             {
                 UpdateTime(enemy);

@@ -15,6 +15,7 @@ namespace SAwareness.Wards
 
         private List<PlayerInfo> _playerInfo = new List<PlayerInfo>();
         private int _lastTimeWarded;
+        private int lastGameUpdateTime = 0;
 
         public BushRevealer()
         {
@@ -47,8 +48,10 @@ namespace SAwareness.Wards
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             int time = Environment.TickCount;
 

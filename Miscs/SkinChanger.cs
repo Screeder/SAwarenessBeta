@@ -11,6 +11,7 @@ namespace SAwareness.Miscs
 
         public static Dictionary<String, String[]> Skins = new Dictionary<string, string[]>();
         private int _lastSkinId = -1;
+        private int lastGameUpdateTime = 0;
 
         static SkinChanger()
         {
@@ -1173,20 +1174,6 @@ namespace SAwareness.Miscs
             Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
-        {
-            if (!IsActive())
-                return;
-            var mode =
-                SkinChangerMisc.GetMenuItem("SAwarenessSkinChangerSkinName" + ObjectManager.Player.ChampionName)
-                    .GetValue<StringList>();
-            if (mode.SelectedIndex != _lastSkinId)
-            {
-                _lastSkinId = mode.SelectedIndex;
-                GenAndSendModelPacket(ObjectManager.Player.ChampionName, mode.SelectedIndex);
-            }
-        }
-
         ~SkinChanger()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
@@ -1207,6 +1194,22 @@ namespace SAwareness.Miscs
             SkinChangerMisc.MenuItems.Add(
                 SkinChangerMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsSkinChangerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SkinChangerMisc;
+        }
+
+        private void Game_OnGameUpdate(EventArgs args)
+        {
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+                return;
+
+            lastGameUpdateTime = Environment.TickCount;
+            var mode =
+                SkinChangerMisc.GetMenuItem("SAwarenessSkinChangerSkinName" + ObjectManager.Player.ChampionName)
+                    .GetValue<StringList>();
+            if (mode.SelectedIndex != _lastSkinId)
+            {
+                _lastSkinId = mode.SelectedIndex;
+                GenAndSendModelPacket(ObjectManager.Player.ChampionName, mode.SelectedIndex);
+            }
         }
 
         public static String[] GetSkinList(String championName)

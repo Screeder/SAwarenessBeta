@@ -16,6 +16,8 @@ namespace SAwareness.Timers
         private static readonly Utility.Map GMap = Utility.Map.GetMap();
         private static List<AltarObject> Altars = new List<AltarObject>();
 
+        private int lastGameUpdateTime = 0;
+
         public Altar()
         {
             Game.OnGameUpdate += Game_OnGameUpdate;
@@ -25,7 +27,6 @@ namespace SAwareness.Timers
         ~Altar()
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
-
             Altars = null;
         }
 
@@ -44,8 +45,10 @@ namespace SAwareness.Timers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             if (AltarTimer.GetActive())
             {

@@ -14,6 +14,7 @@ namespace SAwareness.Healths
         public static Menu.MenuItemSettings InhibitorHealth = new Menu.MenuItemSettings(typeof(Inhibitor));
 
         List<Health.HealthConf> healthConf = new List<Health.HealthConf>();
+        private int lastGameUpdateTime = 0;
 
         public Inhibitor()
         {
@@ -42,8 +43,10 @@ namespace SAwareness.Healths
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             foreach (Health.HealthConf health in healthConf.ToArray())
             {

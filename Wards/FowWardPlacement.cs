@@ -16,6 +16,8 @@ namespace SAwareness.Wards
         Dictionary<Obj_AI_Hero, List<ExpandedWardItem>> enemiesUsed = new Dictionary<Obj_AI_Hero, List<ExpandedWardItem>>();
         Dictionary<Obj_AI_Hero, List<ExpandedWardItem>> enemiesRefilled = new Dictionary<Obj_AI_Hero, List<ExpandedWardItem>>();
 
+        private int lastGameUpdateTime = 0;
+
         public class ExpandedWardItem : Ward.WardItem
         {
             public int Stacks;
@@ -74,8 +76,10 @@ namespace SAwareness.Wards
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             foreach (var enemy in enemiesUsed.ToArray())
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -20,11 +21,13 @@ namespace SAwareness.Timers
         private static List<Obj_AI_Minion> JungleMobList = new List<Obj_AI_Minion>();
         private static readonly Utility.Map GMap = Utility.Map.GetMap();
 
+        private int lastGameUpdateTime = 0;
+
         public Jungle()
         {
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
             Game.OnGameUpdate += Game_OnGameUpdate;
-            Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+            //Game.OnGameProcessPacket += Game_OnGameProcessPacket;
             InitJungleMobs();
         }
 
@@ -32,7 +35,7 @@ namespace SAwareness.Timers
         {
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Game.OnGameUpdate -= Game_OnGameUpdate;
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            //Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
 
             JungleMobs = null;
             JungleCamps = null;
@@ -118,16 +121,13 @@ namespace SAwareness.Timers
             }
         }
 
-        private int _nextTime = 0;
-
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
 
-            var minions =
-                ObjectManager.Get<Obj_AI_Base>()
-                    .Where(minion => !minion.IsDead && minion.IsValid && (minion.Name.ToUpper().StartsWith("SRU") || minion.Name.ToUpper().StartsWith("TT_")));
+            lastGameUpdateTime = Environment.TickCount;
+            var minions = ObjectManager.Get<Obj_AI_Base>().Where(minion => !minion.IsDead && minion.IsValid && (minion.Name.ToUpper().StartsWith("SRU") || minion.Name.ToUpper().StartsWith("TT_")));
             foreach (var jungleCamp in JungleCamps)
             {
                 if (!jungleCamp.Dead)
@@ -172,7 +172,7 @@ namespace SAwareness.Timers
                     }
                     if (count == 0)
                     {
-                        jungleCamp.NextRespawnTime = (int) Game.ClockTime + jungleCamp.RespawnTime;
+                        jungleCamp.NextRespawnTime = (int)Game.ClockTime + jungleCamp.RespawnTime;
                         jungleCamp.Dead = true;
                         jungleCamp.Visible = false;
                     }

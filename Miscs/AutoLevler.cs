@@ -21,6 +21,7 @@ namespace SAwareness.Miscs
         private int[] _sequence;
         private static int _useMode;
         private static List<SequenceLevler> sLevler = new List<SequenceLevler>();
+        private int lastGameUpdateTime = 0;
 
         public AutoLevler()
         {
@@ -285,8 +286,10 @@ namespace SAwareness.Miscs
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             var stringList = AutoLevlerMisc.GetMenuItem("SAwarenessMiscsAutoLevlerSMode").GetValue<StringList>();
             if (stringList.SelectedIndex == 0)

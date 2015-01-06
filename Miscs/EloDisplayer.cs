@@ -32,6 +32,9 @@ namespace SAwareness.Miscs
         private Dictionary<Obj_AI_Hero, TeamEloDisplayer> _teams = new Dictionary<Obj_AI_Hero, TeamEloDisplayer>();
 
         private bool Ranked = false;
+        private int lastGameUpdateTime = 0;
+        private int lastGameUpdateSpritesTime = 0;
+        private int lastGameUpdateTextsTime = 0;
 
         static EloDisplayer()
         {
@@ -132,8 +135,10 @@ namespace SAwareness.Miscs
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
 
             CalculatePositions(true);
             CalculatePositions(false);
@@ -141,8 +146,10 @@ namespace SAwareness.Miscs
 
         void Game_OnGameUpdateAsyncSprites(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateSpritesTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateSpritesTime = Environment.TickCount;
 
             int index = 0;
             foreach (var ally in _allies)
@@ -186,8 +193,10 @@ namespace SAwareness.Miscs
 
         void Game_OnGameUpdateAsyncTexts(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTextsTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTextsTime = Environment.TickCount;
 
             int index = 0;
             foreach (var ally in _allies)

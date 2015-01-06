@@ -14,6 +14,7 @@ namespace SAwareness.Trackers
         public static Menu.MenuItemSettings KillableTracker = new Menu.MenuItemSettings(typeof(Killable));
 
         Dictionary<Obj_AI_Hero, InternalKillable> _enemies = new Dictionary<Obj_AI_Hero, InternalKillable>();
+        private int lastGameUpdateTime = 0;
 
         public Killable() //TODO: Add more option for e.g. most damage first, add ignite spell
         {
@@ -167,8 +168,10 @@ namespace SAwareness.Trackers
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             CalculateKillable();
         }
 
