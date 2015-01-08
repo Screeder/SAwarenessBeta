@@ -3274,14 +3274,14 @@ namespace SAwareness.Trackers
                     if (champ.Value.SpellQ.Value > 0.0f ||
                         champ.Key.Spellbook.GetSpell(SpellSlot.Q).Level < 1)
                     {
-                        //champ.Value.SpellQ.Sprite[0].Sprite.GrayScale();
-                        //champ.Value.SpellQ.Sprite[1].Sprite.GrayScale();
+                        champ.Value.SpellQ.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        champ.Value.SpellQ.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellQ.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
-                        //champ.Value.SpellQ.Sprite[0].Sprite.Complement();
-                        //champ.Value.SpellQ.Sprite[1].Sprite.Complement();
+                        champ.Value.SpellQ.Sprite[0].Sprite.Color = SharpDX.Color.White;
+                        champ.Value.SpellQ.Sprite[1].Sprite.Color = SharpDX.Color.White;
                         champ.Value.SpellQ.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
@@ -3292,14 +3292,14 @@ namespace SAwareness.Trackers
                     if (champ.Value.SpellW.Value > 0.0f ||
                         champ.Key.Spellbook.GetSpell(SpellSlot.W).Level < 1)
                     {
-                        //champ.Value.SpellW.Sprite[0].Sprite.GrayScale();
-                        //champ.Value.SpellW.Sprite[1].Sprite.GrayScale();
+                        champ.Value.SpellW.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        champ.Value.SpellW.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellW.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
-                        //champ.Value.SpellW.Sprite[0].Sprite.SetSaturation(1.0f);
-                        //champ.Value.SpellW.Sprite[1].Sprite.SetSaturation(1.0f);
+                        champ.Value.SpellW.Sprite[0].Sprite.Color = SharpDX.Color.White;
+                        champ.Value.SpellW.Sprite[1].Sprite.Color = SharpDX.Color.White;
                         champ.Value.SpellW.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
@@ -3310,14 +3310,14 @@ namespace SAwareness.Trackers
                     if (champ.Value.SpellE.Value > 0.0f ||
                         champ.Key.Spellbook.GetSpell(SpellSlot.E).Level < 1)
                     {
-                        //champ.Value.SpellE.Sprite[0].Sprite.GrayScale();
-                        //champ.Value.SpellE.Sprite[1].Sprite.GrayScale();
+                        champ.Value.SpellE.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        champ.Value.SpellE.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellE.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
-                        //champ.Value.SpellE.Sprite[0].Sprite.SetSaturation(1.0f);
-                        //champ.Value.SpellE.Sprite[1].Sprite.SetSaturation(1.0f);
+                        champ.Value.SpellE.Sprite[0].Sprite.Color = SharpDX.Color.White;
+                        champ.Value.SpellE.Sprite[1].Sprite.Color = SharpDX.Color.White;
                         champ.Value.SpellE.Rectangle[1].Color = SharpDX.Color.Green;
                     }
                 }
@@ -3328,17 +3328,47 @@ namespace SAwareness.Trackers
                     if (champ.Value.SpellR.Value > 0.0f ||
                         champ.Key.Spellbook.GetSpell(SpellSlot.R).Level < 1)
                     {
-                        //champ.Value.SpellR.Sprite[0].Sprite.GrayScale();
-                        //champ.Value.SpellR.Sprite[1].Sprite.GrayScale();
+                        champ.Value.SpellR.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        champ.Value.SpellR.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellR.Rectangle[0].Color = SharpDX.Color.Red;
                         champ.Value.SpellR.Rectangle[1].Color = SharpDX.Color.Red;
                     }
                     else
                     {
-                        //champ.Value.SpellR.Sprite[0].Sprite.SetSaturation(1.0f);
-                        //champ.Value.SpellR.Sprite[1].Sprite.SetSaturation(1.0f);
+                        champ.Value.SpellR.Sprite[0].Sprite.Color = SharpDX.Color.White;
+                        champ.Value.SpellR.Sprite[1].Sprite.Color = SharpDX.Color.White;
                         champ.Value.SpellR.Rectangle[0].Color = SharpDX.Color.Green;
                         champ.Value.SpellR.Rectangle[1].Color = SharpDX.Color.Green;
+                    }
+                }
+                if (champ.Value.SpellSum1.Sprite[0] != null && champ.Value.SpellSum1.Sprite[0].Sprite != null &&
+                    champ.Value.SpellSum1.Sprite[1] != null && champ.Value.SpellSum1.Sprite[1].Sprite != null)
+                {
+                    if (champ.Value.SpellSum1.Value > 0.0f ||
+                        champ.Key.Spellbook.GetSpell(SpellSlot.Summoner1).Level < 1)
+                    {
+                        champ.Value.SpellSum1.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        champ.Value.SpellSum1.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                    }
+                    else
+                    {
+                        champ.Value.SpellSum1.Sprite[0].Sprite.Color = SharpDX.Color.White;
+                        champ.Value.SpellSum1.Sprite[1].Sprite.Color = SharpDX.Color.White;
+                    }
+                }
+                if (champ.Value.SpellSum2.Sprite[0] != null && champ.Value.SpellSum2.Sprite[0].Sprite != null &&
+                    champ.Value.SpellSum2.Sprite[1] != null && champ.Value.SpellSum2.Sprite[1].Sprite != null)
+                {
+                    if (champ.Value.SpellSum2.Value > 0.0f ||
+                        champ.Key.Spellbook.GetSpell(SpellSlot.Summoner2).Level < 1)
+                    {
+                        champ.Value.SpellSum2.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        champ.Value.SpellSum2.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                    }
+                    else
+                    {
+                        champ.Value.SpellSum2.Sprite[0].Sprite.Color = SharpDX.Color.White;
+                        champ.Value.SpellSum2.Sprite[1].Sprite.Color = SharpDX.Color.White;
                     }
                 }
             }
