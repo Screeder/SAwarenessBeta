@@ -8,6 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -842,8 +843,6 @@ namespace SAwareness
 
         public static void DownloadImageOpGg(string name, String subFolder)
         {
-            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
-            String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
             WebRequest request = null;
             WebRequest requestSize = null;
             request =
@@ -856,14 +855,18 @@ namespace SAwareness
             try
             {
                 long fileSize = 0;
-                using (WebResponse resp = requestSize.GetResponse())
+                using (var resp = (HttpWebResponse)requestSize.GetResponse())
                 {
-                    fileSize = resp.ContentLength;
+                    if (resp.StatusCode == HttpStatusCode.OK)
+                    {
+                        fileSize = resp.ContentLength;
+                    }
                 }
                 if (fileSize == GetFileSize(name, subFolder))
                     return;
                 Stream responseStream;
-                using (WebResponse response = request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
+                if(response.StatusCode == HttpStatusCode.OK)
                 using (responseStream = response.GetResponseStream())
                 {
                     if (responseStream != null)
@@ -884,8 +887,17 @@ namespace SAwareness
 
         public static void DownloadImageRiot(string name, DownloadType type, String subFolder)
         {
-            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
-            String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+            String version = "";
+            try
+            {
+                String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+                version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+                return;
+            }
             WebRequest request = null;
             WebRequest requestSize = null;
             name = ConvertNames(name);
@@ -1315,6 +1327,29 @@ namespace SAwareness
             ~SpriteInfo()
             {
                 Dispose();
+            }
+        }
+    }
+
+    internal static class Speech
+    {
+        private static SpeechSynthesizer tts = new SpeechSynthesizer();
+
+        public static void SetVolume(int volume)
+        {
+            tts.Volume = volume;
+        }
+
+        public static void SetRate(int rate)
+        {
+            tts.Rate = rate;
+        }
+
+        public static void Speak(String text)
+        {
+            if (tts.State == SynthesizerState.Ready)
+            {
+                tts.Speak(text);
             }
         }
     }
