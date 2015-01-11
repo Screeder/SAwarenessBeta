@@ -1294,8 +1294,11 @@ namespace SAwareness
                 Menu.GlobalSettings.MenuItems.Add(
                     Menu.GlobalSettings.Menu.AddItem(
                         new MenuItem("SAwarenessGlobalSettingsServerChatPingActive", "Server Chat/Ping").SetValue(false)));
+                Menu.GlobalSettings.MenuItems.Add(
+                    Menu.GlobalSettings.Menu.AddItem(
+                        new MenuItem("SAwarenessGlobalSettingsVoiceVolume", "Voice Volume").SetValue(new Slider(100, 0, 100))));
 
-                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.81"));
+                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.0.4"));
                 menu.AddToMainMenu();
             }
             catch (Exception)

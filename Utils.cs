@@ -1369,8 +1369,17 @@ namespace SAwareness
             {
                 if (speech.Value.State == SynthesizerState.Ready && !speaking)
                 {
+                    if (speech.Value.Volume !=
+                        Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsVoiceVolume")
+                            .GetValue<Slider>()
+                            .Value)
+                    {
+                        speech.Value.Volume =
+                            Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsVoiceVolume")
+                                .GetValue<Slider>()
+                                .Value;
+                    }
                     speaking = true;
-                    speech.Value.Volume = 100;
                     new Thread(() =>
                     {
                         speech.Value.Speak(text);
