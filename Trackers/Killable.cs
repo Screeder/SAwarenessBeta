@@ -24,7 +24,7 @@ namespace SAwareness.Trackers
                 int i = 0 + index;
                 if (enemy.IsEnemy)
                 {
-                    Combo nCombo = CalculateKillable(enemy);
+                    Combo nCombo = CalculateKillable(enemy, null);
                     InternalKillable killable = new InternalKillable(null, null);
                     Render.Text text = new Render.Text(new Vector2(0, 0), "", 28, SharpDX.Color.OrangeRed);
                     text.Centered = true;
@@ -76,6 +76,8 @@ namespace SAwareness.Trackers
         {
             KillableTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_KILLABLE_MAIN"), "SAwarenessTrackersKillable"));
             KillableTracker.MenuItems.Add(
+                KillableTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersKillableSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            KillableTracker.MenuItems.Add(
                 KillableTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersKillableActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return KillableTracker;
         }
@@ -84,11 +86,11 @@ namespace SAwareness.Trackers
         {
             foreach (var enemy in _enemies.ToArray())
             {
-                _enemies[enemy.Key].Combo = (CalculateKillable(enemy.Key));
+                _enemies[enemy.Key].Combo = (CalculateKillable(enemy.Key, enemy.Value));
             }
         }
 
-        private Combo CalculateKillable(Obj_AI_Hero enemy)
+        private Combo CalculateKillable(Obj_AI_Hero enemy, InternalKillable killable)
         {
             var creationItemList = new Dictionary<Item, Damage.DamageItems>();
             var creationSpellList = new List<LeagueSharp.Common.Spell>();
@@ -129,6 +131,7 @@ namespace SAwareness.Trackers
                 }
                 if (enemy.Health < enoughDmg)
                 {
+                    Speak(killable, enemy);
                     return new Combo(null, tempItemList, true);
                 }
             }
@@ -148,7 +151,10 @@ namespace SAwareness.Trackers
                 if (enemy.Health < enoughDmg)
                 {
                     if (ObjectManager.Player.Mana >= enoughMana)
+                    {
+                        Speak(killable, enemy);
                         return new Combo(tempSpellList, tempItemList, true);
+                    }
                     return new Combo(null, null, false);
                 }
             }
@@ -160,10 +166,26 @@ namespace SAwareness.Trackers
             }
             if (enemy.Health < enoughDmg)
             {
+                Speak(killable, enemy);
                 return new Combo(tempSpellList, tempItemList, true);
             }
-
+            if (killable != null)
+            {
+                killable.Spoken = false;
+            }
             return new Combo();
+        }
+
+        private void Speak(InternalKillable killable, Obj_AI_Hero hero)
+        {
+            if (killable != null)
+            {
+                if (KillableTracker.GetMenuItem("SAwarenessTrackersKillableSpeech").GetValue<bool>() && !killable.Spoken && hero.IsVisible && !hero.IsDead)
+                {
+                    Speech.Speak("Killable " + hero.ChampionName);
+                    killable.Spoken = true;
+                }
+            }
         }
 
         void Game_OnGameUpdate(EventArgs args)
@@ -179,6 +201,7 @@ namespace SAwareness.Trackers
         {
             public Combo Combo;
             public Render.Text Text;
+            public bool Spoken = false;
 
             public InternalKillable(Combo combo, Render.Text text)
             {
@@ -193,7 +216,6 @@ namespace SAwareness.Trackers
 
             public bool Killable = false;
             public List<Spell> Spells = new List<Spell>();
-
 
             public Combo(List<Spell> spells, List<Item> items, bool killable)
             {

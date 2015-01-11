@@ -38,6 +38,8 @@ namespace SAwareness.Timers
         {
             HealthTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_HEALTH_MAIN"), "SAwarenessTimersHealth"));
             HealthTimer.MenuItems.Add(
+                HealthTimer.Menu.AddItem(new MenuItem("SAwarenessTimersHealthSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            HealthTimer.MenuItems.Add(
                 HealthTimer.Menu.AddItem(new MenuItem("SAwarenessTimersHealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return HealthTimer;
         }
@@ -109,6 +111,10 @@ namespace SAwareness.Timers
                         {
                             health.Called = true;
                             Timer.PingAndCall("Heal respawns in " + time + " seconds!", health.Position);
+                            if (HealthTimer.GetMenuItem("SAwarenessTimersHealthSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak("Heal respawns in " + time + " seconds!");
+                            }
                         }
                     }
                 }

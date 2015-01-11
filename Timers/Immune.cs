@@ -18,13 +18,13 @@ namespace SAwareness.Timers
 
         public Immune()
         {
-            Abilities.Add(new Ability("zhonyas_ring_activate", 2.5f), null); //Zhonya
-            Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f), null); //Aatrox Passive
-            Abilities.Add(new Ability("LifeAura", 4f), null); //Zil und GA
-            Abilities.Add(new Ability("nickoftime_tar", 7f), null); //Zil before death
-            Abilities.Add(new Ability("eyeforaneye", 2f), null); // Kayle
-            Abilities.Add(new Ability("UndyingRage_buf", 5f), null); //Tryn
-            Abilities.Add(new Ability("EggTimer", 6f), null); //Anivia
+            Abilities.Add(new Ability("zhonyas_ring_activate", 2.5f, "Zhonyas"), null);
+            Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f, "Aatrox Passive"), null);
+            Abilities.Add(new Ability("LifeAura", 4f, "Ressurection"), null); //Zil und GA
+            Abilities.Add(new Ability("nickoftime_tar", 7f, "Zilean Ult"), null);
+            Abilities.Add(new Ability("eyeforaneye", 2f, "Kayle Ult"), null);
+            Abilities.Add(new Ability("UndyingRage_buf", 5f, "Tryndamere Ult"), null);
+            Abilities.Add(new Ability("EggTimer", 6f, "Anivia Egg"), null);
 
             foreach (var ability in Abilities.ToList())
             {
@@ -81,6 +81,8 @@ namespace SAwareness.Timers
         {
             ImmuneTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_IMMUNE_MAIN"), "SAwarenessTimersImmune"));
             ImmuneTimer.MenuItems.Add(
+                ImmuneTimer.Menu.AddItem(new MenuItem("SAwarenessTimersImmuneSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            ImmuneTimer.MenuItems.Add(
                 ImmuneTimer.Menu.AddItem(new MenuItem("SAwarenessTimersImmuneActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return ImmuneTimer;
         }
@@ -118,7 +120,20 @@ namespace SAwareness.Timers
                             ability.Key.Casted = true;
                             ability.Key.TimeCasted = (int)Game.ClockTime;
                             if (Vector3.Distance(sender.Position, hero.ServerPosition) <= 100)
+                            {
                                 ability.Key.Target = hero;
+                            }
+                            if (ImmuneTimer.GetMenuItem("SAwarenessTimersImmuneSpeech").GetValue<bool>())
+                            {
+                                if (ability.Key.Target != null)
+                                {
+                                    Speech.Speak(ability.Key.Name + " casted on " + ability.Key.Target.ChampionName);
+                                }
+                                else if (ability.Key.Owner != null)
+                                {
+                                    Speech.Speak(ability.Key.Name + " casted on " + ability.Key.Owner.ChampionName);
+                                }
+                            }
                         }
                     }
                 }
@@ -127,6 +142,7 @@ namespace SAwareness.Timers
 
         public class Ability
         {
+            public String Name;
             public bool Casted;
             public float Delay;
             public Obj_AI_Hero Owner;
@@ -135,10 +151,11 @@ namespace SAwareness.Timers
             public Obj_AI_Hero Target;
             public int TimeCasted;
 
-            public Ability(string spellName, float delay)
+            public Ability(string spellName, float delay, String name)
             {
                 SpellName = spellName;
                 Delay = delay;
+                Name = name;
             }
         }
     }

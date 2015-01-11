@@ -198,6 +198,9 @@
   <data name="GLOBAL_PING_TYPE_ONMYWAY" xml:space="preserve">
     <value>On My Way</value>
   </data>
+  <data name="GLOBAL_VOICE" xml:space="preserve">
+    <value>Voice</value>
+  </data>
   <data name="HEALTHS_HEALTH_MAIN" xml:space="preserve">
     <value>Healths</value>
   </data>

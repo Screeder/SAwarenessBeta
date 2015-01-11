@@ -39,6 +39,8 @@ namespace SAwareness.Timers
         {
             AltarTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_ALTAR_MAIN"), "SAwarenessTimersAltar"));
             AltarTimer.MenuItems.Add(
+                AltarTimer.Menu.AddItem(new MenuItem("SAwarenessTimersAltarSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            AltarTimer.MenuItems.Add(
                 AltarTimer.Menu.AddItem(new MenuItem("SAwarenessTimersAltarActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return AltarTimer;
         }
@@ -123,6 +125,10 @@ namespace SAwareness.Timers
                         {
                             altar.Called = true;
                             Timer.PingAndCall(altar.Name + " unlocks in " + time + " seconds!", altar.Obj.ServerPosition);
+                            if (AltarTimer.GetMenuItem("SAwarenessTimersAltarSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak(altar.Name + " unlocks in " + time + " seconds!");
+                            }
                         }
                     }
                 }
@@ -160,11 +166,6 @@ namespace SAwareness.Timers
             public int SpawnTime;
             public String[] UnlockNames;
             public Render.Text Text;
-
-            public AltarObject()
-            {
-
-            }
 
             public AltarObject(String name, Obj_AI_Minion obj)
             {

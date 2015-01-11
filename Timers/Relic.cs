@@ -40,6 +40,8 @@ namespace SAwareness.Timers
         {
             RelicTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_RELIC_MAIN"), "SAwarenessTimersRelic"));
             RelicTimer.MenuItems.Add(
+                RelicTimer.Menu.AddItem(new MenuItem("SAwarenessTimersRelicSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            RelicTimer.MenuItems.Add(
                 RelicTimer.Menu.AddItem(new MenuItem("SAwarenessTimersRelicActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return RelicTimer;
         }
@@ -109,6 +111,10 @@ namespace SAwareness.Timers
                         {
                             relic.Called = true;
                             Timer.PingAndCall(relic.Name + " respawns in " + time + " seconds!", relic.MinimapPosition);
+                            if (RelicTimer.GetMenuItem("SAwarenessTimersRelicSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak(relic.Name + " respawns in " + time + " seconds!");
+                            }
                         }
                     }
                 }
@@ -118,10 +124,12 @@ namespace SAwareness.Timers
         public void InitRelicObjects()
         {
             //Crystal Scar
-            Relics.Add(new RelicObject("Relic",
+            Relics.Add(new RelicObject(
+                ObjectManager.Player.Team == GameObjectTeam.Order ? "Relic Green" : "Relic Red",
                 ObjectManager.Player.Team == GameObjectTeam.Order ? "Odin_Prism_Green.troy" : "Odin_Prism_Red.troy",
                 GameObjectTeam.Order, null, 180, 180, new Vector3(5500, 6500, 60), new Vector3(5500, 6500, 60)));
-            Relics.Add(new RelicObject("Relic",
+            Relics.Add(new RelicObject(
+                ObjectManager.Player.Team == GameObjectTeam.Chaos ? "Relic Green" : "Relic Red",
                 ObjectManager.Player.Team == GameObjectTeam.Chaos ? "Odin_Prism_Green.troy" : "Odin_Prism_Red.troy",
                 GameObjectTeam.Chaos, null, 180, 180, new Vector3(7550, 6500, 60), new Vector3(7550, 6500, 60)));
 

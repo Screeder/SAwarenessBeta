@@ -53,6 +53,8 @@ namespace SAwareness.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
             RecallDetector.MenuItems.Add(
+                RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            RecallDetector.MenuItems.Add(
                 RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return RecallDetector;
         }
@@ -119,6 +121,10 @@ namespace SAwareness.Detectors
                                 Game.Say(obj.ChampionName + " {0} with {1} hp {2}({3})", text, (int)obj.Health,
                                     color, percentHealth);
                             }
+                            if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak(obj.ChampionName + " " + text);
+                            }
                         }
                         else if (recallEx.Status == Packet.S2C.Teleport.Status.Finish)
                         {
@@ -143,6 +149,10 @@ namespace SAwareness.Detectors
                                 Game.Say(obj.ChampionName + " {0} with {1} hp {2}({3})", text,
                                     (int)obj.Health, color, percentHealth);
                             }
+                            if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak(obj.ChampionName + " " + text);
+                            }
                         }
                         else
                         {
@@ -161,6 +171,10 @@ namespace SAwareness.Detectors
                                     "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
                                 Game.Say(obj.ChampionName + " canceled with {0} hp", (int)obj.Health);
+                            }
+                            if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak(obj.ChampionName + " canceled");
                             }
                         }
                         return;

@@ -76,6 +76,8 @@ namespace SAwareness.Trackers
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerCircleActive", Language.GetString("TRACKERS_SSCALLER_CIRCLE_ACTIVE")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SsCallerTracker;
         }
@@ -108,7 +110,7 @@ namespace SAwareness.Trackers
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(10, 50) > Environment.TickCount)
                 return;
 
             lastGameUpdateTime = Environment.TickCount;
@@ -159,6 +161,10 @@ namespace SAwareness.Trackers
                     Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say("ss {0}", hero.ChampionName);
+                }
+                if (SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerSpeech").GetValue<bool>())
+                {
+                    Speech.Speak("Miss " + hero.ChampionName);
                 }
                 enemy.Value.LastTimeCalled = (int)Game.Time;
                 enemy.Value.Called = true;

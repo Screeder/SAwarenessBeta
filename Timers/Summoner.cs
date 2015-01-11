@@ -38,6 +38,8 @@ namespace SAwareness.Timers
         {
             SummonerTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SUMMONER_MAIN"), "SAwarenessTimersSummoner"));
             SummonerTimer.MenuItems.Add(
+                SummonerTimer.Menu.AddItem(new MenuItem("SAwarenessTimersSummonerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            SummonerTimer.MenuItems.Add(
                 SummonerTimer.Menu.AddItem(new MenuItem("SAwarenessTimersSummonerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SummonerTimer;
         }
@@ -138,6 +140,10 @@ namespace SAwareness.Timers
                             }
                             text = text + " " + Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value + " sec";
                             Timer.PingAndCall(text, new Vector3(), true, false);
+                            if (SummonerTimer.GetMenuItem("SAwarenessTimersSummonerSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak(text + "onds");
+                            }
                         }
                     }
                 }

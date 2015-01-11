@@ -25,6 +25,7 @@ namespace SAwareness.Detectors
                     Render.Text text = new Render.Text(new Vector2(0, 0), "Enemy jungler approaching", 28, Color.Red);
                     text.PositionUpdate = delegate
                     {
+                        Speech.Speak("Enemy jungler approaching");
                         return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
                     };
                     text.VisibleCondition = sender =>
@@ -101,6 +102,8 @@ namespace SAwareness.Detectors
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankShowJungler", Language.GetString("DETECTORS_GANK_SHOWJUNGLER")).SetValue(false)));
             GankDetector.MenuItems.Add(
+                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return GankDetector;
         }
@@ -157,7 +160,11 @@ namespace SAwareness.Detectors
             {
                 Game.Say("Gank: {0}", hero.ChampionName);
             }
-
+            if (GankDetector.GetMenuItem("SAwarenessDetectorsGankVoice").GetValue<bool>())
+            {
+                Speech.Speak("Gank: " + hero.ChampionName);
+            }
+            
             //TODO: Check for Teleport etc.                    
         }
 

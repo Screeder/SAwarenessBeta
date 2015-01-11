@@ -38,6 +38,8 @@ namespace SAwareness.Timers
         {
             InhibitorTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_INHIBITOR_MAIN"), "SAwarenessTimersInhibitor"));
             InhibitorTimer.MenuItems.Add(
+                InhibitorTimer.Menu.AddItem(new MenuItem("SAwarenessTimersInhibitorSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            InhibitorTimer.MenuItems.Add(
                 InhibitorTimer.Menu.AddItem(new MenuItem("SAwarenessTimersInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return InhibitorTimer;
         }
@@ -87,6 +89,10 @@ namespace SAwareness.Timers
                         {
                             inhibitor.Called = true;
                             Timer.PingAndCall("Inhibitor respawns in " + time + " seconds!", inhibitor.Obj.Position);
+                            if (InhibitorTimer.GetMenuItem("SAwarenessTimersInhibitorSpeech").GetValue<bool>())
+                            {
+                                Speech.Speak("Inhibitor respawns in " + time + " seconds!");
+                            }
                         }
                     }
                 }

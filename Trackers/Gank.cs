@@ -72,6 +72,8 @@ namespace SAwareness.Trackers
             GankTracker.MenuItems.Add(
                GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankPing", Language.GetString("TRACKERS_GANK_PING")).SetValue(false)));
             GankTracker.MenuItems.Add(
+                GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            GankTracker.MenuItems.Add(
                 GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return GankTracker;
         }
@@ -137,11 +139,19 @@ namespace SAwareness.Trackers
                 else if (enemy.Key.Health/enemy.Key.MaxHealth < 0.1)
                 {
                     _enemies[enemy.Key].Line.Color = Color.Red;
+                    if (!_enemies[enemy.Key].Pinged)
+                    {
+                        if (GankTracker.GetMenuItem("SAwarenessTrackersGankVoice").GetValue<bool>())
+                        {
+                            Speech.Speak("Gankable " + enemy.Key.ChampionName);
+                        }
+                    }
                     if (!_enemies[enemy.Key].Pinged && GankTracker.GetMenuItem("SAwarenessTrackersGankPing").GetValue<bool>())
                     {
                         Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(enemy.Key.ServerPosition[0],
                             enemy.Key.ServerPosition[1], 0, 0, Packet.PingType.Normal)).Process();
                         _enemies[enemy.Key].Pinged = true;
+                        
                     }
                 }
                 else if (enemy.Key.Health / enemy.Key.MaxHealth > 0.1)

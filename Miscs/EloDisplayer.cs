@@ -31,7 +31,6 @@ namespace SAwareness.Miscs
         private Dictionary<Obj_AI_Hero, ChampionEloDisplayer> _enemies = new Dictionary<Obj_AI_Hero, ChampionEloDisplayer>();
         private Dictionary<Obj_AI_Hero, TeamEloDisplayer> _teams = new Dictionary<Obj_AI_Hero, TeamEloDisplayer>();
 
-        private bool Ranked = false;
         private int lastGameUpdateTime = 0;
         private int lastGameUpdateSpritesTime = 0;
         private int lastGameUpdateTextsTime = 0;
@@ -57,21 +56,25 @@ namespace SAwareness.Miscs
                 return;
 
             int index = 0;
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
-            {
-                if(hero.Name.ToLower().Contains("bot"))
-                    continue;
+            //foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+            //{
+            //    if(hero.Name.ToLower().Contains("bot"))
+            //        continue;
 
-                if (hero.IsEnemy)
-                {
-                    _enemies.Add(hero, new ChampionEloDisplayer());
-                }
-                else
-                {
-                    _allies.Add(hero, new ChampionEloDisplayer());
-                }
-                //GetSummonerInformations(hero, index);
-                index++;
+            //    if (hero.IsEnemy)
+            //    {
+            //        _enemies.Add(hero, new ChampionEloDisplayer());
+            //    }
+            //    else
+            //    {
+            //        _allies.Add(hero, new ChampionEloDisplayer());
+            //    }
+            //    index++;
+            //}
+            for (int i = 0; i < 1; i++)
+            {
+                _enemies.Add(ObjectManager.Player, new ChampionEloDisplayer());
+                _allies.Add(ObjectManager.Player, new ChampionEloDisplayer());
             }
             
             Game.OnGameUpdate += Game_OnGameUpdateAsyncSprites;
@@ -127,7 +130,15 @@ namespace SAwareness.Miscs
                     hero.Value.SummonerIcon.Position = new Vector2(MainFrame.Sprite.X + 70, MainFrame.Sprite.Y + yOffset + (index * hero.Value.SummonerIcon.Sprite.Sprite.Height));
                     hero.Value.SummonerName.Position = new Vector2(hero.Value.SummonerIcon.Position.X + hero.Value.SummonerIcon.Sprite.Sprite.Width + 10, hero.Value.SummonerIcon.Position.Y);
                     hero.Value.ChampionName.Position = new Vector2(hero.Value.SummonerName.Position.X, hero.Value.SummonerName.Position.Y + textFontSize);
-                    hero.Value.Divison.Position = new Vector2(hero.Value.SummonerName.Position.X + 125, hero.Value.SummonerName.Position.Y + textFontSize);
+                    hero.Value.Divison.Position = new Vector2(hero.Value.SummonerName.Position.X + 150, hero.Value.SummonerName.Position.Y + textFontSize / 2);
+                    hero.Value.RankedStatistics.Position = new Vector2(hero.Value.Divison.Position.X + 150, hero.Value.Divison.Position.Y - textFontSize / 2);
+                    hero.Value.MMR.Position = new Vector2(hero.Value.RankedStatistics.Position.X, hero.Value.RankedStatistics.Position.Y + textFontSize);
+                    hero.Value.RecentStatistics.Position = new Vector2(hero.Value.MMR.Position.X + 150, hero.Value.MMR.Position.Y - textFontSize);
+                    hero.Value.ChampionGames.Position = new Vector2(hero.Value.RecentStatistics.Position.X, hero.Value.RecentStatistics.Position.Y + textFontSize);
+                    hero.Value.OverallKDA.Position = new Vector2(hero.Value.ChampionGames.Position.X + 150, hero.Value.ChampionGames.Position.Y - textFontSize);
+                    hero.Value.ChampionKDA.Position = new Vector2(hero.Value.OverallKDA.Position.X, hero.Value.OverallKDA.Position.Y + textFontSize);
+                    hero.Value.Masteries.Position = new Vector2(hero.Value.ChampionKDA.Position.X + 150, hero.Value.ChampionKDA.Position.Y - textFontSize / 2);
+                    hero.Value.Runes.Position = new Vector2(hero.Value.Masteries.Position.X + 150, hero.Value.Masteries.Position.Y);
                 }
                 index++;
             }
@@ -184,11 +195,33 @@ namespace SAwareness.Miscs
                 };
                 champ.SummonerIcon.Sprite.Sprite.VisibleCondition = delegate
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
                 };
                 champ.SummonerIcon.Sprite.Sprite.Add(2);
                 champ.SummonerIcon.Sprite.LoadingFinished = true;
             }
+
+            //if (!summonerIcon.Equals("") && (champ.MasteriesSprite == null || champ.MasteriesSprite.Sprite == null || !champ.MasteriesSprite.Sprite.DownloadFinished))
+            //{
+            //    SpriteHelper.LoadTexture(summonerIcon, ref champ.MasteriesSprite.Sprite, @"EloDisplayer\");
+            //}
+            //if (champ.MasteriesSprite != null && champ.MasteriesSprite.Sprite != null && champ.MasteriesSprite.Sprite.DownloadFinished && !champ.MasteriesSprite.Sprite.LoadingFinished)
+            //{
+            //    champ.MasteriesSprite.Sprite.Sprite.Scale = new Vector2(0.35f, 0.35f);
+            //    champ.MasteriesSprite.Sprite.Sprite.PositionUpdate = delegate
+            //    {
+            //        return champ.MasteriesSprite.Position;
+            //    };
+            //    champ.MasteriesSprite.Sprite.Sprite.VisibleCondition = delegate
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.MasteriesSprite.Sprite.Sprite.Add(2);
+            //    champ.MasteriesSprite.Sprite.LoadingFinished = true;
+            //}
+            
         }
 
         void Game_OnGameUpdateAsyncTexts(EventArgs args)
@@ -233,12 +266,165 @@ namespace SAwareness.Miscs
                 };
                 champ.Divison.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
                 };
                 champ.Divison.Text.OutLined = true;
                 champ.Divison.Text.Add(4);
                 champ.Divison.FinishedLoading = true;
             }
+
+            if (champ.RankedStatistics.FinishedLoading != true)
+            {
+                champ.RankedStatistics.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                champ.RankedStatistics.Text.TextUpdate = delegate
+                {
+                    if (!champ.RankedStatistics.WebsiteContent.Equals(""))
+                    {
+                        return champ.RankedStatistics.WebsiteContent;
+                    }
+                    return "";
+                };
+                champ.RankedStatistics.Text.PositionUpdate = delegate
+                {
+                    return champ.RankedStatistics.Position;
+                };
+                champ.RankedStatistics.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+                };
+                champ.RankedStatistics.Text.OutLined = true;
+                champ.RankedStatistics.Text.Add(4);
+                champ.RankedStatistics.FinishedLoading = true;
+            }
+
+            if (champ.MMR.FinishedLoading != true)
+            {
+                champ.MMR.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                champ.MMR.Text.TextUpdate = delegate
+                {
+                    if (!champ.MMR.WebsiteContent.Equals(""))
+                    {
+                        return champ.MMR.WebsiteContent;
+                    }
+                    return "";
+                };
+                champ.MMR.Text.PositionUpdate = delegate
+                {
+                    return champ.MMR.Position;
+                };
+                champ.MMR.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+                };
+                champ.MMR.Text.OutLined = true;
+                champ.MMR.Text.Add(4);
+                champ.MMR.FinishedLoading = true;
+            }
+
+            if (champ.RecentStatistics.FinishedLoading != true)
+            {
+                champ.RecentStatistics.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                champ.RecentStatistics.Text.TextUpdate = delegate
+                {
+                    if (!champ.RecentStatistics.WebsiteContent.Equals(""))
+                    {
+                        return champ.RecentStatistics.WebsiteContent;
+                    }
+                    return "";
+                };
+                champ.RecentStatistics.Text.PositionUpdate = delegate
+                {
+                    return champ.RecentStatistics.Position;
+                };
+                champ.RecentStatistics.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+                };
+                champ.RecentStatistics.Text.OutLined = true;
+                champ.RecentStatistics.Text.Add(4);
+                champ.RecentStatistics.FinishedLoading = true;
+            }
+
+            if (champ.ChampionGames.FinishedLoading != true)
+            {
+                champ.ChampionGames.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                champ.ChampionGames.Text.TextUpdate = delegate
+                {
+                    if (!champ.ChampionGames.WebsiteContent.Equals(""))
+                    {
+                        return champ.ChampionGames.WebsiteContent;
+                    }
+                    return "";
+                };
+                champ.ChampionGames.Text.PositionUpdate = delegate
+                {
+                    return champ.ChampionGames.Position;
+                };
+                champ.ChampionGames.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+                };
+                champ.ChampionGames.Text.OutLined = true;
+                champ.ChampionGames.Text.Add(4);
+                champ.ChampionGames.FinishedLoading = true;
+            }
+
+            if (champ.OverallKDA.FinishedLoading != true)
+            {
+                champ.OverallKDA.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                champ.OverallKDA.Text.TextUpdate = delegate
+                {
+                    if (!champ.OverallKDA.WebsiteContent.Equals(""))
+                    {
+                        return champ.OverallKDA.WebsiteContent;
+                    }
+                    return "";
+                };
+                champ.OverallKDA.Text.PositionUpdate = delegate
+                {
+                    return champ.OverallKDA.Position;
+                };
+                champ.OverallKDA.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+                };
+                champ.OverallKDA.Text.OutLined = true;
+                champ.OverallKDA.Text.Add(4);
+                champ.OverallKDA.FinishedLoading = true;
+            }
+
+            if (champ.ChampionKDA.FinishedLoading != true)
+            {
+                champ.ChampionKDA.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                champ.ChampionKDA.Text.TextUpdate = delegate
+                {
+                    if (!champ.ChampionKDA.WebsiteContent.Equals(""))
+                    {
+                        return champ.ChampionKDA.WebsiteContent;
+                    }
+                    return "";
+                };
+                champ.ChampionKDA.Text.PositionUpdate = delegate
+                {
+                    return champ.ChampionKDA.Position;
+                };
+                champ.ChampionKDA.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+                };
+                champ.ChampionKDA.Text.OutLined = true;
+                champ.ChampionKDA.Text.Add(4);
+                champ.ChampionKDA.FinishedLoading = true;
+            }
+
+            
         }
 
         private void LoadObjectsSync()
@@ -272,10 +458,10 @@ namespace SAwareness.Miscs
             };
             champ.SummonerName.Text.VisibleCondition = sender =>
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
             };
             champ.SummonerName.Text.OutLined = true;
-            //champ.SummonerName.Text.Centered = true;
             champ.SummonerName.Text.Add(4);
 
             champ.ChampionName.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
@@ -289,23 +475,57 @@ namespace SAwareness.Miscs
             };
             champ.ChampionName.Text.VisibleCondition = sender =>
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
             };
             champ.ChampionName.Text.OutLined = true;
-            //champ.ChampionName.Text.Centered = true;
             champ.ChampionName.Text.Add(4);
+
+            champ.Masteries.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            champ.Masteries.Text.TextUpdate = delegate
+            {
+                return GetMasteries(hero);
+            };
+            champ.Masteries.Text.PositionUpdate = delegate
+            {
+                return champ.Masteries.Position;
+            };
+            champ.Masteries.Text.VisibleCondition = sender =>
+            {
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+            };
+            champ.Masteries.Text.OutLined = true;
+            champ.Masteries.Text.Add(4);
+
+            champ.Runes.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            champ.Runes.Text.TextUpdate = delegate
+            {
+                return "Click here!";
+            };
+            champ.Runes.Text.PositionUpdate = delegate
+            {
+                return champ.Runes.Position;
+            };
+            champ.Runes.Text.VisibleCondition = sender =>
+            {
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                        && champ.IsFinished();
+            };
+            champ.Runes.Text.OutLined = true;
+            champ.Runes.Text.Add(4);
         }
 
         private void LoadSpritesAsync()
         {
             foreach (var ally in _allies)
             {
-                ally.Value.SummonerIcon.WebsiteContent = GetSummonerIcon(ally.Key);
+                ally.Value.SummonerIcon.WebsiteContent = GetSummonerIcon(ally.Key, ally.Value);
                 SpriteHelper.DownloadImageOpGg(ally.Value.SummonerIcon.WebsiteContent, @"EloDisplayer\");
             }
             foreach (var enemy in _enemies)
             {
-                enemy.Value.SummonerIcon.WebsiteContent = GetSummonerIcon(enemy.Key);
+                enemy.Value.SummonerIcon.WebsiteContent = GetSummonerIcon(enemy.Key, enemy.Value);
                 SpriteHelper.DownloadImageOpGg(enemy.Value.SummonerIcon.WebsiteContent, @"EloDisplayer\");
             }
         }
@@ -314,284 +534,70 @@ namespace SAwareness.Miscs
         {
             foreach (var ally in _allies)
             {
-                ally.Value.Divison.WebsiteContent = GetDivision(ally.Key);
+                ally.Value.Divison.WebsiteContent = GetDivision(ally.Key, ally.Value, ref ally.Value.Ranked);
+                ally.Value.RankedStatistics.WebsiteContent = GetRankedStatistics(ally.Key, ally.Value, ally.Value.Ranked);
+                ally.Value.MMR.WebsiteContent = GetMmr(ally.Key, ally.Value.Ranked);
+                ally.Value.RecentStatistics.WebsiteContent = GetRecentStatistics(ally.Key, ally.Value);
+                ally.Value.ChampionGames.WebsiteContent = GetChampionGamesLastSeason(ally.Key, ally.Value, ally.Value.Ranked);
+                if (ally.Value.ChampionGames.WebsiteContent.Equals("0/0"))
+                {
+                    ally.Value.ChampionGames.WebsiteContent = GetChampionGamesNormal(ally.Key, ally.Value);
+                }
+                ally.Value.OverallKDA.WebsiteContent = GetOverallKDA(ally.Key, ally.Value);
+                ally.Value.ChampionKDA.WebsiteContent = GetChampionKDALastSeason(ally.Key, ally.Value, ally.Value.Ranked);
+                if (ally.Value.ChampionKDA.WebsiteContent.Equals("0/0/0"))
+                {
+                    ally.Value.ChampionKDA.WebsiteContent = GetChampionKDANormal(ally.Key, ally.Value);
+                }
             }
             foreach (var enemy in _enemies)
             {
-                enemy.Value.Divison.WebsiteContent = GetDivision(enemy.Key);
+                enemy.Value.Divison.WebsiteContent = GetDivision(enemy.Key, enemy.Value, ref enemy.Value.Ranked);
+                enemy.Value.RankedStatistics.WebsiteContent = GetRankedStatistics(enemy.Key, enemy.Value, enemy.Value.Ranked);
+                enemy.Value.MMR.WebsiteContent = GetMmr(enemy.Key, enemy.Value.Ranked);
+                enemy.Value.RecentStatistics.WebsiteContent = GetRecentStatistics(enemy.Key, enemy.Value);
+                enemy.Value.ChampionGames.WebsiteContent = GetChampionGamesLastSeason(enemy.Key, enemy.Value, enemy.Value.Ranked);
+                if (enemy.Value.ChampionGames.WebsiteContent.Equals("0/0"))
+                {
+                    enemy.Value.ChampionGames.WebsiteContent = GetChampionGamesNormal(enemy.Key, enemy.Value);
+                }
+                enemy.Value.OverallKDA.WebsiteContent = GetOverallKDA(enemy.Key, enemy.Value);
+                enemy.Value.ChampionKDA.WebsiteContent = GetChampionKDALastSeason(enemy.Key, enemy.Value, enemy.Value.Ranked);
+                if (enemy.Value.ChampionKDA.WebsiteContent.Equals("0/0/0"))
+                {
+                    enemy.Value.ChampionKDA.WebsiteContent = GetChampionKDANormal(enemy.Key, enemy.Value);
+                }
             }
         }
 
-        private void GetSummonerInformations(Obj_AI_Hero hero, int index) //TODO: Get Positions
-        {
-            string website = GetLolWebSiteContentOverview(hero);
-
-            //String summonerIcon = GetSummonerIcon(hero);
-            //SpriteHelper.DownloadImageOpGg(summonerIcon, @"EloDisplayer\");
-            //SummonerIcon[index].Sprite = new SpriteHelper.SpriteInfo();
-            //SpriteHelper.LoadTexture(summonerIcon, ref SummonerIcon[index], @"EloDisplayer\");
-            //SummonerIcon[index].Sprite.Scale = new Vector2(0.4f, 0.4f);
-            //SummonerIcon[index].Sprite.PositionUpdate = delegate
-            //{
-            //    return new Vector2(MainFrame.Sprite.X + 80, MainFrame.Sprite.Y + 115);
-            //};
-            //SummonerIcon[index].Sprite.VisibleCondition = delegate
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
-            //};
-            //SummonerIcon[index].Sprite.Add(2);
-
-            //ChampionName[index] = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-            //ChampionName[index].TextUpdate = delegate
-            //{
-            //    return hero.ChampionName;
-            //};
-            //ChampionName[index].PositionUpdate = delegate
-            //{
-            //    return new Vector2(MainFrame.Sprite.X + 200, MainFrame.Sprite.Y + 150);
-            //};
-            //ChampionName[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
-            //};
-            //ChampionName[index].OutLined = true;
-            //ChampionName[index].Centered = true;
-            //ChampionName[index].Add(4);
-
-            //SummonerName[index] = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-            //SummonerName[index].TextUpdate = delegate
-            //{
-            //    return hero.Name;
-            //};
-            //SummonerName[index].PositionUpdate = delegate
-            //{
-            //    return new Vector2(MainFrame.Sprite.X + 200, MainFrame.Sprite.Y + 170);
-            //};
-            //SummonerName[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
-            //};
-            //SummonerName[index].OutLined = true;
-            //SummonerName[index].Centered = true;
-            //SummonerName[index].Add(4);
-
-            //Divison[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //Divison[index].TextUpdate = delegate
-            //{
-            //    return GetDivision(hero);
-            //};
-            ////Divison[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //Divison[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //Divison[index].OutLined = true;
-            //Divison[index].Centered = true;
-            //Divison[index].Add();
-
-            //RankedStatistics[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //RankedStatistics[index].TextUpdate = delegate
-            //{
-            //    return GetRankedStatistics(hero);
-            //};
-            ////RankedStatistics[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //RankedStatistics[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //RankedStatistics[index].OutLined = true;
-            //RankedStatistics[index].Centered = true;
-            //RankedStatistics[index].Add();
-
-            //RecentStatistics[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //RecentStatistics[index].TextUpdate = delegate
-            //{
-            //    return GetRecentStatistics(hero);
-            //};
-            ////RecentStatistics[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //RecentStatistics[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //RecentStatistics[index].OutLined = true;
-            //RecentStatistics[index].Centered = true;
-            //RecentStatistics[index].Add();
-
-            //MMR[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //MMR[index].TextUpdate = delegate
-            //{
-            //    return GetMmr(hero);
-            //};
-            ////MMR[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //MMR[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //MMR[index].OutLined = true;
-            //MMR[index].Centered = true;
-            //MMR[index].Add();
-
-            //Masteries[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //Masteries[index].TextUpdate = delegate
-            //{
-            //    return GetMasteries(hero);
-            //};
-            ////Masteries[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //Masteries[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //Masteries[index].OutLined = true;
-            //Masteries[index].Centered = true;
-            //Masteries[index].Add();
-
-            //Runes[index] = new Render.Text(0, 0, "Click here", 14, SharpDX.Color.Orange);
-            //Runes[index].TextUpdate = delegate
-            //{
-            //    return GetRunes(hero);
-            //};
-            ////Runes[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //Runes[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //Runes[index].OutLined = true;
-            //Runes[index].Centered = true;
-            //Runes[index].Add();
-
-            //OverallKDA[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //OverallKDA[index].TextUpdate = delegate
-            //{
-            //    return GetOverallKDA(hero);
-            //};
-            ////OverallKDA[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //OverallKDA[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //OverallKDA[index].OutLined = true;
-            //OverallKDA[index].Centered = true;
-            //OverallKDA[index].Add();
-
-            //ChampionKDA[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //ChampionKDA[index].TextUpdate = delegate
-            //{
-            //    if (GetChampionKDALastSeason(hero).Equals(""))
-            //        return GetChampionKDANormal(hero);
-            //    return GetChampionKDALastSeason(hero);
-            //};
-            ////ChampionKDA[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //ChampionKDA[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //ChampionKDA[index].OutLined = true;
-            //ChampionKDA[index].Centered = true;
-            //ChampionKDA[index].Add();
-
-            //ChampionGames[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //ChampionGames[index].TextUpdate = delegate
-            //{
-            //    if (GetChampionGamesLastSeason(hero).Equals(""))
-            //        return GetChampionGamesNormal(hero);
-            //    return GetChampionGamesLastSeason(hero);
-            //};
-            ////ChampionGames[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //ChampionGames[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //ChampionGames[index].OutLined = true;
-            //ChampionGames[index].Centered = true;
-            //ChampionGames[index].Add();
-
-            //ChampionWinRate[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //ChampionWinRate[index].TextUpdate = delegate
-            //{
-            //    return GetChampionGamesLastSeason(hero);
-            //};
-            ////ChampionWinRate[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //ChampionWinRate[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //ChampionWinRate[index].OutLined = true;
-            //ChampionWinRate[index].Centered = true;
-            //ChampionWinRate[index].Add();
-
-            ///////Extra windows
-
-            //RunesSpriteText[index] = new Render.Text(0, 0, "", 14, SharpDX.Color.Orange);
-            //RunesSpriteText[index].TextUpdate = delegate
-            //{
-            //    return GetRunes(hero);
-            //};
-            ////RunesSpriteText[index].PositionUpdate = delegate
-            ////{
-            ////    return new Vector2(champ.ManaBar.CoordsSideBar.Width, champ.ManaBar.CoordsSideBar.Height);
-            ////};
-            //RunesSpriteText[index].VisibleCondition = sender =>
-            //{
-            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
-            //};
-            //RunesSpriteText[index].OutLined = true;
-            //RunesSpriteText[index].Centered = true;
-            //RunesSpriteText[index].Add();
-        }
-
-        private String GetLolWebSiteContent(String webSite)
+        public static String GetLolWebSiteContent(String webSite)
         {
             return GetLolWebSiteContent(webSite, null);
         }
 
-        private String GetLolWebSiteContent(String webSite, String param)
+        public static String GetLolWebSiteContent(String webSite, String param)
         {
             return GetWebSiteContent(GetWebSite() + webSite, param);
         }
 
-        private String GetWebSiteContent(String webSite, String param = null)
+        public static String GetWebSiteContent(String webSite, String param = null)
         {
             string website = "";
             var request = (HttpWebRequest)WebRequest.Create(webSite);
+            TryAddCookie(request, new Cookie("customLocale", "en_US", "", GetWebSiteWithoutHttp()));
             if (param != null)
             {
-                Byte[] bytes = GetBytes(param);
+                Byte[] bytes = Encoding.ASCII.GetBytes(param);//GetBytes(param);
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.ContentLength = bytes.Length;
-                Stream dataStream = request.GetRequestStream();
-                dataStream.Write(bytes, 0, bytes.Length);
-                dataStream.Close();
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(bytes, 0, bytes.Length);
+                }
+                //Stream dataStream = request.GetRequestStream();
+                //dataStream.Write(bytes, 0, bytes.Length);
+                //dataStream.Close();
             }
             try
             {
@@ -606,7 +612,7 @@ namespace SAwareness.Miscs
                             {
                                 using (StreamReader readStream = new StreamReader(receiveStream))
                                 {
-                                    website = readStream.ReadToEnd();
+                                    website = @readStream.ReadToEnd();
                                 }
                             }
                             else
@@ -615,7 +621,7 @@ namespace SAwareness.Miscs
                                     StreamReader readStream = new StreamReader(receiveStream,
                                         Encoding.GetEncoding(response.CharacterSet)))
                                 {
-                                    website = readStream.ReadToEnd();
+                                    website = @readStream.ReadToEnd();
                                 }
                             }
                         }
@@ -629,7 +635,7 @@ namespace SAwareness.Miscs
             return website;
         }
 
-        private String GetLolWebSiteContentOverview(Obj_AI_Hero hero)
+        public static String GetLolWebSiteContentOverview(Obj_AI_Hero hero)
         {
             string playerName = GetEncodedPlayerName(hero);
             return GetLolWebSiteContent("summoner/userName=" + playerName);
@@ -647,12 +653,12 @@ namespace SAwareness.Miscs
             return GetLolWebSiteContent("summoner/rune/userName=" + playerName);
         }
 
-        private String GetEncodedPlayerName(Obj_AI_Hero hero)
+        public static String GetEncodedPlayerName(Obj_AI_Hero hero)
         {
             return HttpUtility.UrlEncode(hero.Name);
         }
 
-        private String GetWebSite()
+        public static String GetWebSite()
         {
             String prefix = GetRegionPrefix();
             if (prefix == "")
@@ -661,7 +667,16 @@ namespace SAwareness.Miscs
                 return "http://" + prefix + ".op.gg/";
         }
 
-        private String GetRegionPrefix()
+        public static String GetWebSiteWithoutHttp()
+        {
+            String prefix = GetRegionPrefix();
+            if (prefix == "")
+                return "op.gg";
+            else
+                return prefix + ".op.gg";
+        }
+
+        public static String GetRegionPrefix()
         {
             switch (Game.Region.ToLower())
             {
@@ -688,18 +703,20 @@ namespace SAwareness.Miscs
             }
         }
 
-        private String GetSummonerIcon(Obj_AI_Hero hero)
+        private String GetSummonerIcon(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
-            String websiteContent = GetLolWebSiteContentOverview(hero);
-            String patternWin = "<div class=\"rectImage\">\\n.*<img src=\"//ss.op.gg/images/profile_icons/(.*?)\">\\n.*</div>";
+            String websiteContent = elo.GetLolWebSiteContentOverview(hero);
+            String patternWin = "<div class=\"rectImage\"><img src=\"//ss.op.gg/images/profile_icons/(.*?)\"></div>";
             return GetMatch(websiteContent, patternWin);
         }
 
-        private String GetDivision(Obj_AI_Hero hero)
+        private String GetDivision(Obj_AI_Hero hero, ChampionEloDisplayer elo, ref bool ranked)
         {
             String division = "";
-            String websiteContent = GetLolWebSiteContentOverview(hero);
-            if (websiteContent.Contains("TierRank") && websiteContent.Contains("LeaguePoints"))
+            String websiteContent = elo.GetLolWebSiteContentOverview(hero);
+            String patternTierRank = "(.*?)TierRank(.*?)";
+            String patternLeaguePoints = "(.*?)LeaguePoints(.*?)";
+            if (!GetMatch(websiteContent, patternTierRank).Equals("") && !GetMatch(websiteContent, patternLeaguePoints).Equals(""))
             {
                 if (websiteContent.Contains("TypeTeam"))
                 {
@@ -714,106 +731,64 @@ namespace SAwareness.Miscs
                     String patternPoints = "<span class=\"leaguePoints\">(.*?) LP</span>";
                     division = GetMatch(websiteContent, patternRank) + " (" + GetMatch(websiteContent, patternPoints) + " LP)";
                 }
-                Ranked = true;
-            } 
-            else if (websiteContent.Contains("TierRank") && !websiteContent.Contains("LeaguePoints"))
+                ranked = true;
+            }
+            else if (!GetMatch(websiteContent, patternTierRank).Equals("") && GetMatch(websiteContent, patternLeaguePoints).Equals(""))
             {
                 division = "Unranked";
             }
-            else if (!websiteContent.Contains("TierRank"))
+            else if (GetMatch(websiteContent, patternTierRank).Equals(""))
             {
                 division = "Unranked (<30)";
             }
             return division;
         }
 
-        private String GetRankedStatistics(Obj_AI_Hero hero)
+        private String GetRankedStatistics(Obj_AI_Hero hero, ChampionEloDisplayer elo, bool ranked)
         {
-            if (!Ranked)
-                return "";
+            if (!ranked)
+                return "0/0";
 
-            String websiteContent = GetLolWebSiteContentOverview(hero);
-            String patternWin = "<br>\\n.*<span class=\"wins\">(.*?)W</span>";
-            String patternLoose = "</span>\\n.*<span class=\"losses\">(.*?)L</span>";
-            return GetMatch(websiteContent, patternWin) + "/" +
-                  GetMatch(websiteContent, patternLoose);
+            String websiteContent = elo.GetLolWebSiteContentOverview(hero);
+            String patternWin = @"<br><span class=""wins"">(.*?)W</span>";
+            String patternLoose = @"</span><span class=""losses"">(.*?)L</span>";
+            return GetMatch(websiteContent, patternWin) + "W/" +
+                  GetMatch(websiteContent, patternLoose) + "L";
         }
 
-        private String GetRecentStatistics(Obj_AI_Hero hero)
+        private String GetRecentStatistics(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
-            String websiteContent = GetLolWebSiteContentOverview(hero);
-            String patternWl = "<div class=\"WinRatioTitle\">(\n.*){3}(.*?)\n.*</div>";
-            String matchWl = GetMatch(websiteContent, patternWl, 0, 2); //TODO: Check if rly second group or 4
-            String patternWin = "\\S(.*?)W";
-            String patternLoose = "\\S(.*?)L";
-            return GetMatch(matchWl, patternWin) + "/" +
-                  GetMatch(matchWl, patternLoose);
+            String websiteContent = elo.GetLolWebSiteContentOverview(hero);
+            String patternWl = @"<div class=""WinRatioTitle"">(.*?)</div>";
+            String matchWl = GetMatch(websiteContent, patternWl);
+            String patternWin = @"(\d*?)W";
+            String patternLoose = @"(\d*?)L";
+            return GetMatch(matchWl, patternWin, 0, 0) + "/" +
+                  GetMatch(matchWl, patternLoose, 0, 0);
         }
 
-        private String GetOverallKDA(Obj_AI_Hero hero)
+        private String GetOverallKDA(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
-            String websiteContent = GetLolWebSiteContentOverview(hero);
-            String patternKill = "<div class=\"KDA\">\\n.*<div class=\"kda\">\\n.*<span class=\"kill\">(.*?)</span>";
-            String patternDeath = "<div class=\"KDA\">\\n.*<div class=\"kda\">\\n.*<span class=\"death\">(.*?)</span>";
-            String patternAssist = "<div class=\"KDA\">\\n.*<div class=\"kda\">\\n.*<span class=\"assist\">(.*?)</span>";
+            String websiteContent = elo.GetLolWebSiteContentOverview(hero);
+            String patternKill = "<div class=\"KDA\"><div class=\"kda\"><span class=\"kill\">(.*?)</span>";
+            String patternDeath = "<div class=\"KDA\"><div class=\"kda\">(.*?)<span class=\"death\">(.*?)</span>";
+            String patternAssist = "<div class=\"KDA\"><div class=\"kda\">(.*?)<span class=\"assist\">(.*?)</span>";
             return GetMatch(websiteContent, patternKill) + "/" +
-                  GetMatch(websiteContent, patternDeath) + "/" +
-                  GetMatch(websiteContent, patternAssist);
+                  GetMatch(websiteContent, patternDeath, 0, 2) + "/" +
+                  GetMatch(websiteContent, patternAssist, 0, 2);
         }
 
-        private String GetMmr(Obj_AI_Hero hero) //Need check if serialize and deserialize works//Test with Moopz1//my gives error
+        private String GetMmr(Obj_AI_Hero hero, bool ranked)
         {
-            if (!Ranked)
+            if (!ranked)
                 return "";
 
-            String mmrUrl = GetWebSite() + "summoner/ajax/update.json/";
-            try
-            {
-                ResponseMmr responseMmr = GetJSonResponse<ResponseMmr>(mmrUrl, new RequestMmr(GetEncodedPlayerName(hero)));
-                return responseMmr.mmr;
-            }
-            catch (Exception) {}
+            String websiteContent = GetLolWebSiteContent("summoner/ajax/mmr.json/", "userName=" + GetEncodedPlayerName(hero));
+            String patternMmr = "\"mmr\":\"(.*?)\"";
+            String patternAverageMmr = "<b>(.*?)<\\\\/b>";
+            return GetMatch(websiteContent, patternMmr) + "/" +
+                   GetMatch(websiteContent, patternAverageMmr);
             return "";
-        }
-
-        class RequestMmr
-        {
-            public String userName;
-
-            public RequestMmr(String userName)
-            {
-                this.userName = userName;
-            }
-        }
-
-        class ResponseMmr
-        {
-            public String log;
-            public Tip tip;
-            public String mmr;
-            public String Class;
-
-            public ResponseMmr(String log, Tip tip, String mmr, String Class)
-            {
-                this.log = log;
-                this.tip = tip;
-                this.mmr = mmr;
-                this.Class = Class;
-            }
-
-            public class Tip
-            {
-                public String status;
-                public String leagueAverage;
-                public String notice;
-
-                public Tip(String status, String leagueAverage, String notice)
-                {
-                    this.status = status;
-                    this.leagueAverage = leagueAverage;
-                    this.notice = notice;
-                }
-            }
         }
 
         private String GetMasteries(Obj_AI_Hero hero)
@@ -824,11 +799,11 @@ namespace SAwareness.Miscs
             for (int i = 0; i < hero.Masteries.Count(); i++)
             {
                 var mastery = hero.Masteries[i];
-                if (i < 20)
+                if (mastery.Page == MasteryPage.Offense)
                 {
                     offense += mastery.Points;
                 } 
-                else if (i <= 20 && i < 39)
+                else if (mastery.Page == MasteryPage.Defense)
                 {
                     defense += mastery.Points;
                 }
@@ -837,7 +812,6 @@ namespace SAwareness.Miscs
                     utility += mastery.Points;
                 }
             }
-            GenerateMasteryPage(hero);
             return offense + "/" + defense + "/" + utility;
         }
 
@@ -863,13 +837,13 @@ namespace SAwareness.Miscs
             return runes;
         }
 
-        private String GetChampionKDA(Obj_AI_Hero hero, String season)
+        private String GetChampionKDA(Obj_AI_Hero hero, ChampionEloDisplayer elo, String season)
         {
-            String championContent = GetLolWebSiteContent("summoner/champions/ajax/champions.json/", "summonerId=" + GetSummonerId(GetLolWebSiteContentOverview(hero)) + "&season=" + season + "&type=stats");
-            String patternChampion = "<div class=\"championName\"> (.*?) </div>";
-            String patternKill = "<span class=\"kill\">(.*?)</span>";
-            String patternDeath = "<span class=\"death\">(.*?)</span>";
-            String patternAssist = "<span class=\"assist\">(.*?)</span>";
+            String championContent = elo.GetLolWebSiteContentChampion(hero, GetSummonerId(elo.GetLolWebSiteContentOverview(hero)), season);
+            String patternChampion = "<div class=\"championName\">(.*?)<\\\\/div>";
+            String patternKill = "<span class=\"kill\">(.*?)<\\\\/span>";
+            String patternDeath = "<span class=\"death\">(.*?)<\\\\/span>";
+            String patternAssist = "<span class=\"assist\">(.*?)<\\\\/span>";
             String matchKill = "";
             String matchDeath = "";
             String matchAssist = "";
@@ -889,28 +863,30 @@ namespace SAwareness.Miscs
                     break;
                 }
             }
+            if (matchKill.Equals("") && matchDeath.Equals("") && matchAssist.Equals(""))
+                return "0/0/0";
             return matchKill + "/" + matchDeath + "/" + matchAssist;
         }
 
-        private String GetChampionKDALastSeason(Obj_AI_Hero hero)
+        private String GetChampionKDALastSeason(Obj_AI_Hero hero, ChampionEloDisplayer elo, bool ranked)
         {
-            if (!Ranked)
+            if (!ranked)
                 return "";
 
-            return GetChampionKDA(hero, "4");
+            return GetChampionKDA(hero, elo, "4");
         }
 
-        private String GetChampionKDANormal(Obj_AI_Hero hero)
+        private String GetChampionKDANormal(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
-            return GetChampionKDA(hero, "normal");
+            return GetChampionKDA(hero, elo, "normal");
         }
 
-        private String GetChampionGames(Obj_AI_Hero hero, String season)
+        private String GetChampionGames(Obj_AI_Hero hero, ChampionEloDisplayer elo, String season)
         {
-            String championContent = GetLolWebSiteContent("summoner/champions/ajax/champions.json/", "summonerId=" + GetSummonerId(GetLolWebSiteContentOverview(hero)) + "&season=" + season + "&type=stats");
-            String patternChampion = "<div class=\"championName\"> (.*?) </div>";
-            String patternWins = "<span class=\"wins\"> (.*?) </span>";
-            String patternLosses = "<span class=\"losses\"> (.*?) </span>";
+            String championContent = elo.GetLolWebSiteContentChampion(hero, GetSummonerId(elo.GetLolWebSiteContentOverview(hero)), season);
+            String patternChampion = "<div class=\"championName\">(.*?)<\\\\/div>";
+            String patternWins = "<span class=\"wins\">(.*?)<\\\\/span>";
+            String patternLosses = "<span class=\"losses\">(.*?)<\\\\/span>";
             String matchWins = "";
             String matchLosses = "";
 
@@ -928,20 +904,22 @@ namespace SAwareness.Miscs
                     break;
                 }
             }
+            if (matchWins.Equals("") && matchLosses.Equals(""))
+                return "0/0";
             return matchWins + "/" + matchLosses;
         }
 
-        private String GetChampionGamesLastSeason(Obj_AI_Hero hero)
+        private String GetChampionGamesLastSeason(Obj_AI_Hero hero, ChampionEloDisplayer elo, bool ranked)
         {
-            if (!Ranked)
+            if (!ranked)
                 return "";
 
-            return GetChampionGames(hero, "4");
+            return GetChampionGames(hero, elo,"4");
         }
 
-        private String GetChampionGamesNormal(Obj_AI_Hero hero)
+        private String GetChampionGamesNormal(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
-            return GetChampionGames(hero, "normal");
+            return GetChampionGames(hero, elo, "normal");
         }
 
         private void CalculateTeamStats(String websiteContent)
@@ -995,9 +973,21 @@ namespace SAwareness.Miscs
 
         private String GetMatch(String websiteContent, String pattern, int index = 0, int groupIndex = 1)
         {
-            Match websiteMatcher = new Regex(@pattern).Matches(websiteContent)[0];
-            Match elementMatch = new Regex(websiteMatcher.Groups[groupIndex].ToString()).Matches(websiteContent)[index];
-            return elementMatch.ToString();
+            try
+            {
+                string replacement = Regex.Replace(websiteContent, @"\t|\n|\r", "");
+                replacement = Regex.Replace(replacement, @"\\t|\\n|\\r", "");
+                replacement = Regex.Replace(replacement, @"\\""", "\"");
+                Match websiteMatcher = new Regex(@pattern).Matches(replacement)[index];
+                //Match elementMatch = new Regex(websiteMatcher.Groups[groupIndex].ToString()).Matches(replacement)[0];
+                //return elementMatch.ToString();
+                return websiteMatcher.Groups[groupIndex].ToString();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Cannot get value for {0}, pattern {1}, index {2}, groupIndex {3}", @websiteContent, @pattern, index, groupIndex);
+            }
+            return "";
         }
 
         private static T FromJson<T>(string input)
@@ -1032,21 +1022,46 @@ namespace SAwareness.Miscs
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             String json = ToJson(request);
-            Byte[] bytes = GetBytes(json);
+            Byte[] bytes = Encoding.ASCII.GetBytes(json);
             webRequest.ContentLength = bytes.Length;
-            Stream dataStream = webRequest.GetRequestStream();
-            dataStream.Write(bytes, 0, bytes.Length);
-            dataStream.Close();
-            WebResponse response = webRequest.GetResponse();
-            Stream data = response.GetResponseStream();
-            data.Read(bytes, 0, (int)data.Length);
+            using (var stream = webRequest.GetRequestStream())
+            {
+                stream.Write(bytes, 0, bytes.Length);
+            }
+            String content = "";
+            using (var response = (HttpWebResponse)webRequest.GetResponse())
+            {
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream receiveStream = response.GetResponseStream();
+                    if (receiveStream != null)
+                    {
+                        if (response.CharacterSet == null)
+                        {
+                            using (StreamReader readStream = new StreamReader(receiveStream))
+                            {
+                                content = @readStream.ReadToEnd();
+                            }
+                        }
+                        else
+                        {
+                            using (
+                                StreamReader readStream = new StreamReader(receiveStream,
+                                    Encoding.GetEncoding(response.CharacterSet)))
+                            {
+                                content = @readStream.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
             try
             {
-                return FromJson<T>(GetString(bytes));
+                return FromJson<T>(content);
             }
-            finally
+            catch (Exception)
             {
-                response.Close();
+                return (T) new Object();
             }
         }
 
@@ -1088,504 +1103,26 @@ namespace SAwareness.Miscs
             return bitmap;
         }
 
-        private string GetChampionId(Obj_AI_Hero hero)
+        public static bool TryAddCookie(WebRequest webRequest, Cookie cookie)
         {
-            switch (hero.ChampionName)
+            HttpWebRequest httpRequest = webRequest as HttpWebRequest;
+            if (httpRequest == null)
             {
-                case "Aatrox":
-                    {
-                        return "117";
-                    }
-                case "Ahri":
-                    {
-                        return "86";
-                    }
-                case "Akali":
-                    {
-                        return "74";
-                    }
-                case "Alistar":
-                    {
-                        return "11";
-                    }
-                case "Amumu":
-                    {
-                        return "31";
-                    }
-                case "Anivia":
-                    {
-                        return "33";
-                    }
-                case "Annie":
-                    {
-                        return "0";
-                    }
-                case "Ashe":
-                    {
-                        return "21";
-                    }
-                case "Azir":
-                    {
-                        return "119";
-                    }
-                case "Blitzcrank":
-                    {
-                        return "48";
-                    }
-                case "Brand":
-                    {
-                        return "58";
-                    }
-                case "Braum":
-                    {
-                        return "112";
-                    }
-                case "Caitlyn":
-                    {
-                        return "47";
-                    }
-                case "Cassiopeia":
-                    {
-                        return "62";
-                    }
-                case "Cho'Gath":
-                    {
-                        return "30";
-                    }
-                case "Corki":
-                    {
-                        return "41";
-                    }
-                case "Darius":
-                    {
-                        return "101";
-                    }
-                case "Diana":
-                    {
-                        return "104";
-                    }
-                case "Dr. Mundo":
-                    {
-                        return "35";
-                    }
-                case "Draven":
-                    {
-                        return "98";
-                    }
-                case "Elise":
-                    {
-                        return "55";
-                    }
-                case "Evelynn":
-                    {
-                        return "27";
-                    }
-                case "Ezreal":
-                    {
-                        return "71";
-                    }
-                case "Fiddlesticks":
-                    {
-                        return "8";
-                    }
-                case "Fiora":
-                    {
-                        return "95";
-                    }
-                case "Fizz":
-                    {
-                        return "88";
-                    }
-                case "Galio":
-                    {
-                        return "2";
-                    }
-                case "Gangplank":
-                    {
-                        return "40";
-                    }
-                case "Garen":
-                    {
-                        return "76";
-                    }
-                case "Gnar":
-                    {
-                        return "108";
-                    }
-                case "Gragas":
-                    {
-                        return "69";
-                    }
-                case "Graves":
-                    {
-                        return "87";
-                    }
-                case "Hecarim":
-                    {
-                        return "99";
-                    }
-                case "Heimerdinger":
-                    {
-                        return "64";
-                    }
-                case "Irelia":
-                    {
-                        return "38";
-                    }
-                case "Janna":
-                    {
-                        return "39";
-                    }
-                case "Jarvan IV":
-                    {
-                        return "54";
-                    }
-                case "Jax":
-                    {
-                        return "23";
-                    }
-                case "Jayce":
-                    {
-                        return "102";
-                    }
-                case "Jinx":
-                    {
-                        return "113";
-                    }
-                case "Kalista":
-                    {
-                        return "121";
-                    }
-                case "Karma":
-                    {
-                        return "42";
-                    }
-                case "Karthus":
-                    {
-                        return "29";
-                    }
-                case "Kassadin":
-                    {
-                        return "37";
-                    }
-                case "Katarina":
-                    {
-                        return "50";
-                    }
-                case "Kayle":
-                    {
-                        return "9";
-                    }
-                case "Kennen":
-                    {
-                        return "75";
-                    }
-                case "Kha'Zix":
-                    {
-                        return "100";
-                    }
-                case "Kog'Maw":
-                    {
-                        return "81";
-                    }
-                case "LeBlanc":
-                    {
-                        return "6";
-                    }
-                case "Lee Sin":
-                    {
-                        return "59";
-                    }
-                case "Leona":
-                    {
-                        return "77";
-                    }
-                case "Lissandra":
-                    {
-                        return "103";
-                    }
-                case "Lucian":
-                    {
-                        return "114";
-                    }
-                case "Lulu":
-                    {
-                        return "97";
-                    }
-                case "Lux":
-                    {
-                        return "83";
-                    }
-                case "Malphite":
-                    {
-                        return "49";
-                    }
-                case "Malzahar":
-                    {
-                        return "78";
-                    }
-                case "Maokai":
-                    {
-                        return "52";
-                    }
-                case "Master Yi":
-                    {
-                        return "10";
-                    }
-                case "Miss Fortune":
-                    {
-                        return "20";
-                    }
-                case "Mordekaiser":
-                    {
-                        return "72";
-                    }
-                case "Morgana":
-                    {
-                        return "24";
-                    }
-                case "Nami":
-                    {
-                        return "118";
-                    }
-                case "Nasus":
-                    {
-                        return "65";
-                    }
-                case "Nautilus":
-                    {
-                        return "92";
-                    }
-                case "Nidalee":
-                    {
-                        return "66";
-                    }
-                case "Nocturne":
-                    {
-                        return "51";
-                    }
-                case "Nunu":
-                    {
-                        return "19";
-                    }
-                case "Olaf":
-                    {
-                        return "1";
-                    }
-                case "Orianna":
-                    {
-                        return "56";
-                    }
-                case "Pantheon":
-                    {
-                        return "70";
-                    }
-                case "Poppy":
-                    {
-                        return "68";
-                    }
-                case "Quinn":
-                    {
-                        return "105";
-                    }
-                case "Rammus":
-                    {
-                        return "32";
-                    }
-                case "Renekton":
-                    {
-                        return "53";
-                    }
-                case "Rengar":
-                    {
-                        return "90";
-                    }
-                case "Riven":
-                    {
-                        return "80";
-                    }
-                case "Rumble":
-                    {
-                        return "61";
-                    }
-                case "Ryze":
-                    {
-                        return "12";
-                    }
-                case "Sejuani":
-                    {
-                        return "94";
-                    }
-                case "Shaco":
-                    {
-                        return "34";
-                    }
-                case "Shen":
-                    {
-                        return "82";
-                    }
-                case "Shyvana":
-                    {
-                        return "85";
-                    }
-                case "Singed":
-                    {
-                        return "26";
-                    }
-                case "Sion":
-                    {
-                        return "13";
-                    }
-                case "Sivir":
-                    {
-                        return "14";
-                    }
-                case "Skarner":
-                    {
-                        return "63";
-                    }
-                case "Sona":
-                    {
-                        return "36";
-                    }
-                case "Soraka":
-                    {
-                        return "15";
-                    }
-                case "Swain":
-                    {
-                        return "46";
-                    }
-                case "Syndra":
-                    {
-                        return "106";
-                    }
-                case "Talon":
-                    {
-                        return "79";
-                    }
-                case "Taric":
-                    {
-                        return "43";
-                    }
-                case "Teemo":
-                    {
-                        return "16";
-                    }
-                case "Thresh":
-                    {
-                        return "120";
-                    }
-                case "Tristana":
-                    {
-                        return "17";
-                    }
-                case "Trundle":
-                    {
-                        return "45";
-                    }
-                case "Tryndamere":
-                    {
-                        return "22";
-                    }
-                case "Twisted Fate":
-                    {
-                        return "3";
-                    }
-                case "Twitch":
-                    {
-                        return "28";
-                    }
-                case "Udyr":
-                    {
-                        return "67";
-                    }
-                case "Urgot":
-                    {
-                        return "5";
-                    }
-                case "Varus":
-                    {
-                        return "91";
-                    }
-                case "Vayne":
-                    {
-                        return "60";
-                    }
-                case "Veigar":
-                    {
-                        return "44";
-                    }
-                case "Vel'Koz":
-                    {
-                        return "111";
-                    }
-                case "Vi":
-                    {
-                        return "116";
-                    }
-                case "Viktor":
-                    {
-                        return "93";
-                    }
-                case "Vladimir":
-                    {
-                        return "7";
-                    }
-                case "Volibear":
-                    {
-                        return "89";
-                    }
-                case "Warwick":
-                    {
-                        return "18";
-                    }
-                case "Wukong":
-                    {
-                        return "57";
-                    }
-                case "Xerath":
-                    {
-                        return "84";
-                    }
-                case "Xin Zhao":
-                    {
-                        return "4";
-                    }
-                case "Yasuo":
-                    {
-                        return "110";
-                    }
-                case "Yorick":
-                    {
-                        return "73";
-                    }
-                case "Zac":
-                    {
-                        return "109";
-                    }
-                case "Zed":
-                    {
-                        return "115";
-                    }
-                case "Ziggs":
-                    {
-                        return "96";
-                    }
-                case "Zilean":
-                    {
-                        return "25";
-                    }
-                case "Zyra":
-                    {
-                        return "107";
-                    }
+                return false;
             }
-            return "";
+
+            if (httpRequest.CookieContainer == null)
+            {
+                httpRequest.CookieContainer = new CookieContainer();
+            }
+
+            httpRequest.CookieContainer.Add(cookie);
+            return true;
         }
 
         class ChampionEloDisplayer
         {
+            public bool Ranked = false;
             public TextInfo SummonerIcon = new TextInfo();
             public TextInfo ChampionName = new TextInfo();
             public TextInfo SummonerName = new TextInfo();
@@ -1598,10 +1135,38 @@ namespace SAwareness.Miscs
             public TextInfo OverallKDA = new TextInfo();
             public TextInfo ChampionKDA = new TextInfo();
             public TextInfo ChampionGames = new TextInfo();
-            public TextInfo ChampionWinRate = new TextInfo();
 
             public TextInfo MasteriesSprite = new TextInfo();
+            public TextInfo RunesSprite = new TextInfo();
             public TextInfo RunesSpriteText = new TextInfo();
+
+            private String websiteContentOverview = "";
+            private String websiteContentChampion = "";
+            private String _currentSeason = "";
+
+            public String GetLolWebSiteContentOverview(Obj_AI_Hero hero)
+            {
+                if (websiteContentOverview == "")
+                {
+                    websiteContentOverview = EloDisplayer.GetLolWebSiteContentOverview(hero);
+                }
+                return websiteContentOverview;
+            }
+
+            public String GetLolWebSiteContentChampion(Obj_AI_Hero hero, String summonerId, String season)
+            {
+                if (websiteContentChampion == "" || _currentSeason == "" || !_currentSeason.Equals(season))
+                {
+                    _currentSeason = season;
+                    websiteContentChampion = EloDisplayer.GetLolWebSiteContent("summoner/champions/ajax/champions.json/", "summonerId=" + summonerId + "&season=" + season + "&type=stats");
+                }
+                return websiteContentChampion;
+            }
+
+            public bool IsFinished()
+            {
+                return true;
+            }
         }
 
         class TeamEloDisplayer

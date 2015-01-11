@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -1333,23 +1334,54 @@ namespace SAwareness
 
     internal static class Speech
     {
-        private static SpeechSynthesizer tts = new SpeechSynthesizer();
+        private static Dictionary<int, SpeechSynthesizer> tts = new Dictionary<int, SpeechSynthesizer>();
 
-        public static void SetVolume(int volume)
+        static Speech()
         {
-            tts.Volume = volume;
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                tts.Add(i, new SpeechSynthesizer());
+            }
 
-        public static void SetRate(int rate)
-        {
-            tts.Rate = rate;
+            ReadOnlyCollection<InstalledVoice> list = tts[0].GetInstalledVoices();
+            String strVoice = "";
+            foreach (var voice in list)
+            {
+                if (voice.VoiceInfo.Culture.EnglishName.Contains("English") && voice.Enabled)
+                {
+                    strVoice = voice.VoiceInfo.Name;
+                }
+            }
+
+            foreach (KeyValuePair<int, SpeechSynthesizer> speech in tts)
+            {
+                if (!strVoice.Equals(""))
+                {
+                    speech.Value.SelectVoice(strVoice);
+                }
+            }
         }
 
         public static void Speak(String text)
         {
-            if (tts.State == SynthesizerState.Ready)
+            bool speaking = false;
+            foreach (var speech in tts)
             {
-                tts.Speak(text);
+                if (speech.Value.State == SynthesizerState.Ready && !speaking)
+                {
+                    speaking = true;
+                    speech.Value.Volume = 100;
+                    new Thread(() =>
+                    {
+                        speech.Value.Speak(text);
+                    }).Start();
+                }
+                else if (speech.Value.State != SynthesizerState.Ready)
+                {
+                    speech.Value.Pause();
+                    speech.Value.Volume = 1;
+                    speech.Value.Resume();
+                }
             }
         }
     }

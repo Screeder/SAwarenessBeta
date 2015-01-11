@@ -51,6 +51,8 @@ namespace SAwareness.Timers
         {
             JungleTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_JUNGLE_MAIN"), "SAwarenessTimersJungle"));
             JungleTimer.MenuItems.Add(
+                JungleTimer.Menu.AddItem(new MenuItem("SAwarenessTimersJungleSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            JungleTimer.MenuItems.Add(
                 JungleTimer.Menu.AddItem(new MenuItem("SAwarenessTimersJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return JungleTimer;
         }
@@ -209,6 +211,10 @@ namespace SAwareness.Timers
                         jungleCamp.Called = true;
                         Timer.PingAndCall(jungleCamp.Name + " respawns in " + time + " seconds!",
                             jungleCamp.MinimapPosition);
+                        if (JungleTimer.GetMenuItem("SAwarenessTimersJungleSpeech").GetValue<bool>())
+                        {
+                            Speech.Speak(jungleCamp.Name + " respawns in " + time + " seconds!");
+                        }
                     }
                 }
             }

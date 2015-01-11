@@ -44,6 +44,8 @@ namespace SAwareness.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
             DisReconnectDetector.MenuItems.Add(
+                DisReconnectDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsDisReconnectSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            DisReconnectDetector.MenuItems.Add(
                 DisReconnectDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsDisReconnectActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return DisReconnectDetector;
         }
@@ -84,6 +86,10 @@ namespace SAwareness.Detectors
                 {
                     Game.Say("Champion " + disconnect.Player.ChampionName + " has disconnected!");
                 }
+                if (DisReconnectDetector.GetMenuItem("SAwarenessDetectorsDisReconnectSpeech").GetValue<bool>())
+                {
+                    Speech.Speak("Champion " + disconnect.Player.ChampionName + " has disconnected!");
+                }
             }
             catch (Exception ex)
             {
@@ -120,6 +126,10 @@ namespace SAwareness.Detectors
                     Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say("Champion " + reconnect.Player.ChampionName + " has reconnected!");
+                }
+                if (DisReconnectDetector.GetMenuItem("SAwarenessDetectorsDisReconnectSpeech").GetValue<bool>())
+                {
+                    Speech.Speak("Champion " + reconnect.Player.ChampionName + " has reconnected!");
                 }
             }
             catch (Exception ex)

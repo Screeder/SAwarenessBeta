@@ -27,6 +27,7 @@ namespace SAwareness.Detectors
         private const int TrapRange = 300;
         public List<ObjectData> HidObjects = new List<ObjectData>();
         public List<Object> Objects = new List<Object>();
+        private int lastGameUpdateTime = 0;
 
         public Vision()
         {
@@ -99,8 +100,10 @@ namespace SAwareness.Detectors
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
+
+            lastGameUpdateTime = Environment.TickCount;
             List<ObjectData> objects = HidObjects.FindAll(x => x.ObjectBase.Name == "Unknown");
             foreach (var obj1 in HidObjects.ToArray())
             {
@@ -131,7 +134,7 @@ namespace SAwareness.Detectors
                         if (((Obj_AI_Base)sender).BaseSkinName == obj.ObjectName && !ObjectExist(sender.Position))
                         {
                             HidObjects.Add(new ObjectData(obj, sender.Position, Game.Time + ((Obj_AI_Base)sender).Mana, sender.Name,
-                                null, sender.NetworkId));
+                                sender.NetworkId));
                             break;
                         }
                     }
@@ -146,7 +149,7 @@ namespace SAwareness.Detectors
                             if (!ObjectExist(((Obj_SpellMissile)sender).EndPosition))
                             {
 
-                                HidObjects.Add(new ObjectData(new Object(ObjectType.Unknown, "Unknown", "Unknown", "Unknown", 180.0f, 0, 0, Color.Yellow), ((Obj_SpellMissile)sender).EndPosition, Game.Time + 180.0f, sender.Name, null,
+                                HidObjects.Add(new ObjectData(new Object(ObjectType.Unknown, "Unknown", "Unknown", "Unknown", 180.0f, 0, 0, Color.Yellow), ((Obj_SpellMissile)sender).EndPosition, Game.Time + 180.0f, sender.Name,
                                     sender.NetworkId, ((Obj_SpellMissile)sender).StartPosition));
                             }
                         });
@@ -177,60 +180,58 @@ namespace SAwareness.Detectors
                     Vector2 objMPos = Drawing.WorldToMinimap(obj.EndPosition);
                     Vector2 objPos = Drawing.WorldToScreen(obj.EndPosition);
                     var posList = new List<Vector3>();
+                    float range = 0;
+                    String typeText = "";
                     switch (obj.ObjectBase.Type)
                     {
                         case ObjectType.Sight:
-                            if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
-                            {
-                                Utility.DrawCircle(obj.EndPosition, WardRange, obj.ObjectBase.Color);
-                            }
-                            posList = GetVision(obj.EndPosition, WardRange);
-                            for (int j = 0; j < posList.Count; j++)
-                            {
-                                Vector2 visionPos1 = Drawing.WorldToScreen(posList[i]);
-                                Vector2 visionPos2 = Drawing.WorldToScreen(posList[i]);
-                                Drawing.DrawLine(visionPos1[0], visionPos1[1], visionPos2[0], visionPos2[1], 1.0f,
-                                    obj.ObjectBase.Color);
-                            }
-                            Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, "S");
+                            range = WardRange;
+                            typeText = "S";
                             break;
 
                         case ObjectType.Trap:
-                            if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
-                            {
-                                Utility.DrawCircle(obj.EndPosition, TrapRange, obj.ObjectBase.Color);
-                            }
-                            posList = GetVision(obj.EndPosition, TrapRange);
-                            for (int j = 0; j < posList.Count; j++)
-                            {
-                                Vector2 visionPos1 = Drawing.WorldToScreen(posList[i]);
-                                Vector2 visionPos2 = Drawing.WorldToScreen(posList[i]);
-                                Drawing.DrawLine(visionPos1[0], visionPos1[1], visionPos2[0], visionPos2[1], 1.0f,
-                                    obj.ObjectBase.Color);
-                            }
-                            Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, "T");
+                            range = TrapRange;
+                            typeText = "T";
                             break;
 
                         case ObjectType.Vision:
-                            if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
-                            {
-                                Utility.DrawCircle(obj.EndPosition, WardRange, obj.ObjectBase.Color);
-                            }
-                            posList = GetVision(obj.EndPosition, WardRange);
-                            for (int j = 0; j < posList.Count; j++)
-                            {
-                                Vector2 visionPos1 = Drawing.WorldToScreen(posList[i]);
-                                Vector2 visionPos2 = Drawing.WorldToScreen(posList[i]);
-                                Drawing.DrawLine(visionPos1[0], visionPos1[1], visionPos2[0], visionPos2[1], 1.0f,
-                                    obj.ObjectBase.Color);
-                            }
-                            Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, "V");
+                            range = WardRange;
+                            typeText = "V";
                             break;
 
                         case ObjectType.Unknown:
                             Drawing.DrawLine(Drawing.WorldToScreen(obj.StartPosition), Drawing.WorldToScreen(obj.EndPosition), 1, obj.ObjectBase.Color);
                             break;
                     }
+                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
+                    {
+                        Utility.DrawCircle(obj.EndPosition, range, obj.ObjectBase.Color);
+                    }
+                    if (obj.Points == null)
+                    {
+                        posList = GetVision(obj.EndPosition, range);
+                        obj.Points = posList;
+                    }
+                    else
+                    {
+                        posList = obj.Points;
+                    }
+                    for (int j = 0; j < posList.Count; j++)
+                    {
+                        Vector2 visionPos1 = Drawing.WorldToScreen(posList[j]);
+                        Vector2 visionPos2;
+                        try
+                        {
+                            visionPos2 = Drawing.WorldToScreen(posList[j + 1]);
+                        }
+                        catch (Exception)
+                        {
+                            visionPos2 = Drawing.WorldToScreen(posList[0]);
+                        }
+                        Drawing.DrawLine(visionPos1.X, visionPos1.Y, visionPos2.X, visionPos2.Y, 2.0f, obj.ObjectBase.Color);
+                    }
+                    Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, typeText);
+
                     Utility.DrawCircle(obj.EndPosition, 50, obj.ObjectBase.Color);
                     float endTime = obj.EndTime - Game.Time;
                     if (!float.IsInfinity(endTime) && !float.IsNaN(endTime) && endTime.CompareTo(float.MaxValue) != 0)
@@ -248,25 +249,26 @@ namespace SAwareness.Detectors
             }
         }
 
-        private List<Vector3> GetVision(Vector3 viewPos, float range) //TODO: ADD IT
+        private List<Vector3> GetVision(Vector3 viewPos, float visionRange) //TODO: ADD IT
         {
             var list = new List<Vector3>();
-            //double qual = 2*Math.PI/25;
-            //for (double i = 0; i < 2*Math.PI + qual;)
-            //{
-            //    Vector3 pos = new Vector3(viewPos.X + range * (float)Math.Cos(i), viewPos.Y - range * (float)Math.Sin(i), viewPos.Z);
-            //    for (int j = 1; j < range; j = j + 25)
-            //    {
-            //        Vector3 nPos = new Vector3(viewPos.X + j * (float)Math.Cos(i), viewPos.Y - j * (float)Math.Sin(i), viewPos.Z);
-            //        if (NavMesh.GetCollisionFlags(nPos).HasFlag(CollisionFlags.Wall))
-            //        {
-            //            pos = nPos;
-            //            break;
-            //        }
-            //    }
-            //    list.Add(pos);
-            //    i = i + 0.1;
-            //}
+            for (int i = 0; i <= 360; i += 15/*round*/)
+            {
+                var roundPos = new Vector3((float)(viewPos.X + visionRange * Math.Cos(i * Math.PI / 180)), (float)(viewPos.Y + visionRange * Math.Sin(i * Math.PI / 180)), 
+                    NavMesh.GetHeightForPosition((float)(viewPos.X + visionRange * Math.Cos(i * Math.PI / 180)), (float)(viewPos.Y + visionRange * Math.Sin(i * Math.PI / 180))));
+                for (int j = 100; j < visionRange; j += 100 /*accuracy*/)
+                {
+                    var visionPos = new Vector3((float)(viewPos.X + j * Math.Cos(i * Math.PI / 180)), (float)(viewPos.Y + j * Math.Sin(i * Math.PI / 180)),
+                        NavMesh.GetHeightForPosition((float)(viewPos.X + j * Math.Cos(i * Math.PI / 180)), (float)(viewPos.Y + j * Math.Sin(i * Math.PI / 180))));
+                    if (!NavMesh.GetCollisionFlags(visionPos).HasFlag(CollisionFlags.Wall))
+                    {
+                        continue;
+                    }
+                    roundPos = visionPos;
+                    break;
+                }
+                list.Add(roundPos);
+            }
             return list;
         }
 
@@ -322,8 +324,7 @@ namespace SAwareness.Detectors
                                     }
                                 }
                             });
-                            HidObjects.Add(new ObjectData(obj, pos, Game.Time + obj.Duration, creator.Name, null,
-                                networkId));
+                            HidObjects.Add(new ObjectData(obj, pos, Game.Time + obj.Duration, creator.Name, networkId));
                         }
                     }
                 }
@@ -402,7 +403,7 @@ namespace SAwareness.Detectors
                     {
                         if (args.SData.Name == obj.SpellName && !ObjectExist(args.End))
                         {
-                            HidObjects.Add(new ObjectData(obj, args.End, Game.Time + obj.Duration, sender.Name, null,
+                            HidObjects.Add(new ObjectData(obj, args.End, Game.Time + obj.Duration, sender.Name,
                                 sender.NetworkId));
                             break;
                         }
@@ -446,18 +447,16 @@ namespace SAwareness.Detectors
             public float EndTime;
             public int NetworkId;
             public Object ObjectBase;
-            public List<Vector2> Points;
+            public List<Vector3> Points;
             public Vector3 EndPosition;
             public Vector3 StartPosition;
 
-            public ObjectData(Object objectBase, Vector3 endPosition, float endTime, String creator, List<Vector2> points,
-                int networkId, Vector3 startPosition = new Vector3())
+            public ObjectData(Object objectBase, Vector3 endPosition, float endTime, String creator, int networkId, Vector3 startPosition = new Vector3())
             {
                 ObjectBase = objectBase;
                 EndPosition = endPosition;
                 EndTime = endTime;
                 Creator = creator;
-                Points = points;
                 NetworkId = networkId;
                 StartPosition = startPosition;
             }
