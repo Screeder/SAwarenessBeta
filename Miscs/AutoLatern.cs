@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
-using LeagueSharp.Network.Packets;
 
 namespace SAwareness.Miscs
 {
@@ -53,12 +52,12 @@ namespace SAwareness.Miscs
                     !ObjectManager.Player.ChampionName.Contains("Thresh"))
 
                 {
-                    Game.SendPacket(
-                    new PKT_InteractReq
-                    {
-                        NetworkId = ObjectManager.Player.NetworkId,
-                        TargetNetworkId = gObject.NetworkId
-                    }.Encode(), PacketChannel.C2S, PacketProtocolFlags.NoFlags);
+                    //Game.SendPacket(
+                    //new PKT_InteractReq
+                    //{
+                    //    NetworkId = ObjectManager.Player.NetworkId,
+                    //    TargetNetworkId = gObject.NetworkId
+                    //}.Encode(), PacketChannel.C2S, PacketProtocolFlags.NoFlags);
                 }
             }
         }
