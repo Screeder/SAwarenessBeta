@@ -36,7 +36,7 @@ namespace SAwareness
             if (!IsActive() || ObjectManager.Player.IsDead || Utility.InFountain() ||
                 ObjectManager.Player.HasBuff("Recall") || ObjectManager.Player.HasBuff("SummonerTeleport") ||
                 ObjectManager.Player.HasBuff("RecallImproved") ||
-                Utility.CountEnemysInRange(1500) > 0)
+                ObjectManager.Player.ServerPosition.CountEnemiesInRange(1500) > 0)
                 return;
             Pot myPot = null;
             if (

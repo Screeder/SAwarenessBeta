@@ -241,7 +241,7 @@ namespace SAwareness
                 return;
 
             Obj_AI_Hero hero = GetHighestAdEnemy();
-            int count = Utility.CountEnemysInRange(400);
+            int count = ObjectManager.Player.ServerPosition.CountEnemiesInRange(400);
             if (hero == null || !hero.IsValid || hero.IsDead)
                 return;
 
@@ -412,7 +412,7 @@ namespace SAwareness
                     }
                 }
             }
-            else if (Utility.CountEnemysInRange(1000) >
+            else if (ObjectManager.Player.ServerPosition.CountEnemiesInRange(1000) >
                      ObjectManager.Get<Obj_AI_Hero>().Where((units => units.IsAlly)).Count((units =>
                          (double)
                              Vector2.Distance(ObjectManager.Player.Position.To2D(),
@@ -1045,7 +1045,7 @@ namespace SAwareness
             Obj_AI_Hero enemy = GetHighestAdEnemy();
             if (enemy == null || !enemy.IsValid)
                 return;
-            int countE = Utility.CountEnemysInRange(750);
+            int countE = ObjectManager.Player.ServerPosition.CountEnemiesInRange(750);
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
                 if (!hero.IsMe && !hero.IsEnemy && hero.IsValid &&
