@@ -103,7 +103,7 @@ namespace SAwareness.Timers
                 {
                     if (relic.Locked)
                     {
-                        if (relic.NextRespawnTime <= 0 || relic.MapType != GMap._MapType)
+                        if (relic.NextRespawnTime <= 0 || relic.MapType != GMap.Type)
                             continue;
                         int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
                         if (!relic.Called && relic.NextRespawnTime - (int)Game.ClockTime <= time &&
@@ -182,7 +182,7 @@ namespace SAwareness.Timers
                 };
                 Text.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && RelicTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap._MapType;
+                    return Timer.Timers.GetActive() && RelicTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 Text.OutLined = true;
                 Text.Centered = true;

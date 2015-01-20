@@ -117,7 +117,7 @@ namespace SAwareness.Timers
                 {
                     if (altar.Locked)
                     {
-                        if (altar.NextRespawnTime <= 0 || altar.MapType != GMap._MapType)
+                        if (altar.NextRespawnTime <= 0 || altar.MapType != GMap.Type)
                             continue;
                         int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
                         if (!altar.Called && altar.NextRespawnTime - (int)Game.ClockTime <= time &&
@@ -191,7 +191,7 @@ namespace SAwareness.Timers
                 };
                 Text.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && AltarTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap._MapType && Text.X != 0;
+                    return Timer.Timers.GetActive() && AltarTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type && Text.X != 0;
                 };
                 Text.OutLined = true;
                 Text.Centered = true;

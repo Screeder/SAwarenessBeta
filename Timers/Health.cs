@@ -103,7 +103,7 @@ namespace SAwareness.Timers
                 {
                     if (health.Locked)
                     {
-                        if (health.NextRespawnTime - (int)Game.ClockTime <= 0 || health.MapType != GMap._MapType)
+                        if (health.NextRespawnTime - (int)Game.ClockTime <= 0 || health.MapType != GMap.Type)
                             continue;
                         int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
                         if (!health.Called && health.NextRespawnTime - (int)Game.ClockTime <= time &&
@@ -172,7 +172,7 @@ namespace SAwareness.Timers
                 };
                 Text.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && HealthTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap._MapType;
+                    return Timer.Timers.GetActive() && HealthTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 Text.OutLined = true;
                 Text.Centered = true;

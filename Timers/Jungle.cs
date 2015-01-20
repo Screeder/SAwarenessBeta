@@ -202,7 +202,7 @@ namespace SAwareness.Timers
             {
                 foreach (JungleCamp jungleCamp in JungleCamps)
                 {
-                    if (jungleCamp.NextRespawnTime <= 0 || jungleCamp.MapType != GMap._MapType)
+                    if (jungleCamp.NextRespawnTime <= 0 || jungleCamp.MapType != GMap.Type)
                         continue;
                     int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
                     if (!jungleCamp.Called && jungleCamp.NextRespawnTime - (int) Game.ClockTime <= time &&
@@ -230,7 +230,7 @@ namespace SAwareness.Timers
         {
             /*if (emptyType != 3)
             {*/
-                JungleCamp jungleCamp = GetJungleCampByID(campId, GMap._MapType);
+                JungleCamp jungleCamp = GetJungleCampByID(campId, GMap.Type);
                 if (jungleCamp != null)
                 {
                     jungleCamp.NextRespawnTime = (int)Game.ClockTime + jungleCamp.RespawnTime;
@@ -578,7 +578,7 @@ namespace SAwareness.Timers
                 };
                 Text.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && JungleTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap._MapType;
+                    return Timer.Timers.GetActive() && JungleTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 Text.OutLined = true;
                 Text.Centered = true;
