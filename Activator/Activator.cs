@@ -463,7 +463,7 @@ namespace SAwareness
                 !MainMenu.ActivatorDefensiveShieldBoost.GetMenuItem("SAwarenessActivatorDefensiveShieldBoostGuardiansHorn")
                     .GetValue<bool>())
                 return;
-            if (Utility.Map.GetMap()._MapType != Utility.Map.MapType.HowlingAbyss)
+            if (Utility.Map.GetMap().Type != Utility.Map.MapType.HowlingAbyss)
                 return;
             Obj_AI_Hero hero = TargetSelector.GetTarget(1000, TargetSelector.DamageType.True);
             if (hero != null && hero.IsValid && !ImFleeing(hero) && IsFleeing(hero))
@@ -663,7 +663,7 @@ namespace SAwareness
                 var blackfire = new Items.Item(3188, 750);
                 var dfg = new Items.Item(3128, 750);
                 var twinshadows = new Items.Item(3023, 1000);
-                if (Utility.Map.GetMap()._MapType == Utility.Map.MapType.CrystalScar)
+                if (Utility.Map.GetMap().Type == Utility.Map.MapType.CrystalScar)
                     twinshadows = new Items.Item(3290, 1000);
                 if (bilgewater.IsReady() &&
                     MainMenu.ActivatorOffensiveAp.GetMenuItem("SAwarenessActivatorOffensiveApBilgewaterCutlass")

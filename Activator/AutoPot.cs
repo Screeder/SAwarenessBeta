@@ -33,7 +33,7 @@ namespace SAwareness
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || ObjectManager.Player.IsDead || Utility.InFountain() ||
+            if (!IsActive() || ObjectManager.Player.IsDead || ObjectManager.Player.InFountain() ||
                 ObjectManager.Player.HasBuff("Recall") || ObjectManager.Player.HasBuff("SummonerTeleport") ||
                 ObjectManager.Player.HasBuff("RecallImproved") ||
                 ObjectManager.Player.ServerPosition.CountEnemiesInRange(1500) > 0)
