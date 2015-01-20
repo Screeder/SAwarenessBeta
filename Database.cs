@@ -4938,7 +4938,7 @@ namespace SAwareness
 
             public bool IsActive()
             {
-                return Maplist.Contains(Utility.Map.GetMap()._MapType);
+                return Maplist.Contains(Utility.Map.GetMap().Type);
             }
 
             public bool IsInInventory()
