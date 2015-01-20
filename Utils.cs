@@ -836,6 +836,9 @@ namespace SAwareness
 
                 case "reksaie":
                     return "RekSaiE";
+                    
+                case "dravenspinning":
+                    return "DravenSpinning";
 
                 default:
                     return name;
