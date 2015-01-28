@@ -60,7 +60,7 @@ namespace SAwareness.Ranges
                 case 0:
                     foreach (Obj_AI_Turret turret in ObjectManager.Get<Obj_AI_Turret>())
                     {
-                        if (turret.IsVisible && !turret.IsDead && !turret.IsEnemy && turret.IsValid &&
+                        if (turret.IsVisible && !turret.IsDead && !turret.IsEnemy && turret.IsValid && turret.Position.IsOnScreen() &&
                             ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < TurretRange.GetMenuItem("SAwarenessRangesTurretRange").GetValue<Slider>().Value)
                         {
                             Utility.DrawCircle(turret.Position, 900f, TurretRange.GetMenuItem("SAwarenessRangesTurretColorMe").GetValue<Color>());
@@ -70,7 +70,7 @@ namespace SAwareness.Ranges
                 case 1:
                     foreach (Obj_AI_Turret turret in ObjectManager.Get<Obj_AI_Turret>())
                     {
-                        if (turret.IsVisible && !turret.IsDead && turret.IsEnemy && turret.IsValid &&
+                        if (turret.IsVisible && !turret.IsDead && turret.IsEnemy && turret.IsValid && turret.Position.IsOnScreen() &&
                             ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < TurretRange.GetMenuItem("SAwarenessRangesTurretRange").GetValue<Slider>().Value)
                         {
                             Utility.DrawCircle(turret.Position, 900f, TurretRange.GetMenuItem("SAwarenessRangesTurretColorEnemy").GetValue<Color>());
@@ -80,7 +80,7 @@ namespace SAwareness.Ranges
                 case 2:
                     foreach (Obj_AI_Turret turret in ObjectManager.Get<Obj_AI_Turret>())
                     {
-                        if (turret.IsVisible && !turret.IsDead && !turret.IsEnemy && turret.IsValid &&
+                        if (turret.IsVisible && !turret.IsDead && !turret.IsEnemy && turret.IsValid && turret.Position.IsOnScreen() &&
                             ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < TurretRange.GetMenuItem("SAwarenessRangesTurretRange").GetValue<Slider>().Value)
                         {
                             Utility.DrawCircle(turret.Position, 900f, TurretRange.GetMenuItem("SAwarenessRangesTurretColorMe").GetValue<Color>());
@@ -88,7 +88,7 @@ namespace SAwareness.Ranges
                     }
                     foreach (Obj_AI_Turret turret in ObjectManager.Get<Obj_AI_Turret>())
                     {
-                        if (turret.IsVisible && !turret.IsDead && turret.IsEnemy && turret.IsValid &&
+                        if (turret.IsVisible && !turret.IsDead && turret.IsEnemy && turret.IsValid && turret.Position.IsOnScreen() &&
                             ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < TurretRange.GetMenuItem("SAwarenessRangesTurretRange").GetValue<Slider>().Value)
                         {
                             Utility.DrawCircle(turret.Position, 900f, TurretRange.GetMenuItem("SAwarenessRangesTurretColorEnemy").GetValue<Color>());

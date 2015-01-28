@@ -141,14 +141,47 @@
   <data name="DETECTORS_GANK_SHOWJUNGLER" xml:space="preserve">
     <value>Show Jungler</value>
   </data>
+  <data name="DETECTORS_GANK_TEXT" xml:space="preserve">
+    <value>Gank</value>
+  </data>
+  <data name="DETECTORS_GANK_TEXT_JUNGLER" xml:space="preserve">
+    <value>Enemy jungler approaching</value>
+  </data>
   <data name="DETECTORS_RECALL_MAIN" xml:space="preserve">
     <value>Recall</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_CANCELED" xml:space="preserve">
+    <value>canceled</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_HP" xml:space="preserve">
+    <value>hp</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_PORTED" xml:space="preserve">
+    <value>ported</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_PORTING" xml:space="preserve">
+    <value>porting</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_RECALLED" xml:space="preserve">
+    <value>recalled</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_RECALLING" xml:space="preserve">
+    <value>recalling</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_WITH" xml:space="preserve">
+    <value>with</value>
   </data>
   <data name="DETECTORS_VISION_MAIN" xml:space="preserve">
     <value>Vision</value>
   </data>
   <data name="DETECTORS_VISION_RANGE" xml:space="preserve">
     <value>Draw Range</value>
+  </data>
+  <data name="DETECTORS_VISION_REALRANGE" xml:space="preserve">
+    <value>Draw Real Range</value>
+  </data>
+  <data name="DETECTORS_VISION_VISIONRANGE" xml:space="preserve">
+    <value>Draw Vision Range</value>
   </data>
   <data name="GLOBAL_ACTIVE" xml:space="preserve">
     <value>Active</value>
@@ -413,6 +446,9 @@
   </data>
   <data name="TIMERS_TIMER_MAIN" xml:space="preserve">
     <value>Timers</value>
+  </data>
+  <data name="TIMERS_TIMER_SCALE" xml:space="preserve">
+    <value>Scale</value>
   </data>
   <data name="TRACKERS_CLONE_MAIN" xml:space="preserve">
     <value>Clone</value>

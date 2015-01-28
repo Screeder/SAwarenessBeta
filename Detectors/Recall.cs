@@ -100,15 +100,16 @@ namespace SAwareness.Detectors
                         if (recallEx.Status == Packet.S2C.Teleport.Status.Start)
                         {
                             String text = (recallEx.Type == Packet.S2C.Teleport.Type.Recall
-                                ? "recalling"
-                                : "porting");
+                                ? Language.GetString("DETECTORS_RECALL_TEXT_RECALLING")
+                                : Language.GetString("DETECTORS_RECALL_TEXT_PORTING"));
                             recall.Start = (int)Game.Time;
                             if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
-                                Game.PrintChat(obj.ChampionName + " {0} with {1} hp {2}({3})", text,
+                                Game.PrintChat(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " + 
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text,
                                     (int)obj.Health, color, percentHealth);
                             }
                             else if (
@@ -118,7 +119,8 @@ namespace SAwareness.Detectors
                                 Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive")
                                     .GetValue<bool>())
                             {
-                                Game.Say(obj.ChampionName + " {0} with {1} hp {2}({3})", text, (int)obj.Health,
+                                Game.Say(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " + 
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text, (int)obj.Health,
                                     color, percentHealth);
                             }
                             if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
@@ -129,14 +131,15 @@ namespace SAwareness.Detectors
                         else if (recallEx.Status == Packet.S2C.Teleport.Status.Finish)
                         {
                             String text = (recallEx.Type == Packet.S2C.Teleport.Type.Recall
-                                ? "recalled"
-                                : "ported");
+                                ? Language.GetString("DETECTORS_RECALL_TEXT_RECALLED")
+                                : Language.GetString("DETECTORS_RECALL_TEXT_PORTED"));
                             if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
-                                Game.PrintChat(obj.ChampionName + " {0} with {1} hp {2}({3})", text,
+                                Game.PrintChat(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text,
                                     (int)obj.Health, color, percentHealth);
                             }
                             else if (
@@ -146,7 +149,8 @@ namespace SAwareness.Detectors
                                 Menu.GlobalSettings.GetMenuItem(
                                     "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
-                                Game.Say(obj.ChampionName + " {0} with {1} hp {2}({3})", text,
+                                Game.Say(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text,
                                     (int)obj.Health, color, percentHealth);
                             }
                             if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
@@ -161,7 +165,9 @@ namespace SAwareness.Detectors
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
-                                Game.PrintChat(obj.ChampionName + " canceled with {0} hp", (int)obj.Health);
+                                Game.PrintChat(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " + 
+                                    Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {0} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", (int)obj.Health);
                             }
                             else if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
@@ -170,11 +176,13 @@ namespace SAwareness.Detectors
                                 Menu.GlobalSettings.GetMenuItem(
                                     "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
-                                Game.Say(obj.ChampionName + " canceled with {0} hp", (int)obj.Health);
+                                Game.Say(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " 
+                                    + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {0} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", (int)obj.Health);
                             }
                             if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
                             {
-                                Speech.Speak(obj.ChampionName + " canceled");
+                                Speech.Speak(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED"));
                             }
                         }
                         return;

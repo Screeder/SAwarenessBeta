@@ -142,17 +142,23 @@ namespace SAwareness.Trackers
                         Vector2 startPos = Drawing.WorldToScreen(ability.StartPos);
                         Vector2 endPos = Drawing.WorldToScreen(ability.EndPos);
 
-                        if (ability.OutOfBush)
+                        if (ability.EndPos.IsOnScreen())
                         {
-                            Utility.DrawCircle(ability.EndPos, ability.Range, System.Drawing.Color.Red);
+                            if (ability.OutOfBush)
+                            {
+                                Utility.DrawCircle(ability.EndPos, ability.Range, System.Drawing.Color.Red);
+                            }
+                            else
+                            {
+                                Utility.DrawCircle(ability.EndPos, ability.Range, System.Drawing.Color.Red);
+                                Drawing.DrawLine(startPos[0], startPos[1], endPos[0], endPos[1], 1.0f, System.Drawing.Color.Red);
+                            }
                         }
-                        else
+                        if(endPos.IsOnScreen())
                         {
-                            Utility.DrawCircle(ability.EndPos, ability.Range, System.Drawing.Color.Red);
-                            Drawing.DrawLine(startPos[0], startPos[1], endPos[0], endPos[1], 1.0f, System.Drawing.Color.Red);
-                        }
-                        Drawing.DrawText(endPos[0], endPos[1], Color.Bisque,
+                            Drawing.DrawText(endPos[0], endPos[1], Color.Bisque,
                             enemy.Key.ChampionName + " " + ability.SpellName);
+                        }
                     }
                 }
             }

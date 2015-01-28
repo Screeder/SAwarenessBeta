@@ -74,7 +74,10 @@ namespace SAwareness.Miscs
                     continue;
                 }
                 Vector2 screenPos = Drawing.WorldToScreen(new Vector3(info.Pos, NavMesh.GetHeightForPosition(info.Pos.X, info.Pos.Y)));
-                Drawing.DrawText(screenPos.X - 25, screenPos.Y, System.Drawing.Color.DeepSkyBlue, info.Name);
+                if (screenPos.IsOnScreen())
+                {
+                    Drawing.DrawText(screenPos.X - 25, screenPos.Y, System.Drawing.Color.DeepSkyBlue, info.Name);
+                }
             }
         }
 

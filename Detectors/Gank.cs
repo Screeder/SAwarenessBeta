@@ -22,10 +22,10 @@ namespace SAwareness.Detectors
             {
                 if (hero.IsEnemy)
                 {
-                    Render.Text text = new Render.Text(new Vector2(0, 0), "Enemy jungler approaching", 28, Color.Red);
+                    Render.Text text = new Render.Text(new Vector2(0, 0), Language.GetString("DETECTORS_GANK_TEXT_JUNGLER"), 28, Color.Red);
                     text.PositionUpdate = delegate
                     {
-                        Speech.Speak("Enemy jungler approaching");
+                        Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT_JUNGLER"));
                         return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
                     };
                     text.VisibleCondition = sender =>
@@ -150,7 +150,7 @@ namespace SAwareness.Detectors
                 GankDetector.GetMenuItem("SAwarenessDetectorsGankChatChoice").GetValue<StringList>().SelectedIndex ==
                 1)
             {
-                Game.PrintChat("Gank: {0}", hero.ChampionName);
+                Game.PrintChat(Language.GetString("DETECTORS_GANK_TEXT") + ": {0}", hero.ChampionName);
             }
             else if (
                 GankDetector.GetMenuItem("SAwarenessDetectorsGankChatChoice")
@@ -158,11 +158,11 @@ namespace SAwareness.Detectors
                     .SelectedIndex == 2 &&
                 Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
             {
-                Game.Say("Gank: {0}", hero.ChampionName);
+                Game.Say(Language.GetString("DETECTORS_GANK_TEXT") + ": {0}", hero.ChampionName);
             }
             if (GankDetector.GetMenuItem("SAwarenessDetectorsGankVoice").GetValue<bool>())
             {
-                Speech.Speak("Gank: " + hero.ChampionName);
+                Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT") + ": " + hero.ChampionName);
             }
             
             //TODO: Check for Teleport etc.                    

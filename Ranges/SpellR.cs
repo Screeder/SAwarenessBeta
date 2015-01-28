@@ -56,13 +56,16 @@ namespace SAwareness.Ranges
             switch (mode.SelectedIndex)
             {
                 case 0:
-                    Utility.DrawCircle(ObjectManager.Player.Position,
-                        ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.CastRange[0], SpellRRange.GetMenuItem("SAwarenessRangesSpellRColorMe").GetValue<Color>());
+                    if (ObjectManager.Player.Position.IsOnScreen())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position,
+                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.CastRange[0], SpellRRange.GetMenuItem("SAwarenessRangesSpellRColorMe").GetValue<Color>());
+                    }
                     break;
                 case 1:
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
-                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead)
+                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position,
                                 ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.CastRange[0], SpellRRange.GetMenuItem("SAwarenessRangesSpellRColorEnemy").GetValue<Color>());
@@ -70,11 +73,14 @@ namespace SAwareness.Ranges
                     }
                     break;
                 case 2:
-                    Utility.DrawCircle(ObjectManager.Player.Position,
-                        ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.CastRange[0], SpellRRange.GetMenuItem("SAwarenessRangesSpellRColorMe").GetValue<Color>());
+                    if (ObjectManager.Player.Position.IsOnScreen())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position,
+                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.CastRange[0], SpellRRange.GetMenuItem("SAwarenessRangesSpellRColorMe").GetValue<Color>());
+                    }
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
-                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead)
+                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position,
                                 ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.CastRange[0], SpellRRange.GetMenuItem("SAwarenessRangesSpellRColorEnemy").GetValue<Color>());

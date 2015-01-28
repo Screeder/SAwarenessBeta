@@ -94,6 +94,10 @@ namespace SAwareness.Detectors
             VisionDetector.MenuItems.Add(
                 VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionDrawRange", Language.GetString("DETECTORS_VISION_RANGE")).SetValue(false)));
             VisionDetector.MenuItems.Add(
+                VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionDrawVisionRange", Language.GetString("DETECTORS_VISION_VISIONRANGE")).SetValue(false)));
+            VisionDetector.MenuItems.Add(
+                VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionDrawRealVisionRange", Language.GetString("DETECTORS_VISION_REALRANGE")).SetValue(false)));
+            VisionDetector.MenuItems.Add(
                 VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return VisionDetector;
         }
@@ -200,12 +204,19 @@ namespace SAwareness.Detectors
                             break;
 
                         case ObjectType.Unknown:
-                            Drawing.DrawLine(Drawing.WorldToScreen(obj.StartPosition), Drawing.WorldToScreen(obj.EndPosition), 1, obj.ObjectBase.Color);
+                            if (Drawing.WorldToScreen(obj.StartPosition).IsOnScreen() &&
+                                Drawing.WorldToScreen(obj.EndPosition).IsOnScreen())
+                            {
+                                Drawing.DrawLine(Drawing.WorldToScreen(obj.StartPosition), Drawing.WorldToScreen(obj.EndPosition), 1, obj.ObjectBase.Color);
+                            }
                             break;
                     }
-                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
+                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawVisionRange").GetValue<bool>())
                     {
-                        Utility.DrawCircle(obj.EndPosition, range, obj.ObjectBase.Color);
+                        if (Drawing.WorldToScreen(obj.EndPosition).IsOnScreen())
+                        {
+                            Utility.DrawCircle(obj.EndPosition, range, obj.ObjectBase.Color);
+                        }
                     }
                     if (obj.Points == null)
                     {
@@ -216,30 +227,48 @@ namespace SAwareness.Detectors
                     {
                         posList = obj.Points;
                     }
-                    for (int j = 0; j < posList.Count; j++)
+                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRealVisionRange").GetValue<bool>())
                     {
-                        Vector2 visionPos1 = Drawing.WorldToScreen(posList[j]);
-                        Vector2 visionPos2;
-                        try
+                        for (int j = 0; j < posList.Count; j++)
                         {
-                            visionPos2 = Drawing.WorldToScreen(posList[j + 1]);
+                            Vector2 visionPos1 = Drawing.WorldToScreen(posList[j]);
+                            Vector2 visionPos2;
+                            try
+                            {
+                                visionPos2 = Drawing.WorldToScreen(posList[j + 1]);
+                            }
+                            catch (Exception)
+                            {
+                                visionPos2 = Drawing.WorldToScreen(posList[0]);
+                            }
+                            if (visionPos1.IsOnScreen() && visionPos2.IsOnScreen())
+                            {
+                                Drawing.DrawLine(visionPos1.X, visionPos1.Y, visionPos2.X, visionPos2.Y, 2.0f, obj.ObjectBase.Color);
+                            }
                         }
-                        catch (Exception)
-                        {
-                            visionPos2 = Drawing.WorldToScreen(posList[0]);
-                        }
-                        Drawing.DrawLine(visionPos1.X, visionPos1.Y, visionPos2.X, visionPos2.Y, 2.0f, obj.ObjectBase.Color);
                     }
-                    Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, typeText);
+                    if (objMPos.IsOnScreen())
+                    {
+                        Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, typeText);
+                    }
 
-                    Utility.DrawCircle(obj.EndPosition, 50, obj.ObjectBase.Color);
+                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
+                    {
+                        if (Drawing.WorldToScreen(obj.EndPosition).IsOnScreen())
+                        {
+                            Utility.DrawCircle(obj.EndPosition, 50, obj.ObjectBase.Color);
+                        }
+                    }
                     float endTime = obj.EndTime - Game.Time;
                     if (!float.IsInfinity(endTime) && !float.IsNaN(endTime) && endTime.CompareTo(float.MaxValue) != 0)
                     {
                         var m = (float) Math.Floor(endTime/60);
                         var s = (float) Math.Ceiling(endTime%60);
                         String ms = (s < 10 ? m + ":0" + s : m + ":" + s);
-                        Drawing.DrawText(objPos[0], objPos[1], obj.ObjectBase.Color, ms);
+                        if (objMPos.IsOnScreen())
+                        {
+                            Drawing.DrawText(objPos[0], objPos[1], obj.ObjectBase.Color, ms);
+                        }
                     }
                 }
             }
@@ -249,7 +278,7 @@ namespace SAwareness.Detectors
             }
         }
 
-        private List<Vector3> GetVision(Vector3 viewPos, float visionRange) //TODO: ADD IT
+        private List<Vector3> GetVision(Vector3 viewPos, float visionRange)
         {
             var list = new List<Vector3>();
             for (int i = 0; i <= 360; i += 15/*round*/)

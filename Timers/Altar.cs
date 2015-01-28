@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace SAwareness.Timers
 {
@@ -177,7 +178,8 @@ namespace SAwareness.Timers
                 NextRespawnTime = 0;
                 MapType = Utility.Map.MapType.TwistedTreeline;
                 Called = false;
-                Text = new Render.Text(0, 0, "", 12, new ColorBGRA(Color4.White));
+                Text = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += AltarObject_ValueChanged;
                 Text.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
@@ -195,6 +197,19 @@ namespace SAwareness.Timers
                 };
                 Text.OutLined = true;
                 Text.Centered = true;
+                Text.Add();
+            }
+
+            void AltarObject_ValueChanged(object sender, OnValueChangeEventArgs e)
+            {
+                Text.Remove();
+                Text.TextFontDescription = new FontDescription
+                {
+                    FaceName = "Calibri",
+                    Height = e.GetNewValue<Slider>().Value,
+                    OutputPrecision = FontPrecision.Default,
+                    Quality = FontQuality.Default,
+                };
                 Text.Add();
             }
         }

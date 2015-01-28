@@ -95,13 +95,19 @@ namespace SAwareness.Trackers
                         if (radius < SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleRange").GetValue<Slider>().Value)
                         {
                             Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
-                            Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
+                            if (enemy.Value.LastPosition.IsOnScreen())
+                            {
+                                Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
+                            }
                         } 
                         else if (radius >= SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleRange").GetValue<Slider>().Value)
                         {
                             radius = SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleRange").GetValue<Slider>().Value;
                             Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
-                            Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
+                            if (enemy.Value.LastPosition.IsOnScreen())
+                            {
+                                Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
+                            }
                         }
                     }
                 }

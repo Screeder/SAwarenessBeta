@@ -47,6 +47,8 @@ namespace SAwareness.Timers
                     Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
                     Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                 }))));
+            Timers.MenuItems.Add(
+                Timers.Menu.AddItem(new MenuItem("SAwarenessTimersTextScale", Language.GetString("TIMERS_TIMER_SCALE")).SetValue(new Slider(12, 8, 20))));
             Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAwarenessTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return Timers;
         }

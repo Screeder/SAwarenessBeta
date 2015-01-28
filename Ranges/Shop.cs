@@ -57,7 +57,7 @@ namespace SAwareness.Ranges
                 case 0:
                     foreach (Obj_Shop shop in ObjectManager.Get<Obj_Shop>())
                     {
-                        if (shop.IsValid && shop.IsValid && ObjectManager.Player.Team == shop.Team)
+                        if (shop.IsValid && shop.IsValid && ObjectManager.Player.Team == shop.Team && shop.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorMe").GetValue<Color>());
                         }
@@ -66,7 +66,7 @@ namespace SAwareness.Ranges
                 case 1:
                     foreach (Obj_Shop shop in ObjectManager.Get<Obj_Shop>())
                     {
-                        if (shop.IsValid && shop.IsValid && ObjectManager.Player.Team != shop.Team)
+                        if (shop.IsValid && shop.IsValid && ObjectManager.Player.Team != shop.Team && shop.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorEnemy").GetValue<Color>());
                         }
@@ -77,11 +77,11 @@ namespace SAwareness.Ranges
                     {
                         if (shop.IsValid && shop.IsValid)
                         {
-                            if (ObjectManager.Player.Team == shop.Team)
+                            if (ObjectManager.Player.Team == shop.Team && shop.Position.IsOnScreen())
                             {
                                 Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorMe").GetValue<Color>());
                             }
-                            if (ObjectManager.Player.Team != shop.Team)
+                            if (ObjectManager.Player.Team != shop.Team && shop.Position.IsOnScreen())
                             {
                                 Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorEnemy").GetValue<Color>());
                             }

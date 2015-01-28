@@ -55,12 +55,15 @@ namespace SAwareness.Ranges
             switch (mode.SelectedIndex)
             {
                 case 0:
-                    Utility.DrawCircle(ObjectManager.Player.Position, 1400, ExperienceRange.GetMenuItem("SAwarenessRangesExperienceColorMe").GetValue<Color>());
+                    if (ObjectManager.Player.Position.IsOnScreen())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position, 1400, ExperienceRange.GetMenuItem("SAwarenessRangesExperienceColorMe").GetValue<Color>());
+                    }
                     break;
                 case 1:
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
-                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead)
+                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position, 1400, ExperienceRange.GetMenuItem("SAwarenessRangesExperienceColorEnemy").GetValue<Color>());
                         }
@@ -70,7 +73,7 @@ namespace SAwareness.Ranges
                     Utility.DrawCircle(ObjectManager.Player.Position, 1400, ExperienceRange.GetMenuItem("SAwarenessRangesExperienceColorMe").GetValue<Color>());
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
-                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead)
+                        if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position, 1400, ExperienceRange.GetMenuItem("SAwarenessRangesExperienceColorEnemy").GetValue<Color>());
                         }

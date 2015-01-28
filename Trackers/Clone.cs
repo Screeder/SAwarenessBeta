@@ -49,8 +49,11 @@ namespace SAwareness.Trackers
                         hero.ChampionName.Contains("MonkeyKing") ||
                         hero.ChampionName.Contains("Yorick"))
                     {
-                        Utility.DrawCircle(hero.ServerPosition, 100, Color.Red);
-                        Utility.DrawCircle(hero.ServerPosition, 110, Color.Red);
+                        if (hero.ServerPosition.IsOnScreen())
+                        {
+                            Utility.DrawCircle(hero.ServerPosition, 100, Color.Red);
+                            Utility.DrawCircle(hero.ServerPosition, 110, Color.Red);
+                        }
                     }
                     
                 }

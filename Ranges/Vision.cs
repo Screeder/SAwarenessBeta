@@ -83,7 +83,7 @@ namespace SAwareness.Ranges
             switch (mode.SelectedIndex)
             {
                 case 0:
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>() && ObjectManager.Player.Position.IsOnScreen())
                     {
                         Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
                     }
@@ -91,7 +91,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
-                            if (!hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead &&
+                            if (!hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead && hero.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
                             {
                                 Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
@@ -102,7 +102,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
-                            if (!turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead &&
+                            if (!turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead && turret.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
                             {
                                 Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
@@ -113,7 +113,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
-                            if (!minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead &&
+                            if (!minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead && minion.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
                             {
                                 Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
@@ -126,7 +126,7 @@ namespace SAwareness.Ranges
                         {
                             foreach (var wards in _wards)
                             {
-                                if (ward.Name.Contains(wards) && !ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead &&
+                                if (ward.Name.Contains(wards) && !ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead && ward.Position.IsOnScreen() &&
                                     ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
                                 {
                                     Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
@@ -140,7 +140,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
-                            if (hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead &&
+                            if (hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead && hero.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
                             {
                                 Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
@@ -151,7 +151,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
-                            if (turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead &&
+                            if (turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead && turret.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
                             {
                                 Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
@@ -162,7 +162,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
-                            if (minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead &&
+                            if (minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead && minion.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
                             {
                                 Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
@@ -175,7 +175,7 @@ namespace SAwareness.Ranges
                         {
                             foreach (var wards in _wards)
                             {
-                                if (ward.Name.Contains(wards) && ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead &&
+                                if (ward.Name.Contains(wards) && ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead && ward.Position.IsOnScreen() &&
                                     ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
                                 {
                                     Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
@@ -185,7 +185,7 @@ namespace SAwareness.Ranges
                     }
                     break;
                 case 2:
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>() && ObjectManager.Player.Position.IsOnScreen())
                     {
                         Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
                     }
@@ -193,7 +193,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
-                            if (hero.IsVisible && hero.IsValid && !hero.IsDead &&
+                            if (hero.IsVisible && hero.IsValid && !hero.IsDead && hero.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
                             {
                                 if (!hero.IsEnemy)
@@ -211,7 +211,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
-                            if (turret.IsVisible && turret.IsValid && !turret.IsDead &&
+                            if (turret.IsVisible && turret.IsValid && !turret.IsDead && turret.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
                             {
                                 if (!turret.IsEnemy)
@@ -229,7 +229,7 @@ namespace SAwareness.Ranges
                     {
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
-                            if (minion.IsVisible && minion.IsValid && !minion.IsDead &&
+                            if (minion.IsVisible && minion.IsValid && !minion.IsDead && minion.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
                             {
                                 if (!minion.IsEnemy)
@@ -249,7 +249,7 @@ namespace SAwareness.Ranges
                         {
                             foreach (var wards in _wards)
                             {
-                                if (ward.Name.Contains(wards) && ward.IsVisible && ward.IsValid && !ward.IsDead &&
+                                if (ward.Name.Contains(wards) && ward.IsVisible && ward.IsValid && !ward.IsDead && ward.Position.IsOnScreen() &&
                                     ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
                                 {
                                     if (!ward.IsEnemy)

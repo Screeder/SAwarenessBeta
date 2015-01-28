@@ -124,9 +124,18 @@ namespace SAwareness.Miscs
             {
                 if (ObjectManager.Player.ServerPosition.Distance(spotsStart[i]) < 2000)
                 {
-                    Utility.DrawCircle(spotsStart[i], 50, System.Drawing.Color.Red);
-                    Utility.DrawCircle(spotsEnd[i], 100, System.Drawing.Color.Green);
-                    Drawing.DrawLine(Drawing.WorldToScreen(spotsStart[i]), Drawing.WorldToScreen(spotsEnd[i]), 2, Color.Gold);
+                    if (spotsStart[i].IsOnScreen())
+                    {
+                        Utility.DrawCircle(spotsStart[i], 50, System.Drawing.Color.Red);
+                    }
+                    if (spotsEnd[i].IsOnScreen())
+                    {
+                        Utility.DrawCircle(spotsEnd[i], 100, System.Drawing.Color.Green);
+                    }
+                    if (spotsStart[i].IsOnScreen() || spotsEnd[i].IsOnScreen())
+                    {
+                        Drawing.DrawLine(Drawing.WorldToScreen(spotsStart[i]), Drawing.WorldToScreen(spotsEnd[i]), 2, Color.Gold);
+                    }
                 }
             }
         }

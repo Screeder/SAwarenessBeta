@@ -51,15 +51,17 @@ namespace SAwareness.Trackers
                     {
                         Vector2 oWp;
                         Vector2 nWp;
-                        float time = 0;
+                        float time = ((Vector3.Distance(waypoints[i].To3D(), waypoints[i + 1].To3D()) /
+                              (ObjectManager.Player.MoveSpeed / 1000)) / 1000);
+                        time = (float)Math.Round(time, 2);
+                        arrivalTime += time;
                         oWp = Drawing.WorldToScreen(waypoints[i].To3D());
                         nWp = Drawing.WorldToScreen(waypoints[i + 1].To3D());
+                        if (!oWp.IsOnScreen() && !nWp.IsOnScreen())
+                        {
+                            continue;
+                        }
                         Drawing.DrawLine(oWp[0], oWp[1], nWp[0], nWp[1], 1, System.Drawing.Color.White);
-                        time =
-                            ((Vector3.Distance(waypoints[i].To3D(), waypoints[i + 1].To3D())/
-                              (ObjectManager.Player.MoveSpeed/1000))/1000);
-                        time = (float) Math.Round(time, 2);
-                        arrivalTime += time;
                         if (i == enemy.Path.Length - 1)
                         {
                             DrawCross(nWp[0], nWp[1], 1.0f, 3.0f, System.Drawing.Color.Red);
