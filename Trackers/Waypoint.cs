@@ -57,7 +57,7 @@ namespace SAwareness.Trackers
                         arrivalTime += time;
                         oWp = Drawing.WorldToScreen(waypoints[i].To3D());
                         nWp = Drawing.WorldToScreen(waypoints[i + 1].To3D());
-                        if (!oWp.IsOnScreen() && !nWp.IsOnScreen())
+                        if (!waypoints[i].IsOnScreen() && !waypoints[i + 1].IsOnScreen())
                         {
                             continue;
                         }
