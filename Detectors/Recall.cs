@@ -93,8 +93,8 @@ namespace SAwareness.Detectors
                         //recall.Recall2 = new Recall.Struct();
 
                         var percentHealth = (int)((obj.Health / obj.MaxHealth) * 100);
-                        String sColor = "<font color='#FFFFFF'>";
-                        String color = (percentHealth > 50
+                        String sColor;
+                        String hColor = (percentHealth > 50
                             ? "<font color='#00FF00'>"
                             : (percentHealth > 30 ? "<font color='#FFFF00'>" : "<font color='#FF0000'>"));
                         if (recallEx.Status == Packet.S2C.Teleport.Status.Start)
@@ -102,15 +102,16 @@ namespace SAwareness.Detectors
                             String text = (recallEx.Type == Packet.S2C.Teleport.Type.Recall
                                 ? Language.GetString("DETECTORS_RECALL_TEXT_RECALLING")
                                 : Language.GetString("DETECTORS_RECALL_TEXT_PORTING"));
+                            sColor = "<font color='#FFFF00'>";
                             recall.Start = (int)Game.Time;
                             if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
-                                Game.PrintChat(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " + 
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text,
-                                    (int)obj.Health, color, percentHealth);
+                                Game.PrintChat("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
+                                    (int)obj.Health, hColor, percentHealth);
                             }
                             else if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
@@ -119,9 +120,9 @@ namespace SAwareness.Detectors
                                 Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive")
                                     .GetValue<bool>())
                             {
-                                Game.Say(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " + 
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text, (int)obj.Health,
-                                    color, percentHealth);
+                                Game.Say("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text, (int)obj.Health,
+                                    hColor, percentHealth);
                             }
                             if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
                             {
@@ -133,14 +134,15 @@ namespace SAwareness.Detectors
                             String text = (recallEx.Type == Packet.S2C.Teleport.Type.Recall
                                 ? Language.GetString("DETECTORS_RECALL_TEXT_RECALLED")
                                 : Language.GetString("DETECTORS_RECALL_TEXT_PORTED"));
+                            sColor = "<font color='#FF0000'>";
                             if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
-                                Game.PrintChat(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text,
-                                    (int)obj.Health, color, percentHealth);
+                                Game.PrintChat("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
+                                    (int)obj.Health, hColor, percentHealth);
                             }
                             else if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
@@ -149,9 +151,9 @@ namespace SAwareness.Detectors
                                 Menu.GlobalSettings.GetMenuItem(
                                     "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
-                                Game.Say(obj.ChampionName + " {0} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {2}({3})", text,
-                                    (int)obj.Health, color, percentHealth);
+                                Game.Say("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
+                                    (int)obj.Health, hColor, percentHealth);
                             }
                             if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
                             {
@@ -160,14 +162,15 @@ namespace SAwareness.Detectors
                         }
                         else
                         {
+                            sColor = "<font color='#00FF00'>";
                             if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
-                                Game.PrintChat(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " + 
-                                    Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {0} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", (int)obj.Health);
+                                Game.PrintChat("{0}" + obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " + 
+                                    Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", sColor, (int)obj.Health);
                             }
                             else if (
                                 RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
@@ -176,9 +179,9 @@ namespace SAwareness.Detectors
                                 Menu.GlobalSettings.GetMenuItem(
                                     "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
-                                Game.Say(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " 
-                                    + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {0} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", (int)obj.Health);
+                                Game.Say("{0}" + obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " 
+                                    + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", sColor, (int)obj.Health);
                             }
                             if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
                             {

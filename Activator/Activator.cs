@@ -727,6 +727,16 @@ namespace SAwareness
             return SpellSlot.Unknown;
         }
 
+        public static SpellSlot GetSmiteSlot()
+        {
+            foreach (SpellDataInst spell in ObjectManager.Player.Spellbook.Spells)
+            {
+                if (spell.Name.ToLower().Contains("smite") && spell.State == SpellState.Ready)
+                    return spell.Slot;
+            }
+            return SpellSlot.Unknown;
+        }
+
         public static SpellSlot GetHealSlot()
         {
             foreach (SpellDataInst spell in ObjectManager.Player.Spellbook.Spells)

@@ -26,6 +26,11 @@ namespace SAwareness.Timers
             Abilities.Add(new Ability("eyeforaneye", 2f, "Kayle Ult"), null);
             Abilities.Add(new Ability("UndyingRage_buf", 5f, "Tryndamere Ult"), null);
             Abilities.Add(new Ability("EggTimer", 6f, "Anivia Egg"), null);
+            Abilities.Add(new Ability("LOC_Suppress", 1.75f, ""), null);
+            Abilities.Add(new Ability("OrianaVacuumIndicator", 0.50f, "Orianna R"), null);
+            Abilities.Add(new Ability("NocturneUnspeakableHorror_beam", 2f, "Nocturn W"), null);
+            Abilities.Add(new Ability("GateMarker_green", 1.5f, ""), null);
+            Abilities.Add(new Ability("Zed_Ult_TargetMarker_tar", 3.0f, "Zed Ult"), null);
 
             foreach (var ability in Abilities.ToList())
             {
