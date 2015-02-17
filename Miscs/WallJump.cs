@@ -14,21 +14,25 @@ namespace SAwareness.Miscs
         public static Menu.MenuItemSettings WallJumpMisc = new Menu.MenuItemSettings(typeof(WallJump));
 
         InternalWallJump _positions = null;
+        private int lastGameUpdateTime = 0;
 
         public WallJump()
         {
+            if (Game.MapId != (GameMapId)11)
+                return;
+
             switch (ObjectManager.Player.ChampionName)
             {
                 case "Vayne": //By AsunaChan
-                    _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new List<InternalWallJump.Positions>(new[]
+                    _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new Spell(SpellSlot.Q), new List<InternalWallJump.Positions>(new[]
                     {
-                        new InternalWallJump.Positions(new Vector3(12050f, 50f, 4830f), new Vector3(11510f, 50f, 4460f)), 
-                        new InternalWallJump.Positions(new Vector3(6960f, 50f, 8940f), new Vector3(6700f, 50f, 8800f)), 
+                        new InternalWallJump.Positions(new Vector3(12050f, 4827f, NavMesh.GetHeightForPosition(12050f, 4827f)), new Vector3(11514f, 4462f, NavMesh.GetHeightForPosition(11514f, 4462f))), 
+                        new InternalWallJump.Positions(new Vector3(6958f, 8944f, NavMesh.GetHeightForPosition(6958f, 8944f)), new Vector3(6707.485f, 8802.744f, NavMesh.GetHeightForPosition(6707.485f, 8802.744f))), 
                     }));
                     break;
-                    
-            	case "Nidalee": //By Asuna (DZ191)
-            		_positions = new InternalWallJump(ObjectManager.Player.ChampionName, new List<InternalWallJump.Positions>(new[]
+
+                case "Nidalee": //By Asuna (DZ191)
+                    _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new Spell(SpellSlot.W), new List<InternalWallJump.Positions>(new[]
             		{
                         new InternalWallJump.Positions(new Vector3(6393.7299804688f, 8341.7451171875f, -63.87451171875f), new Vector3(6612.1625976563f, 8574.7412109375f, 56.018413543701f)),
                         new InternalWallJump.Positions(new Vector3(7041.7885742188f, 8810.1787109375f, 0f), new Vector3(7296.0341796875f, 9056.4638671875f, 55.610824584961f)),
@@ -89,10 +93,10 @@ namespace SAwareness.Miscs
                         new InternalWallJump.Positions(new Vector3(9237.3603515625f, 2522.8937988281f, 67.796775817871f), new Vector3(9344.2041015625f, 2884.958984375f, 65.500213623047f)),
                         new InternalWallJump.Positions(new Vector3(7324.2783203125f, 1461.2199707031f, 52.594970703125f), new Vector3(7357.3852539063f, 1837.4309082031f, 54.282878875732f)),
             		}));
-            		break;
+                    break;
 
                 case "Riven": //By Kurisu
-                    _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new List<InternalWallJump.Positions>(new[]
+                    _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new Spell(SpellSlot.Q), new List<InternalWallJump.Positions>(new[]
                     {
                         new InternalWallJump.Positions(new Vector3(7830f, 4332f, 53.71266f), new Vector3(7760.892f, 4786.927f, 49.92004f)),
                         new InternalWallJump.Positions(new Vector3(7902f, 4742f, 50.93093f), new Vector3(7787.4f, 4263.179f, 53.8678f)),
@@ -328,11 +332,13 @@ namespace SAwareness.Miscs
                     break;
             }
             Drawing.OnDraw += Drawing_OnDraw;
+            Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         ~WallJump()
         {
             Drawing.OnDraw -= Drawing_OnDraw;
+            Game.OnGameUpdate -= Game_OnGameUpdate;
         }
 
         public bool IsActive()
@@ -344,31 +350,142 @@ namespace SAwareness.Miscs
         {
             WallJumpMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_WALLJUMP_MAIN"), "SAwarenessMiscsWallJump"));
             WallJumpMisc.MenuItems.Add(
+                WallJumpMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsWallJumpKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
+            WallJumpMisc.MenuItems.Add(
                 WallJumpMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsWallJumpActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return WallJumpMisc;
         }
 
+        void Game_OnGameUpdate(EventArgs args)
+        {
+            if (!IsActive() || !WallJumpMisc.GetMenuItem("SAwarenessMiscsWallJumpKey").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+                return;
+
+            lastGameUpdateTime = Environment.TickCount;
+            WallTumble();
+            //if (_positions != null)
+            //{
+            //    foreach (var position in _positions.Position)
+            //    {
+
+            //        if (ObjectManager.Player.Position.X < 12000 || ObjectManager.Player.Position.X > 12070 || ObjectManager.Player.Position.Y < 4800 ||
+            //            ObjectManager.Player.Position.Y > 4872)
+            //        {
+            //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
+            //            MoveTo(new Vector2(12050, 4827).To3D());
+            //        }
+            //        else
+            //        {
+            //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
+            //            MoveTo(new Vector2(12050, 4827).To3D());
+            //            _positions.Spell.Cast(position.PositionEnd, true);
+            //        }
+            //        //if (Vector3.Distance(ObjectManager.Player.ServerPosition, position.PositionStart) <= 200)
+            //        //{
+            //        //    MoveTo(position.PositionStart);
+            //        //}
+            //        //if (Vector3.Distance(ObjectManager.Player.ServerPosition, position.PositionStart) <= 50)
+            //        //{
+            //        //    MoveTo(position.PositionStart);
+            //        //    _positions.Spell.Cast(position.PositionEnd, true);
+            //        //}
+            //    }
+            //}
+        }
+
         void Drawing_OnDraw(EventArgs args)
         {
-            foreach (var position in _positions.Position)
+            if (!IsActive())
+                return;
+            if (_positions != null)
             {
-                Utility.DrawCircle(position.PositionStart, 50, System.Drawing.Color.Blue);
-                Utility.DrawCircle(position.PositionEnd, 50, System.Drawing.Color.Red);
+                foreach (var position in _positions.Position)
+                {
+                    if (position.PositionStart.IsOnScreen())
+                    {
+                        Utility.DrawCircle(position.PositionStart, 50, System.Drawing.Color.Blue);
+                    }
+                    if (position.PositionEnd.IsOnScreen())
+                    {
+                        Utility.DrawCircle(position.PositionEnd, 50, System.Drawing.Color.Red);
+                    }
+                }
             }
+        }
+
+        void WallTumble()
+        {
+            Vector2 MidWallQPos = new Vector2(6707.485f, 8802.744f);
+            Vector2 DrakeWallQPos = new Vector2(11514, 4462);
+            Spell Q = new Spell(SpellSlot.Q);
+            if (ObjectManager.Player.Distance(MidWallQPos) >= ObjectManager.Player.Distance(DrakeWallQPos))
+            {
+
+                if (Vector3.Distance(ObjectManager.Player.Position, new Vector2(12050, 4827).To3D()) <= 200)
+                {
+                    //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
+                    MoveToLimited(new Vector2(12050, 4827).To3D());
+                }
+                else if (Vector3.Distance(ObjectManager.Player.Position, new Vector2(12050, 4827).To3D()) <= 100)
+                {
+                    //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
+                    MoveToLimited(new Vector2(12050, 4827).To3D());
+                    Q.Cast(DrakeWallQPos, true);
+                }
+            }
+            else
+            {
+                if (ObjectManager.Player.Position.X < 6908 || ObjectManager.Player.Position.X > 6978 || ObjectManager.Player.Position.Y < 8917 ||
+                    ObjectManager.Player.Position.Y > 8989)
+                {
+                    // Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(6958, 8944)).Send();
+                    MoveToLimited(new Vector2(6958, 8944).To3D());
+                }
+                else
+                {
+                    //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(6958, 8944)).Send();
+                    MoveToLimited(new Vector2(6958, 8944).To3D());
+                    Q.Cast(MidWallQPos, true);
+                }
+            }
+        }
+
+        void MoveToLimited(Vector3 where)
+        {
+            if (Environment.TickCount - LastMove < 80)
+            {
+                return;
+            }
+            LastMove = Environment.TickCount;
+            ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, where);
+        }
+
+        private float LastMove = 0.0f;
+
+        void MoveTo(Vector3 where)
+        {
+            if (Environment.TickCount - LastMove < 80)
+            {
+                return;
+            }
+            LastMove = Environment.TickCount;
+            ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, where);
         }
 
         class InternalWallJump
         {
             public String ChampionName;
+            public Spell Spell;
             public List<Positions> Position;
 
-            public InternalWallJump(String championName, List<Positions> position)
+            public InternalWallJump(String championName, Spell spell, List<Positions> position)
             {
                 ChampionName = championName;
+                Spell = spell;
                 Position = position;
             }
 
-           public  class Positions
+            public class Positions
             {
                 public Vector3 PositionStart;
                 public Vector3 PositionEnd;
