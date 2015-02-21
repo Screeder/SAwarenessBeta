@@ -101,7 +101,8 @@ namespace SAwareness.Trackers
                         AddObject(hero, abilities);
                 }
             }
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
             Drawing.OnDraw += Drawing_OnDraw;
@@ -109,7 +110,8 @@ namespace SAwareness.Trackers
 
         ~Destination()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Drawing.OnDraw -= Drawing_OnDraw;
@@ -304,7 +306,7 @@ namespace SAwareness.Trackers
             }
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

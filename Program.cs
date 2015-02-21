@@ -1,14 +1,22 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LeagueSharp;
 using LeagueSharp.Common;
+using LeagueSharp.GameFiles.AirClient;
+using LeagueSharp.GameFiles.GameClient;
+using SAwareness.Miscs;
+using SAwareness.Properties;
+using SharpDX;
 using MenuItem = LeagueSharp.Common.MenuItem;
 
 namespace SAwareness
@@ -18,12 +26,13 @@ namespace SAwareness
         public static MenuItemSettings Tracker;
         public static MenuItemSettings UiTracker;
         public static MenuItemSettings UimTracker;
-        public static MenuItemSettings SsCaller;
+        public static MenuItemSettings SsCallerTracker;
         public static MenuItemSettings WaypointTracker;
         public static MenuItemSettings CloneTracker;
         public static MenuItemSettings GankTracker;
         public static MenuItemSettings DestinationTracker;
-        public static MenuItemSettings Killable;
+        public static MenuItemSettings KillableTracker;
+        public static MenuItemSettings JunglerTracker;
 
         public static MenuItemSettings Timers;
         public static MenuItemSettings JungleTimer;
@@ -82,6 +91,8 @@ namespace SAwareness
         public static MenuItemSettings EloDisplayer;
         public static MenuItemSettings SmartPingImprove;
         public static MenuItemSettings WallJump;
+        public static MenuItemSettings AntiNexusTurret;
+        public static MenuItemSettings AntiLatern;
 
         public static MenuItemSettings AutoSmite;
         public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
@@ -119,6 +130,14 @@ namespace SAwareness
 
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
+            AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
+            //Thread.Sleep(1000);
+            //RAFMasterFileList _rafList;// = new RAFMasterFileList(@"D:\Spiele\League of Legends\RADS\projects\lol_game_client\filearchives");
+            //_rafList = new RAFMasterFileList(@"D:\Spiele\League of Legends\RADS\projects\lol_game_client\filearchives");
+            //_rafList.SearchFileEntries("aatrox_e.dds")[0].GetContent();
+            //Render.Sprite s = new Render.Sprite(_rafList.SearchFileEntries("aatrox_e.dds")[0].GetContent(), new Vector2(0, 0));
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
         }
 
@@ -1225,11 +1244,13 @@ namespace SAwareness
                 MainMenu.GankTracker = Trackers.Gank.SetupMenu(MainMenu.Tracker.Menu);
                 MainMenu.CloneTracker = Trackers.Clone.SetupMenu(MainMenu.Tracker.Menu);
                 MainMenu.DestinationTracker = Trackers.Destination.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.Killable = Trackers.Killable.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.SsCaller = Trackers.SsCaller.SetupMenu(MainMenu.Tracker.Menu);
+                MainMenu.KillableTracker = Trackers.Killable.SetupMenu(MainMenu.Tracker.Menu);
+                MainMenu.SsCallerTracker = Trackers.SsCaller.SetupMenu(MainMenu.Tracker.Menu);
                 MainMenu.UiTracker = Trackers.Ui.SetupMenu(MainMenu.Tracker.Menu);
                 MainMenu.UimTracker = Trackers.Uim.SetupMenu(MainMenu.Tracker.Menu);
                 MainMenu.WaypointTracker = Trackers.Waypoint.SetupMenu(MainMenu.Tracker.Menu);
+                MainMenu.JunglerTracker = Trackers.Jungler.SetupMenu(MainMenu.Tracker.Menu);
+                //MainMenu.CrowdControlTracker = Trackers.CrowdControl.SetupMenu(MainMenu.Tracker.Menu);
 
                 MainMenu.Timers = Timers.Timer.SetupMenu(menu);
                 MainMenu.AltarTimer = Timers.Altar.SetupMenu(MainMenu.Timers.Menu);
@@ -1244,13 +1265,13 @@ namespace SAwareness
                 MainMenu.VisionDetector = Detectors.Vision.SetupMenu(MainMenu.Detector.Menu);
                 MainMenu.RecallDetector = Detectors.Recall.SetupMenu(MainMenu.Detector.Menu);
                 MainMenu.GankDetector = Detectors.Gank.SetupMenu(MainMenu.Detector.Menu);
-                MainMenu.DisconnectDetector = Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu);
+                //MainMenu.DisconnectDetector = Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu);
                 MainMenu.FoWSpellEnemyDetector = Detectors.FoWSpellEnemy.SetupMenu(MainMenu.Detector.Menu);
 
                 MainMenu.Wards = Wards.Ward.SetupMenu(menu);
                 MainMenu.BushRevealer = Wards.BushRevealer.SetupMenu(MainMenu.Wards.Menu);
                 MainMenu.InvisibleRevealer = Wards.InvisibleRevealer.SetupMenu(MainMenu.Wards.Menu);
-                //MainMenu.WardCorrector = Wards.WardCorrector.SetupMenu(MainMenu.Wards.Menu);
+                MainMenu.WardCorrector = Wards.WardCorrector.SetupMenu(MainMenu.Wards.Menu);
                 //MainMenu.FowWardPlacement = Wards.FowWardPlacement.SetupMenu(MainMenu.Wards.Menu);
 
                 MainMenu.Range = Ranges.Range.SetupMenu(menu);
@@ -1270,8 +1291,10 @@ namespace SAwareness
 
                 MainMenu.Misc = Miscs.Misc.SetupMenu(menu);
                 //MainMenu.AntiVisualScreenStealth = Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu);
+                MainMenu.AntiNexusTurret = Miscs.AntiNexusTurret.SetupMenu(MainMenu.Misc.Menu);
+                MainMenu.AntiLatern = Miscs.AntiLatern.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoJump = Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.EasyRangedJungle = Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.EloDisplayer = Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu);
@@ -1281,12 +1304,12 @@ namespace SAwareness
                 MainMenu.MoveToMouse = Miscs.MoveToMouse.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.PingerName = Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.RealTime = Miscs.RealTime.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.SafeMovement = Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu);
+                //MainMenu.SafeMovement = Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu);
                 MainMenu.ShowPing = Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SkinChanger = Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SmartPingImprove = Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.SurrenderVote = Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
+                MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
                 //MainMenu.WallJump = Miscs.WallJump.SetupMenu(MainMenu.Misc.Menu);
 
                 Menu.GlobalSettings.Menu =
@@ -1309,15 +1332,11 @@ namespace SAwareness
 
         private async static void Game_OnGameLoad(EventArgs args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
-            AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
             CreateMenu();
             Game.PrintChat("SAwareness loaded!");
 
             new Thread(GameOnOnGameUpdate).Start();
         }
-
 
         private static bool threadActive = true;
 
@@ -1327,7 +1346,7 @@ namespace SAwareness
             {
                 while (threadActive)
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(100);
                     Type classType = typeof(MainMenu);
                     BindingFlags flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
                     FieldInfo[] fields = classType.GetFields(flags);
@@ -1343,7 +1362,7 @@ namespace SAwareness
                             if (item.GetActive() == false && item.Item != null)
                             {
                                 item.Item = null;
-                                GC.Collect();
+                                //GC.Collect();
                             }
                             else if (item.GetActive() && item.Item == null && !item.ForceDisable && item.Type != null)
                             {
@@ -1415,6 +1434,7 @@ namespace SAwareness
 
         private static Assembly evadeAssembly;
         private static Assembly jsonAssembly;
+        private static Assembly inibinAssembly;
 
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -1434,6 +1454,14 @@ namespace SAwareness
                     jsonAssembly = Load("SAwareness.Resources.DLL.Newtonsoft.Json.dll");
                 }
                 return jsonAssembly;
+            }
+            else if (name.ToLower().Contains("gamefiles"))
+            {
+                if (inibinAssembly == null)
+                {
+                    inibinAssembly = Load("SAwareness.Resources.DLL.LeagueSharp.GameFiles.dll");
+                }
+                return inibinAssembly;
             }
             return null;
         }

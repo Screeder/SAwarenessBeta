@@ -51,12 +51,14 @@ namespace SAwareness.Wards
                     enemiesRefilled.Add(hero, wards);
                 }
             }
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
 
         ~FowWardPlacement()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             enemiesUsed = null;
             enemiesRefilled = null;
         }
@@ -74,7 +76,7 @@ namespace SAwareness.Wards
             return FowWardPlacementWard;
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

@@ -19,12 +19,14 @@ namespace SAwareness.Healths
         public Inhibitor()
         {
             InitInhibitorHealth();
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
 
         ~Inhibitor()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             healthConf = null;
         }
 
@@ -41,7 +43,7 @@ namespace SAwareness.Healths
             return InhibitorHealth;
         }
 
-        void Game_OnGameUpdate(EventArgs args)
+        void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
@@ -87,6 +89,8 @@ namespace SAwareness.Healths
                 Render.Text Text = new Render.Text(0, 0, "", 14, new ColorBGRA(Color4.White));
                 Text.TextUpdate = delegate
                 {
+                    if (!inhibitor.IsValid)
+                        return "";
                     switch (mode.SelectedIndex)
                     {
                         case 0:
@@ -101,11 +105,15 @@ namespace SAwareness.Healths
                 };
                 Text.PositionUpdate = delegate
                 {
+                    if (!inhibitor.IsValid)
+                        return new Vector2(0, 0);
                     Vector2 pos = Drawing.WorldToMinimap(inhibitor.Position);
                     return new Vector2(pos.X, pos.Y);
                 };
                 Text.VisibleCondition = sender =>
                 {
+                    if (!inhibitor.IsValid)
+                        return false;
                     return Health.Healths.GetActive() && InhibitorHealth.GetActive() && inhibitor.IsValid && !inhibitor.IsDead && inhibitor.IsValid && inhibitor.Health > 0.1f &&
                     ((inhibitor.Health / inhibitor.MaxHealth) * 100) != 100;
                 };
@@ -125,6 +133,8 @@ namespace SAwareness.Healths
                 Render.Text Text = new Render.Text(0, 0, "", 14, new ColorBGRA(Color4.White));
                 Text.TextUpdate = delegate
                 {
+                    if (!inhibitor.IsValid)
+                        return "";
                     switch (mode.SelectedIndex)
                     {
                         case 0:
@@ -139,11 +149,15 @@ namespace SAwareness.Healths
                 };
                 Text.PositionUpdate = delegate
                 {
+                    if (!inhibitor.IsValid)
+                        return new Vector2(0, 0);
                     Vector2 pos = Drawing.WorldToMinimap(inhibitor.Position);
                     return new Vector2(pos.X, pos.Y);
                 };
                 Text.VisibleCondition = sender =>
                 {
+                    if (!inhibitor.IsValid)
+                        return false;
                     return Health.Healths.GetActive() && InhibitorHealth.GetActive() && inhibitor.IsValid && !inhibitor.IsDead && inhibitor.IsValid && inhibitor.Health > 0.1f &&
                     ((inhibitor.Health / inhibitor.MaxHealth) * 100) != 100;
                 };

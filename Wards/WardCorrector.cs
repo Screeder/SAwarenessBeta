@@ -174,17 +174,21 @@ namespace SAwareness.Wards
             WardSpots.Add(new WardSpot("Purple Inner Turret Jungle", new Vector3(8122.0f, 13206.0f, 52.84f), new Vector3(8128.53f, 12658.41f, 52.84f), new Vector3(8323.9f, 12457.76f, 56.48f), new Vector3(8122.0f, 13206.0f, 52.84f)));
 
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
             Game.OnGameSendPacket += Game_OnGameSendPacket;
+            Spellbook.OnCastSpell += Spellbook_OnCastSpell;
         }
 
         ~WardCorrector()
         {
             Game.OnWndProc -= Game_OnWndProc;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             Game.OnGameSendPacket -= Game_OnGameSendPacket;
             Drawing.OnDraw -= Drawing_OnDraw;
+            Spellbook.OnCastSpell -= Spellbook_OnCastSpell;
 
             WardSpots = null;
             _latestSpellSlot = SpellSlot.Unknown;
@@ -206,7 +210,77 @@ namespace SAwareness.Wards
             return WardCorrector_Wards;
         }
 
-        private void Game_OnGameSendPacket(GamePacketEventArgs args) //TODO: Add Packetsupp for wards
+        void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
+        {
+            //throw new NotImplementedException();
+            if (!IsActive())
+                return;
+
+
+            if (_latestSpellSlot != SpellSlot.Unknown && sender.Owner.IsMe && IsWard(sender, args))
+            {
+                _drawSpots = false;
+                foreach (WardSpot wardSpot in WardSpots)
+                {
+                    if (!wardSpot.SafeWard &&
+                        Vector3.Distance(wardSpot.Pos,
+                            new Vector3(args.StartPosition.X, args.StartPosition.Y, args.StartPosition.Z)) <= 250 &&
+                        !_wardAlreadyCorrected)
+                    {
+                        args.Process = false;
+                        _wardAlreadyCorrected = true;
+                        //SendPacket
+                        //var sCastPacket = new byte[28];
+                        //var writer = new BinaryWriter(new MemoryStream(sCastPacket));
+                        //writer.Write((byte)0x9A);
+                        //writer.Write(mNetworkId);
+                        //writer.Write(spellId);
+                        //writer.Write(unknown);
+                        //writer.Write(wardSpot.Pos.X);
+                        //writer.Write(wardSpot.Pos.Y);
+                        //writer.Write(wardSpot.Pos.X);
+                        //writer.Write(wardSpot.Pos.Y);
+                        //writer.Write(tNetworkId);
+                        //Game.SendPacket(sCastPacket, PacketChannel.C2S, PacketProtocolFlags.Reliable);
+                        sender.CastSpell(
+                            args.Slot,
+                            new Vector3(
+                                wardSpot.Pos.X, wardSpot.Pos.Y,
+                                NavMesh.GetHeightForPosition(wardSpot.Pos.X, wardSpot.Pos.Y)));
+                        //Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(decoded.TargetNetworkId, decoded.Slot, decoded.SourceNetworkId,
+                        //    wardSpot.Pos.X, wardSpot.Pos.Y, wardSpot.Pos.X, wardSpot.Pos.Y, decoded.SpellFlag)).Send();
+                        //TODO: Check if its correct
+                        _wardAlreadyCorrected = false;
+                        return;
+                    }
+                    if (wardSpot.SafeWard &&
+                        Vector3.Distance(wardSpot.MagneticPos,
+                            new Vector3(args.StartPosition.X, args.StartPosition.Y, args.StartPosition.Z)) <=
+                        250 &&
+                        !_wardAlreadyCorrected)
+                    {
+                        args.Process = false;
+                        ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,
+                            new Vector3(wardSpot.MovePos.X, wardSpot.MovePos.Y, wardSpot.MovePos.Z));
+                        _latestWardSpot = wardSpot;
+                        return;
+                    }
+                }
+            }
+        }
+
+        private bool IsWard(Spellbook spellBook, SpellbookCastSpellEventArgs args)
+        {
+            return
+                Ward.WardItems.Exists(
+                    y =>
+                        y.Id ==
+                        (int)
+                            ObjectManager.Player.InventoryItems.Find(
+                                x => x.SpellSlot == spellBook.GetSpell(args.Slot).Slot).Id);
+        }
+
+        private void Game_OnGameSendPacket(GamePacketEventArgs args) //TODO: Need to find a way to block item usage
         {
             if (!IsActive())
                 return;
@@ -396,7 +470,7 @@ namespace SAwareness.Wards
             }
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

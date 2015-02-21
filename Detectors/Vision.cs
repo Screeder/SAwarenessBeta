@@ -58,12 +58,13 @@ namespace SAwareness.Detectors
             Objects.Add(new Object(ObjectType.Trap, "Noxious Trap", "Noxious Trap", "BantamTrap", 600.0f, 48, 176304336,
                 Color.Red));
 
-            Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+            //Game.OnGameProcessPacket += Game_OnGameProcessPacket;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             GameObject.OnDelete += Obj_AI_Base_OnDelete;
             Drawing.OnDraw += Drawing_OnDraw;
             GameObject.OnCreate += GameObject_OnCreate;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             foreach (var obj in ObjectManager.Get<GameObject>())
             {
                 GameObject_OnCreate(obj, new EventArgs());
@@ -72,12 +73,13 @@ namespace SAwareness.Detectors
 
         ~Vision()
         {
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            //Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Base_OnProcessSpellCast;
             GameObject.OnCreate -= GameObject_OnCreate;
             GameObject.OnDelete -= Obj_AI_Base_OnDelete;
             Drawing.OnDraw -= Drawing_OnDraw;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
             
             HidObjects = null;
             Objects = null;
@@ -102,7 +104,7 @@ namespace SAwareness.Detectors
             return VisionDetector;
         }
 
-        void Game_OnGameUpdate(EventArgs args)
+        void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
@@ -131,11 +133,11 @@ namespace SAwareness.Detectors
             {
                 if(!sender.IsValid)
                     return;
-                if (sender is Obj_AI_Base && ObjectManager.Player.Team != sender.Team)
+                if (sender is Obj_AI_Minion && ObjectManager.Player.Team != sender.Team)
                 {   
                     foreach (Object obj in Objects)
                     {
-                        if (((Obj_AI_Base)sender).BaseSkinName == obj.ObjectName && !ObjectExist(sender.Position))
+                        if (((Obj_AI_Minion)sender).BaseSkinName == obj.ObjectName && !ObjectExist(sender.Position))
                         {
                             HidObjects.Add(new ObjectData(obj, sender.Position, Game.Time + ((Obj_AI_Base)sender).Mana, sender.Name,
                                 sender.NetworkId));
@@ -163,7 +165,7 @@ namespace SAwareness.Detectors
             }
             catch (Exception ex)
             {
-                Console.WriteLine("reate: " + ex);
+                Console.WriteLine("Create: " + ex);
             }
         }
 
@@ -204,8 +206,8 @@ namespace SAwareness.Detectors
                             break;
 
                         case ObjectType.Unknown:
-                            if (Drawing.WorldToScreen(obj.StartPosition).IsOnScreen() &&
-                                Drawing.WorldToScreen(obj.EndPosition).IsOnScreen())
+                            if ((obj.StartPosition).IsOnScreen() &&
+                                (obj.EndPosition).IsOnScreen())
                             {
                                 Drawing.DrawLine(Drawing.WorldToScreen(obj.StartPosition), Drawing.WorldToScreen(obj.EndPosition), 1, obj.ObjectBase.Color);
                             }
@@ -213,7 +215,7 @@ namespace SAwareness.Detectors
                     }
                     if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawVisionRange").GetValue<bool>())
                     {
-                        if (Drawing.WorldToScreen(obj.EndPosition).IsOnScreen())
+                        if (obj.EndPosition.IsOnScreen())
                         {
                             Utility.DrawCircle(obj.EndPosition, range, obj.ObjectBase.Color);
                         }
@@ -236,25 +238,29 @@ namespace SAwareness.Detectors
                             try
                             {
                                 visionPos2 = Drawing.WorldToScreen(posList[j + 1]);
+                                if (posList[j].IsOnScreen() && posList[j + 1].IsOnScreen())
+                                {
+                                    Drawing.DrawLine(visionPos1.X, visionPos1.Y, visionPos2.X, visionPos2.Y, 2.0f, obj.ObjectBase.Color);
+                                }
                             }
                             catch (Exception)
                             {
                                 visionPos2 = Drawing.WorldToScreen(posList[0]);
-                            }
-                            if (visionPos1.IsOnScreen() && visionPos2.IsOnScreen())
-                            {
-                                Drawing.DrawLine(visionPos1.X, visionPos1.Y, visionPos2.X, visionPos2.Y, 2.0f, obj.ObjectBase.Color);
+                                if (posList[j].IsOnScreen() && posList[0].IsOnScreen())
+                                {
+                                    Drawing.DrawLine(visionPos1.X, visionPos1.Y, visionPos2.X, visionPos2.Y, 2.0f, obj.ObjectBase.Color);
+                                }
                             }
                         }
                     }
-                    if (objMPos.IsOnScreen())
-                    {
+                    //if (obj.EndPosition.IsOnScreen())
+                    //{
                         Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, typeText);
-                    }
+                    //}
 
                     if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
                     {
-                        if (Drawing.WorldToScreen(obj.EndPosition).IsOnScreen())
+                        if (obj.EndPosition.IsOnScreen())
                         {
                             Utility.DrawCircle(obj.EndPosition, 50, obj.ObjectBase.Color);
                         }
@@ -265,7 +271,7 @@ namespace SAwareness.Detectors
                         var m = (float) Math.Floor(endTime/60);
                         var s = (float) Math.Ceiling(endTime%60);
                         String ms = (s < 10 ? m + ":0" + s : m + ":" + s);
-                        if (objMPos.IsOnScreen())
+                        if (obj.EndPosition.IsOnScreen())
                         {
                             Drawing.DrawText(objPos[0], objPos[1], obj.ObjectBase.Color, ms);
                         }
@@ -274,7 +280,7 @@ namespace SAwareness.Detectors
             }
             catch (Exception ex)
             {
-                Console.WriteLine("raw: " + ex);
+                Console.WriteLine("Draw: " + ex);
             }
         }
 

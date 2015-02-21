@@ -49,47 +49,6 @@ namespace SAwareness.Trackers
 
         public Ui()
         {
-            if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
-                    .SetValue(new Slider((int)_screen.X, Drawing.Width, 0));
-            }
-            if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
-                    .SetValue(new Slider((int)_screen.Y, Drawing.Height, 0));
-            }
-            if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
-                    .SetValue(new Slider((int)110, Drawing.Width, 0));
-            }
-            if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
-                    .SetValue(new Slider((int)_screen.Y, Drawing.Height, 0));
-            }
-
             float percentScale =
                     (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
 

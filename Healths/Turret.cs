@@ -19,12 +19,14 @@ namespace SAwareness.Healths
         public Turret()
         {
             InitTurrentHealth();
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
 
         ~Turret()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             healthConf = null;
         }
 
@@ -41,7 +43,7 @@ namespace SAwareness.Healths
             return TurretHealth;
         }
 
-        void Game_OnGameUpdate(EventArgs args)
+        void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
@@ -86,6 +88,8 @@ namespace SAwareness.Healths
                 Render.Text Text = new Render.Text(0, 0, "", 14, new ColorBGRA(Color4.White));
                 Text.TextUpdate = delegate
                 {
+                    if (!turret.IsValid)
+                        return "";
                     switch (mode.SelectedIndex)
                     {
                         case 0:
@@ -100,11 +104,15 @@ namespace SAwareness.Healths
                 };
                 Text.PositionUpdate = delegate
                 {
+                    if (!turret.IsValid)
+                        return new Vector2(0,0);
                     Vector2 pos = Drawing.WorldToMinimap(turret.Position);
                     return new Vector2(pos.X, pos.Y);
                 };
                 Text.VisibleCondition = sender =>
                 {
+                    if (!turret.IsValid)
+                        return false;
                     return Health.Healths.GetActive() && TurretHealth.GetActive() && turret.IsValid && !turret.IsDead && turret.IsValid && turret.Health != 9999 &&
                     ((turret.Health / turret.MaxHealth) * 100) != 100;
                 };

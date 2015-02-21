@@ -53,12 +53,14 @@ namespace SAwareness.Detectors
                     Enemies.Add(hero, new InternalGankDetector(text));
                 }
             }
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         ~Gank()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
             Enemies = null;
         }
 
@@ -108,7 +110,7 @@ namespace SAwareness.Detectors
             return GankDetector;
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

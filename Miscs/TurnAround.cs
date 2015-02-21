@@ -20,13 +20,13 @@ namespace SAwareness.Miscs
         public TurnAround()
         {
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
-            Game.OnGameSendPacket += Game_OnGameSendPacket;
+            Obj_AI_Base.OnIssueOrder += ObjAiBase_OnIssueOrder;
         }
 
         ~TurnAround()
         {
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
-            Game.OnGameSendPacket -= Game_OnGameSendPacket;
+            Obj_AI_Base.OnIssueOrder -= ObjAiBase_OnIssueOrder;
             _lastMove = new Vector2();
             _lastTime = 0;
         }
@@ -63,10 +63,10 @@ namespace SAwareness.Miscs
                                 Y +
                             ((sender.ServerPosition.Y - ObjectManager.Player.ServerPosition.Y) * (-100) /
                              ObjectManager.Player.ServerPosition.Distance(sender.ServerPosition)));
-                    Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(pos.X, pos.Y)).Send();
+                    ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, pos.To3D2());
                     _lastTime = Game.Time;
                     Utility.DelayAction.Add(750,
-                        () => Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(_lastMove.X, _lastMove.Y)).Send());
+                        () => ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, _lastMove.To3D2()));
                 }
             }
             else if (args.SData.Name.Contains("MockingShout"))
@@ -82,41 +82,73 @@ namespace SAwareness.Miscs
                                 Y +
                             ((sender.ServerPosition.Y - ObjectManager.Player.ServerPosition.Y) * (100) /
                              ObjectManager.Player.ServerPosition.Distance(sender.ServerPosition)));
-                    Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(pos.X, pos.Y)).Send();
+                    ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, pos.To3D2());
                     _lastTime = Game.Time;
                     Utility.DelayAction.Add(750,
-                        () => Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(_lastMove.X, _lastMove.Y)).Send());
+                        () => ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, _lastMove.To3D2()));
+                }
+            }
+            else if (args.SData.Name.Contains("TwoShivPoison"))
+            {
+                if (ObjectManager.Player.ServerPosition.Distance(sender.ServerPosition) <= 625 && args.Target == ObjectManager.Player)
+                {
+                    var pos =
+                        new Vector2(
+                            ObjectManager.Player.ServerPosition.X +
+                            ((sender.ServerPosition.X - ObjectManager.Player.ServerPosition.X) * (100) /
+                             ObjectManager.Player.ServerPosition.Distance(sender.ServerPosition)),
+                            ObjectManager.Player.ServerPosition.
+                                Y +
+                            ((sender.ServerPosition.Y - ObjectManager.Player.ServerPosition.Y) * (100) /
+                             ObjectManager.Player.ServerPosition.Distance(sender.ServerPosition)));
+                    ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, pos.To3D2());
+                    _lastTime = Game.Time;
+                    Utility.DelayAction.Add(750,
+                        () => ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, _lastMove.To3D2()));
                 }
             }
         }
 
-        private void Game_OnGameSendPacket(GamePacketEventArgs args)
+        private void ObjAiBase_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args)
         {
             if (!IsActive())
                 return;
 
-            try
+            if (sender.IsMe && args.Order == GameObjectOrder.MoveTo)
             {
-                decimal milli = DateTime.Now.Ticks / (decimal)TimeSpan.TicksPerMillisecond;
-                var reader = new BinaryReader(new MemoryStream(args.PacketData));
-                byte packetId = reader.ReadByte();
-                if (packetId != Packet.C2S.Move.Header)
-                    return;
-                Packet.C2S.Move.Struct move = Packet.C2S.Move.Decoded(args.PacketData);
-                if (move.MoveType == 2)
-                {
-                    if (move.SourceNetworkId == ObjectManager.Player.NetworkId)
-                    {
-                        _lastMove = new Vector2(move.X, move.Y);
-                        if (_lastTime + 1 > Game.Time)
-                            args.Process = false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("MovementSend: " + ex);
+                _lastMove = new Vector2(args.TargetPosition.X, args.TargetPosition.Y);
+                if (!_lastTime.Equals(Game.Time) && _lastTime + 1 > Game.Time)
+                    args.Process = false;
             }
         }
+
+        //private void Game_OnGameSendPacket(GamePacketEventArgs args)
+        //{
+        //    if (!IsActive())
+        //        return;
+
+        //    try
+        //    {
+        //        decimal milli = DateTime.Now.Ticks / (decimal)TimeSpan.TicksPerMillisecond;
+        //        var reader = new BinaryReader(new MemoryStream(args.PacketData));
+        //        byte packetId = reader.ReadByte();
+        //        if (packetId != Packet.C2S.Move.Header)
+        //            return;
+        //        Packet.C2S.Move.Struct move = Packet.C2S.Move.Decoded(args.PacketData);
+        //        if (move.MoveType == 2)
+        //        {
+        //            if (move.SourceNetworkId == ObjectManager.Player.NetworkId)
+        //            {
+        //                _lastMove = new Vector2(move.X, move.Y);
+        //                if (_lastTime + 1 > Game.Time)
+        //                    args.Process = false;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("MovementSend: " + ex);
+        //    }
+        //}
     }
 }

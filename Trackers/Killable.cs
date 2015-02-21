@@ -58,12 +58,14 @@ namespace SAwareness.Trackers
                 }
                 index++;
             }
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         ~Killable()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
             _enemies = null;
         }
 
@@ -188,7 +190,7 @@ namespace SAwareness.Trackers
             }
         }
 
-        void Game_OnGameUpdate(EventArgs args)
+        void Game_OnGameUpdate(object sender, EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

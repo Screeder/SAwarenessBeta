@@ -249,6 +249,12 @@
   <data name="HEALTHS_TURRET_MAIN" xml:space="preserve">
     <value>Turret</value>
   </data>
+  <data name="MISCS_ANTILATERN_MAIN" xml:space="preserve">
+    <value>Anti Latern</value>
+  </data>
+  <data name="MISCS_ANTINEXUSTURRET_MAIN" xml:space="preserve">
+    <value>Anti Nexus Turret</value>
+  </data>
   <data name="MISCS_ANTIVISUALSCREENSTEALTH_MAIN" xml:space="preserve">
     <value>Anti Visual Screen Stealth</value>
   </data>
@@ -470,6 +476,9 @@
   </data>
   <data name="TRACKERS_GANK_RANGE" xml:space="preserve">
     <value>Track Range</value>
+  </data>
+  <data name="TRACKERS_JUNGLER_MAIN" xml:space="preserve">
+    <value>Jungler</value>
   </data>
   <data name="TRACKERS_KILLABLE_MAIN" xml:space="preserve">
     <value>Killable</value>

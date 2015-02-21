@@ -219,12 +219,6 @@ namespace SAwareness.Timers
                     }
                 }
             }
-
-            //foreach (var objectType in ObjectManager.Get<GameObject>())
-            //{                
-            //    var pos = Drawing.WorldToScreen(objectType.Position);
-            //    Drawing.DrawText(pos.X, pos.Y, Color.Blue, objectType.Name);
-            //}
         }
 
         private void UpdateCamps(int networkId, int campId/*, byte emptyType*/)
