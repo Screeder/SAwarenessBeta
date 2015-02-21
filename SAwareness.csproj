@@ -76,6 +76,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\Programme\LeagueSharp\\System\LeagueSharp.Common.dll</HintPath>
     </Reference>
+    <Reference Include="LeagueSharp.GameFiles, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\DLL\LeagueSharp.GameFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="LeagueSharp.GameFiles.Fakes">
+      <HintPath>FakesAssemblies\LeagueSharp.GameFiles.Fakes.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -227,6 +234,7 @@
     <Fakes Include="Fakes\Evade.fakes" />
     <Fakes Include="Fakes\Newtonsoft.Json.fakes" />
     <Fakes Include="Fakes\InibinSharp.fakes" />
+    <Fakes Include="Fakes\LeagueSharp.GameFiles.fakes" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -348,16 +356,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\DLL\LeagueSharp.GameFiles.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GitHub\LeagueSharpSurfaceS\LeagueSharp\GameFiles\LeagueSharp.GameFiles.csproj">
-      <Project>{9fd20124-c93f-4428-93a0-3d737077a6fb}</Project>
-      <Name>LeagueSharp.GameFiles</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Screeder93\AppData\Roaming\LeagueSharp\Assemblies\C14BF944SAwareness.exe"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
