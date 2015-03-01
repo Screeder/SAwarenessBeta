@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SAwareness")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,6 +36,6 @@ using System.Resources;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.8.5.2")]
-[assembly: AssemblyFileVersion("0.8.5.2")]
+[assembly: AssemblyVersion("0.8.5.4")]
+[assembly: AssemblyFileVersion("0.8.5.4")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
