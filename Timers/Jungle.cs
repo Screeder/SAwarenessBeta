@@ -20,6 +20,7 @@ namespace SAwareness.Timers
         private static List<JungleMob> JungleMobs = new List<JungleMob>();
         private static List<JungleCamp> JungleCamps = new List<JungleCamp>();
         private static List<Obj_AI_Minion> JungleMobList = new List<Obj_AI_Minion>();
+        private static List<PlayerBossMobBuff> Enemies = new List<PlayerBossMobBuff>();
         private static readonly Utility.Map GMap = Utility.Map.GetMap();
 
         private int lastGameUpdateTime = 0;
@@ -180,6 +181,40 @@ namespace SAwareness.Timers
                         jungleCamp.Visible = false;
                     }
                 }
+            }
+
+            /////////
+
+            foreach (var enemyInfo in Enemies)
+            {
+                if (enemyInfo.DragonBuff < enemyInfo.GetDragonStacks())
+                {
+                    foreach (var jungleCamp in JungleCamps)
+                    {
+                        if (jungleCamp.CampId == 6)
+                        {
+                            jungleCamp.NextRespawnTime = (int)Game.ClockTime + jungleCamp.RespawnTime;
+                            jungleCamp.Dead = true;
+                            jungleCamp.Visible = false;
+                        }
+                    }
+                }
+
+                if (enemyInfo.NashorBuff != enemyInfo.HasNashorBuff())
+                {
+                    foreach (var jungleCamp in JungleCamps)
+                    {
+                        if (jungleCamp.CampId == 12 && !jungleCamp.Called)
+                        {
+                            jungleCamp.NextRespawnTime = (int)Game.ClockTime + jungleCamp.RespawnTime;
+                            jungleCamp.Dead = true;
+                            jungleCamp.Visible = false;
+                        }
+                    }
+                }
+
+                enemyInfo.DragonBuff = enemyInfo.GetDragonStacks();
+                enemyInfo.NashorBuff = enemyInfo.HasNashorBuff();
             }
 
             /////////
@@ -357,7 +392,7 @@ namespace SAwareness.Timers
             
 
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Order, 1, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(3570, 7670, 54), new Vector3(3641.058f, 8144.426f, 1105.46f),
+                new Vector3(3920, 6536, 52), new Vector3(3641.058f, 8144.426f, 1105.46f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Blue1.1.1", Utility.Map.MapType.SummonersRift),
@@ -365,7 +400,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_BlueMini21.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Order, 2, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(3430, 6300, 56), new Vector3(3730.419f, 6744.748f, 1100.24f),
+                new Vector3(3920, 6536, 52), new Vector3(3730.419f, 6744.748f, 1100.24f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Murkwolf2.1.1", Utility.Map.MapType.SummonersRift),
@@ -373,7 +408,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_MurkwolfMini2.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 3, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(6540, 7230, 56), new Vector3(7069.483f, 5800.1f, 1064.815f),
+                new Vector3(6982, 5408, 52), new Vector3(7069.483f, 5800.1f, 1064.815f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Razorbeak3.1.1", Utility.Map.MapType.SummonersRift),
@@ -382,7 +417,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_RazorbeakMini3.1.4", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("red", GameObjectTeam.Order, 4, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(7370, 3830, 58), new Vector3(7710.639f, 3963.267f, 1200.182f),
+                new Vector3(7274, 2458, 52), new Vector3(7710.639f, 3963.267f, 1200.182f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Red4.1.1", Utility.Map.MapType.SummonersRift),
@@ -390,17 +425,17 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_RedMini4.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Order, 5, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(7990, 2550, 54), new Vector3(8419.813f, 3239.516f, 1280.222f),
+                new Vector3(8414f, 2678f, 50.79845f), new Vector3(8419.813f, 3239.516f, 1280.222f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Krug5.1.2", Utility.Map.MapType.SummonersRift),
                     GetJungleMobByName("SRU_KrugMini5.1.1", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wight", GameObjectTeam.Order, 13, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(1688, 8248, 54), new Vector3(2263.463f, 8571.541f, 1136.772f),
+                new Vector3(2282, 8388, 51), new Vector3(2263.463f, 8571.541f, 1136.772f),
                 new[] { GetJungleMobByName("SRU_Gromp13.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Chaos, 7, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(10455, 6800, 55), new Vector3(11014.81f, 7251.099f, 1073.918f),
+                new Vector3(11142, 6820, 51), new Vector3(11014.81f, 7251.099f, 1073.918f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Blue7.1.1", Utility.Map.MapType.SummonersRift),
@@ -408,7 +443,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_BlueMini27.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Chaos, 8, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(10570, 8150, 63), new Vector3(11233.96f, 8789.653f, 1051.235f),
+                new Vector3(10886, 8230, 62), new Vector3(11233.96f, 8789.653f, 1051.235f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Murkwolf8.1.1", Utility.Map.MapType.SummonersRift),
@@ -416,7 +451,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_MurkwolfMini8.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Chaos, 9, 115, 100,
-                Utility.Map.MapType.SummonersRift, new Vector3(7465, 9220, 56), new Vector3(7962.764f, 10028.573f, 1023.06f),
+                Utility.Map.MapType.SummonersRift, new Vector3(7884, 9466, 52), new Vector3(7962.764f, 10028.573f, 1023.06f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Razorbeak9.1.1", Utility.Map.MapType.SummonersRift),
@@ -425,7 +460,7 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_RazorbeakMini9.1.4", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("red", GameObjectTeam.Chaos, 10, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(6620, 10637, 55), new Vector3(7164.198f, 11113.5f, 1093.54f),
+                new Vector3(7106, 10930, 56), new Vector3(7164.198f, 11113.5f, 1093.54f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Red10.1.1", Utility.Map.MapType.SummonersRift),
@@ -433,26 +468,26 @@ namespace SAwareness.Timers
                     GetJungleMobByName("SRU_RedMini10.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Chaos, 11, 115, 100,
-                Utility.Map.MapType.SummonersRift, new Vector3(6010, 11920, 40), new Vector3(6508.562f, 12127.83f, 1185.667f),
+                Utility.Map.MapType.SummonersRift, new Vector3(6476, 12268, 56), new Vector3(6508.562f, 12127.83f, 1185.667f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Krug11.1.2", Utility.Map.MapType.SummonersRift),
                     GetJungleMobByName("SRU_KrugMini11.1.1", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wight", GameObjectTeam.Chaos, 14, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(12266, 6215, 54), new Vector3(12671.58f, 6617.756f, 1118.074f),
+                new Vector3(12668, 6360, 51), new Vector3(12671.58f, 6617.756f, 1118.074f),
                 new[] { GetJungleMobByName("SRU_Gromp14.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("crab", GameObjectTeam.Neutral, 15, 2 * 60 + 30, 180, Utility.Map.MapType.SummonersRift,
-                new Vector3(12266, 6215, 54), new Vector3(10557.22f, 5481.414f, 1068.042f),
+                new Vector3(4274, 9696, -68), new Vector3(4274, 9696, -68),
                 new[] { GetJungleMobByName("SRU_Crab15.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("crab", GameObjectTeam.Neutral, 16, 2 * 60 + 30, 180, Utility.Map.MapType.SummonersRift,
-                new Vector3(12266, 6215, 54), new Vector3(4535.956f, 10104.067f, 1029.071f),
+                new Vector3(10586, 5114, -62), new Vector3(10586, 5114, -62),
                 new[] { GetJungleMobByName("SRU_Crab16.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("dragon", GameObjectTeam.Neutral, 6, 2 * 60 + 30, 360,
-                Utility.Map.MapType.SummonersRift, new Vector3(9400, 4130, -61), new Vector3(10109.18f, 4850.93f, 1032.274f),
+                Utility.Map.MapType.SummonersRift, new Vector3(10116, 4438, -71), new Vector3(10109.18f, 4850.93f, 1032.274f),
                 new[] { GetJungleMobByName("SRU_Dragon6.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("nashor", GameObjectTeam.Neutral, 12, 20 * 60, 420,
-                Utility.Map.MapType.SummonersRift, new Vector3(4620, 10265, -63), new Vector3(4951.034f, 10831.035f, 1027.482f),
+                Utility.Map.MapType.SummonersRift, new Vector3(4940, 10406, -71), new Vector3(4951.034f, 10831.035f, 1027.482f),
                 new[] { GetJungleMobByName("SRU_Baron12.1.1", Utility.Map.MapType.SummonersRift) }));
 
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 1, 100, 75,
@@ -514,6 +549,14 @@ namespace SAwareness.Timers
                 Obj_AI_Base_OnCreate(objAiBase, new EventArgs());
             }
 
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if(!hero.IsEnemy)
+                    continue;
+
+                Enemies.Add(new PlayerBossMobBuff(hero));
+            }
+
             //foreach (JungleCamp jungleCamp in JungleCamps) //Game.ClockTime BUGGED
             //{
             //    if (Game.ClockTime > 30) //TODO: Reduce when Game.ClockTime got fixed
@@ -543,7 +586,8 @@ namespace SAwareness.Timers
             public bool Dead;
             public bool Visible;
             public GameObjectTeam Team;
-            public Render.Text Text;
+            public Render.Text TextMinimap;
+            public Render.Text TextMap;
 
             public JungleCamp(String name, GameObjectTeam team, int campId, int spawnTime, int respawnTime,
                 Utility.Map.MapType mapType, Vector3 mapPosition, Vector3 minimapPosition, JungleMob[] creeps)
@@ -561,37 +605,63 @@ namespace SAwareness.Timers
                 Called = false;
                 Dead = false;
                 Visible = false;
-                Text = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
                 Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += JungleCamp_ValueChanged;
-                Text.TextUpdate = delegate
+                TextMinimap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
                 };
-                Text.PositionUpdate = delegate
+                TextMinimap.PositionUpdate = delegate
                 {
                     Vector2 sPos = Drawing.WorldToMinimap(MinimapPosition);
                     return new Vector2(sPos.X, sPos.Y);
                 };
-                Text.VisibleCondition = sender =>
+                TextMinimap.VisibleCondition = sender =>
                 {
                     return Timer.Timers.GetActive() && JungleTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
-                Text.OutLined = true;
-                Text.Centered = true;
-                Text.Add();
+                TextMinimap.OutLined = true;
+                TextMinimap.Centered = true;
+                TextMinimap.Add();
+                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
+                TextMap.TextUpdate = delegate
+                {
+                    return (NextRespawnTime - (int)Game.ClockTime).ToString();
+                };
+                TextMap.PositionUpdate = delegate
+                {
+                    Vector2 sPos = Drawing.WorldToScreen(MapPosition);
+                    return new Vector2(sPos.X, sPos.Y);
+                };
+                TextMap.VisibleCondition = sender =>
+                {
+                    return Timer.Timers.GetActive() && JungleTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                };
+                TextMap.OutLined = true;
+                TextMap.Centered = true;
+                TextMap.Add();
             }
 
             void JungleCamp_ValueChanged(object sender, OnValueChangeEventArgs e)
             {
-                Text.Remove();
-                Text.TextFontDescription = new FontDescription
+                TextMinimap.Remove();
+                TextMinimap.TextFontDescription = new FontDescription
                 {
                     FaceName = "Calibri",
                     Height = e.GetNewValue<Slider>().Value,
                     OutputPrecision = FontPrecision.Default,
                     Quality = FontQuality.Default,
                 };
-                Text.Add();
+                TextMinimap.Add();
+                TextMap.Remove();
+                TextMap.TextFontDescription = new FontDescription
+                {
+                    FaceName = "Calibri",
+                    Height = e.GetNewValue<Slider>().Value,
+                    OutputPrecision = FontPrecision.Default,
+                    Quality = FontQuality.Default,
+                };
+                TextMap.Add();
             }
         }
 
@@ -613,6 +683,31 @@ namespace SAwareness.Timers
                 Buff = buff;
                 Boss = boss;
                 MapType = mapType;
+            }
+        }
+
+        public class PlayerBossMobBuff
+        {
+            public int DragonBuff = 0;
+            public bool NashorBuff = false;
+            public Obj_AI_Hero Hero;
+
+            public PlayerBossMobBuff(Obj_AI_Hero hero)
+            {
+                Hero = hero;
+            }
+
+            public int GetDragonStacks()
+            {
+                var buff = Hero.Buffs.FirstOrDefault(x => x.Name == "s5test_dragonslayerbuff");
+                if (buff == null)
+                    return 0;
+                else
+                    return buff.Count;
+            }
+            public bool HasNashorBuff()
+            {
+                return Hero.Buffs.Any(x => x.Name == "exaltedwithbaronnashor");
             }
         }
     }

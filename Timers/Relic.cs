@@ -128,11 +128,11 @@ namespace SAwareness.Timers
             Relics.Add(new RelicObject(
                 ObjectManager.Player.Team == GameObjectTeam.Order ? "Relic Green" : "Relic Red",
                 ObjectManager.Player.Team == GameObjectTeam.Order ? "Odin_Prism_Green.troy" : "Odin_Prism_Red.troy",
-                GameObjectTeam.Order, null, 180, 180, new Vector3(5500, 6500, 60), new Vector3(5500, 6500, 60)));
+                GameObjectTeam.Order, null, 180, 180, new Vector3(6799, 6475, -166), new Vector3(6799, 6475, -166)));
             Relics.Add(new RelicObject(
                 ObjectManager.Player.Team == GameObjectTeam.Chaos ? "Relic Green" : "Relic Red",
                 ObjectManager.Player.Team == GameObjectTeam.Chaos ? "Odin_Prism_Green.troy" : "Odin_Prism_Red.troy",
-                GameObjectTeam.Chaos, null, 180, 180, new Vector3(7550, 6500, 60), new Vector3(7550, 6500, 60)));
+                GameObjectTeam.Chaos, null, 180, 180, new Vector3(7137, 6461, -166), new Vector3(7137, 6461, -166)));
 
             foreach (GameObject objAiBase in ObjectManager.Get<GameObject>())
             {
@@ -154,7 +154,8 @@ namespace SAwareness.Timers
             public int RespawnTime;
             public int SpawnTime;
             public GameObjectTeam Team;
-            public Render.Text Text;
+            public Render.Text TextMinimap;
+            public Render.Text TextMap;
 
             public RelicObject(string name, String objectName, GameObjectTeam team, Obj_AI_Minion obj, int spawnTime,
                 int respawnTime, Vector3 mapPosition, Vector3 minimapPosition)
@@ -171,37 +172,63 @@ namespace SAwareness.Timers
                 MapType = Utility.Map.MapType.CrystalScar;
                 NextRespawnTime = 0;
                 Called = false;
-                Text = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
                 Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += RelicObject_ValueChanged;
-                Text.TextUpdate = delegate
+                TextMinimap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
                 };
-                Text.PositionUpdate = delegate
+                TextMinimap.PositionUpdate = delegate
                 {
                     Vector2 sPos = Drawing.WorldToMinimap(MinimapPosition);
                     return new Vector2(sPos.X, sPos.Y);
                 };
-                Text.VisibleCondition = sender =>
+                TextMinimap.VisibleCondition = sender =>
                 {
                     return Timer.Timers.GetActive() && RelicTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
-                Text.OutLined = true;
-                Text.Centered = true;
-                Text.Add();
+                TextMinimap.OutLined = true;
+                TextMinimap.Centered = true;
+                TextMinimap.Add();
+                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
+                TextMap.TextUpdate = delegate
+                {
+                    return (NextRespawnTime - (int)Game.ClockTime).ToString();
+                };
+                TextMap.PositionUpdate = delegate
+                {
+                    Vector2 sPos = Drawing.WorldToScreen(MapPosition);
+                    return new Vector2(sPos.X, sPos.Y);
+                };
+                TextMap.VisibleCondition = sender =>
+                {
+                    return Timer.Timers.GetActive() && RelicTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                };
+                TextMap.OutLined = true;
+                TextMap.Centered = true;
+                TextMap.Add();
             }
 
             void RelicObject_ValueChanged(object sender, OnValueChangeEventArgs e)
             {
-                Text.Remove();
-                Text.TextFontDescription = new FontDescription
+                TextMinimap.Remove();
+                TextMinimap.TextFontDescription = new FontDescription
                 {
                     FaceName = "Calibri",
                     Height = e.GetNewValue<Slider>().Value,
                     OutputPrecision = FontPrecision.Default,
                     Quality = FontQuality.Default,
                 };
-                Text.Add();
+                TextMinimap.Add();
+                TextMap.Remove();
+                TextMap.TextFontDescription = new FontDescription
+                {
+                    FaceName = "Calibri",
+                    Height = e.GetNewValue<Slider>().Value,
+                    OutputPrecision = FontPrecision.Default,
+                    Quality = FontQuality.Default,
+                };
+                TextMap.Add();
             }
         }
     }
