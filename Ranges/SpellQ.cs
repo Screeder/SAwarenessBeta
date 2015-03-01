@@ -68,7 +68,7 @@ namespace SAwareness.Ranges
                     if (ObjectManager.Player.Position.IsOnScreen())
                     {
                         Utility.DrawCircle(ObjectManager.Player.Position,
-                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange[0], SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorMe").GetValue<Color>());
+                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange, SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorMe").GetValue<Color>());
                     }
                     break;
                 case 1:
@@ -77,7 +77,7 @@ namespace SAwareness.Ranges
                         if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position,
-                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange[0], SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorEnemy").GetValue<Color>());
+                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange, SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorEnemy").GetValue<Color>());
                         }
                     }
                     break;
@@ -85,14 +85,14 @@ namespace SAwareness.Ranges
                     if (ObjectManager.Player.Position.IsOnScreen())
                     {
                         Utility.DrawCircle(ObjectManager.Player.Position,
-                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange[0], SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorMe").GetValue<Color>());
+                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange, SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorMe").GetValue<Color>());
                     }
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
                         if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position,
-                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange[0], SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorEnemy").GetValue<Color>());
+                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRange, SpellQRange.GetMenuItem("SAwarenessRangesSpellQColorEnemy").GetValue<Color>());
                         }
                     }
                     break;
