@@ -30,6 +30,7 @@ namespace SAwareness.Miscs
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged += ShowBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged += NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").ValueChanged += Active_OnValueChanged;
 
             Game.OnGameUpdate += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
@@ -127,6 +128,7 @@ namespace SAwareness.Miscs
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").ValueChanged -= DeleteBuild_OnValueChanged;
 
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
@@ -281,6 +283,14 @@ namespace SAwareness.Miscs
                 DeleteSequence();
                 SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
                 onValueChangeEventArgs.Process = false;
+            }
+        }
+
+        private void Active_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            if (!onValueChangeEventArgs.GetNewValue<bool>())
+            {
+                WriteLevelFile();
             }
         }
 
