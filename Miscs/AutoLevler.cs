@@ -426,7 +426,7 @@ namespace SAwareness.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "Config",
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Config",
                 "SAwareness", "autolevel.conf"
             });
             try
