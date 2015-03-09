@@ -24,88 +24,6 @@ namespace SAwareness.Wards
 
         public WardCorrector() //Coords by DrunkenNinja
         {
-            //WardSpots.Add(new WardSpot("BlueGolem", new Vector3(3274f, 7772f, 52f)));
-            //WardSpots.Add(new WardSpot("BlueLizard", new Vector3(7422f, 3282f, 46.53f)));
-            //WardSpots.Add(new WardSpot("BlueTriBush", new Vector3(10148f, 2839f, 44.41f)));
-            //WardSpots.Add(new WardSpot("BluePassBush", new Vector3(6269f, 4445f, 42.51f)));
-            //WardSpots.Add(new WardSpot("BlueRiver", new Vector3(7151.64f, 4719.66f, 51.67f)));
-            //WardSpots.Add(new WardSpot("BlueRiverRoundBush", new Vector3(4728f, 8336f, -51.29f)));
-            //WardSpots.Add(new WardSpot("BlueRiverSplitBush", new Vector3(6762.52f, 2918.75f, 55.68f)));
-            //WardSpots.Add(new WardSpot("PurpleGolem", new Vector3(11217.39f, 6841.89f, 54.87f)));
-            //WardSpots.Add(new WardSpot("PurpleLizard", new Vector3(6610.35f, 11064.61f, 54.45f)));
-            //WardSpots.Add(new WardSpot("PurpleTriBush", new Vector3(3883f, 11577f, 39.87f)));
-            //WardSpots.Add(new WardSpot("PurplePassBush", new Vector3(7775f, 10046.49f, 43.14f)));
-            //WardSpots.Add(new WardSpot("PurpleRiver", new Vector3(6867.68f, 9567.63f, 57.01f)));
-            //WardSpots.Add(new WardSpot("PurpleRoundBush", new Vector3(9720.86f, 7501.50f, 54.85f)));
-            //WardSpots.Add(new WardSpot("PurpleRiverRoundBush", new Vector3(9233.13f, 6094.48f, -44.63f)));
-            //WardSpots.Add(new WardSpot("PurpleRiverSplitPush", new Vector3(7282.69f, 11482.53f, 52.59f)));
-            //WardSpots.Add(new WardSpot("Dragon", new Vector3(10180.18f, 4969.32f, -62.32f)));
-            //WardSpots.Add(new WardSpot("DragonBush", new Vector3(8875.13f, 5390.57f, -64.07f)));
-            //WardSpots.Add(new WardSpot("Baron", new Vector3(3920.88f, 9477.78f, -60.42f)));
-            //WardSpots.Add(new WardSpot("BaronBush", new Vector3(5017.27f, 8954.09f, -62.70f)));
-            //WardSpots.Add(new WardSpot("PurpleBotTower2", new Vector3(12731.25f, 9132.66f, 50.32f)));
-            //WardSpots.Add(new WardSpot("PurpleTopTower2", new Vector3(8036.52f, 12882.94f, 45.19f)));
-            //WardSpots.Add(new WardSpot("PurpleMidTower1", new Vector3(9260.02f, 8582.67f, 54.62f)));
-            //WardSpots.Add(new WardSpot("BlueMidTower1", new Vector3(4749.79f, 5890.76f, 53.59f)));
-            //WardSpots.Add(new WardSpot("BlueBotTower2", new Vector3(5983.58f, 1547.98f, 52.99f)));
-            //WardSpots.Add(new WardSpot("BlueTopTower2", new Vector3(1213.70f, 5324.73f, 58.77f)));
-
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(9641.65f, 6368.74f, 53.01f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(8081.43f, 4683.44f, 55.94f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(5943.51f, 9792.40f, 53.18f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(4379.51f, 8093.74f, 42.73f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(4222.72f, 7038.58f, 53.61f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(9068.02f, 11186.68f, 53.22f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(7970.82f, 10005.07f, 53.52f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(4978.19f, 3042.69f, 54.34f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(7907.63f, 11629.32f, 49.94f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(7556.06f, 11739.62f, 50.61f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(5973.48f, 11115.68f, 54.34f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(5732.81f, 10289.76f, 53.39f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(7969.15f, 3307.56f, 56.94f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(12073.18f, 4795.50f, 52.32f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(4044.13f, 11600.50f, 48.59f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(5597.66f, 12491.04f, 39.73f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(10070.20f, 4132.45f, -60.33f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(8320.28f, 4292.80f, 56.47f)));
-            //WardSpots.Add(new WardSpot("NoName", new Vector3(9603.52f, 7872.23f, 54.71f)));
-
-            //WardSpots.Add(new WardSpot("Dragon->TriBush", new Vector3(9695f, 3465f, 43.02f),
-            //    new Vector3(9843.38f, 3125.16f, 43.02f), new Vector3(9946.10f, 3064.81f, 43.02f),
-            //    new Vector3(9595f, 3665f, 43.02f)));
-            //WardSpots.Add(new WardSpot("Nashor->TriBush", new Vector3(4346.10f, 10964.81f, 36.62f),
-            //    new Vector3(4214.93f, 11202.01f, 36.62f), new Vector3(4146.10f, 11314.81f, 36.62f),
-            //    new Vector3(4384.36f, 10680.41f, 36.62f)));
-            //WardSpots.Add(new WardSpot("BlueTop->SoloBush", new Vector3(2349f, 10387f, 44.20f),
-            //    new Vector3(2267.97f, 10783.37f, 44.20f), new Vector3(2446.10f, 10914.81f, 44.20f),
-            //    new Vector3(2311f, 10185f, 44.20f)));
-            //WardSpots.Add(new WardSpot("BlueMid->RoundBush", new Vector3(4946.52f, 6474.56f, 54.71f),
-            //    new Vector3(4891.98f, 6639.05f, 53.62f), new Vector3(4546.10f, 6864.81f, 53.78f),
-            //    new Vector3(5217f, 6263f, 54.95f)));
-            //WardSpots.Add(new WardSpot("BlueMid->RiverLaneBush", new Vector3(5528.96f, 7615.20f, 45.64f),
-            //    new Vector3(5688.96f, 7825.20f, 45.64f), new Vector3(5796.10f, 7914.81f, 45.64f),
-            //    new Vector3(5460.13f, 7469.77f, 45.64f)));
-            //WardSpots.Add(new WardSpot("BlueLizard->DragonPassBush", new Vector3(7745f, 4065f, 47.71f),
-            //    new Vector3(7927.65f, 4239.77f, 47.71f), new Vector3(8146.10f, 4414.81f, 47.71f),
-            //    new Vector3(7645f, 4015f, 47.71f)));
-            //WardSpots.Add(new WardSpot("PurpleMid->RoundBush", new Vector3(9057f, 8245f, 45.73f),
-            //    new Vector3(9230.77f, 7897.22f, 66.39f), new Vector3(9446.10f, 7814.81f, 54.66f),
-            //    new Vector3(8895f, 8313f, 54.89f)));
-            //WardSpots.Add(new WardSpot("PurpleMid->RiverRoundBush", new Vector3(9025.78f, 6591.64f, 46.27f),
-            //    new Vector3(9200.08f, 6425.05f, 43.21f), new Vector3(9396.10f, 6264.81f, 23.72f),
-            //    new Vector3(8795f, 6815f, 56.11f)));
-            //WardSpots.Add(new WardSpot("PurpleMid->RiverLaneBush", new Vector3(8530.27f, 6637.38f, 46.98f),
-            //    new Vector3(8539.27f, 6637.38f, 46.98f), new Vector3(8396.10f, 6464.81f, 46.98f),
-            //    new Vector3(8779.17f, 6804.70f, 46.98f)));
-            //WardSpots.Add(new WardSpot("PurpleBot->SoloBush", new Vector3(11889f, 4205f, 42.84f),
-            //    new Vector3(11974.23f, 3807.21f, 42.84f), new Vector3(11646.10f, 3464.81f, 42.84f),
-            //    new Vector3(11939f, 4255f, 42.84f)));
-            //WardSpots.Add(new WardSpot("PurpleLizard->NashorPassBush", new Vector3(6299f, 10377.75f, 45.47f),
-            //    new Vector3(6030.24f, 10292.37f, 54.29f), new Vector3(5846.10f, 10164.81f, 53.94f),
-            //    new Vector3(6447f, 10463f, 54.63f)));
-
-            //WardSpots.Add(new WardSpot("BlueTop->RiverLaneBush", new Vector3(2277.609f, 10033.42f, 50.784f), new Vector3(2277.609f, 10033.42f, 50), new Vector3(2277.609f, 10033.42f, 50.784f), new Vector3(1780f, 10690f, 52.8381f)));
-            //WardSpots.Add(new WardSpot("Dragon", new Vector3(10152.86f, 2884.957f, 1009.02f), new Vector3(10152.86f, 2884.957f, 1009.02f), new Vector3(10152.86f, 2884.957f, 1009.02f), new Vector3(10122f, 3958f, -71.2406f)));
             WardSpots.Add(new WardSpot("", new Vector3(2729f, 10879f, -71f), new Vector3(2729f, 10879f, -71f), new Vector3(2729, 10879, -71f), new Vector3(2524f, 10406f, 54f)));
             WardSpots.Add(new WardSpot("", new Vector3(2303f, 10868f, 53f), new Vector3(2303f, 10868f, 53f), new Vector3(2303f, 10868f, 53f), new Vector3(1774f, 10756f, 52f)));
             WardSpots.Add(new WardSpot("", new Vector3(5223f, 6789f, 50f), new Vector3(5223f, 6789f, 50f), new Vector3(5223f, 6789f, 50f), new Vector3(5520f, 6342f, 51f)));
@@ -177,7 +95,7 @@ namespace SAwareness.Wards
             //Game.OnGameUpdate += Game_OnGameUpdate;
             ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
-            Game.OnGameSendPacket += Game_OnGameSendPacket;
+            //Game.OnGameSendPacket += Game_OnGameSendPacket;
             Spellbook.OnCastSpell += Spellbook_OnCastSpell;
         }
 
@@ -186,7 +104,7 @@ namespace SAwareness.Wards
             Game.OnWndProc -= Game_OnWndProc;
             //Game.OnGameUpdate -= Game_OnGameUpdate;
             ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            Game.OnGameSendPacket -= Game_OnGameSendPacket;
+            //Game.OnGameSendPacket -= Game_OnGameSendPacket;
             Drawing.OnDraw -= Drawing_OnDraw;
             Spellbook.OnCastSpell -= Spellbook_OnCastSpell;
 
@@ -198,6 +116,13 @@ namespace SAwareness.Wards
         public bool IsActive()
         {
             return Ward.Wards.GetActive() && WardCorrector_Wards.GetActive();
+        }
+
+        private static void SetupMainMenu()
+        {
+            var menu = new LeagueSharp.Common.Menu("SAwarenessWardCorrector", "SAwarenessWardsWardCorrector", true);
+            SetupMenu(menu);
+            menu.AddToMainMenu();
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

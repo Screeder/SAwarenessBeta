@@ -184,8 +184,8 @@ namespace SAwareness.Miscs
             }
             if (Common.IsInside(cursorPos, SequenceLevlerGUI.Save.Sprite.Position, SequenceLevlerGUI.Save.Bitmap.Width, SequenceLevlerGUI.Save.Bitmap.Height))
             {
-                SaveSequence(SequenceLevlerGUI.CurrentLevler.New);
                 ResetMenuEntries();
+                SaveSequence(SequenceLevlerGUI.CurrentLevler.New);
             }
         }
 
@@ -216,6 +216,18 @@ namespace SAwareness.Miscs
 
         private void ChangeBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
+            if(AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
             StringList list = onValueChangeEventArgs.GetNewValue<StringList>();
             SequenceLevler curLevler = null;
             foreach (SequenceLevler levler in sLevler.ToArray())
@@ -237,6 +249,16 @@ namespace SAwareness.Miscs
 
         private void ShowBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
+            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
             if (onValueChangeEventArgs.GetNewValue<bool>())
             {
                 StringList list =
@@ -260,7 +282,8 @@ namespace SAwareness.Miscs
                 }
                 else
                 {
-                    SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
+                    onValueChangeEventArgs.Process = false;
+                    //SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
                 }
                 //gui.CurrentLevler = curLevler ?? new SequenceLevler();
             }
@@ -268,6 +291,16 @@ namespace SAwareness.Miscs
 
         private void NewBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
+            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
             if (onValueChangeEventArgs.GetNewValue<bool>())
             {
                 SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
@@ -278,6 +311,16 @@ namespace SAwareness.Miscs
 
         private void DeleteBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
+            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
+                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
             if (onValueChangeEventArgs.GetNewValue<bool>())
             {
                 DeleteSequence();
