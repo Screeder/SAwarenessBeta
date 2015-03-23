@@ -3261,43 +3261,8 @@ namespace SAssemblies.Trackers
             {
                 new System.Threading.Thread(() =>
                 {
-                    GetGold();
+                    //GetGold();
                 }).Start();
-            }
-        }
-
-        private void GetGold()
-        {
-            List<Spectator.Packet> packets = new List<Spectator.Packet>();
-            if(SpecUtils.GameId == null)
-                return;
-            List<Byte[]> fullGameBytes = SpectatorDownloader.DownloadGameFiles(SpecUtils.GameId, SpecUtils.PlatformId, SpecUtils.Key, "KeyFrame");
-            foreach (Byte[] chunkBytes in fullGameBytes)
-            {
-                packets.AddRange(SpectatorDecoder.DecodeBytes(chunkBytes));
-            }
-            foreach (Spectator.Packet p in packets)
-            {
-                if (p.header == (Byte)Spectator.HeaderId.PlayerStats)
-                {
-                    Spectator.PlayerStats playerStats = new Spectator.PlayerStats(p);
-                    if (playerStats.GoldEarned <= 0.0f)
-                        continue;
-                    foreach (var ally in _allies)
-                    {
-                        if (ally.Key.NetworkId == playerStats.NetId)
-                        {
-                            //ally.Value.Gold = playerStats.GoldEarned;
-                        }
-                    }
-                    foreach (var enemy in _enemies)
-                    {
-                        if (enemy.Key.NetworkId == playerStats.NetId)
-                        {
-                            //enemy.Value.Gold = playerStats.GoldEarned;
-                        }
-                    }
-                }
             }
         }
 
