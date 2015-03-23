@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
-using SAssemblies.Spectator;
 using SharpDX;
 using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
