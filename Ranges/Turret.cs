@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-namespace SAwareness.Ranges
+namespace SAssemblies.Ranges
 {
     class Turret
     {

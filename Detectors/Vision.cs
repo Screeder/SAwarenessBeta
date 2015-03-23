@@ -9,11 +9,11 @@ using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 
-namespace SAwareness.Detectors
+namespace SAssemblies.Detectors
 {
     class Vision
     {
-        public static Menu.MenuItemSettings VisionDetector = new Menu.MenuItemSettings(typeof(SAwareness.Detectors.Vision));
+        public static Menu.MenuItemSettings VisionDetector = new Menu.MenuItemSettings(typeof(Detectors.Vision));
 
         public enum ObjectType
         {
@@ -92,15 +92,15 @@ namespace SAwareness.Detectors
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            VisionDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_VISION_MAIN"), "SAwarenessDetectorsVision"));
+            VisionDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_VISION_MAIN"), "SAssembliesDetectorsVision"));
             VisionDetector.MenuItems.Add(
-                VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionDrawRange", Language.GetString("DETECTORS_VISION_RANGE")).SetValue(false)));
+                VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionDrawRange", Language.GetString("DETECTORS_VISION_RANGE")).SetValue(false)));
             VisionDetector.MenuItems.Add(
-                VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionDrawVisionRange", Language.GetString("DETECTORS_VISION_VISIONRANGE")).SetValue(false)));
+                VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionDrawVisionRange", Language.GetString("DETECTORS_VISION_VISIONRANGE")).SetValue(false)));
             VisionDetector.MenuItems.Add(
-                VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionDrawRealVisionRange", Language.GetString("DETECTORS_VISION_REALRANGE")).SetValue(false)));
+                VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionDrawRealVisionRange", Language.GetString("DETECTORS_VISION_REALRANGE")).SetValue(false)));
             VisionDetector.MenuItems.Add(
-                VisionDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return VisionDetector;
         }
 
@@ -213,7 +213,7 @@ namespace SAwareness.Detectors
                             }
                             break;
                     }
-                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawVisionRange").GetValue<bool>())
+                    if (VisionDetector.GetMenuItem("SAssembliesDetectorsVisionDrawVisionRange").GetValue<bool>())
                     {
                         if (obj.EndPosition.IsOnScreen())
                         {
@@ -229,7 +229,7 @@ namespace SAwareness.Detectors
                     {
                         posList = obj.Points;
                     }
-                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRealVisionRange").GetValue<bool>())
+                    if (VisionDetector.GetMenuItem("SAssembliesDetectorsVisionDrawRealVisionRange").GetValue<bool>())
                     {
                         for (int j = 0; j < posList.Count; j++)
                         {
@@ -258,7 +258,7 @@ namespace SAwareness.Detectors
                         Drawing.DrawText(objMPos[0], objMPos[1], obj.ObjectBase.Color, typeText);
                     //}
 
-                    if (VisionDetector.GetMenuItem("SAwarenessDetectorsVisionDrawRange").GetValue<bool>())
+                    if (VisionDetector.GetMenuItem("SAssembliesDetectorsVisionDrawRange").GetValue<bool>())
                     {
                         if (obj.EndPosition.IsOnScreen())
                         {

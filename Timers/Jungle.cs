@@ -11,7 +11,7 @@ using SharpDX;
 using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Jungle
     {
@@ -51,11 +51,11 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            JungleTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_JUNGLE_MAIN"), "SAwarenessTimersJungle"));
+            JungleTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_JUNGLE_MAIN"), "SAssembliesTimersJungle"));
             JungleTimer.MenuItems.Add(
-                JungleTimer.Menu.AddItem(new MenuItem("SAwarenessTimersJungleSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                JungleTimer.Menu.AddItem(new MenuItem("SAssembliesTimersJungleSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             JungleTimer.MenuItems.Add(
-                JungleTimer.Menu.AddItem(new MenuItem("SAwarenessTimersJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                JungleTimer.Menu.AddItem(new MenuItem("SAssembliesTimersJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return JungleTimer;
         }
 
@@ -240,14 +240,14 @@ namespace SAwareness.Timers
                 {
                     if (jungleCamp.NextRespawnTime <= 0 || jungleCamp.MapType != GMap.Type)
                         continue;
-                    int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
+                    int time = Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value;
                     if (!jungleCamp.Called && jungleCamp.NextRespawnTime - (int) Game.ClockTime <= time &&
                         jungleCamp.NextRespawnTime - (int) Game.ClockTime >= time - 1)
                     {
                         jungleCamp.Called = true;
                         Timer.PingAndCall(jungleCamp.Name + " respawns in " + time + " seconds!",
                             jungleCamp.MinimapPosition);
-                        if (JungleTimer.GetMenuItem("SAwarenessTimersJungleSpeech").GetValue<bool>())
+                        if (JungleTimer.GetMenuItem("SAssembliesTimersJungleSpeech").GetValue<bool>())
                         {
                             Speech.Speak(jungleCamp.Name + " respawns in " + time + " seconds!");
                         }
@@ -605,8 +605,8 @@ namespace SAwareness.Timers
                 Called = false;
                 Dead = false;
                 Visible = false;
-                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
-                Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += JungleCamp_ValueChanged;
+                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").ValueChanged += JungleCamp_ValueChanged;
                 TextMinimap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
@@ -623,7 +623,7 @@ namespace SAwareness.Timers
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
                 TextMinimap.Add();
-                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
+                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
                 TextMap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();

@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Healths
+namespace SAssemblies.Healths
 {
     class Inhibitor
     {
@@ -37,9 +37,9 @@ namespace SAwareness.Healths
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            InhibitorHealth.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_INHIBITOR_MAIN"), "SAwarenessHealthsInhibitor"));
+            InhibitorHealth.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_INHIBITOR_MAIN"), "SAssembliesHealthsInhibitor"));
             InhibitorHealth.MenuItems.Add(
-                InhibitorHealth.Menu.AddItem(new MenuItem("SAwarenessHealthsInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                InhibitorHealth.Menu.AddItem(new MenuItem("SAssembliesHealthsInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return InhibitorHealth;
         }
 
@@ -84,7 +84,7 @@ namespace SAwareness.Healths
             {
                 int health = 0;
                 var mode =
-                    Health.Healths.GetMenuItem("SAwarenessHealthsMode")
+                    Health.Healths.GetMenuItem("SAssembliesHealthsMode")
                         .GetValue<StringList>();
                 Render.Text Text = new Render.Text(0, 0, "", 14, new ColorBGRA(Color4.White));
                 Text.TextUpdate = delegate
@@ -128,7 +128,7 @@ namespace SAwareness.Healths
             {
                 int health = 0;
                 var mode =
-                    Health.Healths.GetMenuItem("SAwarenessHealthsMode")
+                    Health.Healths.GetMenuItem("SAssembliesHealthsMode")
                         .GetValue<StringList>();
                 Render.Text Text = new Render.Text(0, 0, "", 14, new ColorBGRA(Color4.White));
                 Text.TextUpdate = delegate

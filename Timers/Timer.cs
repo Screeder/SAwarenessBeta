@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Timer
     {
@@ -25,7 +25,7 @@ namespace SAwareness.Timers
 
         private static void SetupMainMenu()
         {
-            var menu = new LeagueSharp.Common.Menu("SAwareness", "SAwareness", true);
+            var menu = new LeagueSharp.Common.Menu("STimers", "SAssembliesSTimers", true);
             SetupMenu(menu);
             menu.AddToMainMenu();
         }
@@ -33,23 +33,23 @@ namespace SAwareness.Timers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             Language.SetLanguage();
-            Timers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_TIMER_MAIN"), "SAwarenessTimers"));
+            Timers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_TIMER_MAIN"), "SAssembliesTimers"));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAwarenessTimersPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAwarenessTimersRemindTime", Language.GetString("TIMERS_REMIND_TIME")).SetValue(new Slider(0, 50, 0))));
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersRemindTime", Language.GetString("TIMERS_REMIND_TIME")).SetValue(new Slider(0, 50, 0))));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAwarenessTimersLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAwarenessTimersChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[]
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
                     Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
                     Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                 }))));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAwarenessTimersTextScale", Language.GetString("TIMERS_TIMER_SCALE")).SetValue(new Slider(12, 8, 20))));
-            Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAwarenessTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersTextScale", Language.GetString("TIMERS_TIMER_SCALE")).SetValue(new Slider(12, 8, 20))));
+            Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAssembliesTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return Timers;
         }
 
@@ -69,18 +69,18 @@ namespace SAwareness.Timers
         {
             if (ping)
             {
-                for (int i = 0; i < Timers.GetMenuItem("SAwarenessTimersPingTimes").GetValue<Slider>().Value; i++)
+                for (int i = 0; i < Timers.GetMenuItem("SAssembliesTimersPingTimes").GetValue<Slider>().Value; i++)
                 {
                     GamePacket gPacketT;
-                    if (Timers.GetMenuItem("SAwarenessTimersLocalPing").GetValue<bool>())
+                    if (Timers.GetMenuItem("SAssembliesTimersLocalPing").GetValue<bool>())
                     {
                         gPacketT =
                             Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(pos[0], pos[1], 0, 0,
                                 Packet.PingType.Normal));
                         gPacketT.Process();
                     }
-                    else if (!Timers.GetMenuItem("SAwarenessTimersLocalPing").GetValue<bool>() &&
-                             Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive")
+                    else if (!Timers.GetMenuItem("SAssembliesTimersLocalPing").GetValue<bool>() &&
+                             Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                  .GetValue<bool>())
                     {
                         gPacketT = Packet.C2S.Ping.Encoded(new Packet.C2S.Ping.Struct(pos.X, pos.Y));
@@ -90,12 +90,12 @@ namespace SAwareness.Timers
             }
             if (call)
             {
-                if (Timers.GetMenuItem("SAwarenessTimersChatChoice").GetValue<StringList>().SelectedIndex == 1)
+                if (Timers.GetMenuItem("SAssembliesTimersChatChoice").GetValue<StringList>().SelectedIndex == 1)
                 {
                     Game.PrintChat(text);
                 }
-                else if (Timers.GetMenuItem("SAwarenessTimersChatChoice").GetValue<StringList>().SelectedIndex == 2 &&
-                         Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
+                else if (Timers.GetMenuItem("SAssembliesTimersChatChoice").GetValue<StringList>().SelectedIndex == 2 &&
+                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say(text);
                 }

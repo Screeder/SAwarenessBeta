@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Summoner
     {
@@ -36,11 +36,11 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            SummonerTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SUMMONER_MAIN"), "SAwarenessTimersSummoner"));
+            SummonerTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SUMMONER_MAIN"), "SAssembliesTimersSummoner"));
             SummonerTimer.MenuItems.Add(
-                SummonerTimer.Menu.AddItem(new MenuItem("SAwarenessTimersSummonerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                SummonerTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSummonerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             SummonerTimer.MenuItems.Add(
-                SummonerTimer.Menu.AddItem(new MenuItem("SAwarenessTimersSummonerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SummonerTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSummonerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SummonerTimer;
         }
 
@@ -75,12 +75,12 @@ namespace SAwareness.Timers
                         SpellDataInst spellData = enemy.Spellbook.GetSpell(summonerSpells[i]);
                         if (hero.Value.Called[i])
                         {
-                            if (Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value < spellData.CooldownExpires - Game.ClockTime)
+                            if (Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value < spellData.CooldownExpires - Game.ClockTime)
                             {
                                 hero.Value.Called[i] = false;
                             }
                         }
-                        if (!hero.Value.Called[i] && Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value > spellData.CooldownExpires - Game.ClockTime)
+                        if (!hero.Value.Called[i] && Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value > spellData.CooldownExpires - Game.ClockTime)
                         {
                             hero.Value.Called[i] = true;
                             String text = enemy.ChampionName + " ";
@@ -138,9 +138,9 @@ namespace SAwareness.Timers
                                     text = text + "Teleport";
                                     break;
                             }
-                            text = text + " " + Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value + " sec";
+                            text = text + " " + Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value + " sec";
                             Timer.PingAndCall(text, new Vector3(), true, false);
-                            if (SummonerTimer.GetMenuItem("SAwarenessTimersSummonerSpeech").GetValue<bool>())
+                            if (SummonerTimer.GetMenuItem("SAssembliesTimersSummonerSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(text + "onds");
                             }

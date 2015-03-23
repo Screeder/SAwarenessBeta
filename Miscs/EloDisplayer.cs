@@ -18,7 +18,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using Rectangle = SharpDX.Rectangle;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class EloDisplayer
     {
@@ -45,7 +45,7 @@ namespace SAwareness.Miscs
             };
             MainFrame.Sprite.VisibleCondition = delegate
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
             };
             MainFrame.Sprite.Add(1);
         }
@@ -71,10 +71,31 @@ namespace SAwareness.Miscs
             //    }
             //    index++;
             //}
+            //foreach (var enemy in _enemies)
+            //{
+            //    UpdateStatus(enemy.Value.GetLolWebSiteContentOverview(enemy.Key));
+            //}
+            //foreach (var ally in _allies)
+            //{
+            //    UpdateStatus(ally.Value.GetLolWebSiteContentOverview(ally.Key));
+            //}
             for (int i = 0; i < 1; i++)
             {
                 _enemies.Add(ObjectManager.Player, new ChampionEloDisplayer());
                 _allies.Add(ObjectManager.Player, new ChampionEloDisplayer());
+            }
+
+            foreach (var enemy in _enemies)
+            {
+                var t = new Thread(new ParameterizedThreadStart(GenerateMasteryPage));
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start(enemy);
+            }
+            foreach (var ally in _allies)
+            {
+                var t = new Thread(new ParameterizedThreadStart(GenerateMasteryPage));
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start(ally);
             }
             
             Game.OnGameUpdate += Game_OnGameUpdateAsyncSprites;
@@ -96,11 +117,11 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            EloDisplayerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ELODISPLAYER_MAIN"), "SAwarenessMiscsEloDisplayer"));
+            EloDisplayerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ELODISPLAYER_MAIN"), "SAssembliesMiscsEloDisplayer"));
             EloDisplayerMisc.MenuItems.Add(
-                EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAwarenessMiscsEloDisplayerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(9, KeyBindType.Toggle))));
+                EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesMiscsEloDisplayerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(9, KeyBindType.Toggle))));
             EloDisplayerMisc.MenuItems.Add(
-                EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAwarenessMiscsEloDisplayerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesMiscsEloDisplayerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return EloDisplayerMisc;
         }
 
@@ -195,7 +216,7 @@ namespace SAwareness.Miscs
                 };
                 champ.SummonerIcon.Sprite.Sprite.VisibleCondition = delegate
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.SummonerIcon.Sprite.Sprite.Add(2);
@@ -215,7 +236,7 @@ namespace SAwareness.Miscs
             //    };
             //    champ.MasteriesSprite.Sprite.Sprite.VisibleCondition = delegate
             //    {
-            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
             //            && champ.IsFinished();
             //    };
             //    champ.MasteriesSprite.Sprite.Sprite.Add(2);
@@ -266,7 +287,7 @@ namespace SAwareness.Miscs
                 };
                 champ.Divison.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.Divison.Text.OutLined = true;
@@ -291,7 +312,7 @@ namespace SAwareness.Miscs
                 };
                 champ.RankedStatistics.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.RankedStatistics.Text.OutLined = true;
@@ -316,7 +337,7 @@ namespace SAwareness.Miscs
                 };
                 champ.MMR.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.MMR.Text.OutLined = true;
@@ -341,7 +362,7 @@ namespace SAwareness.Miscs
                 };
                 champ.RecentStatistics.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.RecentStatistics.Text.OutLined = true;
@@ -366,7 +387,7 @@ namespace SAwareness.Miscs
                 };
                 champ.ChampionGames.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.ChampionGames.Text.OutLined = true;
@@ -391,7 +412,7 @@ namespace SAwareness.Miscs
                 };
                 champ.OverallKDA.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.OverallKDA.Text.OutLined = true;
@@ -416,7 +437,7 @@ namespace SAwareness.Miscs
                 };
                 champ.ChampionKDA.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.ChampionKDA.Text.OutLined = true;
@@ -458,7 +479,7 @@ namespace SAwareness.Miscs
             };
             champ.SummonerName.Text.VisibleCondition = sender =>
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
             };
             champ.SummonerName.Text.OutLined = true;
@@ -475,7 +496,7 @@ namespace SAwareness.Miscs
             };
             champ.ChampionName.Text.VisibleCondition = sender =>
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
             };
             champ.ChampionName.Text.OutLined = true;
@@ -492,7 +513,7 @@ namespace SAwareness.Miscs
             };
             champ.Masteries.Text.VisibleCondition = sender =>
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
             };
             champ.Masteries.Text.OutLined = true;
@@ -509,7 +530,7 @@ namespace SAwareness.Miscs
             };
             champ.Runes.Text.VisibleCondition = sender =>
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAwarenessMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
             };
             champ.Runes.Text.OutLined = true;
@@ -706,16 +727,16 @@ namespace SAwareness.Miscs
         private String GetSummonerIcon(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
-            String patternWin = "<div class=\"rectImage\"><img src=\"//ss.op.gg/images/profile_icons/(.*?)\"></div>";
-            return GetMatch(websiteContent, patternWin);
+            String patternWin = "<div class=\"rectImage\"><img src=\"//(.*?)op.gg/images/profile_icons/(.*?)\"></div>";
+            return GetMatch(websiteContent, patternWin, 0, 2);
         }
 
         private String GetDivision(Obj_AI_Hero hero, ChampionEloDisplayer elo, ref bool ranked)
         {
             String division = "";
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
-            String patternTierRank = "(.*?)TierRank(.*?)";
-            String patternLeaguePoints = "(.*?)LeaguePoints(.*?)";
+            String patternTierRank = "<div class=\"TierRank\">";
+            String patternLeaguePoints = "<div class=\"LeaguePoints\">";
             if (!GetMatch(websiteContent, patternTierRank).Equals("") && !GetMatch(websiteContent, patternLeaguePoints).Equals(""))
             {
                 if (websiteContent.Contains("TypeTeam"))
@@ -781,14 +802,13 @@ namespace SAwareness.Miscs
         private String GetMmr(Obj_AI_Hero hero, bool ranked)
         {
             if (!ranked)
-                return "";
+                return "0";
 
             String websiteContent = GetLolWebSiteContent("summoner/ajax/mmr.json/", "userName=" + GetEncodedPlayerName(hero));
             String patternMmr = "\"mmr\":\"(.*?)\"";
             String patternAverageMmr = "<b>(.*?)<\\\\/b>";
             return GetMatch(websiteContent, patternMmr) + "/" +
                    GetMatch(websiteContent, patternAverageMmr);
-            return "";
         }
 
         private String GetMasteries(Obj_AI_Hero hero)
@@ -871,7 +891,7 @@ namespace SAwareness.Miscs
         private String GetChampionKDALastSeason(Obj_AI_Hero hero, ChampionEloDisplayer elo, bool ranked)
         {
             if (!ranked)
-                return "";
+                return "0/0/0";
 
             return GetChampionKDA(hero, elo, "4");
         }
@@ -912,7 +932,7 @@ namespace SAwareness.Miscs
         private String GetChampionGamesLastSeason(Obj_AI_Hero hero, ChampionEloDisplayer elo, bool ranked)
         {
             if (!ranked)
-                return "";
+                return "0/0";
 
             return GetChampionGames(hero, elo,"4");
         }
@@ -983,9 +1003,9 @@ namespace SAwareness.Miscs
                 //return elementMatch.ToString();
                 return websiteMatcher.Groups[groupIndex].ToString();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Cannot get value for {0}, pattern {1}, index {2}, groupIndex {3}", @websiteContent, @pattern, index, groupIndex);
+                //Console.WriteLine("Cannot get value for {0}, pattern {1}, index {2}, groupIndex {3}\n Exception: ", @websiteContent, @pattern, index, groupIndex, e);
             }
             return "";
         }
@@ -1065,14 +1085,16 @@ namespace SAwareness.Miscs
             }
         }
 
-        private Bitmap GenerateMasteryPage(Obj_AI_Hero hero)
+        private void GenerateMasteryPage(object hero)
         {
             String masteryPage = "http://leaguecraft.com/masteries/iframe/?points=";
-            foreach (var mastery in hero.Masteries)
+            foreach (var mastery in ((KeyValuePair<Obj_AI_Hero, ChampionEloDisplayer>)hero).Key.Masteries)
             {
                 masteryPage += mastery.Points;
             }
-            return CreateScreenShot(masteryPage);
+            ((KeyValuePair<Obj_AI_Hero, ChampionEloDisplayer>)hero).Value.MasteriesSprite = new TextInfo();
+            SpriteHelper.LoadTexture(CreateScreenShot(masteryPage), ref ((KeyValuePair<Obj_AI_Hero, ChampionEloDisplayer>)hero).Value.MasteriesSprite.Sprite);
+            return;
         }
 
         private Bitmap CreateScreenShot(String url, int width = -1, int height = -1) //For iframe of masteries

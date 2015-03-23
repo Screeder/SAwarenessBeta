@@ -9,14 +9,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
-using SAwareness.Spectator;
+using SAssemblies.Spectator;
 using SharpDX;
 using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
 using Font = SharpDX.Direct3D9.Font;
 using Packet = LeagueSharp.Common.Packet;
 
-namespace SAwareness.Trackers
+//OverHead Small bugged
+
+namespace SAssemblies.Trackers
 {
     class Ui
     {
@@ -49,8 +51,49 @@ namespace SAwareness.Trackers
 
         public Ui()
         {
+            //if (
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
+            //        .GetValue<Slider>()
+            //        .Value == 0)
+            //{
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
+            //        .SetValue(new Slider((int)_screen.X, Drawing.Width, 0));
+            //}
+            //if (
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
+            //        .GetValue<Slider>()
+            //        .Value == 0)
+            //{
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
+            //        .SetValue(new Slider((int)_screen.Y, Drawing.Height, 0));
+            //}
+            //if (
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
+            //        .GetValue<Slider>()
+            //        .Value == 0)
+            //{
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
+            //        .SetValue(new Slider((int)110, Drawing.Width, 0));
+            //}
+            //if (
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
+            //        .GetValue<Slider>()
+            //        .Value == 0)
+            //{
+            //    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+            //        .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
+            //        .SetValue(new Slider((int)_screen.Y, Drawing.Height, 0));
+            //}
+
             float percentScale =
-                    (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
+                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
 
             int i = 0;
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
@@ -79,9 +122,10 @@ namespace SAwareness.Trackers
             ////{
             ////    SpecUtils.GetInfo();
             ////}).Start();
+            new Thread(LoadSpritesAsync).Start();
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Game.OnGameUpdate += Game_OnGameUpdateAsyncSprites;
             Game.OnGameUpdate += Game_OnGameUpdate;
-            new Thread(LoadSpritesAsync).Start();
             LoadObjectsSync();
             
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket; //TODO:Enable for Gold View currently bugged packet id never received
@@ -93,6 +137,7 @@ namespace SAwareness.Trackers
         {
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnGameUpdate -= Game_OnGameUpdateAsyncSprites;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
         }
@@ -105,82 +150,82 @@ namespace SAwareness.Trackers
          public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
          {
              Menu.MenuItemSettings tempSettings;
-             UiTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_UI_MAIN"), "SAwarenessTrackersUi"));
+             UiTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_UI_MAIN"), "SAssembliesTrackersUi"));
              //UiTracker.MenuItems.Add(
-             //    UiTracker.Menu.AddItem(new MenuItem("SAwarenessItemPanelActive", Language.GetString("TRACKERS_UI_ITEMPANEL")).SetValue(false)));
+             //    UiTracker.Menu.AddItem(new MenuItem("SAssembliesItemPanelActive", Language.GetString("TRACKERS_UI_ITEMPANEL")).SetValue(false)));
              UiTracker.MenuItems.Add(
-                 UiTracker.Menu.AddItem(new MenuItem("SAwarenessUITrackerScale", Language.GetString("TRACKERS_UI_SCALE")).SetValue(new Slider(100, 100, 0))));
-             tempSettings = UiTracker.AddMenuItemSettings(Language.GetString("TRACKERS_UI_ENEMY"), "SAwarenessUITrackerEnemyTracker");
+                 UiTracker.Menu.AddItem(new MenuItem("SAssembliesUITrackerScale", Language.GetString("TRACKERS_UI_SCALE")).SetValue(new Slider(100, 100, 0))));
+             tempSettings = UiTracker.AddMenuItemSettings(Language.GetString("TRACKERS_UI_ENEMY"), "SAssembliesUITrackerEnemyTracker");
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerXPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_X")).SetValue(new Slider((int)_screen.X, Drawing.Width, 0))));
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerXPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_X")).SetValue(new Slider((int)_screen.X, Drawing.Width, 0))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerYPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_Y")).SetValue(new Slider((int)_screen.Y, Drawing.Height, 0))));
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerYPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_Y")).SetValue(new Slider((int)_screen.Y, Drawing.Height, 0))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
                  {
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDE"), 
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT"), 
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_BOTH")
                  }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerSideDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDE_DISPLAY")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerSideDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDE_DISPLAY")).SetValue(new StringList(new[]
                      {
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_DEFAULT"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_SIMPLE"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_LEAGUE")
                      }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerHeadMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_MODE")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerHeadMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_MODE")).SetValue(new StringList(new[]
                  {
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_HEAD_SMALL"), 
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_HEAD_BIG")
                  }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerHeadDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_DISPLAY")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerHeadDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_DISPLAY")).SetValue(new StringList(new[]
                  {
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_DEFAULT"), 
                      Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_SIMPLE")
                  }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerEnemyTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-             tempSettings = UiTracker.AddMenuItemSettings(Language.GetString("TRACKERS_UI_ALLY"), "SAwarenessUITrackerAllyTracker");
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerEnemyTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+             tempSettings = UiTracker.AddMenuItemSettings(Language.GetString("TRACKERS_UI_ALLY"), "SAssembliesUITrackerAllyTracker");
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerXPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_X")).SetValue(new Slider(110, Drawing.Width, 0))));
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerXPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_X")).SetValue(new Slider(110, Drawing.Width, 0))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerYPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_Y")).SetValue(new Slider((int)_screen.Y, Drawing.Height, 0))));
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerYPos", Language.GetString("TRACKERS_UI_GLOBAL_POSITION_Y")).SetValue(new Slider((int)_screen.Y, Drawing.Height, 0))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
                      {
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDE"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_BOTH")
                      }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerSideDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDE_DISPLAY")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerSideDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDE_DISPLAY")).SetValue(new StringList(new[]
                      {
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_DEFAULT"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_SIMPLE"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_LEAGUE")
                      }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerHeadMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_MODE")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerHeadMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_MODE")).SetValue(new StringList(new[]
                      {
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_HEAD_SMALL"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_HEAD_BIG")
                      }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerHeadDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_DISPLAY")).SetValue(new StringList(new[]
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerHeadDisplayMode", Language.GetString("TRACKERS_UI_GLOBAL_MODE_UNIT_DISPLAY")).SetValue(new StringList(new[]
                      {
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_DEFAULT"), 
                          Language.GetString("TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_SIMPLE")
                      }))));
              tempSettings.MenuItems.Add(
-                 tempSettings.Menu.AddItem(new MenuItem("SAwarenessUITrackerAllyTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-             //Menu.UiTracker.MenuItems.Add(Menu.UiTracker.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAwarenessUITrackerCameraMoveActive", "Camera move active").SetValue(false)));
+                 tempSettings.Menu.AddItem(new MenuItem("SAssembliesUITrackerAllyTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+             //Menu.UiTracker.MenuItems.Add(Menu.UiTracker.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesUITrackerCameraMoveActive", "Camera move active").SetValue(false)));
              UiTracker.MenuItems.Add(
-                 UiTracker.Menu.AddItem(new MenuItem("SAwarenessUITrackerPingActive", Language.GetString("TRACKERS_UI_PING")).SetValue(false)));
+                 UiTracker.Menu.AddItem(new MenuItem("SAssembliesUITrackerPingActive", Language.GetString("TRACKERS_UI_PING")).SetValue(false)));
              UiTracker.MenuItems.Add(
-                 UiTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersUiActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                 UiTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUiActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
              return UiTracker;
          }
 
@@ -241,19 +286,19 @@ namespace SAwareness.Trackers
                 if (message == WindowsMessages.WM_MOUSEMOVE)
                 {
                     var curSliderX =
-                        UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                            .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
+                        UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                            .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
                             .GetValue<Slider>();
                     var curSliderY =
-                        UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                            .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
+                        UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                            .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
                             .GetValue<Slider>();
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
                         .SetValue(new Slider((int) (curSliderX.Value + cursorPos.X - _lastCursorPos.X),
                             curSliderX.MinValue, curSliderX.MaxValue));
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
                         .SetValue(new Slider((int) (curSliderY.Value + cursorPos.Y - _lastCursorPos.Y),
                             curSliderY.MinValue, curSliderY.MaxValue));
                     _lastCursorPos = cursorPos;
@@ -273,19 +318,19 @@ namespace SAwareness.Trackers
                 if (message == WindowsMessages.WM_MOUSEMOVE)
                 {
                     var curSliderX =
-                        UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                            .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
+                        UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                            .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
                             .GetValue<Slider>();
                     var curSliderY =
-                        UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                            .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
+                        UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                            .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
                             .GetValue<Slider>();
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
                         .SetValue(new Slider((int) (curSliderX.Value + cursorPos.X - _lastCursorPos.X),
                             curSliderX.MinValue, curSliderX.MaxValue));
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
                         .SetValue(new Slider((int) (curSliderY.Value + cursorPos.Y - _lastCursorPos.Y),
                             curSliderY.MinValue, curSliderY.MaxValue));
                     _lastCursorPos = cursorPos;
@@ -317,7 +362,7 @@ namespace SAwareness.Trackers
                         _champSize.Height))
                     {
                         //TODO: Add Camera move
-                        if (UiTracker.GetMenuItem("SAwarenessUITrackerPingActive").GetValue<bool>())
+                        if (UiTracker.GetMenuItem("SAssembliesUITrackerPingActive").GetValue<bool>())
                         {
                             Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(enemy.Key.ServerPosition.X,
                                 enemy.Key.ServerPosition.Y, 0, 0, Packet.PingType.Normal)).Process();
@@ -330,48 +375,48 @@ namespace SAwareness.Trackers
         public async static Task Init()
         {
             if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
                     .GetValue<Slider>()
                     .Value == 0)
             {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
                     .SetValue(new Slider((int) _screen.X, Drawing.Width, 0));
             }
             if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
                     .GetValue<Slider>()
                     .Value == 0)
             {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                    .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
                     .SetValue(new Slider((int) _screen.Y, Drawing.Height, 0));
             }
             if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                    .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
                     .GetValue<Slider>()
                     .Value == 0)
             {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                    .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
                     .SetValue(new Slider((int) 110, Drawing.Width, 0));
             }
             if (
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                    .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
                     .GetValue<Slider>()
                     .Value == 0)
             {
-                UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                    .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
+                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                    .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
                     .SetValue(new Slider((int) _screen.Y, Drawing.Height, 0));
             }
 
             float percentScale =
-                    (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
+                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
 
             int i = 0;
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
@@ -874,7 +919,7 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                           item.Value > 0.0f && UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>() &&
+                           item.Value > 0.0f && UiTracker.GetMenuItem("SAssembliesItemPanelActive").GetValue<bool>() &&
                            GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 item.Text[0].OutLined = true;
@@ -961,16 +1006,17 @@ namespace SAwareness.Trackers
 
         void LoadSpritesAsync()
         {
-            foreach (var enemy in _enemies)
-            {
-                LoadSpritesAsyncSideHud(enemy);
-                LoadSpritesAsyncOverHeadHud(enemy);
-            }
-            foreach (var ally in _allies)
-            {
-                LoadSpritesAsyncSideHud(ally);
-                LoadSpritesAsyncOverHeadHud(ally);
-            }
+            RafLoader.InitLoader();
+            //foreach (var enemy in _enemies)
+            //{
+            //    LoadSpritesAsyncSideHud(enemy);
+            //    LoadSpritesAsyncOverHeadHud(enemy);
+            //}
+            //foreach (var ally in _allies)
+            //{
+            //    LoadSpritesAsyncSideHud(ally);
+            //    LoadSpritesAsyncOverHeadHud(ally);
+            //}
         }
 
         private void LoadSpritesAsyncOverHeadHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
@@ -1003,25 +1049,30 @@ namespace SAwareness.Trackers
                 return;
 
             lastGameUpdateSpritesTime = Environment.TickCount;
+            int loadCount = 0;
             foreach (var enemy in _enemies)
             {
-                Game_OnGameUpdateAsyncSpritesSideHud(enemy);
+                Game_OnGameUpdateAsyncSpritesSideHud(enemy, ref loadCount);
                 Game_OnGameUpdateAsyncSpritesOverHeadHud(enemy);
             }
             foreach (var ally in _allies)
             {
-                Game_OnGameUpdateAsyncSpritesSideHud(ally);
+                Game_OnGameUpdateAsyncSpritesSideHud(ally, ref loadCount);
                 Game_OnGameUpdateAsyncSpritesOverHeadHud(ally);
             }
         }
 
-        void Game_OnGameUpdateAsyncSpritesSideHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
+        private int maxLoad = 5;
+
+        void Game_OnGameUpdateAsyncSpritesSideHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy, ref int loadCount)
         {
             Obj_AI_Hero hero = enemy.Key;
             ChampInfos champ = enemy.Value;
-            if (champ.Champ.Sprite[0] == null || !champ.Champ.Sprite[0].DownloadFinished)
+            if ((champ.Champ.Sprite[0] == null || !champ.Champ.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.Champ.Sprite[0], @"UI\SideHud");
+                //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.Champ.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.Champ.Sprite[0], null, RafLoader.ImageList.Champion);
+                loadCount++;
             }
             if (champ.Champ.Sprite[0] != null && champ.Champ.Sprite[0].DownloadFinished && !champ.Champ.Sprite[0].LoadingFinished)
             {
@@ -1033,13 +1084,15 @@ namespace SAwareness.Trackers
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
-                champ.Champ.Sprite[0].Sprite.Add(0);
+                champ.Champ.Sprite[0].Sprite.Add(1);
                 champ.Champ.Sprite[0].LoadingFinished = true;
             }
 
-            if (champ.SpellQ.Sprite[0] == null || !champ.SpellQ.Sprite[0].DownloadFinished)
+            if ((champ.SpellQ.Sprite[0] == null || !champ.SpellQ.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Q).Name, ref champ.SpellQ.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellQ.Sprite[0], null, RafLoader.ImageList.SpellQ);
+                loadCount++;
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Q).Name, ref champ.SpellQ.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellQ.Sprite[0] != null && champ.SpellQ.Sprite[0].DownloadFinished && !champ.SpellQ.Sprite[0].LoadingFinished)
             {
@@ -1056,9 +1109,11 @@ namespace SAwareness.Trackers
                 champ.SpellQ.Sprite[0].LoadingFinished = true;
             }
 
-            if (champ.SpellW.Sprite[0] == null || !champ.SpellW.Sprite[0].DownloadFinished)
+            if ((champ.SpellW.Sprite[0] == null || !champ.SpellW.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.W).Name, ref champ.SpellW.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellW.Sprite[0], null, RafLoader.ImageList.SpellW);
+                loadCount++;
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.W).Name, ref champ.SpellW.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellW.Sprite[0] != null && champ.SpellW.Sprite[0].DownloadFinished && !champ.SpellW.Sprite[0].LoadingFinished)
             {
@@ -1075,9 +1130,11 @@ namespace SAwareness.Trackers
                 champ.SpellW.Sprite[0].LoadingFinished = true;
             }
 
-            if (champ.SpellE.Sprite[0] == null || !champ.SpellE.Sprite[0].DownloadFinished)
+            if ((champ.SpellE.Sprite[0] == null || !champ.SpellE.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.E).Name, ref champ.SpellE.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellE.Sprite[0], null, RafLoader.ImageList.SpellE);
+                loadCount++;
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.E).Name, ref champ.SpellE.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellE.Sprite[0] != null && champ.SpellE.Sprite[0].DownloadFinished && !champ.SpellE.Sprite[0].LoadingFinished)
             {
@@ -1094,9 +1151,11 @@ namespace SAwareness.Trackers
                 champ.SpellE.Sprite[0].LoadingFinished = true;
             }
 
-            if (champ.SpellR.Sprite[0] == null || !champ.SpellR.Sprite[0].DownloadFinished)
+            if ((champ.SpellR.Sprite[0] == null || !champ.SpellR.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.R).Name, ref champ.SpellR.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellR.Sprite[0], null, RafLoader.ImageList.SpellR);
+                loadCount++;
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.R).Name, ref champ.SpellR.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellR.Sprite[0] != null && champ.SpellR.Sprite[0].DownloadFinished && !champ.SpellR.Sprite[0].LoadingFinished)
             {
@@ -1113,9 +1172,11 @@ namespace SAwareness.Trackers
                 champ.SpellR.Sprite[0].LoadingFinished = true;
             }
 
-            if (champ.SpellSum1.Sprite[0] == null || !champ.SpellSum1.Sprite[0].DownloadFinished)
+            if ((champ.SpellSum1.Sprite[0] == null || !champ.SpellSum1.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, ref champ.SpellSum1.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum1.Sprite[0], hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, RafLoader.ImageList.SpellSummoner1);
+                loadCount++;
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, ref champ.SpellSum1.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellSum1.Sprite[0] != null && champ.SpellSum1.Sprite[0].DownloadFinished && !champ.SpellSum1.Sprite[0].LoadingFinished)
             {
@@ -1131,9 +1192,11 @@ namespace SAwareness.Trackers
                 champ.SpellSum1.Sprite[0].LoadingFinished = true;
             }
 
-            if (champ.SpellSum2.Sprite[0] == null || !champ.SpellSum2.Sprite[0].DownloadFinished)
+            if ((champ.SpellSum2.Sprite[0] == null || !champ.SpellSum2.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, ref champ.SpellSum2.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum2.Sprite[0], hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, RafLoader.ImageList.SpellSummoner2);
+                loadCount++;
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, ref champ.SpellSum2.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellSum2.Sprite[0] != null && champ.SpellSum2.Sprite[0].DownloadFinished && !champ.SpellSum2.Sprite[0].LoadingFinished)
             {
@@ -1164,7 +1227,7 @@ namespace SAwareness.Trackers
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
-                champ.BackBar.Sprite[0].Sprite.Add(0);
+                champ.BackBar.Sprite[0].Sprite.Add(1);
                 champ.BackBar.Sprite[0].LoadingFinished = true;
             }
 
@@ -1183,7 +1246,7 @@ namespace SAwareness.Trackers
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
-                champ.HealthBar.Sprite[0].Sprite.Add(1);
+                champ.HealthBar.Sprite[0].Sprite.Add(0);
                 champ.HealthBar.Sprite[0].LoadingFinished = true;
             }
 
@@ -1202,7 +1265,7 @@ namespace SAwareness.Trackers
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
-                champ.ManaBar.Sprite[0].Sprite.Add(1);
+                champ.ManaBar.Sprite[0].Sprite.Add(0);
                 champ.ManaBar.Sprite[0].LoadingFinished = true;
             }
 
@@ -1223,7 +1286,7 @@ namespace SAwareness.Trackers
                            GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.RecallBar.Sprite[0].Sprite.Color = new ColorBGRA(Color3.White, 0.55f);
-                champ.RecallBar.Sprite[0].Sprite.Add(1);
+                champ.RecallBar.Sprite[0].Sprite.Add(0);
                 champ.RecallBar.Sprite[0].LoadingFinished = true;
             }
 
@@ -1244,7 +1307,7 @@ namespace SAwareness.Trackers
                            GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.GoldCsLvlBar.Sprite[0].Sprite.Color = new ColorBGRA(Color3.White, 0.55f);
-                champ.GoldCsLvlBar.Sprite[0].Sprite.Add(1);
+                champ.GoldCsLvlBar.Sprite[0].Sprite.Add(0);
                 champ.GoldCsLvlBar.Sprite[0].LoadingFinished = true;
             }           
         }
@@ -1256,7 +1319,8 @@ namespace SAwareness.Trackers
 
             if (champ.SpellSum1.Sprite[1] == null || !champ.SpellSum1.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, ref champ.SpellSum1.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, ref champ.SpellSum1.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum1.Sprite[1], hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, RafLoader.ImageList.SpellSummoner1);
             }
             if (champ.SpellSum1.Sprite[1] != null && champ.SpellSum1.Sprite[1].DownloadFinished && !champ.SpellSum1.Sprite[1].LoadingFinished)
             {
@@ -1274,7 +1338,8 @@ namespace SAwareness.Trackers
 
             if (champ.SpellSum2.Sprite[1] == null || !champ.SpellSum2.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, ref champ.SpellSum2.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, ref champ.SpellSum2.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum2.Sprite[1], hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, RafLoader.ImageList.SpellSummoner2);
             }
             if (champ.SpellSum2.Sprite[1] != null && champ.SpellSum2.Sprite[1].DownloadFinished && !champ.SpellSum2.Sprite[1].LoadingFinished)
             {
@@ -1292,7 +1357,8 @@ namespace SAwareness.Trackers
 
             if (champ.SpellQ.Sprite[1] == null || !champ.SpellQ.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Q).Name, ref champ.SpellQ.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Q).Name, ref champ.SpellQ.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellQ.Sprite[1], null, RafLoader.ImageList.SpellQ);
             }
             if (champ.SpellQ.Sprite[1] != null && champ.SpellQ.Sprite[1].DownloadFinished && !champ.SpellQ.Sprite[1].LoadingFinished)
             {
@@ -1312,7 +1378,8 @@ namespace SAwareness.Trackers
 
             if (champ.SpellW.Sprite[1] == null || !champ.SpellW.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.W).Name, ref champ.SpellW.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.W).Name, ref champ.SpellW.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellW.Sprite[1], null, RafLoader.ImageList.SpellW);
             }
             if (champ.SpellW.Sprite[1] != null && champ.SpellW.Sprite[1].DownloadFinished && !champ.SpellW.Sprite[1].LoadingFinished)
             {
@@ -1332,7 +1399,8 @@ namespace SAwareness.Trackers
 
             if (champ.SpellE.Sprite[1] == null || !champ.SpellE.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.E).Name, ref champ.SpellE.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.E).Name, ref champ.SpellE.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellE.Sprite[1], null, RafLoader.ImageList.SpellE);
             }
             if (champ.SpellE.Sprite[1] != null && champ.SpellE.Sprite[1].DownloadFinished && !champ.SpellE.Sprite[1].LoadingFinished)
             {
@@ -1352,7 +1420,8 @@ namespace SAwareness.Trackers
 
             if (champ.SpellR.Sprite[1] == null || !champ.SpellR.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.R).Name, ref champ.SpellR.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.R).Name, ref champ.SpellR.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellR.Sprite[1], null, RafLoader.ImageList.SpellR);
             }
             if (champ.SpellR.Sprite[1] != null && champ.SpellR.Sprite[1].DownloadFinished && !champ.SpellR.Sprite[1].LoadingFinished)
             {
@@ -1795,7 +1864,7 @@ namespace SAwareness.Trackers
                 item.Text[0].VisibleCondition = sender =>
                 {
                     return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
-                        item.Value > 0.0f && UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>() &&
+                        item.Value > 0.0f && UiTracker.GetMenuItem("SAssembliesItemPanelActive").GetValue<bool>() &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
                 item.Text[0].OutLined = true;
@@ -2194,11 +2263,11 @@ namespace SAwareness.Trackers
         {
             if (enemy)
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker").GetActive();
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker").GetActive();
             }
             else
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker").GetActive();
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker").GetActive();
             }
         }
 
@@ -2206,14 +2275,14 @@ namespace SAwareness.Trackers
         {
             if (enemy)
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerMode")
                         .GetValue<StringList>();
             }
             else
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerMode")
                         .GetValue<StringList>();
             }
         }
@@ -2222,14 +2291,14 @@ namespace SAwareness.Trackers
         {
             if (enemy)
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerSideDisplayMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerSideDisplayMode")
                         .GetValue<StringList>();
             }
             else
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerSideDisplayMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerSideDisplayMode")
                         .GetValue<StringList>();
             }
         }
@@ -2238,14 +2307,14 @@ namespace SAwareness.Trackers
         {
             if (enemy)
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerHeadMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerHeadMode")
                         .GetValue<StringList>();
             }
             else
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerHeadMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerHeadMode")
                         .GetValue<StringList>();
             }
         }
@@ -2254,14 +2323,14 @@ namespace SAwareness.Trackers
         {
             if (enemy)
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerHeadDisplayMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerHeadDisplayMode")
                         .GetValue<StringList>();
             }
             else
             {
-                return UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerHeadDisplayMode")
+                return UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerHeadDisplayMode")
                         .GetValue<StringList>();
             }
         }
@@ -2280,30 +2349,30 @@ namespace SAwareness.Trackers
             if (calcEenemy)
             {
                 heroes = _enemies;
-                percentScale = (float) UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value/
+                percentScale = (float) UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value/
                                100;
                 mode =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerMode")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerMode")
                         .GetValue<StringList>();
                 modeHead =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerHeadMode")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerHeadMode")
                         .GetValue<StringList>();
                 modeDisplay =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerSideDisplayMode")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerSideDisplayMode")
                         .GetValue<StringList>();
                 count = 0;
                 xOffset =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerXPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
                         .GetValue<Slider>()
                         .Value;
                 _oldEx = xOffset;
                 yOffset =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerEnemyTracker")
-                        .GetMenuItem("SAwarenessUITrackerEnemyTrackerYPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+                        .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
                         .GetValue<Slider>()
                         .Value;
                 _oldEy = yOffset;
@@ -2312,30 +2381,30 @@ namespace SAwareness.Trackers
             else
             {
                 heroes = _allies;
-                percentScale = (float) UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value/
+                percentScale = (float) UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value/
                                100;
                 mode =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerMode")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerMode")
                         .GetValue<StringList>();
                 modeHead =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerHeadMode")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerHeadMode")
                         .GetValue<StringList>();
                 modeDisplay =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerSideDisplayMode")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerSideDisplayMode")
                         .GetValue<StringList>();
                 count = 0;
                 xOffset =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerXPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
                         .GetValue<Slider>()
                         .Value;
                 _oldAx = xOffset;
                 yOffset =
-                    UiTracker.GetMenuSettings("SAwarenessUITrackerAllyTracker")
-                        .GetMenuItem("SAwarenessUITrackerAllyTrackerYPos")
+                    UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+                        .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
                         .GetValue<Slider>()
                         .Value;
                 _oldAy = yOffset;
@@ -2593,13 +2662,20 @@ namespace SAwareness.Trackers
                 }
                 if (mode.SelectedIndex == 1 || mode.SelectedIndex == 2)
                 {
+                    if(!hero.Key.IsHPBarRendered)
+                        continue;
                     if (modeHead.SelectedIndex == 0)
                     {
                         const float hpPosScale = 0.8f;
-                        Vector2 hpPos = hero.Key.HPBarPosition;
+                        //Vector2 hpBarPosition = new Vector2(hero.Key.HPBarPosition.X, hero.Key.HPBarPosition.Y);
+                        //Console.WriteLine(hpBarPosition);
+                        //Console.WriteLine(hero.Key.ChampionName);
+                        //if (hpBarPosition.X < 500f)
+                        //    Console.Write("omg");
+                        //hpBarPosition = new Vector2(hero.Key.HPBarPosition.X, hero.Key.HPBarPosition.Y);
                         if (hero.Value.SpellSum1 != null && hero.Value.SpellSum1.Sprite[1] != null && hero.Value.SpellSum1.Sprite[1].Sprite != null)
                         {
-                            hero.Value.SpellSum1.SizeHpBar = new Size((int)hpPos.X - 20, (int)hpPos.Y);
+                            hero.Value.SpellSum1.SizeHpBar = new Size((int)hero.Key.HPBarPosition.X - 20, (int)hero.Key.HPBarPosition.Y);
                             hero.Value.SpellSum1.Sprite[1].Sprite.Scale = new Vector2(((float)_sumSize.Width / hero.Value.SpellSum1.Sprite[1].Sprite.Bitmap.Width) * (scaleSum * percentScale));
                             hero.Value.SpellSum1.CoordsHpBar = new Size(hero.Value.SpellSum1.SizeHpBar.Width + _sumSize.Width / 2, hero.Value.SpellSum1.SizeHpBar.Height + _sumSize.Height / 2);
                         }
@@ -2611,7 +2687,8 @@ namespace SAwareness.Trackers
                             hero.Value.SpellSum2.CoordsHpBar = new Size(hero.Value.SpellSum2.SizeHpBar.Width + _sumSize.Width / 2, hero.Value.SpellSum2.SizeHpBar.Height + _sumSize.Height / 2);
                         }
 
-                        if (hero.Value.SpellPassive != null && hero.Value.SpellPassive.Sprite[1] != null && hero.Value.SpellPassive.Sprite[1].Sprite != null)
+                        if (hero.Value.SpellPassive != null /*&& hero.Value.SpellPassive.Sprite[1] != null && hero.Value.SpellPassive.Sprite[1].Sprite != null*/ &&
+                            hero.Value.SpellSum1 != null && hero.Value.SpellSum1.Sprite[1] != null && hero.Value.SpellSum1.Sprite[1].Sprite != null)
                         {
                             hero.Value.SpellPassive.SizeHpBar = new Size(hero.Value.SpellSum1.SizeHpBar.Width + _sumSize.Width, hero.Value.SpellSum2.SizeHpBar.Height + (int)((_spellSize.Height * hpPosScale) / 1.5));
                             //hero.Value.SpellPassive.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellPassive.Sprite[1].Sprite.Width) * scaleSum * percentScale,
@@ -2649,8 +2726,26 @@ namespace SAwareness.Trackers
 
                         if (hero.Value.Exp[0] != null && hero.Value.Exp[0].Line[1] != null && hero.Value.Exp[0].Line[1] != null)
                         {
-                            hero.Value.Exp[0].SizeHpBar = new Size((int)hpPos.X, (int)hpPos.Y);
+                            hero.Value.Exp[0].SizeHpBar = new Size((int)hero.Key.HPBarPosition.X + 119, (int)hero.Key.HPBarPosition.Y + 17);
                             hero.Value.Exp[0].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[1] != null && hero.Value.Exp[1].Line[1] != null && hero.Value.Exp[1].Line[1] != null)
+                        {
+                            hero.Value.Exp[1].SizeHpBar = new Size((int)hero.Key.HPBarPosition.X + 119 + _lvlIconSize.Width, (int)hero.Key.HPBarPosition.Y + 17);
+                            hero.Value.Exp[1].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[2] != null && hero.Value.Exp[2].Line[1] != null && hero.Value.Exp[2].Line[1] != null)
+                        {
+                            hero.Value.Exp[2].SizeHpBar = new Size((int)hero.Key.HPBarPosition.X + 119 + _lvlIconSize.Width, (int)hero.Key.HPBarPosition.Y + 17 + _lvlIconSize.Height);
+                            hero.Value.Exp[2].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
+                        }
+
+                        if (hero.Value.Exp[3] != null && hero.Value.Exp[3].Line[1] != null && hero.Value.Exp[3].Line[1] != null)
+                        {
+                            hero.Value.Exp[3].SizeHpBar = new Size((int)hero.Key.HPBarPosition.X + 119, (int)hero.Key.HPBarPosition.Y + 17 + _lvlIconSize.Width);
+                            hero.Value.Exp[3].CoordsHpBar = new Size(hero.Value.SpellR.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellR.SizeHpBar.Height + _spellSize.Height / 2);
                         }
                     }
                     else
@@ -2755,7 +2850,7 @@ namespace SAwareness.Trackers
             else
             {
                 float percentScale =
-                    (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
+                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
                 if (method == UpdateMethod.Side)
                 {
                     sprite.Sprite.PositionUpdate = delegate
@@ -2818,7 +2913,7 @@ namespace SAwareness.Trackers
             else
             {
                 float percentScale =
-                    (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
+                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
                 if (method == UpdateMethod.Side)
                 {
                     sprite.Sprite.PositionUpdate = delegate
@@ -2879,7 +2974,7 @@ namespace SAwareness.Trackers
             else
             {
                 float percentScale =
-                    (float)UiTracker.GetMenuItem("SAwarenessUITrackerScale").GetValue<Slider>().Value / 100;
+                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
                 sprite.Sprite.PositionUpdate = delegate
                 {
                     return new Vector2(size.Width, size.Height);
@@ -2894,11 +2989,11 @@ namespace SAwareness.Trackers
 
         private void UpdateItems(bool enemy)
         {
-            //if (!Menu.UiTracker.GetMenuItem("SAwarenessItemPanelActive").GetValue<bool>())
+            //if (!Menu.UiTracker.GetMenuItem("SAssembliesItemPanelActive").GetValue<bool>())
             //    return;
             ////var loc = Assembly.GetExecutingAssembly().Location;
             ////loc = loc.Remove(loc.LastIndexOf("\\", StringComparison.Ordinal));
-            ////loc = loc + "\\Sprites\\SAwareness\\";
+            ////loc = loc + "\\Sprites\\SAssemblies\\";
 
             //Dictionary<Obj_AI_Hero, ChampInfos> heroes;
 
@@ -3148,7 +3243,7 @@ namespace SAwareness.Trackers
                                 enemy.Value.DeathTimeDisplay = 0;
                             }
                             enemy.Value.Gold.Value = (int)enemy.Key.GoldEarned;//TODO: enable to get gold
-                            enemy.Value.Cs.Value = enemy.Key.MinionsKilled;
+                            enemy.Value.Cs.Value = enemy.Key.MinionsKilled + enemy.Key.NeutralMinionsKilled;
                             enemy.Value.Level.Value = enemy.Key.Level;
                         }
                     }

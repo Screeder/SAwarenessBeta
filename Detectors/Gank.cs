@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Detectors
+namespace SAssemblies.Detectors
 {
     class Gank
     {
@@ -40,12 +40,12 @@ namespace SAwareness.Detectors
                             }
                         }
                         return IsActive() &&
-                               GankDetector.GetMenuItem("SAwarenessDetectorsGankShowJungler").GetValue<bool>() &&
+                               GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
                                hero.IsVisible && !hero.IsDead &&
                                 Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
-                                GankDetector.GetMenuItem("SAwarenessDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
+                                GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
                                 Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
-                                GankDetector.GetMenuItem("SAwarenessDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
+                                GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
                                 hasSmite;
                     };
                     text.OutLined = true;
@@ -67,16 +67,16 @@ namespace SAwareness.Detectors
         public bool IsActive()
         {
             return Detector.Detectors.GetActive() && GankDetector.GetActive() &&
-                Game.Time < (GankDetector.GetMenuItem("SAwarenessDetectorsGankDisableTime").GetValue<Slider>().Value * 60); ;
+                Game.Time < (GankDetector.GetMenuItem("SAssembliesDetectorsGankDisableTime").GetValue<Slider>().Value * 60); ;
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            GankDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_GANK_MAIN"), "SAwarenessDetectorsGank"));
+            GankDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_GANK_MAIN"), "SAssembliesDetectorsGank"));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankPingType", Language.GetString("GLOBAL_PING_TYPE")).SetValue(new StringList(new[] 
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankPingType", Language.GetString("GLOBAL_PING_TYPE")).SetValue(new StringList(new[] 
                 { 
                     Language.GetString("GLOBAL_PING_TYPE_NORMAL"), 
                     Language.GetString("GLOBAL_PING_TYPE_DANGER"), 
@@ -86,9 +86,9 @@ namespace SAwareness.Detectors
                     Language.GetString("GLOBAL_PING_ASSISTME") 
                 }))));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(
                         new StringList(new[]
                         {
                             Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
@@ -96,17 +96,17 @@ namespace SAwareness.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankTrackRangeMin", Language.GetString("DETECTORS_GANK_RANGE_MIN")).SetValue(new Slider(1, 10000, 1))));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankTrackRangeMin", Language.GetString("DETECTORS_GANK_RANGE_MIN")).SetValue(new Slider(1, 10000, 1))));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankTrackRangeMax", Language.GetString("DETECTORS_GANK_RANGE_MAX")).SetValue(new Slider(1, 10000, 1))));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankTrackRangeMax", Language.GetString("DETECTORS_GANK_RANGE_MAX")).SetValue(new Slider(1, 10000, 1))));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankDisableTime", Language.GetString("DETECTORS_GANK_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankDisableTime", Language.GetString("DETECTORS_GANK_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankShowJungler", Language.GetString("DETECTORS_GANK_SHOWJUNGLER")).SetValue(false)));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankShowJungler", Language.GetString("DETECTORS_GANK_SHOWJUNGLER")).SetValue(false)));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return GankDetector;
         }
 
@@ -126,21 +126,21 @@ namespace SAwareness.Detectors
         {
             Obj_AI_Hero hero = enemy.Key;
             var pingType = Packet.PingType.Normal;
-            var t = GankDetector.GetMenuItem("SAwarenessDetectorsGankPingType").GetValue<StringList>();
+            var t = GankDetector.GetMenuItem("SAssembliesDetectorsGankPingType").GetValue<StringList>();
             pingType = (Packet.PingType)t.SelectedIndex + 1;
             Vector3 pos = hero.ServerPosition;
             GamePacket gPacketT;
             for (int i = 0;
-                i < GankDetector.GetMenuItem("SAwarenessDetectorsGankPingTimes").GetValue<Slider>().Value;
+                i < GankDetector.GetMenuItem("SAssembliesDetectorsGankPingTimes").GetValue<Slider>().Value;
                 i++)
             {
-                if (GankDetector.GetMenuItem("SAwarenessDetectorsGankLocalPing").GetValue<bool>())
+                if (GankDetector.GetMenuItem("SAssembliesDetectorsGankLocalPing").GetValue<bool>())
                 {
                     gPacketT = Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(pos[0], pos[1], 0, 0, pingType));
                     gPacketT.Process();
                 }
-                else if (!GankDetector.GetMenuItem("SAwarenessDetectorsGankLocalPing").GetValue<bool>() &&
-                         Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive")
+                else if (!GankDetector.GetMenuItem("SAssembliesDetectorsGankLocalPing").GetValue<bool>() &&
+                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                              .GetValue<bool>())
                 {
                     gPacketT = Packet.C2S.Ping.Encoded(new Packet.C2S.Ping.Struct(pos[0], pos[1], 0, pingType));
@@ -149,20 +149,20 @@ namespace SAwareness.Detectors
             }
 
             if (
-                GankDetector.GetMenuItem("SAwarenessDetectorsGankChatChoice").GetValue<StringList>().SelectedIndex ==
+                GankDetector.GetMenuItem("SAssembliesDetectorsGankChatChoice").GetValue<StringList>().SelectedIndex ==
                 1)
             {
                 Game.PrintChat(Language.GetString("DETECTORS_GANK_TEXT") + ": {0}", hero.ChampionName);
             }
             else if (
-                GankDetector.GetMenuItem("SAwarenessDetectorsGankChatChoice")
+                GankDetector.GetMenuItem("SAssembliesDetectorsGankChatChoice")
                     .GetValue<StringList>()
                     .SelectedIndex == 2 &&
-                Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
+                Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
             {
                 Game.Say(Language.GetString("DETECTORS_GANK_TEXT") + ": {0}", hero.ChampionName);
             }
-            if (GankDetector.GetMenuItem("SAwarenessDetectorsGankVoice").GetValue<bool>())
+            if (GankDetector.GetMenuItem("SAssembliesDetectorsGankVoice").GetValue<bool>())
             {
                 Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT") + ": " + hero.ChampionName);
             }
@@ -177,9 +177,9 @@ namespace SAwareness.Detectors
             {
                 if (!enemy.Value.Time.CalledInvisible && hero.IsValid && !hero.IsDead && hero.IsVisible &&
                     Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
-                    GankDetector.GetMenuItem("SAwarenessDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
+                    GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
                     Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
-                    GankDetector.GetMenuItem("SAwarenessDetectorsGankTrackRangeMax").GetValue<Slider>().Value)
+                    GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value)
                 {
                     ChatAndPing(enemy);
                     enemy.Value.Time.CalledInvisible = true;
@@ -187,9 +187,9 @@ namespace SAwareness.Detectors
             }
             if (!enemy.Value.Time.CalledVisible && hero.IsValid && !hero.IsDead &&
                 enemy.Key.GetWaypoints().Last().Distance(ObjectManager.Player.ServerPosition) >
-                GankDetector.GetMenuItem("SAwarenessDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
+                GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
                 enemy.Key.GetWaypoints().Last().Distance(ObjectManager.Player.ServerPosition) <
-                GankDetector.GetMenuItem("SAwarenessDetectorsGankTrackRangeMax").GetValue<Slider>().Value)
+                GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value)
             {
                 ChatAndPing(enemy);
                 enemy.Value.Time.CalledVisible = true;

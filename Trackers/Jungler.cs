@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Trackers
+namespace SAssemblies.Trackers
 {
     class Jungler
     {
@@ -47,9 +47,9 @@ namespace SAwareness.Trackers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            JunglerTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_JUNGLER_MAIN"), "SAwarenessTrackersJungler"));
+            JunglerTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_JUNGLER_MAIN"), "SAssembliesTrackersJungler"));
             JunglerTracker.MenuItems.Add(
-                JunglerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersJunglerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                JunglerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersJunglerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return JunglerTracker;
         }
     }

@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Healths
+namespace SAssemblies.Healths
 {
     class Turret
     {
@@ -37,9 +37,9 @@ namespace SAwareness.Healths
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            TurretHealth.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_TURRET_MAIN"), "SAwarenessHealthsTurret"));
+            TurretHealth.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_TURRET_MAIN"), "SAssembliesHealthsTurret"));
             TurretHealth.MenuItems.Add(
-                TurretHealth.Menu.AddItem(new MenuItem("SAwarenessHealthsTurretActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                TurretHealth.Menu.AddItem(new MenuItem("SAssembliesHealthsTurretActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return TurretHealth;
         }
 
@@ -83,7 +83,7 @@ namespace SAwareness.Healths
             {
                 int health = 0;
                 var mode =
-                    Health.Healths.GetMenuItem("SAwarenessHealthsMode")
+                    Health.Healths.GetMenuItem("SAssembliesHealthsMode")
                         .GetValue<StringList>();
                 Render.Text Text = new Render.Text(0, 0, "", 14, new ColorBGRA(Color4.White));
                 Text.TextUpdate = delegate

@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Trackers
+namespace SAssemblies.Trackers
 {
     class Gank
     {
@@ -35,12 +35,12 @@ namespace SAwareness.Trackers
                     line.VisibleCondition = delegate
                     {
                         return Tracker.Trackers.GetActive() && GankTracker.GetActive() &&
-                                GankTracker.GetMenuItem("SAwarenessTrackersGankDraw").GetValue<bool>() &&
+                                GankTracker.GetMenuItem("SAssembliesTrackersGankDraw").GetValue<bool>() &&
                                hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
-                               GankTracker.GetMenuItem("SAwarenessTrackersGankTrackRange").GetValue<Slider>().Value &&
+                               GankTracker.GetMenuItem("SAssembliesTrackersGankTrackRange").GetValue<Slider>().Value &&
                                hero.IsVisible && !hero.IsDead &&
-                               (GankTracker.GetMenuItem("SAwarenessTrackersGankKillable").GetValue<bool>() && gank.Damage > hero.Health ||
-                               !GankTracker.GetMenuItem("SAwarenessTrackersGankKillable").GetValue<bool>());
+                               (GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>() && gank.Damage > hero.Health ||
+                               !GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>());
                     };
                     line.Add();
                     _enemies.Add(hero, gank);
@@ -64,19 +64,19 @@ namespace SAwareness.Trackers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            GankTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_GANK_MAIN"), "SAwarenessTrackersGank"));
+            GankTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_GANK_MAIN"), "SAssembliesTrackersGank"));
             GankTracker.MenuItems.Add(
-                GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankTrackRange", Language.GetString("TRACKERS_GANK_RANGE")).SetValue(new Slider(1, 20000, 1))));
+                GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankTrackRange", Language.GetString("TRACKERS_GANK_RANGE")).SetValue(new Slider(1, 20000, 1))));
             GankTracker.MenuItems.Add(
-               GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankKillable", Language.GetString("TRACKERS_GANK_KILLABLE")).SetValue(false)));
+               GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankKillable", Language.GetString("TRACKERS_GANK_KILLABLE")).SetValue(false)));
             GankTracker.MenuItems.Add(
-               GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankDraw", Language.GetString("TRACKERS_GANK_LINES")).SetValue(false)));
+               GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankDraw", Language.GetString("TRACKERS_GANK_LINES")).SetValue(false)));
             GankTracker.MenuItems.Add(
-               GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankPing", Language.GetString("TRACKERS_GANK_PING")).SetValue(false)));
+               GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankPing", Language.GetString("TRACKERS_GANK_PING")).SetValue(false)));
             GankTracker.MenuItems.Add(
-                GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             GankTracker.MenuItems.Add(
-                GankTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return GankTracker;
         }
 
@@ -134,7 +134,7 @@ namespace SAwareness.Trackers
                 {
                     _enemies[enemy.Key].Line.Color = Color.OrangeRed;
                 }
-                if (enemy.Value.Damage < enemy.Key.Health && !GankTracker.GetMenuItem("SAwarenessTrackersGankKillable").GetValue<bool>())
+                if (enemy.Value.Damage < enemy.Key.Health && !GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>())
                 {
                     _enemies[enemy.Key].Line.Color = Color.GreenYellow;
                 }
@@ -143,12 +143,12 @@ namespace SAwareness.Trackers
                     _enemies[enemy.Key].Line.Color = Color.Red;
                     if (!_enemies[enemy.Key].Pinged)
                     {
-                        if (GankTracker.GetMenuItem("SAwarenessTrackersGankVoice").GetValue<bool>())
+                        if (GankTracker.GetMenuItem("SAssembliesTrackersGankVoice").GetValue<bool>())
                         {
                             Speech.Speak("Gankable " + enemy.Key.ChampionName);
                         }
                     }
-                    if (!_enemies[enemy.Key].Pinged && GankTracker.GetMenuItem("SAwarenessTrackersGankPing").GetValue<bool>())
+                    if (!_enemies[enemy.Key].Pinged && GankTracker.GetMenuItem("SAssembliesTrackersGankPing").GetValue<bool>())
                     {
                         Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(enemy.Key.ServerPosition[0],
                             enemy.Key.ServerPosition[1], 0, 0, Packet.PingType.Normal)).Process();

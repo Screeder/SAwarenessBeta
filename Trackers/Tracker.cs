@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp.Common;
 
-namespace SAwareness.Trackers
+namespace SAssemblies.Trackers
 {
     class Tracker
     {
@@ -23,7 +23,7 @@ namespace SAwareness.Trackers
 
         private static void SetupMainMenu()
         {
-            var menu = new LeagueSharp.Common.Menu("SAwareness", "SAwareness", true);
+            var menu = new LeagueSharp.Common.Menu("STrackers", "SAssembliesSTrackers", true);
             SetupMenu(menu);
             menu.AddToMainMenu();
         }
@@ -31,8 +31,8 @@ namespace SAwareness.Trackers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             Language.SetLanguage();
-            Trackers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_TRACKER_MAIN"), "SAwarenessTracker"));
-            Trackers.MenuItems.Add(Trackers.Menu.AddItem(new MenuItem("SAwarenessTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            Trackers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_TRACKER_MAIN"), "SAssembliesTracker"));
+            Trackers.MenuItems.Add(Trackers.Menu.AddItem(new MenuItem("SAssembliesTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return Trackers;
         }
     }

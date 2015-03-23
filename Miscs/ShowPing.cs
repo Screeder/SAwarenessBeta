@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class ShowPing
     {
@@ -29,9 +30,9 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            ShowPingMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SHOWPING_MAIN"), "SAwarenessMiscsShowPing"));
+            ShowPingMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SHOWPING_MAIN"), "SAssembliesMiscsShowPing"));
             ShowPingMisc.MenuItems.Add(
-                ShowPingMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsShowPingActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                ShowPingMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsShowPingActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return ShowPingMisc;
         }
 
@@ -40,6 +41,13 @@ namespace SAwareness.Miscs
             if (!IsActive())
                 return;
 
+            //foreach (var objectType in ObjectManager.Get<GameObject>())
+            //{
+            //    var pos = Drawing.WorldToScreen(objectType.Position);
+            //    Drawing.DrawText(pos.X, pos.Y, Color.Blue, objectType.Name);
+            //    //Drawing.DrawText(pos.X, pos.Y, Color.Blue, objectType.Type.ToString());
+            //}
+            //Console.WriteLine("{0}, {1}, {2}", ObjectManager.Player.ServerPosition.X, ObjectManager.Player.ServerPosition.Y, ObjectManager.Player.ServerPosition.Z);
             Drawing.DrawText(Drawing.Width - 75, 90, System.Drawing.Color.LimeGreen, Game.Ping.ToString() + "ms");
         }
     }

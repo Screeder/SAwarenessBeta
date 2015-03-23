@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class AntiVisualScreenStealth
     {
@@ -81,9 +81,9 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            AntiVisualScreenStealthMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ANTIVISUALSCREENSTEALTH_MAIN"), "SAwarenessMiscsAntiVisualScreenStealth"));
+            AntiVisualScreenStealthMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ANTIVISUALSCREENSTEALTH_MAIN"), "SAssembliesMiscsAntiVisualScreenStealth"));
             AntiVisualScreenStealthMisc.MenuItems.Add(
-                AntiVisualScreenStealthMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsAntiVisualScreenStealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                AntiVisualScreenStealthMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiVisualScreenStealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return AntiVisualScreenStealthMisc;
         }
 

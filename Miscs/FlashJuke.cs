@@ -8,7 +8,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class FlashJuke
     {
@@ -101,13 +101,13 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            FlashJukeMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_FLASHJUKE_MAIN"), "SAwarenessMiscsFlashJuke"));
+            FlashJukeMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_FLASHJUKE_MAIN"), "SAssembliesMiscsFlashJuke"));
             FlashJukeMisc.MenuItems.Add(
-                FlashJukeMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsFlashJukeKeyActive", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(90, KeyBindType.Press))));
+                FlashJukeMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsFlashJukeKeyActive", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(90, KeyBindType.Press))));
             FlashJukeMisc.MenuItems.Add(
-                FlashJukeMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsFlashJukeRecall", Language.GetString("MISCS_FLASHJUKE_RECALL")).SetValue(false)));
+                FlashJukeMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsFlashJukeRecall", Language.GetString("MISCS_FLASHJUKE_RECALL")).SetValue(false)));
             FlashJukeMisc.MenuItems.Add(
-                FlashJukeMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsFlashJukeActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                FlashJukeMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsFlashJukeActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return FlashJukeMisc;
         }
 
@@ -116,7 +116,7 @@ namespace SAwareness.Miscs
             if (!IsActive())
                 return;
 
-            SpellSlot spell = Activator.GetFlashSlot();
+            SpellSlot spell = SummonerSpells.GetFlashSlot();
             if (ObjectManager.Player.Spellbook.CanUseSpell(spell) != SpellState.Ready)
                 return;
 
@@ -142,12 +142,12 @@ namespace SAwareness.Miscs
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || !FlashJukeMisc.GetMenuItem("SAwarenessMiscsFlashJukeKeyActive").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+            if (!IsActive() || !FlashJukeMisc.GetMenuItem("SAssembliesMiscsFlashJukeKeyActive").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
 
             lastGameUpdateTime = Environment.TickCount;
 
-            SpellSlot spell = Activator.GetFlashSlot();
+            SpellSlot spell = SummonerSpells.GetFlashSlot();
             if(ObjectManager.Player.Spellbook.CanUseSpell(spell) != SpellState.Ready)
                 return;
 
@@ -167,7 +167,7 @@ namespace SAwareness.Miscs
                     Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(0, spell, -1, nearestPosEnd.X, nearestPosEnd.Y, nearestPosEnd.X, nearestPosEnd.Y)).Send();
                     ObjectManager.Player.Spellbook.CastSpell(spell, nearestPosEnd);
                     flashedTime = Game.Time;
-                    if (FlashJukeMisc.GetMenuItem("SAwarenessMiscsFlashJukeRecall").GetValue<bool>())
+                    if (FlashJukeMisc.GetMenuItem("SAssembliesMiscsFlashJukeRecall").GetValue<bool>())
                     {
                         Utility.DelayAction.Add(200, () =>
                         {

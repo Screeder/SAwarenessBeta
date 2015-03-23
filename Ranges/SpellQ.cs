@@ -9,18 +9,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
-using SAwareness.Properties;
 
-namespace SAwareness.Ranges
+namespace SAssemblies.Ranges
 {
     class SpellQ
     {
         public static Menu.MenuItemSettings SpellQRange = new Menu.MenuItemSettings(typeof(SpellQ));
-
-        public static void Main()
-        {
-            
-        }
 
         public SpellQ()
         {

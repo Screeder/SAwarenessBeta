@@ -8,7 +8,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class TurnAround
     {
@@ -38,9 +38,9 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            TurnAroundMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_TURNAROUND_MAIN"), "SAwarenessMiscsTurnAround"));
+            TurnAroundMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_TURNAROUND_MAIN"), "SAssembliesMiscsTurnAround"));
             TurnAroundMisc.MenuItems.Add(
-                TurnAroundMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsTurnAroundActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                TurnAroundMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsTurnAroundActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return TurnAroundMisc;
         }
 

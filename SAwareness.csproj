@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SAwareness.Program</StartupObject>
+    <StartupObject>SAssemblies.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
@@ -78,10 +78,10 @@
     </Reference>
     <Reference Include="LeagueSharp.GameFiles, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\DLL\LeagueSharp.GameFiles.dll</HintPath>
+      <HintPath>H:\Programme\LeagueSharp\\System\LeagueSharp.GameFiles.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.GameFiles.Fakes">
-      <HintPath>FakesAssemblies\LeagueSharp.GameFiles.Fakes.dll</HintPath>
+      <HintPath>H:\Programme\LeagueSharp\\System\LeagueSharp.GameFiles.Fakes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -119,11 +119,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activator\Activator.cs" />
-    <Compile Include="Activator\AutoAntiSlow.cs" />
-    <Compile Include="Activator\AutoHeal.cs" />
-    <Compile Include="Activator\AutoQSS.cs" />
-    <Compile Include="Activator\AutoUlt.cs" />
     <Compile Include="Detectors\DisReconnect.cs" />
     <Compile Include="Detectors\FoWSpellEnemy.cs" />
     <Compile Include="Detectors\Recall.cs" />
@@ -161,12 +156,8 @@
     <Compile Include="Healths\Inhibitor.cs" />
     <Compile Include="Healths\Turret.cs" />
     <Compile Include="Miscs\AutoLevler.cs" />
-    <Compile Include="Activator\AutoPot.cs" />
-    <Compile Include="Activator\AutoShield.cs" />
-    <Compile Include="Activator\AutoSmite.cs" />
-    <Compile Include="Database.cs" />
+    <Compile Include="Utils\Database.cs" />
     <Compile Include="Detectors\Detector.cs" />
-    <Compile Include="Activator\EmbeddedAssembly.cs" />
     <Compile Include="Miscs\EloDisplayer.cs" />
     <Compile Include="Miscs\FlashJuke.cs" />
     <Compile Include="Healths\Health.cs" />
@@ -209,8 +200,7 @@
     <Compile Include="Trackers\Ui.cs" />
     <Compile Include="Trackers\Uim.cs" />
     <Compile Include="Trackers\Waypoint.cs" />
-    <Compile Include="Updater.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Wards\BushRevealer.cs" />
     <Compile Include="Wards\InvisibleRevealer.cs" />
     <Compile Include="Miscs\ShowPing.cs" />
@@ -241,45 +231,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerBarrier.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerBoost.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerClairvoyance.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerDot.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerExhaust.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerFlash.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerHaste.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerHeal.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerMana.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerOdinGarrison.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerRevive.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerSmite.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SUMMONERS\SummonerTeleport.dds" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -300,65 +251,39 @@
     <EmbeddedResource Include="Resources\DLL\Evade.dll" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\EXT\BarBackground.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\GoldCsLvlBar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\HealthBar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\ItemSlotEmpty.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\ManaBar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\RecallBar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SkillOrderGui.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SkillPoint.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SpellTint.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SpellTintGreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SpellTintRed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SummonerSpellTint.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SummonerTint.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\QuestionMark.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\EloGui.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SkillOrderGuiCancel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EXT\SkillOrderGuiSave.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\DLL\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\DLL\LeagueSharp.GameFiles.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGui.png" />
+    <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGuiCancel.png" />
+    <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGuiSave.png" />
+    <Content Include="Resources\SPRITES\AutoLevler\SkillPoint.png" />
+    <Content Include="Resources\SPRITES\EloDisplayer\EloGui.png" />
+    <Content Include="Resources\SPRITES\SmartPing\directionindicator.dds" />
+    <Content Include="Resources\SPRITES\SmartPing\pingcomehere.dds" />
+    <Content Include="Resources\SPRITES\SmartPing\pinggetback.dds" />
+    <Content Include="Resources\SPRITES\SmartPing\pingmia.dds" />
+    <Content Include="Resources\SPRITES\SmartPing\pingomw.dds" />
+    <Content Include="Resources\SPRITES\Ui\BarBackground.png" />
+    <Content Include="Resources\SPRITES\Ui\GoldCsLvlBar.png" />
+    <Content Include="Resources\SPRITES\Ui\HealthBar.png" />
+    <Content Include="Resources\SPRITES\Ui\ItemSlotEmpty.png" />
+    <Content Include="Resources\SPRITES\Ui\ManaBar.png" />
+    <Content Include="Resources\SPRITES\Ui\QuestionMark.png" />
+    <Content Include="Resources\SPRITES\Ui\RecallBar.png" />
+    <Content Include="Resources\SPRITES\Ui\SpellTint.png" />
+    <Content Include="Resources\SPRITES\Ui\SpellTintGreen.png" />
+    <Content Include="Resources\SPRITES\Ui\SpellTintRed.png" />
+    <Content Include="Resources\SPRITES\Ui\SummonerSpellTint.png" />
+    <Content Include="Resources\SPRITES\Ui\SummonerTint.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Screeder93\AppData\Roaming\LeagueSharp\Assemblies\C14BF944SAwareness.exe"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

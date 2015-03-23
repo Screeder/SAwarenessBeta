@@ -8,7 +8,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Wards
+namespace SAssemblies.Wards
 {
     class WardCorrector
     {
@@ -120,24 +120,23 @@ namespace SAwareness.Wards
 
         private static void SetupMainMenu()
         {
-            var menu = new LeagueSharp.Common.Menu("SAwarenessWardCorrector", "SAwarenessWardsWardCorrector", true);
+            var menu = new LeagueSharp.Common.Menu("SAssembliesWardCorrector", "SAssembliesWardsWardCorrector", true);
             SetupMenu(menu);
             menu.AddToMainMenu();
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            WardCorrector_Wards.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_WARDCORRECTOR_MAIN"), "SAwarenessWardsWardCorrector"));
+            WardCorrector_Wards.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_WARDCORRECTOR_MAIN"), "SAssembliesWardsWardCorrector"));
             WardCorrector_Wards.MenuItems.Add(
-                WardCorrector_Wards.Menu.AddItem(new MenuItem("SAwarenessWardsWardCorrectorKey", Language.GetString("WARDS_WARDCORRECTOR_TRINKET")).SetValue(new KeyBind(52, KeyBindType.Press))));
+                WardCorrector_Wards.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorKey", Language.GetString("WARDS_WARDCORRECTOR_TRINKET")).SetValue(new KeyBind(52, KeyBindType.Press))));
             WardCorrector_Wards.MenuItems.Add(
-                WardCorrector_Wards.Menu.AddItem(new MenuItem("SAwarenessWardsWardCorrectorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                WardCorrector_Wards.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return WardCorrector_Wards;
         }
 
         void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
-            //throw new NotImplementedException();
             if (!IsActive())
                 return;
 
@@ -197,7 +196,7 @@ namespace SAwareness.Wards
         private bool IsWard(Spellbook spellBook, SpellbookCastSpellEventArgs args)
         {
             return
-                Ward.WardItems.Exists(
+                SAssemblies.Ward.WardItems.Exists(
                     y =>
                         y.Id ==
                         (int)
@@ -288,7 +287,7 @@ namespace SAwareness.Wards
             if (MenuGUI.IsChatOpen)
                 return;
             uint trinketKey =
-                WardCorrector_Wards.GetMenuItem("SAwarenessWardsWardCorrectorKey").GetValue<KeyBind>().Key;
+                WardCorrector_Wards.GetMenuItem("SAssembliesWardsWardCorrectorKey").GetValue<KeyBind>().Key;
             if (args.Msg == WM_KEYDOWN)
             {
                 //Console.WriteLine("Hero: " + ObjectManager.Player.ServerPosition);
@@ -363,11 +362,11 @@ namespace SAwareness.Wards
                 {
                     if (inventoryItem != null)
                     {
-                        foreach (Ward.WardItem wardItem in Ward.WardItems)
+                        foreach (SAssemblies.Ward.WardItem wardItem in SAssemblies.Ward.WardItems)
                         {
                             if ((int)inventoryItem.Id == wardItem.Id &&
-                                wardItem.Type != Ward.WardType.Temp &&
-                                wardItem.Type != Ward.WardType.TempVision &&
+                                wardItem.Type != SAssemblies.Ward.WardType.Temp &&
+                                wardItem.Type != SAssemblies.Ward.WardType.TempVision &&
                                 ObjectManager.Player.Spellbook.CanUseSpell(_latestSpellSlot) == SpellState.Ready ||
                                 ObjectManager.Player.Spellbook.CanUseSpell(_latestSpellSlot) == (SpellState)1)
                             {

@@ -5,9 +5,8 @@ using System.Resources;
 using System.Threading;
 using LeagueSharp;
 using LeagueSharp.Common;
-using SAwareness.Properties;
 
-namespace SAwareness.Ranges
+namespace SAssemblies.Ranges
 {
     internal class Range
     {
@@ -25,7 +24,7 @@ namespace SAwareness.Ranges
 
         private static void SetupMainMenu()
         {
-            var menu = new LeagueSharp.Common.Menu("SAwareness", "SAwareness", true);
+            var menu = new LeagueSharp.Common.Menu("SRanges", "SAwarenessSRanges", true);
             SetupMenu(menu);
             menu.AddToMainMenu();
         }

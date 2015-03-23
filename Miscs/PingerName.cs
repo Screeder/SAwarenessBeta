@@ -8,7 +8,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class PingerName
     {
@@ -36,9 +36,9 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            PingerNameMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_PINGERNAME_MAIN"), "SAwarenessMiscsPingerName"));
+            PingerNameMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_PINGERNAME_MAIN"), "SAssembliesMiscsPingerName"));
             PingerNameMisc.MenuItems.Add(
-                PingerNameMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsPingerNameActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                PingerNameMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsPingerNameActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return PingerNameMisc;
         }
 

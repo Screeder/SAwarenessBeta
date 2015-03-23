@@ -6,7 +6,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-namespace SAwareness.Healths
+namespace SAssemblies.Healths
 {
     internal class Health
     {
@@ -24,7 +24,7 @@ namespace SAwareness.Healths
 
         private static void SetupMainMenu()
         {
-            var menu = new LeagueSharp.Common.Menu("SAwareness", "SAwareness", true);
+            var menu = new LeagueSharp.Common.Menu("SAssemblies", "SAssemblies", true);
             SetupMenu(menu);
             menu.AddToMainMenu();
         }
@@ -32,10 +32,14 @@ namespace SAwareness.Healths
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             Language.SetLanguage();
-            Healths.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_HEALTH_MAIN"), "SAwarenessHealths"));
+            Healths.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_HEALTH_MAIN"), "SAssembliesHealths"));
             Healths.MenuItems.Add(
-                Healths.Menu.AddItem(new MenuItem("SAwarenessHealthsMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[] { Language.GetString("HEALTHS_MODE_PERCENT"), Language.GetString("HEALTHS_MODE_VALUE") }))));
-            Healths.MenuItems.Add(Healths.Menu.AddItem(new MenuItem("SAwarenessHealthsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
+                {
+                    Language.GetString("GLOBAL_MODE_PERCENT"), 
+                    Language.GetString("GLOBAL_MODE_VALUE")
+                }))));
+            Healths.MenuItems.Add(Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return Healths;
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-namespace SAwareness.Detectors
+namespace SAssemblies.Detectors
 {
     internal class Recall
     {
@@ -39,13 +39,13 @@ namespace SAwareness.Detectors
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            RecallDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_RECALL_MAIN"), "SAwarenessDetectorsRecall"));
+            RecallDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_RECALL_MAIN"), "SAssembliesDetectorsRecall"));
             RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
             RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(
                         new StringList(new[]
                         {
                             Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
@@ -53,9 +53,9 @@ namespace SAwareness.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
             RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAwarenessDetectorsRecallActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return RecallDetector;
         }
 
@@ -105,7 +105,7 @@ namespace SAwareness.Detectors
                             sColor = "<font color='#FFFF00'>";
                             recall.Start = (int)Game.Time;
                             if (
-                                RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
@@ -114,17 +114,17 @@ namespace SAwareness.Detectors
                                     (int)obj.Health, hColor, percentHealth);
                             }
                             else if (
-                                RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 2 &&
-                                Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive")
+                                Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                     .GetValue<bool>())
                             {
                                 Game.Say("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text, (int)obj.Health,
                                     hColor, percentHealth);
                             }
-                            if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(obj.ChampionName + " " + text);
                             }
@@ -136,7 +136,7 @@ namespace SAwareness.Detectors
                                 : Language.GetString("DETECTORS_RECALL_TEXT_PORTED"));
                             sColor = "<font color='#FF0000'>";
                             if (
-                                RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
@@ -145,17 +145,17 @@ namespace SAwareness.Detectors
                                     (int)obj.Health, hColor, percentHealth);
                             }
                             else if (
-                                RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 2 &&
                                 Menu.GlobalSettings.GetMenuItem(
-                                    "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
+                                    "SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
                                 Game.Say("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
                                     (int)obj.Health, hColor, percentHealth);
                             }
-                            if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(obj.ChampionName + " " + text);
                             }
@@ -164,7 +164,7 @@ namespace SAwareness.Detectors
                         {
                             sColor = "<font color='#00FF00'>";
                             if (
-                                RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 1)
                             {
@@ -173,17 +173,17 @@ namespace SAwareness.Detectors
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", sColor, (int)obj.Health);
                             }
                             else if (
-                                RecallDetector.GetMenuItem("SAwarenessDetectorsRecallChatChoice")
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
                                     .GetValue<StringList>()
                                     .SelectedIndex == 2 &&
                                 Menu.GlobalSettings.GetMenuItem(
-                                    "SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
+                                    "SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
                                 Game.Say("{0}" + obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " 
                                     + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", sColor, (int)obj.Health);
                             }
-                            if (RecallDetector.GetMenuItem("SAwarenessDetectorsRecallSpeech").GetValue<bool>())
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED"));
                             }

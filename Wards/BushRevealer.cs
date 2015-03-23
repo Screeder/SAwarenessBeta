@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using Menu = SAssemblies.Menu;
 
-namespace SAwareness.Wards
+namespace SAssemblies.Wards
 {
     internal class BushRevealer //By Beaving & Blm95
     {
@@ -36,13 +37,20 @@ namespace SAwareness.Wards
             return Ward.Wards.GetActive() && BushRevealerWard.GetActive();
         }
 
+        private static void SetupMainMenu()
+        {
+            var menu = new LeagueSharp.Common.Menu("SBushRevealer", "SAssembliesSWardsBushRevealer", true);
+            SetupMenu(menu);
+            menu.AddToMainMenu();
+        }
+
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            BushRevealerWard.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_BUSHREVEALER_MAIN"), "SAwarenessWardsBushRevealer"));
+            BushRevealerWard.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_BUSHREVEALER_MAIN"), "SAssembliesWardsBushRevealer"));
             BushRevealerWard.MenuItems.Add(
-                BushRevealerWard.Menu.AddItem(new MenuItem("SAwarenessWardsBushRevealerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(32, KeyBindType.Press))));
+                BushRevealerWard.Menu.AddItem(new MenuItem("SAssembliesWardsBushRevealerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(32, KeyBindType.Press))));
             BushRevealerWard.MenuItems.Add(
-                BushRevealerWard.Menu.AddItem(new MenuItem("SAwarenessWardsBushRevealerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                BushRevealerWard.Menu.AddItem(new MenuItem("SAssembliesWardsBushRevealerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             BushRevealerWard.MenuItems.Add(
                 BushRevealerWard.Menu.AddItem(new MenuItem("By Beaving & Blm95", "By Beaving & Blm95")));
             return BushRevealerWard;
@@ -60,11 +68,11 @@ namespace SAwareness.Wards
             foreach (PlayerInfo playerInfo in _playerInfo.Where(x => x.Player.IsVisible))
                 playerInfo.LastSeen = time;
 
-            Ward.WardItem ward = Ward.GetWardItem();
+            SAssemblies.Ward.WardItem ward = SAssemblies.Ward.GetWardItem();
             if (ward == null)
                 return;
 
-            if (BushRevealerWard.GetMenuItem("SAwarenessWardsBushRevealerKey").GetValue<KeyBind>().Active)
+            if (BushRevealerWard.GetMenuItem("SAssembliesWardsBushRevealerKey").GetValue<KeyBind>().Active)
             {
                 foreach (Obj_AI_Hero enemy in _playerInfo.Where(x =>
                     x.Player.IsValid &&
@@ -80,7 +88,7 @@ namespace SAwareness.Wards
                     {
                         if (_lastTimeWarded == 0 || Environment.TickCount - _lastTimeWarded > 500)
                         {
-                            InventorySlot wardSlot = Ward.GetWardSlot();
+                            InventorySlot wardSlot = SAssemblies.Ward.GetWardSlot();
 
                             if (wardSlot != null && wardSlot.Id != ItemId.Unknown)
                             {

@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Trackers
+namespace SAssemblies.Trackers
 {
     class SsCaller
     {
@@ -43,16 +43,16 @@ namespace SAwareness.Trackers
         public bool IsActive()
         {
             return Tracker.Trackers.GetActive() && SsCallerTracker.GetActive() &&
-                   Game.Time < (SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerDisableTime").GetValue<Slider>().Value * 60);
+                   Game.Time < (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerDisableTime").GetValue<Slider>().Value * 60);
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            SsCallerTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_SSCALLER_MAIN"), "SAwarenessTrackersSsCaller"));
+            SsCallerTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_SSCALLER_MAIN"), "SAssembliesTrackersSsCaller"));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerPingType", Language.GetString("GLOBAL_PING_TYPE")).SetValue(
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerPingType", Language.GetString("GLOBAL_PING_TYPE")).SetValue(
                         new StringList(new[]
                         {
                             Language.GetString("GLOBAL_PING_TYPE_NORMAL"), 
@@ -63,24 +63,24 @@ namespace SAwareness.Trackers
                             Language.GetString("GLOBAL_PING_ASSISTME") 
                         }))));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(false)));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[] 
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[] 
                 { 
                     Language.GetString("GLOBAL_CHAT_CHOICE_NONE"),  
                     Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
                     Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                 }))));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerDisableTime", Language.GetString("TRACKERS_SSCALLER_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerDisableTime", Language.GetString("TRACKERS_SSCALLER_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerCircleRange", Language.GetString("TRACKERS_SSCALLER_CIRCLE_RANGE")).SetValue(new Slider(2000, 15000, 100))));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerCircleRange", Language.GetString("TRACKERS_SSCALLER_CIRCLE_RANGE")).SetValue(new Slider(2000, 15000, 100))));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerCircleActive", Language.GetString("TRACKERS_SSCALLER_CIRCLE_ACTIVE")).SetValue(false)));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerCircleActive", Language.GetString("TRACKERS_SSCALLER_CIRCLE_ACTIVE")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersSsCallerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SsCallerTracker;
         }
 
@@ -91,10 +91,10 @@ namespace SAwareness.Trackers
                 Obj_AI_Hero hero = enemy.Key;
                 if (!hero.IsVisible && !hero.IsDead)
                 {
-                    if (SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleActive").GetValue<bool>() && enemy.Value.Teleport.Status != Packet.S2C.Teleport.Status.Start)
+                    if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerCircleActive").GetValue<bool>() && enemy.Value.Teleport.Status != Packet.S2C.Teleport.Status.Start)
                     {
                         float radius = Math.Abs(enemy.Value.LastPosition.X - enemy.Value.PredictedPosition.X);
-                        if (radius < SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleRange").GetValue<Slider>().Value)
+                        if (radius < SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerCircleRange").GetValue<Slider>().Value)
                         {
                             Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
                             if (enemy.Value.LastPosition.IsOnScreen())
@@ -102,9 +102,9 @@ namespace SAwareness.Trackers
                                 Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
                             }
                         } 
-                        else if (radius >= SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleRange").GetValue<Slider>().Value)
+                        else if (radius >= SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerCircleRange").GetValue<Slider>().Value)
                         {
-                            radius = SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerCircleRange").GetValue<Slider>().Value;
+                            radius = SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerCircleRange").GetValue<Slider>().Value;
                             Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
                             if (enemy.Value.LastPosition.IsOnScreen())
                             {
@@ -136,21 +136,21 @@ namespace SAwareness.Trackers
             {
                 var pos = new Vector2(hero.Position.X, hero.Position.Y);
                 var pingType = Packet.PingType.Normal;
-                var t = SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerPingType").GetValue<StringList>();
+                var t = SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerPingType").GetValue<StringList>();
                 pingType = (Packet.PingType)t.SelectedIndex + 1;
                 GamePacket gPacketT;
                 for (int i = 0;
-                    i < SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerPingTimes").GetValue<Slider>().Value;
+                    i < SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerPingTimes").GetValue<Slider>().Value;
                     i++)
                 {
-                    if (SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerLocalPing").GetValue<bool>())
+                    if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerLocalPing").GetValue<bool>())
                     {
                         gPacketT =
                             Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(pos[0], pos[1], 0, 0, pingType));
                         gPacketT.Process();
                     }
-                    else if (!SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerLocalPing").GetValue<bool>() &&
-                             Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive")
+                    else if (!SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerLocalPing").GetValue<bool>() &&
+                             Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                  .GetValue<bool>())
                     {
                         gPacketT =
@@ -159,18 +159,18 @@ namespace SAwareness.Trackers
                         gPacketT.Send();
                     }
                 }
-                if (SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex == 1)
+                if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex == 1)
                 {
                     Game.PrintChat("ss {0}", hero.ChampionName);
                 }
                 else if (
-                    SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex ==
+                    SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex ==
                     2 &&
-                    Menu.GlobalSettings.GetMenuItem("SAwarenessGlobalSettingsServerChatPingActive").GetValue<bool>())
+                    Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say("ss {0}", hero.ChampionName);
                 }
-                if (SsCallerTracker.GetMenuItem("SAwarenessTrackersSsCallerSpeech").GetValue<bool>())
+                if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerSpeech").GetValue<bool>())
                 {
                     Speech.Speak("Miss " + hero.ChampionName);
                 }

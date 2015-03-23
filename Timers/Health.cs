@@ -8,7 +8,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Health
     {
@@ -37,11 +37,11 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            HealthTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_HEALTH_MAIN"), "SAwarenessTimersHealth"));
+            HealthTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_HEALTH_MAIN"), "SAssembliesTimersHealth"));
             HealthTimer.MenuItems.Add(
-                HealthTimer.Menu.AddItem(new MenuItem("SAwarenessTimersHealthSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                HealthTimer.Menu.AddItem(new MenuItem("SAssembliesTimersHealthSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             HealthTimer.MenuItems.Add(
-                HealthTimer.Menu.AddItem(new MenuItem("SAwarenessTimersHealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                HealthTimer.Menu.AddItem(new MenuItem("SAssembliesTimersHealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return HealthTimer;
         }
 
@@ -109,13 +109,13 @@ namespace SAwareness.Timers
                     {
                         if (health.NextRespawnTime - (int)Game.ClockTime <= 0 || health.MapType != GMap.Type)
                             continue;
-                        int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
+                        int time = Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value;
                         if (!health.Called && health.NextRespawnTime - (int)Game.ClockTime <= time &&
                             health.NextRespawnTime - (int)Game.ClockTime >= time - 1)
                         {
                             health.Called = true;
                             Timer.PingAndCall("Heal respawns in " + time + " seconds!", health.Position);
-                            if (HealthTimer.GetMenuItem("SAwarenessTimersHealthSpeech").GetValue<bool>())
+                            if (HealthTimer.GetMenuItem("SAssembliesTimersHealthSpeech").GetValue<bool>())
                             {
                                 Speech.Speak("Heal respawns in " + time + " seconds!");
                             }
@@ -165,8 +165,8 @@ namespace SAwareness.Timers
                 Locked = false;
                 MapType = Utility.Map.MapType.HowlingAbyss;
                 Called = false;
-                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
-                Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += HealthObject_ValueChanged;
+                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").ValueChanged += HealthObject_ValueChanged;
                 TextMinimap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
@@ -183,7 +183,7 @@ namespace SAwareness.Timers
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
                 TextMinimap.Add();
-                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
+                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
                 TextMap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();

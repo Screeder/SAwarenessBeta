@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Trackers
+namespace SAssemblies.Trackers
 {
     class Killable
     {
@@ -76,11 +76,11 @@ namespace SAwareness.Trackers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            KillableTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_KILLABLE_MAIN"), "SAwarenessTrackersKillable"));
+            KillableTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_KILLABLE_MAIN"), "SAssembliesTrackersKillable"));
             KillableTracker.MenuItems.Add(
-                KillableTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersKillableSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             KillableTracker.MenuItems.Add(
-                KillableTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersKillableActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return KillableTracker;
         }
 
@@ -99,7 +99,7 @@ namespace SAwareness.Trackers
             var tempSpellList = new List<Spell>();
             var tempItemList = new List<Item>();
 
-            var ignite = new LeagueSharp.Common.Spell(Activator.GetIgniteSlot(), 1000);
+            var ignite = new LeagueSharp.Common.Spell(SummonerSpells.GetIgniteSlot(), 1000);
 
             var q = new LeagueSharp.Common.Spell(SpellSlot.Q, 1000);
             var w = new LeagueSharp.Common.Spell(SpellSlot.W, 1000);
@@ -161,7 +161,7 @@ namespace SAwareness.Trackers
                 }
             }
 
-            if (Activator.GetIgniteSlot() != SpellSlot.Unknown && enemy.Health > enoughDmg)
+            if (SummonerSpells.GetIgniteSlot() != SpellSlot.Unknown && enemy.Health > enoughDmg)
             {
                 enoughDmg += ObjectManager.Player.GetSummonerSpellDamage(enemy, Damage.SummonerSpell.Ignite);
                 tempSpellList.Add(new Spell("Ignite", ignite.Slot));
@@ -182,7 +182,7 @@ namespace SAwareness.Trackers
         {
             if (killable != null)
             {
-                if (KillableTracker.GetMenuItem("SAwarenessTrackersKillableSpeech").GetValue<bool>() && !killable.Spoken && hero.IsVisible && !hero.IsDead)
+                if (KillableTracker.GetMenuItem("SAssembliesTrackersKillableSpeech").GetValue<bool>() && !killable.Spoken && hero.IsVisible && !hero.IsDead)
                 {
                     Speech.Speak("Killable " + hero.ChampionName);
                     killable.Spoken = true;

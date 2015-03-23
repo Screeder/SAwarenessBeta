@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     internal class SkinChanger
     {
@@ -1187,12 +1187,12 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            SkinChangerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SKINCHANGER_MAIN"), "SAwarenessMiscsSkinChanger"));
+            SkinChangerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SKINCHANGER_MAIN"), "SAssembliesMiscsSkinChanger"));
             SkinChangerMisc.MenuItems.Add(
-                SkinChangerMisc.Menu.AddItem(new MenuItem("SAwarenessSkinChangerSkinName" + ObjectManager.Player.ChampionName, Language.GetString("MISCS_SKINCHANGER_SKIN")).SetValue(
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesSkinChangerSkinName" + ObjectManager.Player.ChampionName, Language.GetString("MISCS_SKINCHANGER_SKIN")).SetValue(
                         new StringList(GetSkinList(ObjectManager.Player.ChampionName)))));
             SkinChangerMisc.MenuItems.Add(
-                SkinChangerMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsSkinChangerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SkinChangerMisc;
         }
 
@@ -1203,7 +1203,7 @@ namespace SAwareness.Miscs
 
             lastGameUpdateTime = Environment.TickCount;
             var mode =
-                SkinChangerMisc.GetMenuItem("SAwarenessSkinChangerSkinName" + ObjectManager.Player.ChampionName)
+                SkinChangerMisc.GetMenuItem("SAssembliesSkinChangerSkinName" + ObjectManager.Player.ChampionName)
                     .GetValue<StringList>();
             if (mode.SelectedIndex != _lastSkinId)
             {

@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class MinionBars
     {
@@ -30,11 +30,11 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            MinionBarsMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MINIONBARS_MAIN"), "SAwarenessMiscsMinionBars"));
+            MinionBarsMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MINIONBARS_MAIN"), "SAssembliesMiscsMinionBars"));
             MinionBarsMisc.MenuItems.Add(
-                MinionBarsMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsMinionBarsGlowActive", Language.GetString("MISCS_MINIONBARS_GLOW")).SetValue(false)));
+                MinionBarsMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMinionBarsGlowActive", Language.GetString("MISCS_MINIONBARS_GLOW")).SetValue(false)));
             MinionBarsMisc.MenuItems.Add(
-                MinionBarsMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsMinionBarsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                MinionBarsMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMinionBarsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return MinionBarsMisc;
         }
 
@@ -60,72 +60,72 @@ namespace SAwareness.Miscs
                 int barWidth = 1;
                 //hpPos.X = hpPos.X - 32;
                 hpPos.Y = hpPos.Y + heightOffset;
-                if (minion.BaseSkinName == "Dragon" || minion.BaseSkinName == "Worm" ||
-                    minion.BaseSkinName == "TT_Spiderboss")
-                {
-                    double healthDraw = 500.0;
-                    if (minion.BaseSkinName == "Dragon")
-                    {
-                        hpPos.X -= 31;
-                        hpPos.Y -= 7;
-                    }
-                    else if (minion.BaseSkinName == "Worm")
-                    {
-                        hpPos.X -= 31;
-                        healthDraw = 1000.0;
-                    }
-                    else if (minion.BaseSkinName == "TT_Spiderboss")
-                        hpPos.X -= 3;
-                    barsToDraw = Math.Floor(minion.MaxHealth / healthDraw);
-                    barDistance = healthDraw / (minion.MaxHealth / 124.0);
-                    double drawDistance = 0;
-                    while (barsDrawn != barsToDraw && barsToDraw != 0 && barsToDraw < 200)
-                    {
-                        drawDistance = drawDistance + barDistance;
-                        if (barsDrawn % 2 == 1)
-                        {
-                            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth + 1, barSize,
-                                System.Drawing.Color.Black);
-                        }
-                        else
-                            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
-                                System.Drawing.Color.Black);
-                        barsDrawn = barsDrawn + 1;
-                    }
-                    DrawRectangleAL(hpPos.X + 43 + myDamageDistance, hpPos.Y + 19, barWidth, barSize, System.Drawing.Color.GreenYellow);
-                    if (damageMinion > minion.Health)
-                    {
-                        OutLineBar(hpPos.X + 43, hpPos.Y + 20, System.Drawing.Color.GreenYellow);
-                    }
-                }
-                else
-                {
-                    double drawDistance = 0;
-                    while (barsDrawn != barsToDraw && barsToDraw != 0 && barsToDraw < 50)
-                    {
-                        drawDistance = drawDistance + barDistance;
-                        if (barsToDraw > 20)
-                        {
-                            if (barsDrawn % 5 == 4)
-                                if (barsDrawn % 10 == 9)
-                                    DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth + 1, barSize,
-                                        System.Drawing.Color.Black);
-                                else
-                                    DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
-                                        System.Drawing.Color.Black);
-                        }
-                        else
-                            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
-                                System.Drawing.Color.Black);
-                        barsDrawn = barsDrawn + 1;
+                //if (minion.BaseSkinName == "Dragon" || minion.BaseSkinName == "Worm" ||
+                //    minion.BaseSkinName == "TT_Spiderboss")
+                //{
+                //    double healthDraw = 500.0;
+                //    if (minion.BaseSkinName == "Dragon")
+                //    {
+                //        hpPos.X -= 31;
+                //        hpPos.Y -= 7;
+                //    }
+                //    else if (minion.BaseSkinName == "Worm")
+                //    {
+                //        hpPos.X -= 31;
+                //        healthDraw = 1000.0;
+                //    }
+                //    else if (minion.BaseSkinName == "TT_Spiderboss")
+                //        hpPos.X -= 3;
+                //    barsToDraw = Math.Floor(minion.MaxHealth / healthDraw);
+                //    barDistance = healthDraw / (minion.MaxHealth / 124.0);
+                //    double drawDistance = 0;
+                //    while (barsDrawn != barsToDraw && barsToDraw != 0 && barsToDraw < 200)
+                //    {
+                //        drawDistance = drawDistance + barDistance;
+                //        if (barsDrawn % 2 == 1)
+                //        {
+                //            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth + 1, barSize,
+                //                System.Drawing.Color.Black);
+                //        }
+                //        else
+                //            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
+                //                System.Drawing.Color.Black);
+                //        barsDrawn = barsDrawn + 1;
+                //    }
+                //    DrawRectangleAL(hpPos.X + 43 + myDamageDistance, hpPos.Y + 19, barWidth, barSize, System.Drawing.Color.GreenYellow);
+                //    if (damageMinion > minion.Health)
+                //    {
+                //        OutLineBar(hpPos.X + 43, hpPos.Y + 20, System.Drawing.Color.GreenYellow);
+                //    }
+                //}
+                //else
+                //{
+                //    double drawDistance = 0;
+                //    while (barsDrawn != barsToDraw && barsToDraw != 0 && barsToDraw < 50)
+                //    {
+                //        drawDistance = drawDistance + barDistance;
+                //        if (barsToDraw > 20)
+                //        {
+                //            if (barsDrawn % 5 == 4)
+                //                if (barsDrawn % 10 == 9)
+                //                    DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth + 1, barSize,
+                //                        System.Drawing.Color.Black);
+                //                else
+                //                    DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
+                //                        System.Drawing.Color.Black);
+                //        }
+                //        else
+                //            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
+                //                System.Drawing.Color.Black);
+                //        barsDrawn = barsDrawn + 1;
 
-                    }
-                    DrawRectangleAL(hpPos.X + 43 + myDamageDistance, hpPos.Y + 19, barWidth, barSize, System.Drawing.Color.GreenYellow);
-                    if (damageMinion > minion.Health && MinionBarsMisc.GetMenuItem("SAwarenessMiscsMinionBarsGlowActive").GetValue<bool>())
-                    {
-                        OutLineBar(hpPos.X + 43, hpPos.Y + 20, System.Drawing.Color.GreenYellow);
-                    }
-                }
+                //    }
+                //    DrawRectangleAL(hpPos.X + 43 + myDamageDistance, hpPos.Y + 19, barWidth, barSize, System.Drawing.Color.GreenYellow);
+                //    if (damageMinion > minion.Health && MinionBarsMisc.GetMenuItem("SAssembliesMiscsMinionBarsGlowActive").GetValue<bool>())
+                //    {
+                //        OutLineBar(hpPos.X + 43, hpPos.Y + 20, System.Drawing.Color.GreenYellow);
+                //    }
+                //}
             }
         }
 

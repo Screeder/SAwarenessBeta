@@ -9,7 +9,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     internal class SmartPingImprove
     {
@@ -35,9 +35,9 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            SmartPingImproveMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SMARTPINGIMPROVE_MAIN"), "SAwarenessMiscsSmartPingImprove"));
+            SmartPingImproveMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SMARTPINGIMPROVE_MAIN"), "SAssembliesMiscsSmartPingImprove"));
             SmartPingImproveMisc.MenuItems.Add(
-                SmartPingImproveMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsSmartPingImproveActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SmartPingImproveMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSmartPingImproveActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SmartPingImproveMisc;
         }
 

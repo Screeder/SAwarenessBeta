@@ -8,7 +8,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Altar
     {
@@ -38,11 +38,11 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            AltarTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_ALTAR_MAIN"), "SAwarenessTimersAltar"));
+            AltarTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_ALTAR_MAIN"), "SAssembliesTimersAltar"));
             AltarTimer.MenuItems.Add(
-                AltarTimer.Menu.AddItem(new MenuItem("SAwarenessTimersAltarSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                AltarTimer.Menu.AddItem(new MenuItem("SAssembliesTimersAltarSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             AltarTimer.MenuItems.Add(
-                AltarTimer.Menu.AddItem(new MenuItem("SAwarenessTimersAltarActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                AltarTimer.Menu.AddItem(new MenuItem("SAssembliesTimersAltarActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return AltarTimer;
         }
 
@@ -120,13 +120,13 @@ namespace SAwareness.Timers
                     {
                         if (altar.NextRespawnTime <= 0 || altar.MapType != GMap.Type)
                             continue;
-                        int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
+                        int time = Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value;
                         if (!altar.Called && altar.NextRespawnTime - (int)Game.ClockTime <= time &&
                             altar.NextRespawnTime - (int)Game.ClockTime >= time - 1)
                         {
                             altar.Called = true;
                             Timer.PingAndCall(altar.Name + " unlocks in " + time + " seconds!", altar.Obj.ServerPosition);
-                            if (AltarTimer.GetMenuItem("SAwarenessTimersAltarSpeech").GetValue<bool>())
+                            if (AltarTimer.GetMenuItem("SAssembliesTimersAltarSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(altar.Name + " unlocks in " + time + " seconds!");
                             }
@@ -179,8 +179,8 @@ namespace SAwareness.Timers
                 NextRespawnTime = 0;
                 MapType = Utility.Map.MapType.TwistedTreeline;
                 Called = false;
-                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
-                Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += AltarObject_ValueChanged;
+                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").ValueChanged += AltarObject_ValueChanged;
                 TextMinimap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
@@ -199,7 +199,7 @@ namespace SAwareness.Timers
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
                 TextMinimap.Add();
-                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
+                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
                 TextMap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();

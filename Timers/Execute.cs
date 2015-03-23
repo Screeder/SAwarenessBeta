@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Execute
     {
@@ -35,9 +35,9 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            ExecuteTimers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_EXECUTE_MAIN"), "SAwarenessTimersExecute"));
+            ExecuteTimers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_EXECUTE_MAIN"), "SAssembliesTimersExecute"));
             ExecuteTimers.MenuItems.Add(
-                ExecuteTimers.Menu.AddItem(new MenuItem("SAwarenessTimersExecuteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                ExecuteTimers.Menu.AddItem(new MenuItem("SAssembliesTimersExecuteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return ExecuteTimers;
         }
 

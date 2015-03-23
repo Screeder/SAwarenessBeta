@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class WallJump
     {
@@ -348,17 +348,17 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            WallJumpMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_WALLJUMP_MAIN"), "SAwarenessMiscsWallJump"));
+            WallJumpMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_WALLJUMP_MAIN"), "SAssembliesMiscsWallJump"));
             WallJumpMisc.MenuItems.Add(
-                WallJumpMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsWallJumpKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
+                WallJumpMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWallJumpKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
             WallJumpMisc.MenuItems.Add(
-                WallJumpMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsWallJumpActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                WallJumpMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWallJumpActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return WallJumpMisc;
         }
 
         void Game_OnGameUpdate(EventArgs args)
         {
-            if (!IsActive() || !WallJumpMisc.GetMenuItem("SAwarenessMiscsWallJumpKey").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+            if (!IsActive() || !WallJumpMisc.GetMenuItem("SAssembliesMiscsWallJumpKey").GetValue<KeyBind>().Active || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
 
             lastGameUpdateTime = Environment.TickCount;

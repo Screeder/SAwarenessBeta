@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Spell
     {
@@ -85,11 +85,11 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            SpellTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SPELL_MAIN"), "SAwarenessTimersSpell"));
+            SpellTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SPELL_MAIN"), "SAssembliesTimersSpell"));
             SpellTimer.MenuItems.Add(
-                SpellTimer.Menu.AddItem(new MenuItem("SAwarenessTimersSpellSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             SpellTimer.MenuItems.Add(
-                SpellTimer.Menu.AddItem(new MenuItem("SAwarenessTimersSpellActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SpellTimer;
         }
 
@@ -183,7 +183,7 @@ namespace SAwareness.Timers
                         {
                             ability.Key.Casted = true;
                             ability.Key.TimeCasted = (int) Game.ClockTime;
-                            if (SpellTimer.GetMenuItem("SAwarenessTimersSpellSpeech").GetValue<bool>())
+                            if (SpellTimer.GetMenuItem("SAssembliesTimersSpellSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(ability.Key.Name + " casted on " + hero.ChampionName);
                             }

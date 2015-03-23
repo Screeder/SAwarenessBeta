@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     internal class AutoLevler
     {
@@ -26,11 +26,11 @@ namespace SAwareness.Miscs
         public AutoLevler()
         {
             //LoadLevelFile();
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged += ChangeBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged += ShowBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged += NewBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").ValueChanged += Active_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").ValueChanged += ChangeBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").ValueChanged += ShowBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged += NewBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged += Active_OnValueChanged;
 
             Game.OnGameUpdate += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
@@ -40,10 +40,10 @@ namespace SAwareness.Miscs
 
         ~AutoLevler()
         {
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
 
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
@@ -59,23 +59,23 @@ namespace SAwareness.Miscs
         {
             LoadLevelFile();
             Menu.MenuItemSettings tempSettings;
-            AutoLevlerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOLEVLER_MAIN"), "SAwarenessMiscsAutoLevler"));
-            tempSettings = AutoLevlerMisc.AddMenuItemSettings(Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MAIN"), "SAwarenessMiscsAutoLevlerPriority");
+            AutoLevlerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOLEVLER_MAIN"), "SAssembliesMiscsAutoLevler"));
+            tempSettings = AutoLevlerMisc.AddMenuItemSettings(Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MAIN"), "SAssembliesMiscsAutoLevlerPriority");
             tempSettings.MenuItems.Add(
                 tempSettings.Menu.AddItem(
-                    new MenuItem("SAwarenessMiscsAutoLevlerPrioritySliderQ", "Q").SetValue(new Slider(0, 3, 0))));
+                    new MenuItem("SAssembliesMiscsAutoLevlerPrioritySliderQ", "Q").SetValue(new Slider(0, 3, 0))));
             tempSettings.MenuItems.Add(
                 tempSettings.Menu.AddItem(
-                    new MenuItem("SAwarenessMiscsAutoLevlerPrioritySliderW", "W").SetValue(new Slider(0, 3, 0))));
+                    new MenuItem("SAssembliesMiscsAutoLevlerPrioritySliderW", "W").SetValue(new Slider(0, 3, 0))));
             tempSettings.MenuItems.Add(
                 tempSettings.Menu.AddItem(
-                    new MenuItem("SAwarenessMiscsAutoLevlerPrioritySliderE", "E").SetValue(new Slider(0, 3, 0))));
+                    new MenuItem("SAssembliesMiscsAutoLevlerPrioritySliderE", "E").SetValue(new Slider(0, 3, 0))));
             tempSettings.MenuItems.Add(
                 tempSettings.Menu.AddItem(
-                    new MenuItem("SAwarenessMiscsAutoLevlerPrioritySliderR", "R").SetValue(new Slider(0, 3, 0))));
+                    new MenuItem("SAssembliesMiscsAutoLevlerPrioritySliderR", "R").SetValue(new Slider(0, 3, 0))));
             tempSettings.MenuItems.Add(
                 tempSettings.Menu.AddItem(
-                    new MenuItem("SAwarenessMiscsAutoLevlerPriorityFirstSpells", Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MODE")).SetValue(new StringList(new[]
+                    new MenuItem("SAssembliesMiscsAutoLevlerPriorityFirstSpells", Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MODE")).SetValue(new StringList(new[]
                     {
                         "Q W E", 
                         "Q E W", 
@@ -85,35 +85,35 @@ namespace SAwareness.Miscs
                         "E W Q"
                     }))));
             tempSettings.MenuItems.Add(
-                tempSettings.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerPriorityFirstSpellsActive", Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MODE_ACTIVE")).SetValue(false)));
+                tempSettings.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerPriorityFirstSpellsActive", Language.GetString("MISCS_AUTOLEVLER_PRIORITY_MODE_ACTIVE")).SetValue(false)));
             tempSettings.MenuItems.Add(
-                tempSettings.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerPriorityActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
-            tempSettings = AutoLevlerMisc.AddMenuItemSettings(Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_MAIN"), "SAwarenessMiscsAutoLevlerSequence");
+                tempSettings.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerPriorityActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
+            tempSettings = AutoLevlerMisc.AddMenuItemSettings(Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_MAIN"), "SAssembliesMiscsAutoLevlerSequence");
             tempSettings.MenuItems.Add(
-                tempSettings.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_BUILD_CHOICE"))
+                tempSettings.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_BUILD_CHOICE"))
                         .SetValue(GetBuildNames())
                             .DontSave()));
             tempSettings.MenuItems.Add(
-                tempSettings.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_BUILD_LOAD")).SetValue(false)
+                tempSettings.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_BUILD_LOAD")).SetValue(false)
                         .DontSave()));
             tempSettings.MenuItems.Add(
-                tempSettings.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_CREATE_CHOICE")).SetValue(false)
+                tempSettings.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_CREATE_CHOICE")).SetValue(false)
                         .DontSave()));
             tempSettings.MenuItems.Add(
-                tempSettings.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_DELETE_CHOICE")).SetValue(false)
+                tempSettings.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild", Language.GetString("MISCS_AUTOLEVLER_SEQUENCE_DELETE_CHOICE")).SetValue(false)
                         .DontSave()));
             tempSettings.MenuItems.Add(
                 tempSettings.Menu.AddItem(
-                    new MenuItem("SAwarenessMiscsAutoLevlerSequenceActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
+                    new MenuItem("SAssembliesMiscsAutoLevlerSequenceActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
             AutoLevlerMisc.MenuItems.Add(
-                AutoLevlerMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerSMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
+                AutoLevlerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerSMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("MISCS_AUTOLEVLER_MODE_PRIORITY"), 
                     Language.GetString("MISCS_AUTOLEVLER_MODE_SEQUENCE"), 
                     Language.GetString("MISCS_AUTOLEVLER_MODE_R")
                 }))));
             AutoLevlerMisc.MenuItems.Add(
-                AutoLevlerMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsAutoLevlerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                AutoLevlerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return AutoLevlerMisc;
         }
 
@@ -124,11 +124,11 @@ namespace SAwareness.Miscs
 
         void CurrentDomain_DomainUnload(object sender, EventArgs e)
         {
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged -= DeleteBuild_OnValueChanged;
 
             Game.OnGameUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
@@ -139,8 +139,8 @@ namespace SAwareness.Miscs
         private void Game_OnWndProc(WndEventArgs args)
         {
             if (!IsActive() &&
-                            (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>()))
+                            (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>()))
                 return;
             HandleInput((WindowsMessages)args.Msg, Utils.GetCursorPos(), args.WParam);
         }
@@ -203,25 +203,25 @@ namespace SAwareness.Miscs
 
         private void ResetMenuEntries()
         {
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild")
                 .SetValue(false);
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild")
                 .SetValue(false);
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild")
                 .SetValue(false);
         }
 
         private void ChangeBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
-            if(AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
-                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
-                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+            if(AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild")
                 .GetValue<bool>())
             {
                 onValueChangeEventArgs.Process = false;
@@ -249,10 +249,10 @@ namespace SAwareness.Miscs
 
         private void ShowBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
-            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
-                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+            if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild")
                 .GetValue<bool>())
             {
                 onValueChangeEventArgs.Process = false;
@@ -262,8 +262,8 @@ namespace SAwareness.Miscs
             if (onValueChangeEventArgs.GetNewValue<bool>())
             {
                 StringList list =
-                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice")
+                    AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice")
                         .GetValue<StringList>();
                 SequenceLevler curLevler = null;
                 foreach (SequenceLevler levler in sLevler.ToArray())
@@ -291,10 +291,10 @@ namespace SAwareness.Miscs
 
         private void NewBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
-            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
-                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceDeleteBuild")
+            if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild")
                 .GetValue<bool>())
             {
                 onValueChangeEventArgs.Process = false;
@@ -311,10 +311,10 @@ namespace SAwareness.Miscs
 
         private void DeleteBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
-            if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild")
-                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild")
+            if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild")
+                .GetValue<bool>() || AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild")
                 .GetValue<bool>())
             {
                 onValueChangeEventArgs.Process = false;
@@ -344,20 +344,20 @@ namespace SAwareness.Miscs
 
             lastGameUpdateTime = Environment.TickCount;
 
-            var stringList = AutoLevlerMisc.GetMenuItem("SAwarenessMiscsAutoLevlerSMode").GetValue<StringList>();
+            var stringList = AutoLevlerMisc.GetMenuItem("SAssembliesMiscsAutoLevlerSMode").GetValue<StringList>();
             if (stringList.SelectedIndex == 0)
             {
                 _useMode = 0;
                 _priority = new[]
                 {
-                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerPrioritySliderQ").GetValue<Slider>().Value,
-                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerPrioritySliderW").GetValue<Slider>().Value,
-                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerPrioritySliderE").GetValue<Slider>().Value,
-                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerPrioritySliderR").GetValue<Slider>().Value
+                    AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerPrioritySliderQ").GetValue<Slider>().Value,
+                    AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerPrioritySliderW").GetValue<Slider>().Value,
+                    AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerPrioritySliderE").GetValue<Slider>().Value,
+                    AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerPrioritySliderR").GetValue<Slider>().Value
                 };
             }
             else if (stringList.SelectedIndex == 1)
@@ -374,11 +374,11 @@ namespace SAwareness.Miscs
             if (player.SpellTrainingPoints > 0)
             {
                 //TODO: Add level logic// try levelup spell, if fails level another up etc.
-                if (_useMode == 0 && AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                    .GetMenuItem("SAwarenessMiscsAutoLevlerPriorityActive").GetValue<bool>())
+                if (_useMode == 0 && AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                    .GetMenuItem("SAssembliesMiscsAutoLevlerPriorityActive").GetValue<bool>())
                 {
-                    if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerPriorityFirstSpellsActive").GetValue<bool>())
+                    if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerPriorityFirstSpellsActive").GetValue<bool>())
                     {
                         player.Spellbook.LevelSpell(GetCurrentSpell());
                         return;
@@ -394,8 +394,8 @@ namespace SAwareness.Miscs
                 }
                 else if (_useMode == 1)
                 {
-                    if (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence")
-                        .GetMenuItem("SAwarenessMiscsAutoLevlerSequenceActive").GetValue<bool>())
+                    if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                        .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").GetValue<bool>())
                     {
                         SpellSlot spellSlot = SequenceLevlerGUI.CurrentLevler.Sequence[player.Level - 1];
                         player.Spellbook.LevelSpell(spellSlot);
@@ -403,7 +403,7 @@ namespace SAwareness.Miscs
                 }
                 else
                 {
-                    if (AutoLevlerMisc.GetMenuItem("SAwarenessMiscsAutoLevlerSMode").GetValue<StringList>().SelectedIndex == 2)
+                    if (AutoLevlerMisc.GetMenuItem("SAssembliesMiscsAutoLevlerSMode").GetValue<StringList>().SelectedIndex == 2)
                     {
                         if (ObjectManager.Player.Level == 6 ||
                             ObjectManager.Player.Level == 11 ||
@@ -426,7 +426,7 @@ namespace SAwareness.Miscs
 
         private static void SaveSequence(bool newEntry)
         {
-            StringList list = AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").GetValue<StringList>();
+            StringList list = AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").GetValue<StringList>();
             //SpellSlot[] dummy = new SpellSlot[18];
             //String name = ObjectManager.Player.ChampionName;
             //foreach (SequenceLevler levler in sLevler)
@@ -472,7 +472,7 @@ namespace SAwareness.Miscs
                     }
                 }
             }
-            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").SetValue<StringList>(list);
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").SetValue<StringList>(list);
         }
 
         private static void WriteLevelFile()
@@ -480,13 +480,13 @@ namespace SAwareness.Miscs
             string loc = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Config",
-                "SAwareness", "autolevel.conf"
+                "SAssemblies", "autolevel.conf"
             });
             try
             {
                 String output = JsonConvert.SerializeObject(sLevler);
                 Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp",
-                        "Config", "SAwareness"));
+                        "Config", "SAssemblies"));
                 if (output.Contains("[]"))
                 {
                     throw new Exception("[], your latest changes are not getting saved!");
@@ -507,7 +507,7 @@ namespace SAwareness.Miscs
             string loc = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Config",
-                "SAwareness", "autolevel.conf"
+                "SAssemblies", "autolevel.conf"
             });
             try
             {
@@ -554,7 +554,7 @@ namespace SAwareness.Miscs
 
         private void DeleteSequence()
         {
-            StringList list = AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").GetValue<StringList>();
+            StringList list = AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").GetValue<StringList>();
             foreach (SequenceLevler levler in sLevler.ToArray())
             {
                 if (levler.Name.Contains(list.SList[list.SelectedIndex]))
@@ -571,7 +571,7 @@ namespace SAwareness.Miscs
                         list.SelectedIndex -= 1;
                     }
                     list.SList = temp.ToArray();
-                    AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceLoadChoice").SetValue<StringList>(list);
+                    AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceLoadChoice").SetValue<StringList>(list);
                     break;
                 }
             }
@@ -667,8 +667,8 @@ namespace SAwareness.Miscs
         private SpellSlot GetCurrentSpell()
         {
             SpellSlot[] spellSlot = null;
-            switch (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerPriority")
-                .GetMenuItem("SAwarenessMiscsAutoLevlerPriorityFirstSpells").GetValue<StringList>().SelectedIndex)
+            switch (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerPriority")
+                .GetMenuItem("SAssembliesMiscsAutoLevlerPriorityFirstSpells").GetValue<StringList>().SelectedIndex)
             {
                 case 0:
                     spellSlot = new[] {SpellSlot.Q, SpellSlot.W, SpellSlot.E};
@@ -816,8 +816,8 @@ namespace SAwareness.Miscs
                 MainFrame.Sprite.VisibleCondition = delegate
                 {
                     return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
                 MainFrame.Sprite.Add(1);
 
@@ -830,8 +830,8 @@ namespace SAwareness.Miscs
                 Save.Sprite.VisibleCondition = delegate
                 {
                     return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
                 Save.Sprite.Add(1);
 
@@ -844,8 +844,8 @@ namespace SAwareness.Miscs
                 Cancel.Sprite.VisibleCondition = delegate
                 {
                     return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
                 Cancel.Sprite.Add(1);
 
@@ -864,8 +864,8 @@ namespace SAwareness.Miscs
                     Text[i].VisibleCondition = sender =>
                     {
                         return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
                     Text[i].OutLined = true;
                     Text[i].Centered = false;
@@ -884,8 +884,8 @@ namespace SAwareness.Miscs
                     Skill[i].Sprite.VisibleCondition = delegate
                     {
                         return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
-                            (AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                            AutoLevlerMisc.GetMenuSettings("SAwarenessMiscsAutoLevlerSequence").GetMenuItem("SAwarenessMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                            (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
                     Skill[i].Sprite.Add(3);
                 }

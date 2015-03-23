@@ -8,7 +8,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 
-namespace SAwareness.Trackers
+namespace SAssemblies.Trackers
 {
     class Destination
     {
@@ -125,9 +125,9 @@ namespace SAwareness.Trackers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            DestinationTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_DESTINATION_MAIN"), "SAwarenessTrackersDestination"));
+            DestinationTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_DESTINATION_MAIN"), "SAssembliesTrackersDestination"));
             DestinationTracker.MenuItems.Add(
-                DestinationTracker.Menu.AddItem(new MenuItem("SAwarenessTrackersDestinationActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                DestinationTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersDestinationActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return DestinationTracker;
         }
 

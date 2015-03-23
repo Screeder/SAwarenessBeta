@@ -7,7 +7,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class EasyRangedJungle
     {
@@ -42,9 +42,9 @@ namespace SAwareness.Miscs
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            EasyRangedJungleMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_EASYRANGEDJUNGLE_MAIN"), "SAwarenessMiscsEasyRangedJungle"));
+            EasyRangedJungleMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_EASYRANGEDJUNGLE_MAIN"), "SAssembliesMiscsEasyRangedJungle"));
             EasyRangedJungleMisc.MenuItems.Add(
-                EasyRangedJungleMisc.Menu.AddItem(new MenuItem("SAwarenessMiscsEasyRangedJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                EasyRangedJungleMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsEasyRangedJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return EasyRangedJungleMisc;
         }
 

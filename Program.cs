@@ -14,12 +14,13 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using LeagueSharp.GameFiles.AirClient;
 using LeagueSharp.GameFiles.GameClient;
-using SAwareness.Miscs;
+using SAssemblies;
 using SAwareness.Properties;
 using SharpDX;
+using Menu = SAssemblies.Menu;
 using MenuItem = LeagueSharp.Common.MenuItem;
 
-namespace SAwareness
+namespace SAssemblies
 {
     class MainMenu : Menu
     {
@@ -42,6 +43,7 @@ namespace SAwareness
         public static MenuItemSettings SummonerTimer;
         public static MenuItemSettings ImmuneTimer;
         public static MenuItemSettings AltarTimer;
+        public static MenuItemSettings SpellTimer;
 
         public static MenuItemSettings Detector;
         public static MenuItemSettings VisionDetector;
@@ -94,33 +96,33 @@ namespace SAwareness
         public static MenuItemSettings AntiNexusTurret;
         public static MenuItemSettings AntiLatern;
 
-        public static MenuItemSettings AutoSmite;
-        public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
-        public static MenuItemSettings AutoShield = new MenuItemSettings(typeof(AutoShield));
-        public static MenuItemSettings AutoShieldBlockableSpells = new MenuItemSettings();
-        public static MenuItemSettings Activator = new MenuItemSettings(typeof(Activator));
-        public static MenuItemSettings ActivatorAutoSummonerSpell = new MenuItemSettings();
-        public static MenuItemSettings ActivatorAutoSummonerSpellIgnite = new MenuItemSettings();
-        public static MenuItemSettings ActivatorAutoSummonerSpellHeal = new MenuItemSettings();
-        public static MenuItemSettings ActivatorAutoSummonerSpellBarrier = new MenuItemSettings();
-        public static MenuItemSettings ActivatorAutoSummonerSpellExhaust = new MenuItemSettings();
-        public static MenuItemSettings ActivatorAutoSummonerSpellCleanse = new MenuItemSettings();
-        public static MenuItemSettings ActivatorOffensive = new MenuItemSettings();
-        public static MenuItemSettings ActivatorOffensiveAd = new MenuItemSettings();
-        public static MenuItemSettings ActivatorOffensiveAp = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensive = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveCleanseConfig = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveSelfShield = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveWoogletZhonya = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveDebuffSlow = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveCleanseSelf = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveShieldBoost = new MenuItemSettings();
-        public static MenuItemSettings ActivatorDefensiveMikaelCleanse = new MenuItemSettings();
-        public static MenuItemSettings ActivatorMisc = new MenuItemSettings();
-        public static MenuItemSettings ActivatorAutoHeal = new MenuItemSettings(typeof(AutoHeal));
-        public static MenuItemSettings ActivatorAutoUlt = new MenuItemSettings(typeof(AutoUlt));
-        public static MenuItemSettings ActivatorAutoQss = new MenuItemSettings(typeof(AutoQSS));
-        public static MenuItemSettings ActivatorAutoQssConfig = new MenuItemSettings(typeof(AutoQSS));
+        //public static MenuItemSettings AutoSmite;
+        //public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
+        //public static MenuItemSettings AutoShield = new MenuItemSettings(typeof(AutoShield));
+        //public static MenuItemSettings AutoShieldBlockableSpells = new MenuItemSettings();
+        //public static MenuItemSettings Activator = new MenuItemSettings(typeof(Activator));
+        //public static MenuItemSettings ActivatorAutoSummonerSpell = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorAutoSummonerSpellIgnite = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorAutoSummonerSpellHeal = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorAutoSummonerSpellBarrier = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorAutoSummonerSpellExhaust = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorAutoSummonerSpellCleanse = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorOffensive = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorOffensiveAd = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorOffensiveAp = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensive = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveCleanseConfig = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveSelfShield = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveWoogletZhonya = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveDebuffSlow = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveCleanseSelf = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveShieldBoost = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorDefensiveMikaelCleanse = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorMisc = new MenuItemSettings();
+        //public static MenuItemSettings ActivatorAutoHeal = new MenuItemSettings(typeof(AutoHeal));
+        //public static MenuItemSettings ActivatorAutoUlt = new MenuItemSettings(typeof(AutoUlt));
+        //public static MenuItemSettings ActivatorAutoQss = new MenuItemSettings(typeof(AutoQSS));
+        //public static MenuItemSettings ActivatorAutoQssConfig = new MenuItemSettings(typeof(AutoQSS));
 
     }
 
@@ -128,9 +130,10 @@ namespace SAwareness
     {
         private static float lastDebugTime = 0;
 
+        [STAThread]
         public static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AssemblyResolver.Init();
             AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
             AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
             //Thread.Sleep(1000);
@@ -1260,6 +1263,7 @@ namespace SAwareness
                 MainMenu.JungleTimer = Timers.Jungle.SetupMenu(MainMenu.Timers.Menu);
                 MainMenu.RelictTimer = Timers.Relic.SetupMenu(MainMenu.Timers.Menu);
                 MainMenu.SummonerTimer = Timers.Summoner.SetupMenu(MainMenu.Timers.Menu);
+                MainMenu.SpellTimer = Timers.Spell.SetupMenu(MainMenu.Timers.Menu);
 
                 MainMenu.Detector = Detectors.Detector.SetupMenu(menu);
                 MainMenu.VisionDetector = Detectors.Vision.SetupMenu(MainMenu.Detector.Menu);
@@ -1430,53 +1434,6 @@ namespace SAwareness
             }
 
             return type.GetProperties(BindingFlags.Static | BindingFlags.Public);
-        }
-
-        private static Assembly evadeAssembly;
-        private static Assembly jsonAssembly;
-        private static Assembly inibinAssembly;
-
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string name = args.Name.Split(',')[0];
-            if (name.ToLower().Contains("evade"))
-            {
-                if (evadeAssembly == null)
-                {
-                    evadeAssembly = Load("SAwareness.Resources.DLL.Evade.dll");
-                }
-                return evadeAssembly;
-            }
-            else if (name.ToLower().Contains("newtonsoft"))
-            {
-                if (jsonAssembly == null)
-                {
-                    jsonAssembly = Load("SAwareness.Resources.DLL.Newtonsoft.Json.dll");
-                }
-                return jsonAssembly;
-            }
-            else if (name.ToLower().Contains("gamefiles"))
-            {
-                if (inibinAssembly == null)
-                {
-                    inibinAssembly = Load("SAwareness.Resources.DLL.LeagueSharp.GameFiles.dll");
-                }
-                return inibinAssembly;
-            }
-            return null;
-        }
-
-        public static Assembly Load(String assemblyName)
-        {
-            byte[] ba = null;
-            string resource = assemblyName;
-            Assembly curAsm = Assembly.GetExecutingAssembly();
-            using (Stream stm = curAsm.GetManifestResourceStream(resource))
-            {
-                ba = new byte[(int) stm.Length];
-                stm.Read(ba, 0, (int) stm.Length);
-                return Assembly.Load(ba);
-            }
         }
 
         private static void CreateDebugInfos()

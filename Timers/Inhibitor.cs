@@ -8,7 +8,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-namespace SAwareness.Timers
+namespace SAssemblies.Timers
 {
     class Inhibitor
     {
@@ -37,11 +37,11 @@ namespace SAwareness.Timers
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            InhibitorTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_INHIBITOR_MAIN"), "SAwarenessTimersInhibitor"));
+            InhibitorTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_INHIBITOR_MAIN"), "SAssembliesTimersInhibitor"));
             InhibitorTimer.MenuItems.Add(
-                InhibitorTimer.Menu.AddItem(new MenuItem("SAwarenessTimersInhibitorSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+                InhibitorTimer.Menu.AddItem(new MenuItem("SAssembliesTimersInhibitorSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             InhibitorTimer.MenuItems.Add(
-                InhibitorTimer.Menu.AddItem(new MenuItem("SAwarenessTimersInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                InhibitorTimer.Menu.AddItem(new MenuItem("SAssembliesTimersInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return InhibitorTimer;
         }
 
@@ -84,13 +84,13 @@ namespace SAwareness.Timers
                     {
                         if (inhibitor.NextRespawnTime <= 0)
                             continue;
-                        int time = Timer.Timers.GetMenuItem("SAwarenessTimersRemindTime").GetValue<Slider>().Value;
+                        int time = Timer.Timers.GetMenuItem("SAssembliesTimersRemindTime").GetValue<Slider>().Value;
                         if (!inhibitor.Called && inhibitor.NextRespawnTime - (int)Game.ClockTime <= time &&
                             inhibitor.NextRespawnTime - (int)Game.ClockTime >= time - 1)
                         {
                             inhibitor.Called = true;
                             Timer.PingAndCall("Inhibitor respawns in " + time + " seconds!", inhibitor.Obj.Position);
-                            if (InhibitorTimer.GetMenuItem("SAwarenessTimersInhibitorSpeech").GetValue<bool>())
+                            if (InhibitorTimer.GetMenuItem("SAssembliesTimersInhibitorSpeech").GetValue<bool>())
                             {
                                 Speech.Speak("Inhibitor respawns in " + time + " seconds!");
                             }
@@ -134,8 +134,8 @@ namespace SAwareness.Timers
                 NextRespawnTime = 0;
                 Locked = false;
                 Called = false;
-                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
-                Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").ValueChanged += InhibitorObject_ValueChanged;
+                TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
+                Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").ValueChanged += InhibitorObject_ValueChanged;
                 TextMinimap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
@@ -154,7 +154,7 @@ namespace SAwareness.Timers
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
                 TextMinimap.Add();
-                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAwarenessTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
+                TextMap = new Render.Text(0, 0, "", (int)(Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value * 3.5), new ColorBGRA(Color4.White));
                 TextMap.TextUpdate = delegate
                 {
                     return (NextRespawnTime - (int)Game.ClockTime).ToString();
