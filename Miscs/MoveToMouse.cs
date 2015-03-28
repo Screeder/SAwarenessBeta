@@ -12,12 +12,12 @@ namespace SAssemblies.Miscs
 
         public MoveToMouse()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~MoveToMouse()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
         }
 
         public bool IsActive()

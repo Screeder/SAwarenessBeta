@@ -1171,12 +1171,12 @@ namespace SAssemblies.Miscs
 
         public SkinChanger()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~SkinChanger()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Skins = null;
         }
 

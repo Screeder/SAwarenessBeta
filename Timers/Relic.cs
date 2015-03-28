@@ -21,14 +21,14 @@ namespace SAssemblies.Timers
         public Relic()
         {
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             InitRelicObjects();
         }
 
         ~Relic()
         {
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Relics = null;
         }
 

@@ -66,12 +66,12 @@ namespace SAssemblies.Miscs
                     break;
             }
             if (available)
-                Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+                Game.OnProcessPacket += Game_OnGameProcessPacket;
         }
 
         ~AntiVisualScreenStealth()
         {
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
         }
 
         public bool IsActive()

@@ -37,13 +37,13 @@ namespace SAssemblies.Trackers
 
             new System.Threading.Thread(LoadSprites).Start();
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~Uim()
         {
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             _enemies = null;
         }
 
@@ -310,12 +310,12 @@ namespace SAssemblies.Trackers
             public SsTimer(Obj_AI_Hero hero)
             {
                 Hero = hero;
-                Game.OnGameUpdate += Game_OnGameUpdate;
+                Game.OnUpdate += Game_OnGameUpdate;
             }
 
             ~SsTimer()
             {
-                Game.OnGameUpdate -= Game_OnGameUpdate;
+                Game.OnUpdate -= Game_OnGameUpdate;
                 Hero = null;
             }
 

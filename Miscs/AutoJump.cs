@@ -45,13 +45,13 @@ namespace SAssemblies.Miscs
                 default:
                     return;
             }
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
         }
 
         ~AutoJump()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             _jumpSpell = null;
             _lastCast = 0;

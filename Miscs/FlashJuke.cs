@@ -84,13 +84,13 @@ namespace SAssemblies.Miscs
             spotsEnd.Add(new Vector3(8305, 10120, 53));
 
 
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnEndScene += Drawing_OnEndScene;
         }
 
          ~FlashJuke()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Drawing.OnEndScene -= Drawing_OnEndScene;
         }
 

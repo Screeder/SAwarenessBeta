@@ -20,13 +20,13 @@ namespace SAssemblies.Timers
 
         public Inhibitor()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             InitInhibitorObjects();
         }
 
         ~Inhibitor()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             _inhibitors = null;
         }
 

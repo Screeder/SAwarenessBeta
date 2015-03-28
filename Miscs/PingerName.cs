@@ -19,13 +19,13 @@ namespace SAssemblies.Miscs
         public PingerName()
         {
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+            Game.OnProcessPacket += Game_OnGameProcessPacket;
         }
 
         ~PingerName()
         {
             Drawing.OnDraw -= Drawing_OnDraw;
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
             pingInfo = null;
         }
 

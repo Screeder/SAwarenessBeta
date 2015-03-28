@@ -28,7 +28,7 @@ namespace SAssemblies.Timers
         public Jungle()
         {
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket;
             InitJungleMobs();
         }
@@ -36,7 +36,7 @@ namespace SAssemblies.Timers
         ~Jungle()
         {
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             //Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
 
             JungleMobs = null;

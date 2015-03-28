@@ -18,12 +18,12 @@ namespace SAssemblies.Detectors
 
         public DisReconnect()
         {
-            Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+            Game.OnProcessPacket += Game_OnGameProcessPacket;
         }
 
         ~DisReconnect()
         {
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
             _disconnects = null;
             _reconnects = null;
         }

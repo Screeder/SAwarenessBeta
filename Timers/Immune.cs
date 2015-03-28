@@ -68,13 +68,13 @@ namespace SAssemblies.Timers
             }
 
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~Immune()
         {
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Abilities = null;
         }
 

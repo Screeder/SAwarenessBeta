@@ -21,13 +21,13 @@ namespace SAssemblies.Timers
 
         public Altar()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             InitAltarObjects();
         }
 
         ~Altar()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Altars = null;
         }
 

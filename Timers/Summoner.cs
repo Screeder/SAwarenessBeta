@@ -19,13 +19,13 @@ namespace SAssemblies.Timers
 
         public Summoner()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             InitSummonerObjects();
         }
 
         ~Summoner()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Summoners = null;
         }
 

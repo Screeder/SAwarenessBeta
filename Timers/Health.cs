@@ -20,13 +20,13 @@ namespace SAssemblies.Timers
 
         public Health()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             InitHealthObjects();
         }
 
         ~Health()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Healths = null;
         }
 

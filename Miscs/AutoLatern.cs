@@ -15,12 +15,12 @@ namespace SAssemblies.Miscs
 
         public AutoLatern()
         {
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~AutoLatern()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
         }
 
         public bool IsActive()

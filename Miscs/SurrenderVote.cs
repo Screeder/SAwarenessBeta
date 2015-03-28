@@ -13,12 +13,12 @@ namespace SAssemblies.Miscs
 
         public SurrenderVote()
         {
-            Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+            Game.OnProcessPacket += Game_OnGameProcessPacket;
         }
 
         ~SurrenderVote()
         {
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
         }
 
         public bool IsActive()

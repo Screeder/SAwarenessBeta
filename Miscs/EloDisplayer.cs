@@ -98,9 +98,9 @@ namespace SAssemblies.Miscs
                 t.Start(ally);
             }
             
-            Game.OnGameUpdate += Game_OnGameUpdateAsyncSprites;
-            Game.OnGameUpdate += Game_OnGameUpdateAsyncTexts;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdateAsyncSprites;
+            Game.OnUpdate += Game_OnGameUpdateAsyncTexts;
+            Game.OnUpdate += Game_OnGameUpdate;
             new Thread(LoadSpritesAsync).Start();
             new Thread(LoadTextsAsync).Start();
             LoadObjectsSync();

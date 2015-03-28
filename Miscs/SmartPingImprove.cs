@@ -19,12 +19,12 @@ namespace SAssemblies.Miscs
 
         public SmartPingImprove()
         {
-            Game.OnGameProcessPacket += Game_OnGameProcessPacket;
+            Game.OnProcessPacket += Game_OnGameProcessPacket;
         }
 
         ~SmartPingImprove()
         {
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
             pingInfo = null;
         }
 

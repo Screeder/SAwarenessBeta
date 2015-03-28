@@ -123,8 +123,8 @@ namespace SAssemblies.Trackers
             ////}).Start();
             new Thread(LoadSpritesAsync).Start();
             //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            Game.OnGameUpdate += Game_OnGameUpdateAsyncSprites;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdateAsyncSprites;
+            Game.OnUpdate += Game_OnGameUpdate;
             LoadObjectsSync();
             
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket; //TODO:Enable for Gold View currently bugged packet id never received
@@ -134,10 +134,10 @@ namespace SAssemblies.Trackers
         
          ~Ui()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
-            Game.OnGameUpdate -= Game_OnGameUpdateAsyncSprites;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdateAsyncSprites;
             //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            Game.OnGameProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
         }
 

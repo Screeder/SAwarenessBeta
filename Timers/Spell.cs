@@ -68,13 +68,13 @@ namespace SAssemblies.Timers
             Abilities.Add(new Ability("Zyra_R_cast_", 2f, Position.Default, "Zyra R"), new List<AbilityDetails>());
 
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~Spell()
         {
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Abilities = null;
         }
 

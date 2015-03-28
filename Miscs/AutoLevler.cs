@@ -32,7 +32,7 @@ namespace SAssemblies.Miscs
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged += Active_OnValueChanged;
 
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
             AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
@@ -45,7 +45,7 @@ namespace SAssemblies.Miscs
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
 
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
             sLevler = null;
         }
@@ -130,7 +130,7 @@ namespace SAssemblies.Miscs
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged -= DeleteBuild_OnValueChanged;
 
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
             WriteLevelFile();
             sLevler = null;

@@ -117,6 +117,117 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_BLIND" xml:space="preserve">
+    <value>Blind</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_CHARM" xml:space="preserve">
+    <value>Charm</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_COMBAT_DEHANCER" xml:space="preserve">
+    <value>Combat Dehancer</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_DISARM" xml:space="preserve">
+    <value>Disarm</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_FEAR" xml:space="preserve">
+    <value>Fear</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_POISON" xml:space="preserve">
+    <value>Poison</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SILENCE" xml:space="preserve">
+    <value>Silence</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SLOW" xml:space="preserve">
+    <value>Slow</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SNARE" xml:space="preserve">
+    <value>Snare</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_STUN" xml:space="preserve">
+    <value>Stun</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SUPPRESS" xml:space="preserve">
+    <value>Suppress</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_TAUNT" xml:space="preserve">
+    <value>Taunt</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_MAIN" xml:space="preserve">
+    <value>Activators</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_MIN_SPELLS" xml:space="preserve">
+    <value>Min Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOANTISLOW_MAIN" xml:space="preserve">
+    <value>Auto AntiSlow</value>
+  </data>
+  <data name="ACTIVATORS_AUTOHEAL_MAIN" xml:space="preserve">
+    <value>Auto Heal</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_HEALTHPOT_MAIN" xml:space="preserve">
+    <value>Health Pot</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_HEALTHPOT_PERCENT" xml:space="preserve">
+    <value>Health Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_MAIN" xml:space="preserve">
+    <value>Auto Pot</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_MANAPOT_MAIN" xml:space="preserve">
+    <value>Mana Pot</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_MANAPOT_PERCENT" xml:space="preserve">
+    <value>Mana Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_PREVENTOVERUSAGE" xml:space="preserve">
+    <value>Prevent Overusage</value>
+  </data>
+  <data name="ACTIVATORS_AUTOQSS_CONFIG_MAIN" xml:space="preserve">
+    <value>QSS Config</value>
+  </data>
+  <data name="ACTIVATORS_AUTOQSS_MAIN" xml:space="preserve">
+    <value>Auto Qss</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_ALLY" xml:space="preserve">
+    <value>Shield Ally</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_AA" xml:space="preserve">
+    <value>Block AutoAttack</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_BLOCKABLE_SPELL" xml:space="preserve">
+    <value>Blockable Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_CC" xml:space="preserve">
+    <value>Block CC</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_DMG" xml:space="preserve">
+    <value>Block Damage</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_DMG_MIN" xml:space="preserve">
+    <value>Block min Damage</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_SPECIFIC_SPELL" xml:space="preserve">
+    <value>Block specified Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_MAIN" xml:space="preserve">
+    <value>Auto Shield</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSMITE_AUTO_SPELL" xml:space="preserve">
+    <value>Use Auto Spell</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSMITE_MAIN" xml:space="preserve">
+    <value>Auto Smite</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSMITE_SMALL_CAMPS" xml:space="preserve">
+    <value>Smite Small Camps</value>
+  </data>
+  <data name="ACTIVATORS_AUTOULT_ALLY" xml:space="preserve">
+    <value>Ally</value>
+  </data>
+  <data name="ACTIVATORS_AUTOULT_MAIN" xml:space="preserve">
+    <value>Auto Ult</value>
+  </data>
   <data name="DETECTORS_DETECTOR_MAIN" xml:space="preserve">
     <value>Detectors</value>
   </data>
@@ -204,6 +315,18 @@
   <data name="GLOBAL_MODE" xml:space="preserve">
     <value>Mode</value>
   </data>
+  <data name="GLOBAL_MODE_AUTOMATIC" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="GLOBAL_MODE_MANUAL" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="GLOBAL_MODE_PERCENT" xml:space="preserve">
+    <value>Percent</value>
+  </data>
+  <data name="GLOBAl_MODE_VALUE" xml:space="preserve">
+    <value>Value</value>
+  </data>
   <data name="GLOBAL_PING_ASSISTME" xml:space="preserve">
     <value>Assist me</value>
   </data>
@@ -239,12 +362,6 @@
   </data>
   <data name="HEALTHS_INHIBITOR_MAIN" xml:space="preserve">
     <value>Inhibitor</value>
-  </data>
-  <data name="HEALTHS_MODE_PERCENT" xml:space="preserve">
-    <value>Percent</value>
-  </data>
-  <data name="HEALTHS_MODE_VALUE" xml:space="preserve">
-    <value>Value</value>
   </data>
   <data name="HEALTHS_TURRET_MAIN" xml:space="preserve">
     <value>Turret</value>
@@ -576,12 +693,6 @@
   <data name="WARDS_INVISIBLEREVEALER_MAIN" xml:space="preserve">
     <value>Invisible Revealer</value>
   </data>
-  <data name="WARDS_INVISIBLEREVEALER_MODE_AUTOMATIC" xml:space="preserve">
-    <value>Automatic</value>
-  </data>
-  <data name="WARDS_INVISIBLEREVEALER_MODE_MANUAL" xml:space="preserve">
-    <value>Manual</value>
-  </data>
   <data name="WARDS_WARDCORRECTOR_MAIN" xml:space="preserve">
     <value>Ward Corrector</value>
   </data>
@@ -590,5 +701,35 @@
   </data>
   <data name="WARDS_WARD_MAIN" xml:space="preserve">
     <value>Wards</value>
+  </data>
+  <data name="ACTIVATORS_AUTOCLEANSE_CONFIG_MAIN" xml:space="preserve">
+    <value>Cleanse Config</value>
+  </data>
+  <data name="ACTIVATORS_AUTOCLEANSE_MAIN" xml:space="preserve">
+    <value>Auto Cleanse</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_ALLY_PERCENT" xml:space="preserve">
+    <value>Ally Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_AUTOCAST" xml:space="preserve">
+    <value>AutoCast On Key</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_MAIN" xml:space="preserve">
+    <value>Auto Exhaust</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_MIN_ENEMIES" xml:space="preserve">
+    <value>MinEnemies</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_SELF_PERCENT" xml:space="preserve">
+    <value>Self Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_ULTSPELLS" xml:space="preserve">
+    <value>Ult Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOHEALSUMMONER_ALLY" xml:space="preserve">
+    <value>Ally Active</value>
+  </data>
+  <data name="ACTIVATORS_AUTOIGNITE_MAIN" xml:space="preserve">
+    <value>Auto Ignite</value>
   </data>
 </root>

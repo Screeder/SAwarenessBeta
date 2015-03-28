@@ -332,13 +332,13 @@ namespace SAssemblies.Miscs
                     break;
             }
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~WallJump()
         {
             Drawing.OnDraw -= Drawing_OnDraw;
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
         }
 
         public bool IsActive()

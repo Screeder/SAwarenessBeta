@@ -20,12 +20,12 @@ namespace SAssemblies.Timers
             {
                 lastDmg.Add(hero, 0);
             }
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~Execute()
         {
-            Game.OnGameUpdate -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
         }
 
         public bool IsActive()
