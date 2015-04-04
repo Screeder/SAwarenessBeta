@@ -15,86 +15,90 @@ using LeagueSharp.Common;
 using LeagueSharp.GameFiles.AirClient;
 using LeagueSharp.GameFiles.GameClient;
 using SAssemblies;
+using SAssemblies.Trackers;
 using SAwareness.Properties;
 using SharpDX;
 using Menu = SAssemblies.Menu;
 using MenuItem = LeagueSharp.Common.MenuItem;
+using SAssemblies.Timers;
 
 namespace SAssemblies
 {
     class MainMenu : Menu
     {
-        public static MenuItemSettings Tracker;
-        public static MenuItemSettings UiTracker;
-        public static MenuItemSettings UimTracker;
-        public static MenuItemSettings SsCallerTracker;
-        public static MenuItemSettings WaypointTracker;
-        public static MenuItemSettings CloneTracker;
-        public static MenuItemSettings GankTracker;
-        public static MenuItemSettings DestinationTracker;
-        public static MenuItemSettings KillableTracker;
-        public static MenuItemSettings JunglerTracker;
+        private readonly Dictionary<Menu.MenuItemSettings, Func<dynamic>> MenuEntries;
 
-        public static MenuItemSettings Timers;
-        public static MenuItemSettings JungleTimer;
-        public static MenuItemSettings RelictTimer;
-        public static MenuItemSettings HealthTimer;
-        public static MenuItemSettings InhibitorTimer;
-        public static MenuItemSettings SummonerTimer;
-        public static MenuItemSettings ImmuneTimer;
-        public static MenuItemSettings AltarTimer;
-        public static MenuItemSettings SpellTimer;
+        public static MenuItemSettings Tracker = new MenuItemSettings();
+        public static MenuItemSettings UiTracker = new MenuItemSettings();
+        public static MenuItemSettings UimTracker = new MenuItemSettings();
+        public static MenuItemSettings SsCallerTracker = new MenuItemSettings();
+        public static MenuItemSettings WaypointTracker = new MenuItemSettings();
+        public static MenuItemSettings CloneTracker = new MenuItemSettings();
+        public static MenuItemSettings GankTracker = new MenuItemSettings();
+        public static MenuItemSettings DestinationTracker = new MenuItemSettings();
+        public static MenuItemSettings KillableTracker = new MenuItemSettings();
+        public static MenuItemSettings JunglerTracker = new MenuItemSettings();
 
-        public static MenuItemSettings Detector;
-        public static MenuItemSettings VisionDetector;
-        public static MenuItemSettings RecallDetector;
-        public static MenuItemSettings GankDetector;
-        public static MenuItemSettings DisconnectDetector;
-        public static MenuItemSettings FoWSpellEnemyDetector;
+        public static MenuItemSettings Timers = new MenuItemSettings();
+        public static MenuItemSettings JungleTimer = new MenuItemSettings();
+        public static MenuItemSettings RelictTimer = new MenuItemSettings();
+        public static MenuItemSettings HealthTimer = new MenuItemSettings();
+        public static MenuItemSettings InhibitorTimer = new MenuItemSettings();
+        public static MenuItemSettings SummonerTimer = new MenuItemSettings();
+        public static MenuItemSettings ImmuneTimer = new MenuItemSettings();
+        public static MenuItemSettings AltarTimer = new MenuItemSettings();
+        public static MenuItemSettings SpellTimer = new MenuItemSettings();
 
-        public static MenuItemSettings Health;
-        public static MenuItemSettings TurretHealth;
-        public static MenuItemSettings InhibitorHealth;
+        public static MenuItemSettings Detector = new MenuItemSettings();
+        public static MenuItemSettings VisionDetector = new MenuItemSettings();
+        public static MenuItemSettings RecallDetector = new MenuItemSettings();
+        public static MenuItemSettings GankDetector = new MenuItemSettings();
+        public static MenuItemSettings DisconnectDetector = new MenuItemSettings();
+        public static MenuItemSettings FoWSpellEnemyDetector = new MenuItemSettings();
 
-        public static MenuItemSettings Range;
-        public static MenuItemSettings TurretRange;
-        public static MenuItemSettings ShopRange;
-        public static MenuItemSettings VisionRange;
-        public static MenuItemSettings ExperienceRange;
-        public static MenuItemSettings AttackRange;
-        public static MenuItemSettings SpellQRange;
-        public static MenuItemSettings SpellWRange;
-        public static MenuItemSettings SpellERange;
-        public static MenuItemSettings SpellRRange;
+        public static MenuItemSettings Health = new MenuItemSettings();
+        public static MenuItemSettings TurretHealth = new MenuItemSettings();
+        public static MenuItemSettings InhibitorHealth = new MenuItemSettings();
 
-        public static MenuItemSettings Wards;
-        public static MenuItemSettings WardCorrector;
-        public static MenuItemSettings BushRevealer;
-        public static MenuItemSettings InvisibleRevealer;
-        public static MenuItemSettings FowWardPlacement;
+        public static MenuItemSettings Range = new MenuItemSettings();
+        public static MenuItemSettings TurretRange = new MenuItemSettings();
+        public static MenuItemSettings ShopRange = new MenuItemSettings();
+        public static MenuItemSettings VisionRange = new MenuItemSettings();
+        public static MenuItemSettings ExperienceRange = new MenuItemSettings();
+        public static MenuItemSettings AttackRange = new MenuItemSettings();
+        public static MenuItemSettings SpellQRange = new MenuItemSettings();
+        public static MenuItemSettings SpellWRange = new MenuItemSettings();
+        public static MenuItemSettings SpellERange = new MenuItemSettings();
+        public static MenuItemSettings SpellRRange = new MenuItemSettings();
 
-        public static MenuItemSettings Misc;
-        public static MenuItemSettings AutoLevler;
-        public static MenuItemSettings SkinChanger;
-        public static MenuItemSettings SafeMovement;
-        public static MenuItemSettings MoveToMouse;
-        public static MenuItemSettings SurrenderVote;
-        public static MenuItemSettings AutoLatern;
-        public static MenuItemSettings AutoJump;
-        public static MenuItemSettings TurnAround;
-        public static MenuItemSettings MinionBars;
-        public static MenuItemSettings MinionLocation;
-        public static MenuItemSettings FlashJuke;
-        public static MenuItemSettings EasyRangedJungle;
-        public static MenuItemSettings RealTime;
-        public static MenuItemSettings ShowPing;
-        public static MenuItemSettings PingerName;
-        public static MenuItemSettings AntiVisualScreenStealth;
-        public static MenuItemSettings EloDisplayer;
-        public static MenuItemSettings SmartPingImprove;
-        public static MenuItemSettings WallJump;
-        public static MenuItemSettings AntiNexusTurret;
-        public static MenuItemSettings AntiLatern;
+        public static MenuItemSettings Wards = new MenuItemSettings();
+        public static MenuItemSettings WardCorrector = new MenuItemSettings();
+        public static MenuItemSettings BushRevealer = new MenuItemSettings();
+        public static MenuItemSettings InvisibleRevealer = new MenuItemSettings();
+        public static MenuItemSettings FowWardPlacement = new MenuItemSettings();
+
+        public static MenuItemSettings Misc = new MenuItemSettings();
+        public static MenuItemSettings AutoLevler = new MenuItemSettings();
+        public static MenuItemSettings SkinChanger = new MenuItemSettings();
+        public static MenuItemSettings SafeMovement = new MenuItemSettings();
+        public static MenuItemSettings MoveToMouse = new MenuItemSettings();
+        public static MenuItemSettings SurrenderVote = new MenuItemSettings();
+        public static MenuItemSettings AutoLatern = new MenuItemSettings();
+        public static MenuItemSettings AutoJump = new MenuItemSettings();
+        public static MenuItemSettings TurnAround = new MenuItemSettings();
+        public static MenuItemSettings MinionBars = new MenuItemSettings();
+        public static MenuItemSettings MinionLocation = new MenuItemSettings();
+        public static MenuItemSettings FlashJuke = new MenuItemSettings();
+        public static MenuItemSettings EasyRangedJungle = new MenuItemSettings();
+        public static MenuItemSettings RealTime = new MenuItemSettings();
+        public static MenuItemSettings ShowPing = new MenuItemSettings();
+        public static MenuItemSettings PingerName = new MenuItemSettings();
+        private static MenuItemSettings AntiVisualScreenStealth = new MenuItemSettings();
+        public static MenuItemSettings EloDisplayer = new MenuItemSettings();
+        public static MenuItemSettings SmartPingImprove = new MenuItemSettings();
+        public static MenuItemSettings WallJump = new MenuItemSettings();
+        public static MenuItemSettings AntiNexusTurret = new MenuItemSettings();
+        public static MenuItemSettings AntiLatern = new MenuItemSettings();
 
         //public static MenuItemSettings AutoSmite;
         //public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
@@ -124,13 +128,104 @@ namespace SAssemblies
         //public static MenuItemSettings ActivatorAutoQss = new MenuItemSettings(typeof(AutoQSS));
         //public static MenuItemSettings ActivatorAutoQssConfig = new MenuItemSettings(typeof(AutoQSS));
 
+        public MainMenu()
+        {
+            MenuEntries =
+            new Dictionary<Menu.MenuItemSettings, Func<dynamic>>
+            {
+                { UiTracker, () => new Trackers.Ui() },
+                { UimTracker, () => new Trackers.Uim() },
+                { SsCallerTracker, () => new Trackers.SsCaller() },
+                { WaypointTracker, () => new Trackers.Waypoint() },
+                { CloneTracker, () => new Trackers.Clone() },
+                { GankTracker, () => new Trackers.Gank() },
+                { DestinationTracker, () => new Trackers.Destination() },
+                { KillableTracker, () => new Trackers.Killable() },
+                { JunglerTracker, () => new Trackers.Jungler() },
+
+                { JungleTimer, () => new Timers.Jungle() },
+                { RelictTimer, () => new Timers.Relic() },
+                { HealthTimer, () => new Timers.Health() },
+                { InhibitorTimer, () => new Timers.Inhibitor() },
+                { SummonerTimer, () => new Timers.Summoner() },
+                { ImmuneTimer, () => new Timers.Immune() },
+                { AltarTimer, () => new Timers.Altar() },
+                { SpellTimer, () => new Timers.Spell() },
+                
+                { VisionDetector, () => new Detectors.Vision() },
+                { RecallDetector, () => new Detectors.Recall() },
+                { GankDetector, () => new Detectors.Gank() },
+                { DisconnectDetector, () => new Detectors.DisReconnect() },
+                { FoWSpellEnemyDetector, () => new Detectors.FoWSpellEnemy() },
+                
+                { TurretHealth, () => new Healths.Turret() },
+                { InhibitorHealth, () => new Healths.Inhibitor() },
+
+                { TurretRange, () => new Ranges.Turret() },
+                { ShopRange, () => new Ranges.Shop() },
+                { VisionRange, () => new Ranges.Vision() },
+                { ExperienceRange, () => new Ranges.Experience() },
+                { AttackRange, () => new Ranges.Attack() },
+                { SpellQRange, () => new Ranges.SpellQ() },
+                { SpellWRange, () => new Ranges.SpellW() },
+                { SpellERange, () => new Ranges.SpellE() },
+                { SpellRRange, () => new Ranges.SpellR() },
+
+                { WardCorrector, () => new Wards.WardCorrector() },
+                { BushRevealer, () => new Wards.BushRevealer() },
+                { InvisibleRevealer, () => new Wards.InvisibleRevealer() },
+                { FowWardPlacement, () => new Wards.FowWardPlacement() },
+
+                { AutoLevler, () => new Miscs.AutoLevler() },
+                { SkinChanger, () => new Miscs.SkinChanger() },
+                { SafeMovement, () => new Miscs.SafeMovement() },
+                { MoveToMouse, () => new Miscs.MoveToMouse() },
+                { SurrenderVote, () => new Miscs.SurrenderVote() },
+                { AutoLatern, () => new Miscs.AutoLatern() },
+                { AutoJump, () => new Miscs.AutoJump() },
+                { TurnAround, () => new Miscs.TurnAround() },
+                { MinionBars, () => new Miscs.MinionBars() },
+                { MinionLocation, () => new Miscs.MinionLocation() },
+                { FlashJuke, () => new Miscs.FlashJuke() },
+                { EasyRangedJungle, () => new Miscs.EasyRangedJungle() },
+                { RealTime, () => new Miscs.RealTime() },
+                { ShowPing, () => new Miscs.ShowPing() },
+                { PingerName, () => new Miscs.PingerName() },
+                { AntiVisualScreenStealth, () => new Miscs.AntiVisualScreenStealth() },
+                { EloDisplayer, () => new Miscs.EloDisplayer() },
+                { SmartPingImprove, () => new Miscs.SmartPingImprove() },
+                { WallJump, () => new Miscs.WallJump() },
+                { AntiNexusTurret, () => new Miscs.AntiNexusTurret() },
+                { AntiLatern, () => new Miscs.AntiLatern() },               
+            };
+        }
+
+        public Tuple<Menu.MenuItemSettings, Func<dynamic>> GetDirEntry(Menu.MenuItemSettings menuItem)
+        {
+            return new Tuple<MenuItemSettings, Func<dynamic>>(menuItem, MenuEntries[menuItem]);
+        }
+
+        public Dictionary<Menu.MenuItemSettings, Func<dynamic>> GetDirEntries()
+        {
+            return MenuEntries;
+        }
+
+        public void UpdateDirEntry(ref Menu.MenuItemSettings oldMenuItem, Menu.MenuItemSettings newMenuItem)
+        {
+            Func<dynamic> save = MenuEntries[oldMenuItem];
+            MenuEntries.Remove(oldMenuItem);
+            MenuEntries.Add(newMenuItem, save);
+            oldMenuItem = newMenuItem;
+        }
+
     }
 
     class Program
     {
         private static float lastDebugTime = 0;
+        private MainMenu mainMenu;
+        private static readonly Program instance = new Program();
 
-        [STAThread]
         public static void Main(string[] args)
         {
             AssemblyResolver.Init();
@@ -141,17 +236,28 @@ namespace SAssemblies
             //_rafList = new RAFMasterFileList(@"D:\Spiele\League of Legends\RADS\projects\lol_game_client\filearchives");
             //_rafList.SearchFileEntries("aatrox_e.dds")[0].GetContent();
             //Render.Sprite s = new Render.Sprite(_rafList.SearchFileEntries("aatrox_e.dds")[0].GetContent(), new Vector2(0, 0));
+            Instance().Load();
+        }
+
+        public void Load()
+        {
+            mainMenu = new MainMenu();
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
         }
 
-        private static void CreateMenu()
+        public static Program Instance()
+        {
+            return instance;
+        }
+
+        private void CreateMenu()
         {
             //http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
             try
             {
                 Menu.MenuItemSettings tempSettings;
                 var menu = new LeagueSharp.Common.Menu("SAwareness", "SAwareness", true);
-
+                
                 ////Not crashing
                 //Menu.Timers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu("Timers", "SAwarenessTimers"));
                 //Menu.Timers.MenuItems.Add(
@@ -1242,79 +1348,79 @@ namespace SAssemblies
                 //        new MenuItem("SAwarenessEloDisplayerKey", "Key").SetValue(new KeyBind(9, KeyBindType.Toggle))));
                 //Menu.EloDisplayer.MenuItems.Add(
                 //    Menu.EloDisplayer.Menu.AddItem(new MenuItem("SAwarenessEloDisplayerActive", "Active").SetValue(false)));
-
+                
                 MainMenu.Tracker = Trackers.Tracker.SetupMenu(menu);
-                MainMenu.GankTracker = Trackers.Gank.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.CloneTracker = Trackers.Clone.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.DestinationTracker = Trackers.Destination.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.KillableTracker = Trackers.Killable.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.SsCallerTracker = Trackers.SsCaller.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.UiTracker = Trackers.Ui.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.UimTracker = Trackers.Uim.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.WaypointTracker = Trackers.Waypoint.SetupMenu(MainMenu.Tracker.Menu);
-                MainMenu.JunglerTracker = Trackers.Jungler.SetupMenu(MainMenu.Tracker.Menu);
-                //MainMenu.CrowdControlTracker = Trackers.CrowdControl.SetupMenu(MainMenu.Tracker.Menu);
-
+                mainMenu.UpdateDirEntry(ref MainMenu.GankTracker, Trackers.Gank.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.CloneTracker, Trackers.Clone.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.DestinationTracker, Trackers.Destination.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.KillableTracker, Trackers.Killable.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SsCallerTracker, Trackers.SsCaller.SetupMenu(MainMenu.Tracker.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.UiTracker, Trackers.Ui.SetupMenu(MainMenu.Tracker.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.UimTracker, Trackers.Uim.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.WaypointTracker, Trackers.Waypoint.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.JunglerTracker, Trackers.Jungler.SetupMenu(MainMenu.Tracker.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.CrowdControlTracker, Trackers.CrowdControl.SetupMenu(MainMenu.Tracker.Menu));
+                
                 MainMenu.Timers = Timers.Timer.SetupMenu(menu);
-                MainMenu.AltarTimer = Timers.Altar.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.HealthTimer = Timers.Health.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.ImmuneTimer = Timers.Immune.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.InhibitorTimer = Timers.Inhibitor.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.JungleTimer = Timers.Jungle.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.RelictTimer = Timers.Relic.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.SummonerTimer = Timers.Summoner.SetupMenu(MainMenu.Timers.Menu);
-                MainMenu.SpellTimer = Timers.Spell.SetupMenu(MainMenu.Timers.Menu);
+                mainMenu.UpdateDirEntry(ref MainMenu.AltarTimer, Timers.Altar.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.HealthTimer, Timers.Health.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.ImmuneTimer, Timers.Immune.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.InhibitorTimer, Timers.Inhibitor.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.JungleTimer, Timers.Jungle.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.RelictTimer, Timers.Relic.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SummonerTimer, Timers.Summoner.SetupMenu(MainMenu.Timers.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SpellTimer, Timers.Spell.SetupMenu(MainMenu.Timers.Menu));
 
                 MainMenu.Detector = Detectors.Detector.SetupMenu(menu);
-                MainMenu.VisionDetector = Detectors.Vision.SetupMenu(MainMenu.Detector.Menu);
-                MainMenu.RecallDetector = Detectors.Recall.SetupMenu(MainMenu.Detector.Menu);
-                MainMenu.GankDetector = Detectors.Gank.SetupMenu(MainMenu.Detector.Menu);
-                //MainMenu.DisconnectDetector = Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu);
-                MainMenu.FoWSpellEnemyDetector = Detectors.FoWSpellEnemy.SetupMenu(MainMenu.Detector.Menu);
+                mainMenu.UpdateDirEntry(ref MainMenu.VisionDetector, Detectors.Vision.SetupMenu(MainMenu.Detector.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.RecallDetector, Detectors.Recall.SetupMenu(MainMenu.Detector.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.GankDetector, Detectors.Gank.SetupMenu(MainMenu.Detector.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.DisconnectDetector, Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.FoWSpellEnemyDetector, Detectors.FoWSpellEnemy.SetupMenu(MainMenu.Detector.Menu));
 
                 MainMenu.Wards = Wards.Ward.SetupMenu(menu);
-                MainMenu.BushRevealer = Wards.BushRevealer.SetupMenu(MainMenu.Wards.Menu);
-                MainMenu.InvisibleRevealer = Wards.InvisibleRevealer.SetupMenu(MainMenu.Wards.Menu);
-                MainMenu.WardCorrector = Wards.WardCorrector.SetupMenu(MainMenu.Wards.Menu);
-                //MainMenu.FowWardPlacement = Wards.FowWardPlacement.SetupMenu(MainMenu.Wards.Menu);
+                mainMenu.UpdateDirEntry(ref MainMenu.BushRevealer, Wards.BushRevealer.SetupMenu(MainMenu.Wards.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.InvisibleRevealer, Wards.InvisibleRevealer.SetupMenu(MainMenu.Wards.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.WardCorrector, Wards.WardCorrector.SetupMenu(MainMenu.Wards.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.FowWardPlacement, Wards.FowWardPlacement.SetupMenu(MainMenu.Wards.Menu));
 
                 MainMenu.Range = Ranges.Range.SetupMenu(menu);
-                MainMenu.SpellQRange = Ranges.SpellQ.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.SpellWRange = Ranges.SpellW.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.SpellERange = Ranges.SpellE.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.SpellRRange = Ranges.SpellR.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.ShopRange = Ranges.Shop.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.VisionRange = Ranges.Vision.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.ExperienceRange = Ranges.Experience.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.AttackRange = Ranges.Attack.SetupMenu(MainMenu.Range.Menu);
-                MainMenu.TurretRange = Ranges.Turret.SetupMenu(MainMenu.Range.Menu);
+                mainMenu.UpdateDirEntry(ref MainMenu.SpellQRange, Ranges.SpellQ.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SpellWRange, Ranges.SpellW.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SpellERange, Ranges.SpellE.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SpellRRange, Ranges.SpellR.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.ShopRange, Ranges.Shop.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.VisionRange, Ranges.Vision.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.ExperienceRange, Ranges.Experience.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AttackRange, Ranges.Attack.SetupMenu(MainMenu.Range.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.TurretRange, Ranges.Turret.SetupMenu(MainMenu.Range.Menu));
 
                 MainMenu.Health = Healths.Health.SetupMenu(menu);
-                MainMenu.InhibitorHealth = Healths.Inhibitor.SetupMenu(MainMenu.Health.Menu);
-                MainMenu.TurretHealth = Healths.Turret.SetupMenu(MainMenu.Health.Menu);
+                mainMenu.UpdateDirEntry(ref MainMenu.InhibitorHealth, Healths.Inhibitor.SetupMenu(MainMenu.Health.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.TurretHealth, Healths.Turret.SetupMenu(MainMenu.Health.Menu));
 
                 MainMenu.Misc = Miscs.Misc.SetupMenu(menu);
-                //MainMenu.AntiVisualScreenStealth = Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.AntiNexusTurret = Miscs.AntiNexusTurret.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.AntiLatern = Miscs.AntiLatern.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.AutoJump = Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.AutoLatern = Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.AutoLevler = Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.EasyRangedJungle = Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.EloDisplayer = Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.FlashJuke = Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.MinionBars = Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.MinionLocation = Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.MoveToMouse = Miscs.MoveToMouse.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.PingerName = Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.RealTime = Miscs.RealTime.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.SafeMovement = Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.ShowPing = Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.SkinChanger = Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.SmartPingImprove = Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.SurrenderVote = Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu);
-                MainMenu.TurnAround = Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu);
-                //MainMenu.WallJump = Miscs.WallJump.SetupMenu(MainMenu.Misc.Menu);
+                //mainMenu.UpdateDirEntry(ref MainMenu.AntiVisualScreenStealth, Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AntiNexusTurret, Miscs.AntiNexusTurret.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AntiLatern, Miscs.AntiLatern.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AutoJump, Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.AutoLatern, Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AutoLevler, Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.EasyRangedJungle, Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.EloDisplayer, Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.FlashJuke, Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.MinionBars, Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.MinionLocation, Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.MoveToMouse, Miscs.MoveToMouse.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.PingerName, Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.RealTime, Miscs.RealTime.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.SafeMovement, Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.ShowPing, Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.SkinChanger, Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.SmartPingImprove, Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.SurrenderVote, Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.TurnAround, Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.WallJump, Miscs.WallJump.SetupMenu(MainMenu.Misc.Menu));
 
                 Menu.GlobalSettings.Menu =
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));
@@ -1324,7 +1430,7 @@ namespace SAssemblies
                 Menu.GlobalSettings.MenuItems.Add(
                     Menu.GlobalSettings.Menu.AddItem(
                         new MenuItem("SAwarenessGlobalSettingsVoiceVolume", "Voice Volume").SetValue(new Slider(100, 0, 100))));
-
+                
                 menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.0.4"));
                 menu.AddToMainMenu();
             }
@@ -1334,7 +1440,7 @@ namespace SAssemblies
             }
         }
 
-        private async static void Game_OnGameLoad(EventArgs args)
+        private async /*static*/ void Game_OnGameLoad(EventArgs args)
         {
             CreateMenu();
             Game.PrintChat("SAwareness loaded!");
@@ -1344,25 +1450,26 @@ namespace SAssemblies
 
         private static bool threadActive = true;
 
-        private static void GameOnOnGameUpdate(/*EventArgs args*/)
+        private /*static*/ void GameOnOnGameUpdate(/*EventArgs args*/)
         {
             try
             {
                 while (threadActive)
                 {
                     Thread.Sleep(100);
-                    Type classType = typeof(MainMenu);
-                    BindingFlags flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
-                    FieldInfo[] fields = classType.GetFields(flags);
-                    foreach (FieldInfo p in fields.ToList())
+
+                    if (mainMenu == null)
+                        continue;
+
+                    foreach (var entry in mainMenu.GetDirEntries())
                     {
+                        var item = entry.Key;
+                        if (item == null)
+                        {
+                            continue;
+                        }
                         try
                         {
-                            var item = (Menu.MenuItemSettings) p.GetValue(null);
-                            if (item == null)
-                            {
-                                continue;
-                            }
                             if (item.GetActive() == false && item.Item != null)
                             {
                                 item.Item = null;
@@ -1372,21 +1479,58 @@ namespace SAssemblies
                             {
                                 try
                                 {
-                                    item.Item = System.Activator.CreateInstance(item.Type);
+                                    item.Item = entry.Value.Invoke();
                                 }
                                 catch (Exception e)
                                 {
                                     Console.WriteLine(e);
-                                    threadActive = false;
+                                    //threadActive = false;
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("SAwareness: " + e + "\n" + p.ToString());
-                            threadActive = false;
+                            //Console.WriteLine("SAwareness: " + e + "\n" + entry.Key.ToString());
+                            //Console.WriteLine("SAwareness: " + entry.Key.Menu.DisplayName);
+                            //threadActive = false;
                         }
                     }
+                    //Type classType = typeof(MainMenu);
+                    //BindingFlags flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
+                    //FieldInfo[] fields = classType.GetFields(flags);
+                    //foreach (FieldInfo p in fields.ToList())
+                    //{
+                    //    try
+                    //    {
+                    //        var item = (Menu.MenuItemSettings) p.GetValue(null);
+                    //        if (item == null)
+                    //        {
+                    //            continue;
+                    //        }
+                    //        if (item.GetActive() == false && item.Item != null)
+                    //        {
+                    //            item.Item = null;
+                    //            //GC.Collect();
+                    //        }
+                    //        else if (item.GetActive() && item.Item == null && !item.ForceDisable && item.Type != null)
+                    //        {
+                    //            try
+                    //            {
+                    //                item.Item = System.Activator.CreateInstance(item.Type);
+                    //            }
+                    //            catch (Exception e)
+                    //            {
+                    //                Console.WriteLine(e);
+                    //                threadActive = false;
+                    //            }
+                    //        }
+                    //    }
+                    //    catch (Exception e)
+                    //    {
+                    //        Console.WriteLine("SAwareness: " + e + "\n" + p.ToString());
+                    //        threadActive = false;
+                    //    }
+                    //}
                 }
             }
             catch (Exception e)
