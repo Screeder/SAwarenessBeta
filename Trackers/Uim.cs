@@ -111,11 +111,11 @@ namespace SAssemblies.Trackers
 
         void LoadSprites()
         {
-            RafLoader.InitLoader();
-            //foreach (var enemy in _enemies)
-            //{
-            //    SpriteHelper.DownloadImageRiot(enemy.Key.ChampionName, SpriteHelper.DownloadType.Champion, "UIM");
-            //}
+            //RafLoader.InitLoader();
+            foreach (var enemy in _enemies)
+            {
+                SpriteHelper.DownloadImageRiot(enemy.Key.ChampionName, SpriteHelper.DownloadType.Champion, "UIM");
+            }
         }
 
         void Game_OnGameUpdate(EventArgs args)
@@ -132,10 +132,10 @@ namespace SAssemblies.Trackers
                 {
                     enemy.Value.LastPosition = enemy.Key.ServerPosition;
                 }
-                if (enemy.Value.SpriteInfo == null)
+                if (enemy.Value.SpriteInfo == null || enemy.Value.SpriteInfo.Sprite == null)
                 {
-                    //SpriteHelper.LoadTexture(enemy.Key.ChampionName, ref enemy.Value.SpriteInfo, "UIM");
-                    SpriteHelper.LoadTexture(enemy.Key.ChampionName, ref enemy.Value.SpriteInfo, null, RafLoader.ImageList.ChampionCircle);
+                    SpriteHelper.LoadTexture(enemy.Key.ChampionName, ref enemy.Value.SpriteInfo, "UIM");
+                    //SpriteHelper.LoadTexture(enemy.Key.ChampionName, ref enemy.Value.SpriteInfo, null, RafLoader.ImageList.ChampionCircle);
                 }
                 if (enemy.Value.SpriteInfo != null && enemy.Value.SpriteInfo.DownloadFinished && !enemy.Value.SpriteInfo.LoadingFinished)
                 {

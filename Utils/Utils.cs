@@ -22,6 +22,7 @@ using LeagueSharp.Common;
 using LeagueSharp.GameFiles.AirClient;
 using LeagueSharp.GameFiles.GameClient;
 using LeagueSharp.GameFiles.Tools;
+using LeagueSharp.Sandbox;
 using SharpDX;
 using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
@@ -445,6 +446,11 @@ namespace SAssemblies
 
         private static bool IsLoaded()
         {
+            if (AirGeneratedContent.Items == null || AirGeneratedContent.Items.Count == 0)
+            {
+                loading = true;
+                AirGeneratedContent.Init();
+            }
             if (AirGeneratedContent.Items != null)
             {
                 loading = false;
@@ -1466,10 +1472,10 @@ namespace SAssemblies
         {
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
+                SandboxConfig.DataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name  + ".png"
             });
-            Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp",
+            Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
                         "Assemblies", "cache", "SAssemblies", subFolder));
             File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
         }
@@ -1482,7 +1488,7 @@ namespace SAssemblies
             name = ConvertNames(name);
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
+                SandboxConfig.DataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name  + ".png"
             });
             try
@@ -1850,6 +1856,7 @@ namespace SAssemblies
 
         static Speech()
         {
+            return;
             for (int i = 0; i < 4; i++)
             {
                 tts.Add(i, new SpeechSynthesizer());
@@ -1890,6 +1897,7 @@ namespace SAssemblies
 
         public static void Speak(String text)
         {
+            return;
             bool speaking = false;
             foreach (var speech in tts)
             {
