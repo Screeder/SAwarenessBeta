@@ -14,6 +14,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using LeagueSharp.GameFiles.AirClient;
 using LeagueSharp.GameFiles.GameClient;
+using LeagueSharp.Sandbox;
 using SAssemblies;
 using SAssemblies.Trackers;
 using SAwareness.Properties;
@@ -1355,8 +1356,8 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.DestinationTracker, Trackers.Destination.SetupMenu(MainMenu.Tracker.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.KillableTracker, Trackers.Killable.SetupMenu(MainMenu.Tracker.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.SsCallerTracker, Trackers.SsCaller.SetupMenu(MainMenu.Tracker.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.UiTracker, Trackers.Ui.SetupMenu(MainMenu.Tracker.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.UimTracker, Trackers.Uim.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.UiTracker, Trackers.Ui.SetupMenu(MainMenu.Tracker.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.UimTracker, Trackers.Uim.SetupMenu(MainMenu.Tracker.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.WaypointTracker, Trackers.Waypoint.SetupMenu(MainMenu.Tracker.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.JunglerTracker, Trackers.Jungler.SetupMenu(MainMenu.Tracker.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.CrowdControlTracker, Trackers.CrowdControl.SetupMenu(MainMenu.Tracker.Menu));
