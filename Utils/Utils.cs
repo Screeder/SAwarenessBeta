@@ -1510,6 +1510,10 @@ namespace SAssemblies
             {
                 return "SummonerSmite";
             }
+            if (name.ToLower().Contains("snowball"))
+            {
+                return "SummonerPoroThrow";
+            }
             switch (name)
             {
                 case "viw":
@@ -1902,7 +1906,7 @@ namespace SAssemblies
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
+                //Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
             }
         }
 
