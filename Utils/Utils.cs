@@ -23,6 +23,8 @@ using LeagueSharp.GameFiles.AirClient;
 using LeagueSharp.GameFiles.GameClient;
 using LeagueSharp.GameFiles.Tools;
 using LeagueSharp.Sandbox;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SharpDX;
 using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
@@ -829,8 +831,8 @@ namespace SAssemblies
         static SpriteHelperNew()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            ResourceManager resourceManager = new ResourceManager("Resources", assembly);
-            ResourceSet resourceSet = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);//Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+            ResourceManager resourceManager = new ResourceManager(assembly.GetName().Name + ".Properties.Resources", assembly);
+            ResourceSet resourceSet = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
             foreach (DictionaryEntry entry in resourceSet)
             {
                 var conv = entry.Value as Bitmap;
@@ -866,6 +868,9 @@ namespace SAssemblies
 
                 case "reksaie":
                     return "RekSaiE";
+
+                case "dravenspinning":
+                    return "DravenSpinning";
 
                 default:
                     return name;
@@ -1026,31 +1031,30 @@ namespace SAssemblies
         {
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
+                SandboxConfig.DataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name  + ".png"
             });
-            Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp",
+            Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
                         "Assemblies", "cache", "SAssemblies", subFolder));
             File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
         }
 
-        public static void LoadTexture(String name, ref SpriteInfoNew spriteInfo, String subFolder)
+        public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String subFolder)
         {
             if (spriteInfo == null)
-                spriteInfo = new SpriteInfoNew();
+                spriteInfo = new SpriteInfo();
             Byte[] bitmap = null;
             name = ConvertNames(name);
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
+                SandboxConfig.DataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name  + ".png"
             });
             try
             {
                 bitmap = File.ReadAllBytes(loc);
-                spriteInfo.Bitmap = (Bitmap)new ImageConverter().ConvertFrom(bitmap);
-                spriteInfo.Sprite = new Render.Sprite(bitmap, new Vector2(0, 0));
-                spriteInfo.DownloadFinished = true;
+                spriteInfo.Bitmap.Add(new SpriteInfo.BitmapInfo(name, (Bitmap)new ImageConverter().ConvertFrom(bitmap), true));
+                //spriteInfo.Sprite = new Render.Sprite(bitmap, new Vector2(0, 0));
             }
             catch (Exception ex)
             {
@@ -1058,10 +1062,61 @@ namespace SAssemblies
             }
         }
 
-        public static void LoadTexture(String name, ref Texture texture, DownloadType type)
+        public static void PrepareSprite(ref SpriteInfo spriteInfo)
         {
-            //_rafList.SearchFileEntries();
+            if (spriteInfo == null)
+                return;
+
+            List<Render.LSBitmap> lsBitmaps = new List<Render.LSBitmap>();
+
+            foreach (var bitmapInfo in spriteInfo.Bitmap)
+            {
+                lsBitmaps.Add(bitmapInfo.Bitmap);
+            }
+            spriteInfo.Sprite = new Render.SpriteSum(lsBitmaps, new Vector2(1, 1));
         }
+
+        //public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String optionalName, RafLoader.ImageList list)
+        //{
+        //    if (spriteInfo == null)
+        //        spriteInfo = new SpriteInfo();
+        //    Byte[] bitmap = null;
+        //    bitmap = RafLoader.GetImage(name, list, optionalName);
+        //    try
+        //    {
+        //        if (bitmap == null)
+        //            throw new Exception("Picture not available!");
+        //        Texture tex = Texture.FromMemory(Drawing.Direct3DDevice, bitmap);
+        //        spriteInfo.Sprite = new Render.Sprite(tex, new Vector2(0, 0));
+        //        spriteInfo.Bitmap = spriteInfo.Sprite.Bitmap;
+        //        spriteInfo.DownloadFinished = true;
+        //        tex.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
+        //    }
+        //}
+
+        //public static void LoadTexture(Bitmap bitmap, ref SpriteInfo spriteInfo)
+        //{
+        //    if (spriteInfo == null)
+        //        spriteInfo = new SpriteInfo();
+        //    try
+        //    {
+        //        if (bitmap == null)
+        //            throw new Exception("Picture not available!");
+        //        Texture tex = Texture.FromMemory(Drawing.Direct3DDevice, (byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[])));
+        //        spriteInfo.Sprite = new Render.Sprite(tex, new Vector2(0, 0));
+        //        spriteInfo.Bitmap = spriteInfo.Sprite.Bitmap;
+        //        spriteInfo.DownloadFinished = true;
+        //        tex.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Cannot load texture, Exception: {0}", ex);
+        //    }
+        //}
 
         public static void LoadTexture(String name, ref Texture texture, TextureType type)
         {
@@ -1105,77 +1160,77 @@ namespace SAssemblies
             }
         }
 
-        public static void LoadTexture(String name, ref SpriteInfoNew texture, TextureType type)
-        {
-            if (texture == null)
-                texture = new SpriteInfoNew();
-            Bitmap bmp;
-            if ((type == TextureType.Default || type == TextureType.Summoner) && MyResources.ContainsKey(name.ToLower()))
-            {
-                try
-                {
-                    using (var ms = new MemoryStream(MyResources[name.ToLower()]))
-                    {
-                        bmp = new Bitmap(ms);
-                    }
-                    texture.Bitmap = (Bitmap)bmp.Clone();
-                    texture.Sprite = new Render.Sprite(bmp, new Vector2(0, 0));
-                    texture.DownloadFinished = true;
-                    //texture.Sprite.UpdateTextureBitmap(bmp);
-                    //texture = new Render.Sprite(bmp, new Vector2(0, 0));
-                }
-                catch (Exception ex)
-                {
-                    if (texture == null)
-                    {
-                        texture = new SpriteInfoNew();
-                        texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-                    }
-                    Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                }
-            }
-            else if (type == TextureType.Summoner && MyResources.ContainsKey(name.ToLower().Remove(name.Length - 1)))
-            {
-                try
-                {
-                    //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Remove(name.Length - 1)), new Vector2(0, 0));
-                }
-                catch (Exception ex)
-                {
-                    if (texture == null)
-                    {
-                        texture = new SpriteInfoNew();
-                        texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-                    }
-                    Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                }
-            }
-            else if (type == TextureType.Item && MyResources.ContainsKey(name.ToLower().Insert(0, "_")))
-            {
-                try
-                {
-                    //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Insert(0, "_")), new Vector2(0, 0));
-                }
-                catch (Exception ex)
-                {
-                    if (texture == null)
-                    {
-                        texture = new SpriteInfoNew();
-                        texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-                    }
-                    Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                }
-            }
-            else
-            {
-                if (texture == null)
-                {
-                    texture = new SpriteInfoNew();
-                    texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-                }
-                Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
-            }
-        }
+        //public static void LoadTexture(String name, ref SpriteInfo texture, TextureType type)
+        //{
+        //    if (texture == null)
+        //        texture = new SpriteInfo();
+        //    Bitmap bmp;
+        //    if ((type == TextureType.Default || type == TextureType.Summoner) && MyResources.ContainsKey(name.ToLower()))
+        //    {
+        //        try
+        //        {
+        //            using (var ms = new MemoryStream(MyResources[name.ToLower()]))
+        //            {
+        //                bmp = new Bitmap(ms);
+        //            }
+        //            texture.Bitmap = (Bitmap)bmp.Clone();
+        //            texture.Sprite = new Render.Sprite(bmp, new Vector2(0, 0));
+        //            texture.DownloadFinished = true;
+        //            //texture.Sprite.UpdateTextureBitmap(bmp);
+        //            //texture = new Render.Sprite(bmp, new Vector2(0, 0));
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            if (texture == null)
+        //            {
+        //                texture = new SpriteInfo();
+        //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+        //            }
+        //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+        //        }
+        //    }
+        //    else if (type == TextureType.Summoner && MyResources.ContainsKey(name.ToLower().Remove(name.Length - 1)))
+        //    {
+        //        try
+        //        {
+        //            //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Remove(name.Length - 1)), new Vector2(0, 0));
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            if (texture == null)
+        //            {
+        //                texture = new SpriteInfo();
+        //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+        //            }
+        //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+        //        }
+        //    }
+        //    else if (type == TextureType.Item && MyResources.ContainsKey(name.ToLower().Insert(0, "_")))
+        //    {
+        //        try
+        //        {
+        //            //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Insert(0, "_")), new Vector2(0, 0));
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            if (texture == null)
+        //            {
+        //                texture = new SpriteInfo();
+        //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+        //            }
+        //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (texture == null)
+        //        {
+        //            texture = new SpriteInfo();
+        //            texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+        //        }
+        //        Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+        //    }
+        //}
 
         public static void LoadTexture(Bitmap map, ref Render.Sprite texture)
         {
@@ -1216,7 +1271,127 @@ namespace SAssemblies
             }
         }
 
-        public class SpriteInfoNew : IDisposable
+        //public async static Task<SpriteInfo> LoadTextureAsync(String name, SpriteInfo texture, DownloadType type)
+        //{
+        //    try
+        //    {
+        //        if (texture == null)
+        //            texture = new SpriteInfo();
+        //        Render.Sprite tex = texture.Sprite;
+        //        LoadTextureAsyncInternal(name, () => texture, x => texture = x, type);
+        //        //texture.Sprite = tex;
+        //        texture.LoadingFinished = true;
+        //        return texture;
+        //        //texture = new Render.Sprite(map, new Vector2(0, 0));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+        //        return new SpriteInfo();
+        //    }
+        //}
+
+        public async static Task<Bitmap> DownloadImageAsync(string name, DownloadType type)
+        {
+            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+            String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+            WebRequest request = null;
+            if (type == DownloadType.Champion)
+            {
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+            }
+            else if (type == DownloadType.Spell)
+            {
+                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+            }
+            else if (type == DownloadType.Summoner)
+            {
+                //summonerexhaust
+                if (name.Contains("summonerodingarrison"))
+                    name = "SummonerOdinGarrison";
+                else
+                    name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+            }
+            else if (type == DownloadType.Item)
+            {
+                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+            }
+            if (request == null)
+                return null;
+            try
+            {
+                Stream responseStream;
+                Task<WebResponse> reqA = request.GetResponseAsync();
+                using (WebResponse response = await reqA) //Crash with AsyncRequest
+                using (responseStream = response.GetResponseStream())
+                {
+                    return responseStream != null ? new Bitmap(responseStream) : null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+                return null;
+            }
+        }
+
+        //private static void LoadTextureAsyncInternal(String name, Func<SpriteInfo> getTexture, Action<SpriteInfo> setTexture, DownloadType type)
+        //{
+        //    try
+        //    {
+        //        SpriteInfo spriteInfo = getTexture();
+        //        Render.Sprite texture;
+        //        Bitmap map;
+        //        if (!cachedMaps.ContainsKey(name))
+        //        {
+        //            Task<Bitmap> bitmap = DownloadImageAsync(name, type);
+        //            if (bitmap == null || bitmap.Result == null || bitmap.Status == TaskStatus.Faulted)
+        //            {
+        //                texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+        //                Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+        //                spriteInfo.Sprite = texture;
+        //                setTexture(spriteInfo);
+        //                throw new Exception();
+        //            }
+        //            map = bitmap.Result; //Change to Async to make it Async, currently crashing through loading is not thread safe.
+        //            //Bitmap map = await bitmap;
+        //            cachedMaps.Add(name, (Bitmap)map.Clone());
+        //        }
+        //        else
+        //        {
+        //            map = new Bitmap((Bitmap)cachedMaps[name].Clone());
+        //        }
+        //        if (map == null)
+        //        {
+        //            texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+        //            spriteInfo.Sprite = texture;
+        //            setTexture(spriteInfo);
+        //            Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+        //            throw new Exception();
+        //        }
+        //        spriteInfo.Bitmap = (Bitmap)map.Clone();
+        //        texture = new Render.Sprite(map, new Vector2(0, 0));
+        //        spriteInfo.DownloadFinished = true;
+        //        spriteInfo.Sprite = texture;
+
+        //        setTexture(spriteInfo);
+        //        //texture = new Render.Sprite(map, new Vector2(0, 0));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("SAwarness: Could not load async " + name + ".");
+        //    }
+        //}
+
+        public class SpriteInfo : IDisposable
         {
             public enum OVD
             {
@@ -1224,9 +1399,30 @@ namespace SAssemblies
                 Big
             }
 
-            public Render.Sprite Sprite;
-            public Bitmap Bitmap;
-            public bool DownloadFinished = false;
+            public class BitmapInfo
+            {
+                public String Name = "";
+                public Render.LSBitmap Bitmap;
+                public bool DownloadFinished = false;
+                public bool LoadingFinished = false;
+
+                public BitmapInfo(String name, Bitmap bitmap, bool downloadFinished)
+                {
+                    Name = name;
+                    Bitmap = new Render.LSBitmap(bitmap, new Vector2(1, 1));
+                    DownloadFinished = downloadFinished;
+                }
+
+                public BitmapInfo(String name, Render.LSBitmap bitmap, bool downloadFinished)
+                {
+                    Name = name;
+                    Bitmap = bitmap;
+                    DownloadFinished = downloadFinished;
+                }
+            }
+
+            public Render.SpriteSum Sprite;
+            public List<BitmapInfo> Bitmap = new List<BitmapInfo>();
             public bool LoadingFinished = false;
             public OVD Mode = OVD.Small;
 
@@ -1236,11 +1432,13 @@ namespace SAssemblies
                     Sprite.Dispose();
 
                 if (Bitmap != null)
-                    Bitmap.Dispose();
-
+                    foreach (var info in Bitmap)
+                    {
+                        info.Bitmap.TextureBitmap.Dispose();
+                    }
             }
 
-            ~SpriteInfoNew()
+            ~SpriteInfo()
             {
                 Dispose();
             }
@@ -1261,6 +1459,20 @@ namespace SAssemblies
             Champion,
             Spell,
             Summoner,
+            Passive,
+            Item
+        }
+
+        public enum ChampionType
+        {
+            Champion,
+            SpellQ,
+            SpellW,
+            SpellE,
+            SpellR,
+            SpellPassive,
+            Summoner1,
+            Summoner2,
             Item
         }
 
@@ -1292,6 +1504,8 @@ namespace SAssemblies
 
         public static String ConvertNames(String name)
         {
+            if (name == null)
+                return name;
             if (name.ToLower().Contains("smite"))
             {
                 return "SummonerSmite";
@@ -1362,8 +1576,148 @@ namespace SAssemblies
             }
         }
 
-        public static void DownloadImageRiot(string name, DownloadType type, String subFolder)
+        //public static void DownloadImageRiot(string name, DownloadType type, String subFolder)
+        //{
+        //    String version = "";
+        //    try
+        //    {
+        //        String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+        //        version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+        //        return;
+        //    }
+        //    WebRequest request = null;
+        //    WebRequest requestSize = null;
+        //    name = ConvertNames(name);
+        //    if (type == DownloadType.Champion)
+        //    {
+        //        request =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+        //        requestSize =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+        //        requestSize.Method = "HEAD";
+        //    }
+        //    else if (type == DownloadType.Spell)
+        //    {
+        //        //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+        //        request =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+        //        requestSize =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+        //        requestSize.Method = "HEAD";
+        //    }
+        //    else if (type == DownloadType.Summoner)
+        //    {
+        //        //summonerexhaust
+        //        if (name.Contains("summonerodingarrison"))
+        //            name = "SummonerOdinGarrison";
+        //        else
+        //            name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
+        //        request =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+        //        requestSize =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+        //        requestSize.Method = "HEAD";
+        //    }
+        //    else if (type == DownloadType.Item)
+        //    {
+        //        //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+        //        request =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+        //        requestSize =
+        //        WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+        //        requestSize.Method = "HEAD";
+        //    }
+        //    if (request == null || requestSize == null)
+        //        return;
+        //    try
+        //    {
+        //        long fileSize = 0;
+        //        using (WebResponse resp = requestSize.GetResponse())
+        //        {
+        //            fileSize = resp.ContentLength;
+        //        }
+        //        if (fileSize == GetFileSize(name, subFolder))
+        //            return;
+        //        Stream responseStream;
+        //        using (WebResponse response = request.GetResponse())
+        //        using (responseStream = response.GetResponseStream())
+        //        {
+        //            if (responseStream != null)
+        //            {
+        //                using (var memoryStream = new MemoryStream())
+        //                {
+        //                    responseStream.CopyTo(memoryStream);
+        //                    SaveImage(name, memoryStream.ToArray(), subFolder);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+        //    }
+        //}
+
+        private static String GetChampionPicName(String url)
         {
+            String json = new WebClient().DownloadString(url);
+            //Dictionary<String, Object> data = (Dictionary<String, Object>)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["data"];
+            //Dictionary<String, Object> dataImage = (Dictionary<String, Object>)((data.First().Value));
+            //Dictionary<String, Object> imageChampion = (Dictionary<String, Object>)((dataImage["image"]));
+            //return (string)imageChampion["full"];
+            //Dictionary<String, Object> data = JsonConvert.DeserializeObject<Dictionary<String, Object>>(json);
+            //Dictionary<String, Object> dataImage = (Dictionary<String, Object>)((data.First().Value));
+            //Dictionary<String, Object> imageChampion = (Dictionary<String, Object>)((dataImage["image"]));
+            //return (string)imageChampion["full"];
+            JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+            return data["data"].First.First["image"]["full"].ToString();
+        }
+
+        private static String GetSpellPicName(String url, int index)
+        {
+            String json = new WebClient().DownloadString(url);
+            //String data = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["data"];
+            ////Spells
+            //String[] spellsSpells = (string[])new JavaScriptSerializer().Deserialize<Dictionary<String[], Object>>(data)[new String[] { "spells" }];
+            //for (int i = 0; i < spellsSpells.Length; i++)
+            //{
+            //    if (i == index)
+            //    {
+            //        String imageSpell = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(spellsSpells[i])["image"];
+            //        return (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(imageSpell)["full"];
+            //    }
+            //}
+            JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+            if (index > 3)
+            {
+                return data.SelectToken(data["data"].First.First["passive"].Path)["image"]["full"].ToString();
+            }
+            else
+            {
+                return data.SelectToken(data["data"].First.First["spells"].Path + "[" + index + "]")["image"]["full"].ToString();
+            }
+            //return data["data"].First.First["spells"].Children();   //["image"]["full"].ToString();
+        }
+
+        private static String GetSummonerSpellPicName(String url, String name)
+        {
+            String json = new WebClient().DownloadString(url);
+            //String data = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["data"];
+            //String summonerSpellName = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(data.ToLower())[name];
+            //String imageSummonerSpell = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(summonerSpellName)["image"];
+            //return (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(imageSummonerSpell)["full"];
+            JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+            var realName = JObject.Parse(data["data"].ToString()).GetValue(name, StringComparison.OrdinalIgnoreCase).Value<JToken>();
+            return realName["image"]["full"].ToString();
+        }
+
+        public static String DownloadImageRiot(String sName, ChampionType champType, DownloadType type, String subFolder)
+        {
+            String name = "";
             String version = "";
             try
             {
@@ -1373,26 +1727,65 @@ namespace SAssemblies
             catch (Exception ex)
             {
                 Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-                return;
+                return "";
+            }
+            name = ConvertNames(sName);
+            try
+            {
+                switch (champType)
+                {
+                    case ChampionType.Champion:
+                        name = GetChampionPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json");
+                        break;
+
+                    case ChampionType.SpellQ:
+                        name = GetSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json", 0);
+                        break;
+
+                    case ChampionType.SpellW:
+                        name = GetSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json", 1);
+                        break;
+
+                    case ChampionType.SpellE:
+                        name = GetSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json", 2);
+                        break;
+
+                    case ChampionType.SpellR:
+                        name = GetSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json", 3);
+                        break;
+
+                    case ChampionType.SpellPassive:
+                        name = GetSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json", 4);
+                        break;
+
+                    case ChampionType.Summoner1:
+                    case ChampionType.Summoner2:
+                        name = GetSummonerSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/summoner.json", sName);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Cannot download file: {0}, ChampType: {1}, Exception: {2}", name, sName, ex);
+                return "";
             }
             WebRequest request = null;
             WebRequest requestSize = null;
-            name = ConvertNames(name);
             if (type == DownloadType.Champion)
             {
                 request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name);
                 requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name);
                 requestSize.Method = "HEAD";
             }
             else if (type == DownloadType.Spell)
             {
                 //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
                 request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
                 requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
                 requestSize.Method = "HEAD";
             }
             else if (type == DownloadType.Summoner)
@@ -1403,22 +1796,30 @@ namespace SAssemblies
                 else
                     name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
                 request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
                 requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
+                requestSize.Method = "HEAD";
+            }
+            else if (type == DownloadType.Passive)
+            {
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/passive/" + name);
+                requestSize =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/passive/" + name);
                 requestSize.Method = "HEAD";
             }
             else if (type == DownloadType.Item)
             {
                 //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
                 request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
                 requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
                 requestSize.Method = "HEAD";
             }
             if (request == null || requestSize == null)
-                return;
+                return "";
             try
             {
                 long fileSize = 0;
@@ -1427,7 +1828,7 @@ namespace SAssemblies
                     fileSize = resp.ContentLength;
                 }
                 if (fileSize == GetFileSize(name, subFolder))
-                    return;
+                    return name;
                 Stream responseStream;
                 using (WebResponse response = request.GetResponse())
                 using (responseStream = response.GetResponseStream())
@@ -1446,6 +1847,7 @@ namespace SAssemblies
             {
                 Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
             }
+            return name;
         }
 
         private static int GetFileSize(String name, String subFolder)
@@ -1473,7 +1875,7 @@ namespace SAssemblies
             string loc = Path.Combine(new[]
             {
                 SandboxConfig.DataDirectory, "Assemblies", "cache",
-                "SAssemblies", subFolder, name  + ".png"
+                "SAssemblies", subFolder, name
             });
             Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
                         "Assemblies", "cache", "SAssemblies", subFolder));
@@ -1489,7 +1891,7 @@ namespace SAssemblies
             string loc = Path.Combine(new[]
             {
                 SandboxConfig.DataDirectory, "Assemblies", "cache",
-                "SAssemblies", subFolder, name  + ".png"
+                "SAssemblies", subFolder, name
             });
             try
             {
@@ -1856,31 +2258,30 @@ namespace SAssemblies
 
         static Speech()
         {
-            return;
-            for (int i = 0; i < 4; i++)
-            {
-                tts.Add(i, new SpeechSynthesizer());
-            }
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    tts.Add(i, new SpeechSynthesizer());
+            //}
 
-            ReadOnlyCollection<InstalledVoice> list = tts[0].GetInstalledVoices();
-            String strVoice = "";
-            foreach (var voice in list)
-            {
-                if (voice.VoiceInfo.Culture.EnglishName.Contains("English") && voice.Enabled)
-                {
-                    strVoice = voice.VoiceInfo.Name;
-                }
-            }
+            //ReadOnlyCollection<InstalledVoice> list = tts[0].GetInstalledVoices();
+            //String strVoice = "";
+            //foreach (var voice in list)
+            //{
+            //    if (voice.VoiceInfo.Culture.EnglishName.Contains("English") && voice.Enabled)
+            //    {
+            //        strVoice = voice.VoiceInfo.Name;
+            //    }
+            //}
 
-            foreach (KeyValuePair<int, SpeechSynthesizer> speech in tts)
-            {
-                if (!strVoice.Equals(""))
-                {
-                    speech.Value.SelectVoice(strVoice);
-                }
-            }
-            AppDomain.CurrentDomain.DomainUnload += CurrentDomainOnDomainUnload;
-            AppDomain.CurrentDomain.ProcessExit += CurrentDomainOnDomainUnload;
+            //foreach (KeyValuePair<int, SpeechSynthesizer> speech in tts)
+            //{
+            //    if (!strVoice.Equals(""))
+            //    {
+            //        speech.Value.SelectVoice(strVoice);
+            //    }
+            //}
+            //AppDomain.CurrentDomain.DomainUnload += CurrentDomainOnDomainUnload;
+            //AppDomain.CurrentDomain.ProcessExit += CurrentDomainOnDomainUnload;
         }
 
         private static void CurrentDomainOnDomainUnload(object sender, EventArgs e)
@@ -1897,32 +2298,31 @@ namespace SAssemblies
 
         public static void Speak(String text)
         {
-            return;
-            bool speaking = false;
-            foreach (var speech in tts)
-            {
-                if (speech.Value.State == SynthesizerState.Ready && !speaking)
-                {
-                    if (speech.Value.Volume !=
-                        Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsVoiceVolume")
-                            .GetValue<Slider>()
-                            .Value)
-                    {
-                        speech.Value.Volume =
-                            Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsVoiceVolume")
-                                .GetValue<Slider>()
-                                .Value;
-                    }
-                    speaking = true;
-                    speech.Value.SpeakAsync(text);
-                }
-                else if (speech.Value.State != SynthesizerState.Ready)
-                {
-                    speech.Value.Pause();
-                    speech.Value.Volume = 1;
-                    speech.Value.Resume();
-                }
-            }
+            //bool speaking = false;
+            //foreach (var speech in tts)
+            //{
+            //    if (speech.Value.State == SynthesizerState.Ready && !speaking)
+            //    {
+            //        if (speech.Value.Volume !=
+            //            Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsVoiceVolume")
+            //                .GetValue<Slider>()
+            //                .Value)
+            //        {
+            //            speech.Value.Volume =
+            //                Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsVoiceVolume")
+            //                    .GetValue<Slider>()
+            //                    .Value;
+            //        }
+            //        speaking = true;
+            //        speech.Value.SpeakAsync(text);
+            //    }
+            //    else if (speech.Value.State != SynthesizerState.Ready)
+            //    {
+            //        speech.Value.Pause();
+            //        speech.Value.Volume = 1;
+            //        speech.Value.Resume();
+            //    }
+            //}
         }
     }
 

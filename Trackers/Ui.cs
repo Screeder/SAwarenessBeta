@@ -1021,25 +1021,41 @@ namespace SAssemblies.Trackers
         private void LoadSpritesAsyncOverHeadHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
+            enemy.Value.Champ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
+            enemy.Value.SpellQ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellQ, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellW.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellW, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellE.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellE, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellR.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellR, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellPassive.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellPassive, SpriteHelper.DownloadType.Passive, @"UI\OverHeadHud");
+            enemy.Value.SpellSum1.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.ChampionType.Summoner1, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
+            enemy.Value.SpellSum2.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.ChampionType.Summoner2, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
         }
 
         void LoadSpritesAsyncSideHud(KeyValuePair<Obj_AI_Hero, ChampInfos> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
-            SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Q).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.W).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.E).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
+            //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
+            enemy.Value.Champ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
+            enemy.Value.SpellQ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellQ, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellW.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellW, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellE.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellE, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellR.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellR, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellPassive.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellPassive, SpriteHelper.DownloadType.Passive, @"UI\SideHud");
+            enemy.Value.SpellSum1.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.ChampionType.Summoner1, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
+            enemy.Value.SpellSum2.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.ChampionType.Summoner2, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
         }
 
         void Game_OnGameUpdateAsyncSprites(EventArgs args)
@@ -1069,9 +1085,8 @@ namespace SAssemblies.Trackers
             ChampInfos champ = enemy.Value;
             if ((champ.Champ.Sprite[0] == null || !champ.Champ.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
-                SpriteHelper.LoadTexture(hero.ChampionName, ref champ.Champ.Sprite[0], @"UI\SideHud");
+                SpriteHelper.LoadTexture(champ.Champ.Name, ref champ.Champ.Sprite[0], @"UI\SideHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.Champ.Sprite[0], null, RafLoader.ImageList.Champion);
-                loadCount++;
             }
             if (champ.Champ.Sprite[0] != null && champ.Champ.Sprite[0].DownloadFinished && !champ.Champ.Sprite[0].LoadingFinished)
             {
@@ -1087,11 +1102,30 @@ namespace SAssemblies.Trackers
                 champ.Champ.Sprite[0].LoadingFinished = true;
             }
 
+            if ((champ.SpellPassive.Sprite[0] == null || !champ.SpellPassive.Sprite[0].DownloadFinished) && loadCount < maxLoad)
+            {
+                //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellQ.Sprite[0], null, RafLoader.ImageList.SpellQ);
+                SpriteHelper.LoadTexture(champ.SpellPassive.Name, ref champ.SpellPassive.Sprite[0], @"UI\SideHud");
+            }
+            if (champ.SpellPassive.Sprite[0] != null && champ.SpellPassive.Sprite[0].DownloadFinished && !champ.SpellPassive.Sprite[0].LoadingFinished)
+            {
+                champ.SpellPassive.Sprite[0].Sprite.PositionUpdate = delegate
+                {
+                    return new Vector2(champ.SpellPassive.SizeSideBar.Width, champ.SpellPassive.SizeSideBar.Height);
+                };
+                champ.SpellPassive.Sprite[0].Sprite.VisibleCondition = sender =>
+                {
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
+                };
+                champ.SpellPassive.Sprite[0].Sprite.Add(0);
+                champ.SpellPassive.Sprite[0].LoadingFinished = true;
+            }
+
             if ((champ.SpellQ.Sprite[0] == null || !champ.SpellQ.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellQ.Sprite[0], null, RafLoader.ImageList.SpellQ);
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Q).Name, ref champ.SpellQ.Sprite[0], @"UI\SideHud");
-                loadCount++;
+                SpriteHelper.LoadTexture(champ.SpellQ.Name, ref champ.SpellQ.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellQ.Sprite[0] != null && champ.SpellQ.Sprite[0].DownloadFinished && !champ.SpellQ.Sprite[0].LoadingFinished)
             {
@@ -1111,8 +1145,7 @@ namespace SAssemblies.Trackers
             if ((champ.SpellW.Sprite[0] == null || !champ.SpellW.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellW.Sprite[0], null, RafLoader.ImageList.SpellW);
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.W).Name, ref champ.SpellW.Sprite[0], @"UI\SideHud");
-                loadCount++;
+                SpriteHelper.LoadTexture(champ.SpellW.Name, ref champ.SpellW.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellW.Sprite[0] != null && champ.SpellW.Sprite[0].DownloadFinished && !champ.SpellW.Sprite[0].LoadingFinished)
             {
@@ -1132,8 +1165,7 @@ namespace SAssemblies.Trackers
             if ((champ.SpellE.Sprite[0] == null || !champ.SpellE.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellE.Sprite[0], null, RafLoader.ImageList.SpellE);
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.E).Name, ref champ.SpellE.Sprite[0], @"UI\SideHud");
-                loadCount++;
+                SpriteHelper.LoadTexture(champ.SpellE.Name, ref champ.SpellE.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellE.Sprite[0] != null && champ.SpellE.Sprite[0].DownloadFinished && !champ.SpellE.Sprite[0].LoadingFinished)
             {
@@ -1153,8 +1185,7 @@ namespace SAssemblies.Trackers
             if ((champ.SpellR.Sprite[0] == null || !champ.SpellR.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellR.Sprite[0], null, RafLoader.ImageList.SpellR);
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.R).Name, ref champ.SpellR.Sprite[0], @"UI\SideHud");
-                loadCount++;
+                SpriteHelper.LoadTexture(champ.SpellR.Name, ref champ.SpellR.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellR.Sprite[0] != null && champ.SpellR.Sprite[0].DownloadFinished && !champ.SpellR.Sprite[0].LoadingFinished)
             {
@@ -1174,8 +1205,7 @@ namespace SAssemblies.Trackers
             if ((champ.SpellSum1.Sprite[0] == null || !champ.SpellSum1.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum1.Sprite[0], hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, RafLoader.ImageList.SpellSummoner1);
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, ref champ.SpellSum1.Sprite[0], @"UI\SideHud");
-                loadCount++;
+                SpriteHelper.LoadTexture(champ.SpellSum1.Name, ref champ.SpellSum1.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellSum1.Sprite[0] != null && champ.SpellSum1.Sprite[0].DownloadFinished && !champ.SpellSum1.Sprite[0].LoadingFinished)
             {
@@ -1194,8 +1224,7 @@ namespace SAssemblies.Trackers
             if ((champ.SpellSum2.Sprite[0] == null || !champ.SpellSum2.Sprite[0].DownloadFinished) && loadCount < maxLoad)
             {
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum2.Sprite[0], hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, RafLoader.ImageList.SpellSummoner2);
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, ref champ.SpellSum2.Sprite[0], @"UI\SideHud");
-                loadCount++;
+                SpriteHelper.LoadTexture(champ.SpellSum2.Name, ref champ.SpellSum2.Sprite[0], @"UI\SideHud");
             }
             if (champ.SpellSum2.Sprite[0] != null && champ.SpellSum2.Sprite[0].DownloadFinished && !champ.SpellSum2.Sprite[0].LoadingFinished)
             {
@@ -1318,7 +1347,7 @@ namespace SAssemblies.Trackers
 
             if (champ.SpellSum1.Sprite[1] == null || !champ.SpellSum1.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, ref champ.SpellSum1.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(champ.SpellSum1.Name, ref champ.SpellSum1.Sprite[1], @"UI\OverHeadHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum1.Sprite[1], hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, RafLoader.ImageList.SpellSummoner1);
             }
             if (champ.SpellSum1.Sprite[1] != null && champ.SpellSum1.Sprite[1].DownloadFinished && !champ.SpellSum1.Sprite[1].LoadingFinished)
@@ -1337,7 +1366,7 @@ namespace SAssemblies.Trackers
 
             if (champ.SpellSum2.Sprite[1] == null || !champ.SpellSum2.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, ref champ.SpellSum2.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(champ.SpellSum2.Name, ref champ.SpellSum2.Sprite[1], @"UI\OverHeadHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellSum2.Sprite[1], hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, RafLoader.ImageList.SpellSummoner2);
             }
             if (champ.SpellSum2.Sprite[1] != null && champ.SpellSum2.Sprite[1].DownloadFinished && !champ.SpellSum2.Sprite[1].LoadingFinished)
@@ -1354,9 +1383,30 @@ namespace SAssemblies.Trackers
                 champ.SpellSum2.Sprite[1].LoadingFinished = true;
             }
 
+            if (champ.SpellPassive.Sprite[1] == null || !champ.SpellPassive.Sprite[1].DownloadFinished)
+            {
+                SpriteHelper.LoadTexture(champ.SpellPassive.Name, ref champ.SpellPassive.Sprite[1], @"UI\OverHeadHud");
+                //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellQ.Sprite[1], null, RafLoader.ImageList.SpellQ);
+            }
+            if (champ.SpellPassive.Sprite[1] != null && champ.SpellPassive.Sprite[1].DownloadFinished && !champ.SpellPassive.Sprite[1].LoadingFinished)
+            {
+                champ.SpellPassive.Sprite[1].Sprite.PositionUpdate = delegate
+                {
+                    return new Vector2(champ.SpellPassive.SizeHpBar.Width, champ.SpellPassive.SizeHpBar.Height);
+                };
+                champ.SpellPassive.Sprite[1].Sprite.VisibleCondition = sender =>
+                {
+                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                            GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
+                            hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                };
+                champ.SpellPassive.Sprite[1].Sprite.Add();
+                champ.SpellPassive.Sprite[1].LoadingFinished = true;
+            }
+
             if (champ.SpellQ.Sprite[1] == null || !champ.SpellQ.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.Q).Name, ref champ.SpellQ.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(champ.SpellQ.Name, ref champ.SpellQ.Sprite[1], @"UI\OverHeadHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellQ.Sprite[1], null, RafLoader.ImageList.SpellQ);
             }
             if (champ.SpellQ.Sprite[1] != null && champ.SpellQ.Sprite[1].DownloadFinished && !champ.SpellQ.Sprite[1].LoadingFinished)
@@ -1377,7 +1427,7 @@ namespace SAssemblies.Trackers
 
             if (champ.SpellW.Sprite[1] == null || !champ.SpellW.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.W).Name, ref champ.SpellW.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(champ.SpellW.Name, ref champ.SpellW.Sprite[1], @"UI\OverHeadHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellW.Sprite[1], null, RafLoader.ImageList.SpellW);
             }
             if (champ.SpellW.Sprite[1] != null && champ.SpellW.Sprite[1].DownloadFinished && !champ.SpellW.Sprite[1].LoadingFinished)
@@ -1398,7 +1448,7 @@ namespace SAssemblies.Trackers
 
             if (champ.SpellE.Sprite[1] == null || !champ.SpellE.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.E).Name, ref champ.SpellE.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(champ.SpellE.Name, ref champ.SpellE.Sprite[1], @"UI\OverHeadHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellE.Sprite[1], null, RafLoader.ImageList.SpellE);
             }
             if (champ.SpellE.Sprite[1] != null && champ.SpellE.Sprite[1].DownloadFinished && !champ.SpellE.Sprite[1].LoadingFinished)
@@ -1419,7 +1469,7 @@ namespace SAssemblies.Trackers
 
             if (champ.SpellR.Sprite[1] == null || !champ.SpellR.Sprite[1].DownloadFinished)
             {
-                SpriteHelper.LoadTexture(hero.Spellbook.GetSpell(SpellSlot.R).Name, ref champ.SpellR.Sprite[1], @"UI\OverHeadHud");
+                SpriteHelper.LoadTexture(champ.SpellR.Name, ref champ.SpellR.Sprite[1], @"UI\OverHeadHud");
                 //SpriteHelper.LoadTexture(hero.ChampionName, ref champ.SpellR.Sprite[1], null, RafLoader.ImageList.SpellR);
             }
             if (champ.SpellR.Sprite[1] != null && champ.SpellR.Sprite[1].DownloadFinished && !champ.SpellR.Sprite[1].LoadingFinished)
@@ -2419,7 +2469,7 @@ namespace SAssemblies.Trackers
                 {
                     if (modeDisplay.SelectedIndex == 0)
                     {
-                        if(hero.Value.SpellPassive != null)
+                        if (hero.Value.SpellPassive != null && hero.Value.SpellPassive.Sprite[0] != null && hero.Value.SpellPassive.Sprite[0].Sprite != null)
                         {
                             hero.Value.SpellPassive.SizeSideBar =
                             new Size(
@@ -2428,6 +2478,7 @@ namespace SAssemblies.Trackers
                             yOffset - (int)(_spellSize.Height * percentScale) * (count * 4 - 0) -
                             count * (int)(_backBarSize.Height * percentScale) -
                             count * (int)(_spellSize.Height * percentScale) - yOffsetAdd);
+                            hero.Value.SpellPassive.Sprite[0].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellQ.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
                             hero.Value.SpellPassive.CoordsSideBar =
                             new Size(
                                 hero.Value.SpellPassive.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
@@ -2687,11 +2738,10 @@ namespace SAssemblies.Trackers
                         }
 
                         if (hero.Value.SpellPassive != null /*&& hero.Value.SpellPassive.Sprite[1] != null && hero.Value.SpellPassive.Sprite[1].Sprite != null*/ &&
-                            hero.Value.SpellSum1 != null && hero.Value.SpellSum1.Sprite[1] != null && hero.Value.SpellSum1.Sprite[1].Sprite != null)
+                            hero.Value.SpellPassive != null && hero.Value.SpellPassive.Sprite[1] != null && hero.Value.SpellPassive.Sprite[1].Sprite != null)
                         {
                             hero.Value.SpellPassive.SizeHpBar = new Size(hero.Value.SpellSum1.SizeHpBar.Width + _sumSize.Width, hero.Value.SpellSum2.SizeHpBar.Height + (int)((_spellSize.Height * hpPosScale) / 1.5));
-                            //hero.Value.SpellPassive.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellPassive.Sprite[1].Sprite.Width) * scaleSum * percentScale,
-                            //    ((float)_spellSize.Height / hero.Value.SpellPassive.Sprite[1].Sprite.Height) * scaleSum * percentScale);
+                            hero.Value.SpellPassive.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellPassive.Sprite[1].Sprite.Bitmap.Width) * (scaleSpell * percentScale));
                             hero.Value.SpellPassive.CoordsHpBar = new Size(hero.Value.SpellPassive.SizeHpBar.Width + _spellSize.Width / 2, hero.Value.SpellPassive.SizeHpBar.Height + _spellSize.Height / 2);
                         }
 
@@ -2765,12 +2815,10 @@ namespace SAssemblies.Trackers
                             hero.Value.SpellSum2.CoordsHpBar = new Size(hero.Value.SpellSum2.SizeHpBar.Width + _sumSize.Width / 2, hero.Value.SpellSum2.SizeHpBar.Height + _sumSize.Height / 8);
                         }
 
-                        if (hero.Value.SpellSum1 != null && hero.Value.SpellSum1.Sprite[1] != null && hero.Value.SpellSum1.Sprite[1].Sprite != null)
+                        if (hero.Value.SpellPassive != null && hero.Value.SpellPassive.Sprite[1] != null && hero.Value.SpellPassive.Sprite[1].Sprite != null)
                         {
                             hero.Value.SpellPassive.SizeHpBar = new Size(hero.Value.SpellSum1.SizeHpBar.Width + (int)(_spellSize.Width * hpPosScale), hero.Value.SpellSum2.SizeHpBar.Height);
-                            //SetScale(ref hero.Value.SpellPassive.Sprite[1].Sprite, _spellSize, scaleSum * percentScale);
-                            //hero.Value.SpellPassive.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellPassive.Sprite[1].Sprite.Width) * scaleSum * percentScale,
-                            //    ((float)_spellSize.Height / hero.Value.SpellPassive.Sprite[1].Sprite.Height) * scaleSum * percentScale);
+                            hero.Value.SpellPassive.Sprite[1].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellPassive.Sprite[1].Sprite.Bitmap.Width) * (scaleSpell * percentScale));
                             hero.Value.SpellPassive.CoordsHpBar = new Size(hero.Value.SpellPassive.SizeHpBar.Width + (int)(_spellSize.Width / 1.7), hero.Value.SpellPassive.SizeHpBar.Height + _spellSize.Height / 2);
                         }
 
@@ -3547,6 +3595,7 @@ namespace SAssemblies.Trackers
                 public Size CoordsSideBar;
                 public Size SizeHpBar;
                 public Size SizeSideBar;
+                public String Name;
             }
         }
     }
