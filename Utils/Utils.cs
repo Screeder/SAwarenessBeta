@@ -1506,7 +1506,7 @@ namespace SAssemblies
         {
             if (name == null)
                 return name;
-            if (name.ToLower().Contains("smite"))
+            if (name.ToLower().Contains("summonersmite") || name.ToLower().Contains("smiteaoe"))
             {
                 return "SummonerSmite";
             }
@@ -1888,6 +1888,8 @@ namespace SAssemblies
 
         public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String subFolder)
         {
+            if (name == null)
+                return;
             if (spriteInfo == null)
                 spriteInfo = new SpriteInfo();
             Byte[] bitmap = null;

@@ -2478,7 +2478,7 @@ namespace SAssemblies.Trackers
                             yOffset - (int)(_spellSize.Height * percentScale) * (count * 4 - 0) -
                             count * (int)(_backBarSize.Height * percentScale) -
                             count * (int)(_spellSize.Height * percentScale) - yOffsetAdd);
-                            hero.Value.SpellPassive.Sprite[0].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellQ.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
+                            hero.Value.SpellPassive.Sprite[0].Sprite.Scale = new Vector2(((float)_spellSize.Width / hero.Value.SpellPassive.Sprite[0].Sprite.Bitmap.Width) * (percentScale));
                             hero.Value.SpellPassive.CoordsSideBar =
                             new Size(
                                 hero.Value.SpellPassive.SizeSideBar.Width + (int)(_spellSize.Width * percentScale) / 2,
