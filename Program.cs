@@ -1444,7 +1444,7 @@ namespace SAssemblies
         private async /*static*/ void Game_OnGameLoad(EventArgs args)
         {
             CreateMenu();
-            Game.PrintChat("SAwareness loaded!");
+            Common.ShowNotification("SAwareness loaded!", System.Drawing.Color.LawnGreen, 5000);
 
             new Thread(GameOnOnGameUpdate).Start();
         }

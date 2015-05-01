@@ -243,6 +243,11 @@ namespace SAssemblies
         {
             return Utils.IsUnderRectangle(mousePos, windowPos.X, windowPos.Y, width, height);
         }
+
+        public static void ShowNotification(string message, Color color, int duration = 0, bool dispose = true)
+        {
+            Notifications.AddNotification(new Notification(message, duration, dispose).SetTextColor(color));
+        }
     }
 
     internal static class SummonerSpells
@@ -806,644 +811,644 @@ namespace SAssemblies
         }
     }
 
-    public static class SpriteHelperNew
-    {
-        public enum TextureType
-        {
-            Default,
-            Summoner,
-            Item
-        }
+    //public static class SpriteHelperNew
+    //{
+    //    public enum TextureType
+    //    {
+    //        Default,
+    //        Summoner,
+    //        Item
+    //    }
 
-        public enum DownloadType
-        {
-            Champion,
-            Spell,
-            Summoner,
-            Item
-        }
+    //    public enum DownloadType
+    //    {
+    //        Champion,
+    //        Spell,
+    //        Summoner,
+    //        Item
+    //    }
 
-        private static Downloader _downloader = new Downloader();
-        public static readonly Dictionary<String, byte[]> MyResources = new Dictionary<String, byte[]>();
+    //    private static Downloader _downloader = new Downloader();
+    //    public static readonly Dictionary<String, byte[]> MyResources = new Dictionary<String, byte[]>();
 
-        //private static List<SpriteRef> Sprites = new List<SpriteRef>();
+    //    //private static List<SpriteRef> Sprites = new List<SpriteRef>();
 
-        static SpriteHelperNew()
-        {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            ResourceManager resourceManager = new ResourceManager(assembly.GetName().Name + ".Properties.Resources", assembly);
-            ResourceSet resourceSet = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
-            foreach (DictionaryEntry entry in resourceSet)
-            {
-                var conv = entry.Value as Bitmap;
-                if (conv != null)
-                {
-                    MyResources.Add(entry.Key.ToString().ToLower(), (byte[])new ImageConverter().ConvertTo((Bitmap)entry.Value, typeof(byte[])));
-                }
-                else
-                {
-                    MyResources.Add(entry.Key.ToString().ToLower(), (byte[])entry.Value);
-                }
-            }
-        }
+    //    static SpriteHelperNew()
+    //    {
+    //        Assembly assembly = Assembly.GetExecutingAssembly();
+    //        ResourceManager resourceManager = new ResourceManager(assembly.GetName().Name + ".Properties.Resources", assembly);
+    //        ResourceSet resourceSet = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+    //        foreach (DictionaryEntry entry in resourceSet)
+    //        {
+    //            var conv = entry.Value as Bitmap;
+    //            if (conv != null)
+    //            {
+    //                MyResources.Add(entry.Key.ToString().ToLower(), (byte[])new ImageConverter().ConvertTo((Bitmap)entry.Value, typeof(byte[])));
+    //            }
+    //            else
+    //            {
+    //                MyResources.Add(entry.Key.ToString().ToLower(), (byte[])entry.Value);
+    //            }
+    //        }
+    //    }
 
-        private static Dictionary<String, Bitmap> cachedMaps = new Dictionary<string, Bitmap>();
+    //    private static Dictionary<String, Bitmap> cachedMaps = new Dictionary<string, Bitmap>();
 
-        public static String ConvertNames(String name)
-        {
-            if (name.ToLower().Contains("smite"))
-            {
-                return "SummonerSmite";
-            }
-            switch (name)
-            {
-                case "viw":
-                    return "ViW";
+    //    public static String ConvertNames(String name)
+    //    {
+    //        if (name.ToLower().Contains("smite"))
+    //        {
+    //            return "SummonerSmite";
+    //        }
+    //        switch (name)
+    //        {
+    //            case "viw":
+    //                return "ViW";
 
-                case "zedult":
-                    return "ZedUlt";
+    //            case "zedult":
+    //                return "ZedUlt";
 
-                case "vayneinquisition":
-                    return "VayneInquisition";
+    //            case "vayneinquisition":
+    //                return "VayneInquisition";
 
-                case "reksaie":
-                    return "RekSaiE";
+    //            case "reksaie":
+    //                return "RekSaiE";
 
-                case "dravenspinning":
-                    return "DravenSpinning";
+    //            case "dravenspinning":
+    //                return "DravenSpinning";
 
-                default:
-                    return name;
-            }
-        }
+    //            default:
+    //                return name;
+    //        }
+    //    }
 
-        public static void DownloadImageOpGg(string name, String subFolder)
-        {
-            WebRequest request = null;
-            WebRequest requestSize = null;
-            request =
-            WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
-            requestSize =
-            WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
-            requestSize.Method = "HEAD";
-            if (request == null || requestSize == null)
-                return;
-            try
-            {
-                long fileSize = 0;
-                using (var resp = (HttpWebResponse)requestSize.GetResponse())
-                {
-                    if (resp.StatusCode == HttpStatusCode.OK)
-                    {
-                        fileSize = resp.ContentLength;
-                    }
-                }
-                if (fileSize == GetFileSize(name, subFolder))
-                    return;
-                Stream responseStream;
-                using (var response = (HttpWebResponse)request.GetResponse())
-                    if (response.StatusCode == HttpStatusCode.OK)
-                        using (responseStream = response.GetResponseStream())
-                        {
-                            if (responseStream != null)
-                            {
-                                using (var memoryStream = new MemoryStream())
-                                {
-                                    responseStream.CopyTo(memoryStream);
-                                    SaveImage(name, memoryStream.ToArray(), subFolder);
-                                }
-                            }
-                        }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-            }
-        }
+    //    public static void DownloadImageOpGg(string name, String subFolder)
+    //    {
+    //        WebRequest request = null;
+    //        WebRequest requestSize = null;
+    //        request =
+    //        WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
+    //        requestSize =
+    //        WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
+    //        requestSize.Method = "HEAD";
+    //        if (request == null || requestSize == null)
+    //            return;
+    //        try
+    //        {
+    //            long fileSize = 0;
+    //            using (var resp = (HttpWebResponse)requestSize.GetResponse())
+    //            {
+    //                if (resp.StatusCode == HttpStatusCode.OK)
+    //                {
+    //                    fileSize = resp.ContentLength;
+    //                }
+    //            }
+    //            if (fileSize == GetFileSize(name, subFolder))
+    //                return;
+    //            Stream responseStream;
+    //            using (var response = (HttpWebResponse)request.GetResponse())
+    //                if (response.StatusCode == HttpStatusCode.OK)
+    //                    using (responseStream = response.GetResponseStream())
+    //                    {
+    //                        if (responseStream != null)
+    //                        {
+    //                            using (var memoryStream = new MemoryStream())
+    //                            {
+    //                                responseStream.CopyTo(memoryStream);
+    //                                SaveImage(name, memoryStream.ToArray(), subFolder);
+    //                            }
+    //                        }
+    //                    }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+    //        }
+    //    }
 
-        public static void DownloadImageRiot(string name, DownloadType type, String subFolder)
-        {
-            String version = "";
-            try
-            {
-                String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
-                version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-                return;
-            }
-            WebRequest request = null;
-            WebRequest requestSize = null;
-            name = ConvertNames(name);
-            if (type == DownloadType.Champion)
-            {
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
-                requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
-                requestSize.Method = "HEAD";
-            }
-            else if (type == DownloadType.Spell)
-            {
-                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-                requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-                requestSize.Method = "HEAD";
-            }
-            else if (type == DownloadType.Summoner)
-            {
-                //summonerexhaust
-                if (name.Contains("summonerodingarrison"))
-                    name = "SummonerOdinGarrison";
-                else
-                    name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-                requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-                requestSize.Method = "HEAD";
-            }
-            else if (type == DownloadType.Item)
-            {
-                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-                requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-                requestSize.Method = "HEAD";
-            }
-            if (request == null || requestSize == null)
-                return;
-            try
-            {
-                long fileSize = 0;
-                using (WebResponse resp = requestSize.GetResponse())
-                {
-                    fileSize = resp.ContentLength;
-                }
-                if (fileSize == GetFileSize(name, subFolder))
-                    return;
-                Stream responseStream;
-                using (WebResponse response = request.GetResponse())
-                using (responseStream = response.GetResponseStream())
-                {
-                    if (responseStream != null)
-                    {
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            responseStream.CopyTo(memoryStream);
-                            SaveImage(name, memoryStream.ToArray(), subFolder);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-            }
-        }
+    //    public static void DownloadImageRiot(string name, DownloadType type, String subFolder)
+    //    {
+    //        String version = "";
+    //        try
+    //        {
+    //            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+    //            version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+    //            return;
+    //        }
+    //        WebRequest request = null;
+    //        WebRequest requestSize = null;
+    //        name = ConvertNames(name);
+    //        if (type == DownloadType.Champion)
+    //        {
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+    //            requestSize =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+    //            requestSize.Method = "HEAD";
+    //        }
+    //        else if (type == DownloadType.Spell)
+    //        {
+    //            //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //            requestSize =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //            requestSize.Method = "HEAD";
+    //        }
+    //        else if (type == DownloadType.Summoner)
+    //        {
+    //            //summonerexhaust
+    //            if (name.Contains("summonerodingarrison"))
+    //                name = "SummonerOdinGarrison";
+    //            else
+    //                name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //            requestSize =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //            requestSize.Method = "HEAD";
+    //        }
+    //        else if (type == DownloadType.Item)
+    //        {
+    //            //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //            requestSize =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //            requestSize.Method = "HEAD";
+    //        }
+    //        if (request == null || requestSize == null)
+    //            return;
+    //        try
+    //        {
+    //            long fileSize = 0;
+    //            using (WebResponse resp = requestSize.GetResponse())
+    //            {
+    //                fileSize = resp.ContentLength;
+    //            }
+    //            if (fileSize == GetFileSize(name, subFolder))
+    //                return;
+    //            Stream responseStream;
+    //            using (WebResponse response = request.GetResponse())
+    //            using (responseStream = response.GetResponseStream())
+    //            {
+    //                if (responseStream != null)
+    //                {
+    //                    using (var memoryStream = new MemoryStream())
+    //                    {
+    //                        responseStream.CopyTo(memoryStream);
+    //                        SaveImage(name, memoryStream.ToArray(), subFolder);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+    //        }
+    //    }
 
-        private static int GetFileSize(String name, String subFolder)
-        {
-            int size = 0;
-            string loc = Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
-                "SAssemblies", subFolder, name  + ".png"
-            });
-            try
-            {
-                byte[] bitmap = File.ReadAllBytes(loc);
-                size = bitmap.Length;
-            }
-            catch (Exception)
-            {
+    //    private static int GetFileSize(String name, String subFolder)
+    //    {
+    //        int size = 0;
+    //        string loc = Path.Combine(new[]
+    //        {
+    //            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
+    //            "SAssemblies", subFolder, name  + ".png"
+    //        });
+    //        try
+    //        {
+    //            byte[] bitmap = File.ReadAllBytes(loc);
+    //            size = bitmap.Length;
+    //        }
+    //        catch (Exception)
+    //        {
 
-            }
-            return size;
-        }
+    //        }
+    //        return size;
+    //    }
 
-        public static void SaveImage(String name, /*Bitmap*/byte[] bitmap, String subFolder)
-        {
-            string loc = Path.Combine(new[]
-            {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
-                "SAssemblies", subFolder, name  + ".png"
-            });
-            Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
-                        "Assemblies", "cache", "SAssemblies", subFolder));
-            File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
-        }
+    //    public static void SaveImage(String name, /*Bitmap*/byte[] bitmap, String subFolder)
+    //    {
+    //        string loc = Path.Combine(new[]
+    //        {
+    //            SandboxConfig.DataDirectory, "Assemblies", "cache",
+    //            "SAssemblies", subFolder, name  + ".png"
+    //        });
+    //        Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
+    //                    "Assemblies", "cache", "SAssemblies", subFolder));
+    //        File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
+    //    }
 
-        public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String subFolder)
-        {
-            if (spriteInfo == null)
-                spriteInfo = new SpriteInfo();
-            Byte[] bitmap = null;
-            name = ConvertNames(name);
-            string loc = Path.Combine(new[]
-            {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
-                "SAssemblies", subFolder, name  + ".png"
-            });
-            try
-            {
-                bitmap = File.ReadAllBytes(loc);
-                spriteInfo.Bitmap.Add(new SpriteInfo.BitmapInfo(name, (Bitmap)new ImageConverter().ConvertFrom(bitmap), true));
-                //spriteInfo.Sprite = new Render.Sprite(bitmap, new Vector2(0, 0));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
-            }
-        }
+    //    public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String subFolder)
+    //    {
+    //        if (spriteInfo == null)
+    //            spriteInfo = new SpriteInfo();
+    //        Byte[] bitmap = null;
+    //        name = ConvertNames(name);
+    //        string loc = Path.Combine(new[]
+    //        {
+    //            SandboxConfig.DataDirectory, "Assemblies", "cache",
+    //            "SAssemblies", subFolder, name  + ".png"
+    //        });
+    //        try
+    //        {
+    //            bitmap = File.ReadAllBytes(loc);
+    //            spriteInfo.Bitmap.Add(new SpriteInfo.BitmapInfo(name, (Bitmap)new ImageConverter().ConvertFrom(bitmap), true));
+    //            //spriteInfo.Sprite = new Render.Sprite(bitmap, new Vector2(0, 0));
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
+    //        }
+    //    }
 
-        public static void PrepareSprite(ref SpriteInfo spriteInfo)
-        {
-            if (spriteInfo == null)
-                return;
+    //    public static void PrepareSprite(ref SpriteInfo spriteInfo)
+    //    {
+    //        if (spriteInfo == null)
+    //            return;
 
-            List<Render.LSBitmap> lsBitmaps = new List<Render.LSBitmap>();
+    //        List<Render.LSBitmap> lsBitmaps = new List<Render.LSBitmap>();
 
-            foreach (var bitmapInfo in spriteInfo.Bitmap)
-            {
-                lsBitmaps.Add(bitmapInfo.Bitmap);
-            }
-            spriteInfo.Sprite = new Render.SpriteSum(lsBitmaps, new Vector2(1, 1));
-        }
+    //        foreach (var bitmapInfo in spriteInfo.Bitmap)
+    //        {
+    //            lsBitmaps.Add(bitmapInfo.Bitmap);
+    //        }
+    //        spriteInfo.Sprite = new Render.SpriteSum(lsBitmaps, new Vector2(1, 1));
+    //    }
 
-        //public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String optionalName, RafLoader.ImageList list)
-        //{
-        //    if (spriteInfo == null)
-        //        spriteInfo = new SpriteInfo();
-        //    Byte[] bitmap = null;
-        //    bitmap = RafLoader.GetImage(name, list, optionalName);
-        //    try
-        //    {
-        //        if (bitmap == null)
-        //            throw new Exception("Picture not available!");
-        //        Texture tex = Texture.FromMemory(Drawing.Direct3DDevice, bitmap);
-        //        spriteInfo.Sprite = new Render.Sprite(tex, new Vector2(0, 0));
-        //        spriteInfo.Bitmap = spriteInfo.Sprite.Bitmap;
-        //        spriteInfo.DownloadFinished = true;
-        //        tex.Dispose();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
-        //    }
-        //}
+    //    //public static void LoadTexture(String name, ref SpriteInfo spriteInfo, String optionalName, RafLoader.ImageList list)
+    //    //{
+    //    //    if (spriteInfo == null)
+    //    //        spriteInfo = new SpriteInfo();
+    //    //    Byte[] bitmap = null;
+    //    //    bitmap = RafLoader.GetImage(name, list, optionalName);
+    //    //    try
+    //    //    {
+    //    //        if (bitmap == null)
+    //    //            throw new Exception("Picture not available!");
+    //    //        Texture tex = Texture.FromMemory(Drawing.Direct3DDevice, bitmap);
+    //    //        spriteInfo.Sprite = new Render.Sprite(tex, new Vector2(0, 0));
+    //    //        spriteInfo.Bitmap = spriteInfo.Sprite.Bitmap;
+    //    //        spriteInfo.DownloadFinished = true;
+    //    //        tex.Dispose();
+    //    //    }
+    //    //    catch (Exception ex)
+    //    //    {
+    //    //        Console.WriteLine("Cannot load file: {0}, Exception: {1}", name, ex);
+    //    //    }
+    //    //}
 
-        //public static void LoadTexture(Bitmap bitmap, ref SpriteInfo spriteInfo)
-        //{
-        //    if (spriteInfo == null)
-        //        spriteInfo = new SpriteInfo();
-        //    try
-        //    {
-        //        if (bitmap == null)
-        //            throw new Exception("Picture not available!");
-        //        Texture tex = Texture.FromMemory(Drawing.Direct3DDevice, (byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[])));
-        //        spriteInfo.Sprite = new Render.Sprite(tex, new Vector2(0, 0));
-        //        spriteInfo.Bitmap = spriteInfo.Sprite.Bitmap;
-        //        spriteInfo.DownloadFinished = true;
-        //        tex.Dispose();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Cannot load texture, Exception: {0}", ex);
-        //    }
-        //}
+    //    //public static void LoadTexture(Bitmap bitmap, ref SpriteInfo spriteInfo)
+    //    //{
+    //    //    if (spriteInfo == null)
+    //    //        spriteInfo = new SpriteInfo();
+    //    //    try
+    //    //    {
+    //    //        if (bitmap == null)
+    //    //            throw new Exception("Picture not available!");
+    //    //        Texture tex = Texture.FromMemory(Drawing.Direct3DDevice, (byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[])));
+    //    //        spriteInfo.Sprite = new Render.Sprite(tex, new Vector2(0, 0));
+    //    //        spriteInfo.Bitmap = spriteInfo.Sprite.Bitmap;
+    //    //        spriteInfo.DownloadFinished = true;
+    //    //        tex.Dispose();
+    //    //    }
+    //    //    catch (Exception ex)
+    //    //    {
+    //    //        Console.WriteLine("Cannot load texture, Exception: {0}", ex);
+    //    //    }
+    //    //}
 
-        public static void LoadTexture(String name, ref Texture texture, TextureType type)
-        {
-            if ((type == TextureType.Default || type == TextureType.Summoner) && MyResources.ContainsKey(name.ToLower()))
-            {
-                try
-                {
-                    texture = Texture.FromMemory(Drawing.Direct3DDevice, MyResources[name.ToLower()]);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                }
-            }
-            else if (type == TextureType.Summoner && MyResources.ContainsKey(name.ToLower().Remove(name.Length - 1)))
-            {
-                try
-                {
-                    texture = Texture.FromMemory(Drawing.Direct3DDevice,
-                        MyResources[name.ToLower().Remove(name.Length - 1)]);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                }
-            }
-            else if (type == TextureType.Item && MyResources.ContainsKey(name.ToLower().Insert(0, "_")))
-            {
-                try
-                {
-                    texture = Texture.FromMemory(Drawing.Direct3DDevice, MyResources[name.ToLower().Insert(0, "_")]);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                }
-            }
-            else
-            {
-                Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
-            }
-        }
+    //    public static void LoadTexture(String name, ref Texture texture, TextureType type)
+    //    {
+    //        if ((type == TextureType.Default || type == TextureType.Summoner) && MyResources.ContainsKey(name.ToLower()))
+    //        {
+    //            try
+    //            {
+    //                texture = Texture.FromMemory(Drawing.Direct3DDevice, MyResources[name.ToLower()]);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //            }
+    //        }
+    //        else if (type == TextureType.Summoner && MyResources.ContainsKey(name.ToLower().Remove(name.Length - 1)))
+    //        {
+    //            try
+    //            {
+    //                texture = Texture.FromMemory(Drawing.Direct3DDevice,
+    //                    MyResources[name.ToLower().Remove(name.Length - 1)]);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //            }
+    //        }
+    //        else if (type == TextureType.Item && MyResources.ContainsKey(name.ToLower().Insert(0, "_")))
+    //        {
+    //            try
+    //            {
+    //                texture = Texture.FromMemory(Drawing.Direct3DDevice, MyResources[name.ToLower().Insert(0, "_")]);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+    //        }
+    //    }
 
-        //public static void LoadTexture(String name, ref SpriteInfo texture, TextureType type)
-        //{
-        //    if (texture == null)
-        //        texture = new SpriteInfo();
-        //    Bitmap bmp;
-        //    if ((type == TextureType.Default || type == TextureType.Summoner) && MyResources.ContainsKey(name.ToLower()))
-        //    {
-        //        try
-        //        {
-        //            using (var ms = new MemoryStream(MyResources[name.ToLower()]))
-        //            {
-        //                bmp = new Bitmap(ms);
-        //            }
-        //            texture.Bitmap = (Bitmap)bmp.Clone();
-        //            texture.Sprite = new Render.Sprite(bmp, new Vector2(0, 0));
-        //            texture.DownloadFinished = true;
-        //            //texture.Sprite.UpdateTextureBitmap(bmp);
-        //            //texture = new Render.Sprite(bmp, new Vector2(0, 0));
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (texture == null)
-        //            {
-        //                texture = new SpriteInfo();
-        //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-        //            }
-        //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-        //        }
-        //    }
-        //    else if (type == TextureType.Summoner && MyResources.ContainsKey(name.ToLower().Remove(name.Length - 1)))
-        //    {
-        //        try
-        //        {
-        //            //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Remove(name.Length - 1)), new Vector2(0, 0));
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (texture == null)
-        //            {
-        //                texture = new SpriteInfo();
-        //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-        //            }
-        //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-        //        }
-        //    }
-        //    else if (type == TextureType.Item && MyResources.ContainsKey(name.ToLower().Insert(0, "_")))
-        //    {
-        //        try
-        //        {
-        //            //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Insert(0, "_")), new Vector2(0, 0));
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (texture == null)
-        //            {
-        //                texture = new SpriteInfo();
-        //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-        //            }
-        //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (texture == null)
-        //        {
-        //            texture = new SpriteInfo();
-        //            texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-        //        }
-        //        Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
-        //    }
-        //}
+    //    //public static void LoadTexture(String name, ref SpriteInfo texture, TextureType type)
+    //    //{
+    //    //    if (texture == null)
+    //    //        texture = new SpriteInfo();
+    //    //    Bitmap bmp;
+    //    //    if ((type == TextureType.Default || type == TextureType.Summoner) && MyResources.ContainsKey(name.ToLower()))
+    //    //    {
+    //    //        try
+    //    //        {
+    //    //            using (var ms = new MemoryStream(MyResources[name.ToLower()]))
+    //    //            {
+    //    //                bmp = new Bitmap(ms);
+    //    //            }
+    //    //            texture.Bitmap = (Bitmap)bmp.Clone();
+    //    //            texture.Sprite = new Render.Sprite(bmp, new Vector2(0, 0));
+    //    //            texture.DownloadFinished = true;
+    //    //            //texture.Sprite.UpdateTextureBitmap(bmp);
+    //    //            //texture = new Render.Sprite(bmp, new Vector2(0, 0));
+    //    //        }
+    //    //        catch (Exception ex)
+    //    //        {
+    //    //            if (texture == null)
+    //    //            {
+    //    //                texture = new SpriteInfo();
+    //    //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //    //            }
+    //    //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //    //        }
+    //    //    }
+    //    //    else if (type == TextureType.Summoner && MyResources.ContainsKey(name.ToLower().Remove(name.Length - 1)))
+    //    //    {
+    //    //        try
+    //    //        {
+    //    //            //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Remove(name.Length - 1)), new Vector2(0, 0));
+    //    //        }
+    //    //        catch (Exception ex)
+    //    //        {
+    //    //            if (texture == null)
+    //    //            {
+    //    //                texture = new SpriteInfo();
+    //    //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //    //            }
+    //    //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //    //        }
+    //    //    }
+    //    //    else if (type == TextureType.Item && MyResources.ContainsKey(name.ToLower().Insert(0, "_")))
+    //    //    {
+    //    //        try
+    //    //        {
+    //    //            //texture = new Render.Sprite((Bitmap)Resources.ResourceManager.GetObject(name.ToLower().Insert(0, "_")), new Vector2(0, 0));
+    //    //        }
+    //    //        catch (Exception ex)
+    //    //        {
+    //    //            if (texture == null)
+    //    //            {
+    //    //                texture = new SpriteInfo();
+    //    //                texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //    //            }
+    //    //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //    //        }
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        if (texture == null)
+    //    //        {
+    //    //            texture = new SpriteInfo();
+    //    //            texture.Sprite = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //    //        }
+    //    //        Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+    //    //    }
+    //    //}
 
-        public static void LoadTexture(Bitmap map, ref Render.Sprite texture)
-        {
-            if (texture == null)
-                texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-            texture.UpdateTextureBitmap(map);
-        }
+    //    public static void LoadTexture(Bitmap map, ref Render.Sprite texture)
+    //    {
+    //        if (texture == null)
+    //            texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //        texture.UpdateTextureBitmap(map);
+    //    }
 
-        public static bool LoadTexture(String name, ref Render.Sprite texture, DownloadType type)
-        {
-            try
-            {
-                Bitmap map = null;
-                if (!cachedMaps.ContainsKey(name))
-                {
-                    //map = DownloadImageRiot(name, type);
-                    cachedMaps.Add(name, (Bitmap)map.Clone());
-                }
-                else
-                {
-                    map = new Bitmap((Bitmap)cachedMaps[name].Clone());
-                }
-                if (map == null)
-                {
-                    texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-                    Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
-                    return false;
-                }
-                texture = new Render.Sprite(map, new Vector2(0, 0));
-                //texture.UpdateTextureBitmap(map);
-                return true;
-                //texture = new Render.Sprite(map, new Vector2(0, 0));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                return false;
-            }
-        }
+    //    public static bool LoadTexture(String name, ref Render.Sprite texture, DownloadType type)
+    //    {
+    //        try
+    //        {
+    //            Bitmap map = null;
+    //            if (!cachedMaps.ContainsKey(name))
+    //            {
+    //                //map = DownloadImageRiot(name, type);
+    //                cachedMaps.Add(name, (Bitmap)map.Clone());
+    //            }
+    //            else
+    //            {
+    //                map = new Bitmap((Bitmap)cachedMaps[name].Clone());
+    //            }
+    //            if (map == null)
+    //            {
+    //                texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //                Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+    //                return false;
+    //            }
+    //            texture = new Render.Sprite(map, new Vector2(0, 0));
+    //            //texture.UpdateTextureBitmap(map);
+    //            return true;
+    //            //texture = new Render.Sprite(map, new Vector2(0, 0));
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //            return false;
+    //        }
+    //    }
 
-        //public async static Task<SpriteInfo> LoadTextureAsync(String name, SpriteInfo texture, DownloadType type)
-        //{
-        //    try
-        //    {
-        //        if (texture == null)
-        //            texture = new SpriteInfo();
-        //        Render.Sprite tex = texture.Sprite;
-        //        LoadTextureAsyncInternal(name, () => texture, x => texture = x, type);
-        //        //texture.Sprite = tex;
-        //        texture.LoadingFinished = true;
-        //        return texture;
-        //        //texture = new Render.Sprite(map, new Vector2(0, 0));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-        //        return new SpriteInfo();
-        //    }
-        //}
+    //    //public async static Task<SpriteInfo> LoadTextureAsync(String name, SpriteInfo texture, DownloadType type)
+    //    //{
+    //    //    try
+    //    //    {
+    //    //        if (texture == null)
+    //    //            texture = new SpriteInfo();
+    //    //        Render.Sprite tex = texture.Sprite;
+    //    //        LoadTextureAsyncInternal(name, () => texture, x => texture = x, type);
+    //    //        //texture.Sprite = tex;
+    //    //        texture.LoadingFinished = true;
+    //    //        return texture;
+    //    //        //texture = new Render.Sprite(map, new Vector2(0, 0));
+    //    //    }
+    //    //    catch (Exception ex)
+    //    //    {
+    //    //        Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //    //        return new SpriteInfo();
+    //    //    }
+    //    //}
 
-        public async static Task<Bitmap> DownloadImageAsync(string name, DownloadType type)
-        {
-            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
-            String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
-            WebRequest request = null;
-            if (type == DownloadType.Champion)
-            {
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
-            }
-            else if (type == DownloadType.Spell)
-            {
-                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-            }
-            else if (type == DownloadType.Summoner)
-            {
-                //summonerexhaust
-                if (name.Contains("summonerodingarrison"))
-                    name = "SummonerOdinGarrison";
-                else
-                    name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-            }
-            else if (type == DownloadType.Item)
-            {
-                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
-                request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
-            }
-            if (request == null)
-                return null;
-            try
-            {
-                Stream responseStream;
-                Task<WebResponse> reqA = request.GetResponseAsync();
-                using (WebResponse response = await reqA) //Crash with AsyncRequest
-                using (responseStream = response.GetResponseStream())
-                {
-                    return responseStream != null ? new Bitmap(responseStream) : null;
-                }
+    //    public async static Task<Bitmap> DownloadImageAsync(string name, DownloadType type)
+    //    {
+    //        String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+    //        String version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+    //        WebRequest request = null;
+    //        if (type == DownloadType.Champion)
+    //        {
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name + ".png");
+    //        }
+    //        else if (type == DownloadType.Spell)
+    //        {
+    //            //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //        }
+    //        else if (type == DownloadType.Summoner)
+    //        {
+    //            //summonerexhaust
+    //            if (name.Contains("summonerodingarrison"))
+    //                name = "SummonerOdinGarrison";
+    //            else
+    //                name = name[0].ToString().ToUpper() + name.Substring(1, 7) + name[8].ToString().ToUpper() + name.Substring(9, name.Length - 9);
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //        }
+    //        else if (type == DownloadType.Item)
+    //        {
+    //            //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+    //            request =
+    //            WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name + ".png");
+    //        }
+    //        if (request == null)
+    //            return null;
+    //        try
+    //        {
+    //            Stream responseStream;
+    //            Task<WebResponse> reqA = request.GetResponseAsync();
+    //            using (WebResponse response = await reqA) //Crash with AsyncRequest
+    //            using (responseStream = response.GetResponseStream())
+    //            {
+    //                return responseStream != null ? new Bitmap(responseStream) : null;
+    //            }
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
-                return null;
-            }
-        }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("SAwarness: Couldn't load texture: " + name + "\n Ex: " + ex);
+    //            return null;
+    //        }
+    //    }
 
-        //private static void LoadTextureAsyncInternal(String name, Func<SpriteInfo> getTexture, Action<SpriteInfo> setTexture, DownloadType type)
-        //{
-        //    try
-        //    {
-        //        SpriteInfo spriteInfo = getTexture();
-        //        Render.Sprite texture;
-        //        Bitmap map;
-        //        if (!cachedMaps.ContainsKey(name))
-        //        {
-        //            Task<Bitmap> bitmap = DownloadImageAsync(name, type);
-        //            if (bitmap == null || bitmap.Result == null || bitmap.Status == TaskStatus.Faulted)
-        //            {
-        //                texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-        //                Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
-        //                spriteInfo.Sprite = texture;
-        //                setTexture(spriteInfo);
-        //                throw new Exception();
-        //            }
-        //            map = bitmap.Result; //Change to Async to make it Async, currently crashing through loading is not thread safe.
-        //            //Bitmap map = await bitmap;
-        //            cachedMaps.Add(name, (Bitmap)map.Clone());
-        //        }
-        //        else
-        //        {
-        //            map = new Bitmap((Bitmap)cachedMaps[name].Clone());
-        //        }
-        //        if (map == null)
-        //        {
-        //            texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
-        //            spriteInfo.Sprite = texture;
-        //            setTexture(spriteInfo);
-        //            Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
-        //            throw new Exception();
-        //        }
-        //        spriteInfo.Bitmap = (Bitmap)map.Clone();
-        //        texture = new Render.Sprite(map, new Vector2(0, 0));
-        //        spriteInfo.DownloadFinished = true;
-        //        spriteInfo.Sprite = texture;
+    //    //private static void LoadTextureAsyncInternal(String name, Func<SpriteInfo> getTexture, Action<SpriteInfo> setTexture, DownloadType type)
+    //    //{
+    //    //    try
+    //    //    {
+    //    //        SpriteInfo spriteInfo = getTexture();
+    //    //        Render.Sprite texture;
+    //    //        Bitmap map;
+    //    //        if (!cachedMaps.ContainsKey(name))
+    //    //        {
+    //    //            Task<Bitmap> bitmap = DownloadImageAsync(name, type);
+    //    //            if (bitmap == null || bitmap.Result == null || bitmap.Status == TaskStatus.Faulted)
+    //    //            {
+    //    //                texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //    //                Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+    //    //                spriteInfo.Sprite = texture;
+    //    //                setTexture(spriteInfo);
+    //    //                throw new Exception();
+    //    //            }
+    //    //            map = bitmap.Result; //Change to Async to make it Async, currently crashing through loading is not thread safe.
+    //    //            //Bitmap map = await bitmap;
+    //    //            cachedMaps.Add(name, (Bitmap)map.Clone());
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            map = new Bitmap((Bitmap)cachedMaps[name].Clone());
+    //    //        }
+    //    //        if (map == null)
+    //    //        {
+    //    //            texture = new Render.Sprite(MyResources["questionmark"], new Vector2(0, 0));
+    //    //            spriteInfo.Sprite = texture;
+    //    //            setTexture(spriteInfo);
+    //    //            Console.WriteLine("SAwarness: " + name + " is missing. Please inform Screeder!");
+    //    //            throw new Exception();
+    //    //        }
+    //    //        spriteInfo.Bitmap = (Bitmap)map.Clone();
+    //    //        texture = new Render.Sprite(map, new Vector2(0, 0));
+    //    //        spriteInfo.DownloadFinished = true;
+    //    //        spriteInfo.Sprite = texture;
 
-        //        setTexture(spriteInfo);
-        //        //texture = new Render.Sprite(map, new Vector2(0, 0));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("SAwarness: Could not load async " + name + ".");
-        //    }
-        //}
+    //    //        setTexture(spriteInfo);
+    //    //        //texture = new Render.Sprite(map, new Vector2(0, 0));
+    //    //    }
+    //    //    catch (Exception ex)
+    //    //    {
+    //    //        Console.WriteLine("SAwarness: Could not load async " + name + ".");
+    //    //    }
+    //    //}
 
-        public class SpriteInfo : IDisposable
-        {
-            public enum OVD
-            {
-                Small,
-                Big
-            }
+    //    public class SpriteInfo : IDisposable
+    //    {
+    //        public enum OVD
+    //        {
+    //            Small,
+    //            Big
+    //        }
 
-            public class BitmapInfo
-            {
-                public String Name = "";
-                public Render.LSBitmap Bitmap;
-                public bool DownloadFinished = false;
-                public bool LoadingFinished = false;
+    //        public class BitmapInfo
+    //        {
+    //            public String Name = "";
+    //            public Render.LSBitmap Bitmap;
+    //            public bool DownloadFinished = false;
+    //            public bool LoadingFinished = false;
 
-                public BitmapInfo(String name, Bitmap bitmap, bool downloadFinished)
-                {
-                    Name = name;
-                    Bitmap = new Render.LSBitmap(bitmap, new Vector2(1, 1));
-                    DownloadFinished = downloadFinished;
-                }
+    //            public BitmapInfo(String name, Bitmap bitmap, bool downloadFinished)
+    //            {
+    //                Name = name;
+    //                Bitmap = new Render.LSBitmap(bitmap, new Vector2(1, 1));
+    //                DownloadFinished = downloadFinished;
+    //            }
 
-                public BitmapInfo(String name, Render.LSBitmap bitmap, bool downloadFinished)
-                {
-                    Name = name;
-                    Bitmap = bitmap;
-                    DownloadFinished = downloadFinished;
-                }
-            }
+    //            public BitmapInfo(String name, Render.LSBitmap bitmap, bool downloadFinished)
+    //            {
+    //                Name = name;
+    //                Bitmap = bitmap;
+    //                DownloadFinished = downloadFinished;
+    //            }
+    //        }
 
-            public Render.SpriteSum Sprite;
-            public List<BitmapInfo> Bitmap = new List<BitmapInfo>();
-            public bool LoadingFinished = false;
-            public OVD Mode = OVD.Small;
+    //        public Render.SpriteSum Sprite;
+    //        public List<BitmapInfo> Bitmap = new List<BitmapInfo>();
+    //        public bool LoadingFinished = false;
+    //        public OVD Mode = OVD.Small;
 
-            public void Dispose()
-            {
-                if (Sprite != null)
-                    Sprite.Dispose();
+    //        public void Dispose()
+    //        {
+    //            if (Sprite != null)
+    //                Sprite.Dispose();
 
-                if (Bitmap != null)
-                    foreach (var info in Bitmap)
-                    {
-                        info.Bitmap.TextureBitmap.Dispose();
-                    }
-            }
+    //            if (Bitmap != null)
+    //                foreach (var info in Bitmap)
+    //                {
+    //                    info.Bitmap.TextureBitmap.Dispose();
+    //                }
+    //        }
 
-            ~SpriteInfo()
-            {
-                Dispose();
-            }
-        }
-    }
+    //        ~SpriteInfo()
+    //        {
+    //            Dispose();
+    //        }
+    //    }
+    //}
 
     public static class SpriteHelper
     {
