@@ -1465,7 +1465,8 @@ namespace SAssemblies
             Spell,
             Summoner,
             Passive,
-            Item
+            Item,
+            ProfileIcon
         }
 
         public enum ChampionType
@@ -1478,7 +1479,8 @@ namespace SAssemblies
             SpellPassive,
             Summoner1,
             Summoner2,
-            Item
+            Item,
+            None
         }
 
         private static Downloader _downloader = new Downloader();
@@ -1546,9 +1548,9 @@ namespace SAssemblies
             WebRequest request = null;
             WebRequest requestSize = null;
             request =
-            WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
+            WebRequest.Create("http://sk2.op.gg/images/profile_icons/" + name);
             requestSize =
-            WebRequest.Create("http://ss.op.gg/images/profile_icons/" + name);
+            WebRequest.Create("http://sk2.op.gg/images/profile_icons/" + name);
             requestSize.Method = "HEAD";
             if (request == null || requestSize == null)
                 return;
@@ -1769,7 +1771,7 @@ namespace SAssemblies
 
                     case ChampionType.Summoner1:
                     case ChampionType.Summoner2:
-                        name = GetSummonerSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/summoner.json", sName);
+                        name = GetSummonerSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/summoner.json", name);
                         break;
                 }
             }
@@ -1825,6 +1827,15 @@ namespace SAssemblies
                 WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
                 requestSize =
                 WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
+                requestSize.Method = "HEAD";
+            }
+            else if (type == DownloadType.ProfileIcon)
+            {
+                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + name);
+                requestSize =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + name);
                 requestSize.Method = "HEAD";
             }
             if (request == null || requestSize == null)
