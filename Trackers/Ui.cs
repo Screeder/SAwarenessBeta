@@ -1028,12 +1028,12 @@ namespace SAssemblies.Trackers
             //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
             //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
             //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
-            enemy.Value.Champ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
-            enemy.Value.SpellQ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellQ, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            enemy.Value.SpellW.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellW, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            enemy.Value.SpellE.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellE, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            enemy.Value.SpellR.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellR, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
-            enemy.Value.SpellPassive.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellPassive, SpriteHelper.DownloadType.Passive, @"UI\OverHeadHud");
+            enemy.Value.Champ.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, @"UI\OverHeadHud");
+            enemy.Value.SpellQ.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellQ, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellW.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellW, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellE.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellE, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellR.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellR, SpriteHelper.DownloadType.Spell, @"UI\OverHeadHud");
+            enemy.Value.SpellPassive.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellPassive, SpriteHelper.DownloadType.Passive, @"UI\OverHeadHud");
             enemy.Value.SpellSum1.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.ChampionType.Summoner1, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
             enemy.Value.SpellSum2.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.ChampionType.Summoner2, SpriteHelper.DownloadType.Summoner, @"UI\OverHeadHud");
         }
@@ -1048,12 +1048,12 @@ namespace SAssemblies.Trackers
             //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.R).Name, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
             //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
             //SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
-            enemy.Value.Champ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
-            enemy.Value.SpellQ.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellQ, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            enemy.Value.SpellW.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellW, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            enemy.Value.SpellE.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellE, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            enemy.Value.SpellR.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellR, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
-            enemy.Value.SpellPassive.Name = SpriteHelper.DownloadImageRiot(hero.BaseSkinName, SpriteHelper.ChampionType.SpellPassive, SpriteHelper.DownloadType.Passive, @"UI\SideHud");
+            enemy.Value.Champ.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, @"UI\SideHud");
+            enemy.Value.SpellQ.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellQ, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellW.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellW, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellE.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellE, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellR.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellR, SpriteHelper.DownloadType.Spell, @"UI\SideHud");
+            enemy.Value.SpellPassive.Name = SpriteHelper.DownloadImageRiot(hero.ChampionName, SpriteHelper.ChampionType.SpellPassive, SpriteHelper.DownloadType.Passive, @"UI\SideHud");
             enemy.Value.SpellSum1.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner1).Name, SpriteHelper.ChampionType.Summoner1, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
             enemy.Value.SpellSum2.Name = SpriteHelper.DownloadImageRiot(hero.Spellbook.GetSpell(SpellSlot.Summoner2).Name, SpriteHelper.ChampionType.Summoner2, SpriteHelper.DownloadType.Summoner, @"UI\SideHud");
         }
@@ -3289,7 +3289,7 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.DeathTimeDisplay = 0;
                             }
-                            enemy.Value.Gold.Value = (int)enemy.Key.GoldEarned;//TODO: enable to get gold
+                            enemy.Value.Gold.Value = (int)enemy.Key.GoldTotal;//TODO: enable to get gold
                             enemy.Value.Cs.Value = enemy.Key.MinionsKilled + enemy.Key.NeutralMinionsKilled;
                             enemy.Value.Level.Value = enemy.Key.Level;
                         }

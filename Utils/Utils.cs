@@ -1523,6 +1523,9 @@ namespace SAssemblies
             }
             switch (name)
             {
+                case "Wukong":
+                    return "MonkeyKing";
+
                 case "viw":
                     return "ViW";
                     

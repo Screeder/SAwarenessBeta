@@ -134,7 +134,7 @@ namespace SAssemblies.Trackers
                 }
                 if (enemy.Value.SpriteInfo == null || enemy.Value.SpriteInfo.Sprite == null)
                 {
-                    SpriteHelper.LoadTexture(enemy.Key.BaseSkinName, ref enemy.Value.SpriteInfo, "UIM");
+                    SpriteHelper.LoadTexture(enemy.Key.ChampionName, ref enemy.Value.SpriteInfo, "UIM");
                     //SpriteHelper.LoadTexture(enemy.Key.ChampionName, ref enemy.Value.SpriteInfo, null, RafLoader.ImageList.ChampionCircle);
                 }
                 if (enemy.Value.SpriteInfo != null && enemy.Value.SpriteInfo.DownloadFinished && !enemy.Value.SpriteInfo.LoadingFinished)
