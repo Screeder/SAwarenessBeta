@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Reflection;
 using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -1406,9 +1410,9 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiLatern, Miscs.AntiLatern.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AutoJump, Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.AutoLatern, Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu));
-                mainMenu.UpdateDirEntry(ref MainMenu.AutoLevler, Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.AutoLevler, Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu)); //Hängt bei linkslick
                 mainMenu.UpdateDirEntry(ref MainMenu.EasyRangedJungle, Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.EloDisplayer, Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.EloDisplayer, Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.FlashJuke, Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionBars, Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionLocation, Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu));
@@ -1417,11 +1421,11 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.RealTime, Miscs.RealTime.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.SafeMovement, Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.ShowPing, Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.SkinChanger, Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SkinChanger, Miscs.SkinChanger.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.SmartPingImprove, Miscs.SmartPingImprove.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.SurrenderVote, Miscs.SurrenderVote.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.TurnAround, Miscs.TurnAround.SetupMenu(MainMenu.Misc.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.WallJump, Miscs.WallJump.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.WallJump, Miscs.WallJump.SetupMenu(MainMenu.Misc.Menu));
 
                 Menu.GlobalSettings.Menu =
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));
@@ -1435,8 +1439,9 @@ namespace SAssemblies
                 menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.0.4"));
                 menu.AddToMainMenu();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine("SAssemblies: {0}", ex);
                 throw;
             }
         }

@@ -1,0 +1,7 @@
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\bin\Debug\Portable40\Newtonsoft.Json.dll
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\bin\Debug\Portable40\Newtonsoft.Json.pdb
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\bin\Debug\Portable40\Newtonsoft.Json.dll.CodeAnalysisLog.xml
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\bin\Debug\Portable40\Newtonsoft.Json.dll.lastcodeanalysissucceeded
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\obj\Debug\Portable40\Newtonsoft.Json.Portable40.csprojResolveAssemblyReference.cache
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\obj\Debug\Portable40\Newtonsoft.Json.dll
+H:\GitHub\Newtonsoft.Json\Src\Newtonsoft.Json\obj\Debug\Portable40\Newtonsoft.Json.pdb

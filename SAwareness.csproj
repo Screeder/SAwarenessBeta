@@ -39,7 +39,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -62,12 +62,6 @@
     <Reference Include="Evade">
       <HintPath>H:\Programme\LeagueSharp\System\Evade.dll</HintPath>
     </Reference>
-    <Reference Include="Evade.1.0.0.1.Fakes">
-      <HintPath>H:\Programme\LeagueSharp\System\Evade.1.0.0.1.Fakes.dll</HintPath>
-    </Reference>
-    <Reference Include="InibinSharp.Fakes">
-      <HintPath>H:\Programme\LeagueSharp\System\InibinSharp.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="LeagueSharp, Version=1.0.0.25, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.dll</HintPath>
@@ -80,21 +74,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.GameFiles.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.GameFiles.Fakes">
-      <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.GameFiles.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="LeagueSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json.6.0.0.0.Fakes">
-      <HintPath>H:\Programme\LeagueSharp\System\Newtonsoft.Json.6.0.0.0.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\Programme\LeagueSharp\System\SharpDX.dll</HintPath>
@@ -112,6 +96,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -128,6 +114,7 @@
     <Compile Include="Detectors\Recall.cs" />
     <Compile Include="Detectors\Vision.cs" />
     <Compile Include="Detectors\Gank.cs" />
+    <Compile Include="Miscs\AntiJump.cs" />
     <Compile Include="Miscs\AntiLatern.cs" />
     <Compile Include="Miscs\AntiNexusTurret.cs" />
     <Compile Include="Miscs\AntiVisualScreenStealth.cs" />
@@ -210,6 +197,196 @@
     <Compile Include="Miscs\ShowPing.cs" />
     <Compile Include="Wards\WardCorrector.cs" />
     <Compile Include="Wards\Ward.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonBinaryType.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonObjectId.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonToken.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonType.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Bson\BsonWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\ConstructorHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\BinaryConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\BsonObjectIdConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\CustomCreationConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\DataSetConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\DataTableConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\DateTimeConverterBase.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\DiscriminatedUnionConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\EntityKeyMemberConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\ExpandoObjectConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\IsoDateTimeConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\JavaScriptDateTimeConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\KeyValuePairConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\RegexConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\StringEnumConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\VersionConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Converters\XmlNodeConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\DateFormatHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\DateParseHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\DateTimeZoneHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\DefaultValueHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\FloatFormatHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\FloatParseHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\FormatterAssemblyStyle.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Formatting.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\IJsonLineInfo.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonArrayAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonConstructorAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonContainerAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonConvert.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonConverterAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonConverterCollection.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonDictionaryAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonException.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonExtensionDataAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonIgnoreAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonObjectAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonPosition.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonPropertyAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonReaderException.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonSerializationException.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonSerializer.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonSerializerSettings.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonTextReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonTextWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonToken.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonValidatingReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\JsonWriterException.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\Extensions.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\IJEnumerable.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JArray.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JConstructor.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JContainer.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JEnumerable.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JObject.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JProperty.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JPropertyDescriptor.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JPropertyKeyedCollection.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JRaw.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonMergeSettings.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\ArrayIndexFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\ArrayMultipleIndexFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\ArraySliceFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\FieldFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\FieldMultipleFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\JPath.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\PathFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\QueryExpression.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\QueryFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JsonPath\ScanFilter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JToken.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JTokenEqualityComparer.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JTokenReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JTokenType.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JTokenWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\JValue.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Linq\MergeArrayHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\MemberSerialization.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\MetadataPropertyHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\MissingMemberHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\NullValueHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\ObjectCreationHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\PreserveReferencesHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\ReferenceLoopHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Required.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\Extensions.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchema.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaBuilder.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaConstants.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaException.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaGenerator.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaModel.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaModelBuilder.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaNode.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaNodeCollection.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaResolver.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaType.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\JsonSchemaWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\UndefinedSchemaIdHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\ValidationEventArgs.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Schema\ValidationEventHandler.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\SerializationBinder.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\CachedAttributeGetter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\CamelCasePropertyNamesContractResolver.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\DefaultContractResolver.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\DefaultReferenceResolver.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\DefaultSerializationBinder.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\DiagnosticsTraceWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\DynamicValueProvider.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ErrorContext.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ErrorEventArgs.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ExpressionValueProvider.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\IAttributeProvider.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\IContractResolver.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\IReferenceResolver.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ITraceWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\IValueProvider.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonArrayContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonContainerContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonDictionaryContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonDynamicContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonFormatterConverter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonISerializableContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonLinqContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonObjectContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonPrimitiveContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonProperty.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonPropertyCollection.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonSerializerInternalBase.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonSerializerInternalReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonSerializerInternalWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonSerializerProxy.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonStringContract.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\JsonTypeReflector.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\MemoryTraceWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ObjectConstructor.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\OnErrorAttribute.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ReflectionAttributeProvider.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\ReflectionValueProvider.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\TraceJsonReader.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Serialization\TraceJsonWriter.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\StringEscapeHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\TraceLevel.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\TypeNameHandling.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\Base64Encoder.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\BidirectionalDictionary.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\CollectionUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\CollectionWrapper.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ConvertUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DateTimeParser.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DateTimeUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DictionaryWrapper.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DynamicProxy.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DynamicProxyMetaObject.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DynamicReflectionDelegateFactory.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\DynamicUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\EnumUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\EnumValue.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ExpressionReflectionDelegateFactory.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\FSharpUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ILGeneratorExtensions.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\JavaScriptUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\JsonTokenUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\LateBoundReflectionDelegateFactory.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\LinqBridge.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\MathUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\MethodCall.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\MiscellaneousUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\PropertyNameTable.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ReflectionDelegateFactory.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ReflectionObject.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ReflectionUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\StringBuffer.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\StringReference.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\StringUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ThreadSafeStore.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\TypeExtensions.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
+    <Compile Include="Resources\EXTERNAL_SOURCES\Newtonsoft.Json\WriteState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -286,8 +463,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

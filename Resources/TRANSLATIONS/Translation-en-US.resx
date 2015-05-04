@@ -732,4 +732,10 @@
   <data name="ACTIVATORS_AUTOIGNITE_MAIN" xml:space="preserve">
     <value>Auto Ignite</value>
   </data>
+  <data name="MISCS_SKINCHANGER_SKIN_LOADING" xml:space="preserve">
+    <value>Small Pic</value>
+  </data>
+  <data name="MISCS_SKINCHANGER_SKIN_SPLASH" xml:space="preserve">
+    <value>Big Pic</value>
+  </data>
 </root>
