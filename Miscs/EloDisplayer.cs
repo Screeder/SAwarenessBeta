@@ -16,6 +16,8 @@ using System.Windows.Forms;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using SharpDX.Direct3D9;
+using Font = SharpDX.Direct3D9.Font;
 using Rectangle = SharpDX.Rectangle;
 
 namespace SAssemblies.Miscs
@@ -34,6 +36,10 @@ namespace SAssemblies.Miscs
         private int lastGameUpdateTime = 0;
         private int lastGameUpdateSpritesTime = 0;
         private int lastGameUpdateTextsTime = 0;
+
+        private TextInfo Header = new TextInfo();
+        private TextInfo SummarizedAlly = new TextInfo();
+        private TextInfo SummarizedEnemy = new TextInfo();
 
         static EloDisplayer()
         {
@@ -56,21 +62,21 @@ namespace SAssemblies.Miscs
                 return;
 
             int index = 0;
-            //foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
-            //{
-            //    if(hero.Name.ToLower().Contains("bot"))
-            //        continue;
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if (hero.Name.ToLower().Contains("bot"))
+                    continue;
 
-            //    if (hero.IsEnemy)
-            //    {
-            //        _enemies.Add(hero, new ChampionEloDisplayer());
-            //    }
-            //    else
-            //    {
-            //        _allies.Add(hero, new ChampionEloDisplayer());
-            //    }
-            //    index++;
-            //}
+                if (hero.IsEnemy)
+                {
+                    _enemies.Add(hero, new ChampionEloDisplayer());
+                }
+                else
+                {
+                    _allies.Add(hero, new ChampionEloDisplayer());
+                }
+                index++;
+            }
             //foreach (var enemy in _enemies)
             //{
             //    UpdateStatus(enemy.Value.GetLolWebSiteContentOverview(enemy.Key));
@@ -79,25 +85,25 @@ namespace SAssemblies.Miscs
             //{
             //    UpdateStatus(ally.Value.GetLolWebSiteContentOverview(ally.Key));
             //}
-            for (int i = 0; i < 1; i++)
-            {
-                _enemies.Add(ObjectManager.Player, new ChampionEloDisplayer());
-                _allies.Add(ObjectManager.Player, new ChampionEloDisplayer());
-            }
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    _enemies.Add(ObjectManager.Player, new ChampionEloDisplayer());
+            //    _allies.Add(ObjectManager.Player, new ChampionEloDisplayer());
+            //}
 
-            foreach (var enemy in _enemies)
-            {
-                var t = new Thread(new ParameterizedThreadStart(GenerateMasteryPage));
-                t.SetApartmentState(ApartmentState.STA);
-                t.Start(enemy);
-            }
-            foreach (var ally in _allies)
-            {
-                var t = new Thread(new ParameterizedThreadStart(GenerateMasteryPage));
-                t.SetApartmentState(ApartmentState.STA);
-                t.Start(ally);
-            }
-            
+            //foreach (var enemy in _enemies)
+            //{
+            //    var t = new Thread(new ParameterizedThreadStart(GenerateMasteryPage));
+            //    t.SetApartmentState(ApartmentState.STA);
+            //    t.Start(enemy);
+            //}
+            //foreach (var ally in _allies)
+            //{
+            //    var t = new Thread(new ParameterizedThreadStart(GenerateMasteryPage));
+            //    t.SetApartmentState(ApartmentState.STA);
+            //    t.Start(ally);
+            //}
+
             Game.OnUpdate += Game_OnGameUpdateAsyncSprites;
             Game.OnUpdate += Game_OnGameUpdateAsyncTexts;
             Game.OnUpdate += Game_OnGameUpdate;
@@ -144,6 +150,17 @@ namespace SAssemblies.Miscs
                 yOffset = 110;
                 yOffsetTeam = 360;
             }
+
+            Header.Position = new Vector2(_allies.First().Value.SummonerName.Position.X, _allies.First().Value.SummonerName.Position.Y - yOffset / 1.3f);
+            if (_allies.Count != 0)
+            {
+                SummarizedAlly.Position = new Vector2(_allies.First().Value.SummonerName.Position.X, _allies.First().Value.SummonerName.Position.Y);
+            }
+            if (_enemies.Count != 0)
+            {
+                SummarizedEnemy.Position = new Vector2(_enemies.First().Value.SummonerName.Position.X, _enemies.First().Value.SummonerName.Position.Y);
+            }
+
             foreach (var hero in heroes)
             {
                 if (hero.Value.SummonerIcon != null && hero.Value.SummonerIcon.Sprite != null && hero.Value.SummonerIcon.Sprite.Sprite != null)
@@ -252,198 +269,300 @@ namespace SAssemblies.Miscs
 
             lastGameUpdateTextsTime = Environment.TickCount;
 
+            if (Header.FinishedLoading != true)
+            {
+                String SummonerName = "SummonerName";
+                String ChampionName = "ChampionName";
+                String Divison = "Divison";
+                String RankedStatistics = "RankedStatistics";
+                String MMR = "MMR";
+                String RecentStatistics = "RecentStatistics";
+                String ChampionGames = "ChampionGames";
+                String OverallKDA = "OverallKDA";
+                String ChampionKDA = "ChampionKDA";
+                String Masteries = "Masteries";
+                String Runes = "Runes";
+
+                List<String> line1 = CalcNeededWhitespaces(
+                    new List<string>(new String[] { SummonerName, Divison, RankedStatistics, RecentStatistics, OverallKDA }));
+                List<String> line2 = CalcNeededWhitespaces(
+                    new List<string>(new String[] { ChampionName, "", MMR, ChampionGames, ChampionKDA }));
+
+                String text = String.Format("{0}{1}{2}{3}{4}{5}\n{6}{7}{8}{9}{10}{11}",
+                    line1[0], line1[1], line1[2], line1[3], line1[4], Masteries,
+                    line2[0], line2[1], line2[2], line2[3], line2[4], Runes);
+                Header.Text = new Render.Text(0, 0, text, 20, SharpDX.Color.Orange);
+                Header.Text.PositionUpdate = delegate
+                {
+                    return Header.Position;
+                };
+                Header.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                };
+                Header.Text.OutLined = true;
+                Header.Text.Add(4);
+                Header.FinishedLoading = true;
+            }
+
+            string sText = "";
             int index = 0;
             foreach (var ally in _allies)
             {
-                Game_OnGameUpdateAsyncTextsSummary(ally, index, false);
+                Game_OnGameUpdateAsyncTextsSummary(ally, ref sText);
                 index++;
             }
+            SummarizedAlly.WebsiteContent = sText;
+            if (SummarizedAlly.FinishedLoading != true)
+            {
+                SummarizedAlly.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                SummarizedAlly.Text.TextUpdate = delegate
+                {
+                    return SummarizedAlly.WebsiteContent;
+                };
+                SummarizedAlly.Text.PositionUpdate = delegate
+                {
+                    return SummarizedAlly.Position;
+                };
+                SummarizedAlly.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                };
+                SummarizedAlly.Text.OutLined = true;
+                //SummarizedAlly.Text.Add(4);
+                SummarizedAlly.FinishedLoading = true;
+            }
+
+            sText = "";
             index = 0;
             foreach (var enemy in _enemies)
             {
-                Game_OnGameUpdateAsyncTextsSummary(enemy, index, true);
+                Game_OnGameUpdateAsyncTextsSummary(enemy, ref sText);
                 index++;
+            }
+            SummarizedEnemy.WebsiteContent = sText;
+            if (SummarizedEnemy.FinishedLoading != true)
+            {
+                SummarizedEnemy.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+                SummarizedEnemy.Text.TextUpdate = delegate
+                {
+                    return SummarizedEnemy.WebsiteContent;
+                };
+                SummarizedEnemy.Text.PositionUpdate = delegate
+                {
+                    return SummarizedEnemy.Position;
+                };
+                SummarizedEnemy.Text.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                };
+                SummarizedEnemy.Text.OutLined = true;
+                //SummarizedEnemy.Text.Add(4);
+                SummarizedEnemy.FinishedLoading = true;
             }
         }
 
-        private void Game_OnGameUpdateAsyncTextsSummary(KeyValuePair<Obj_AI_Hero, ChampionEloDisplayer> heroPair, int index, bool enemy)
+        private void Game_OnGameUpdateAsyncTextsSummary(KeyValuePair<Obj_AI_Hero, ChampionEloDisplayer> heroPair, ref String text)
         {
             Obj_AI_Hero hero = heroPair.Key;
             ChampionEloDisplayer champ = heroPair.Value;
-            if (champ.Divison.FinishedLoading != true)
-            {
-                champ.Divison.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.Divison.Text.TextUpdate = delegate
-                {
-                    if (!champ.Divison.WebsiteContent.Equals(""))
-                    {
-                        return champ.Divison.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.Divison.Text.PositionUpdate = delegate
-                {
-                    return champ.Divison.Position;
-                };
-                champ.Divison.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.Divison.Text.OutLined = true;
-                champ.Divison.Text.Add(4);
-                champ.Divison.FinishedLoading = true;
-            }
 
-            if (champ.RankedStatistics.FinishedLoading != true)
-            {
-                champ.RankedStatistics.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.RankedStatistics.Text.TextUpdate = delegate
-                {
-                    if (!champ.RankedStatistics.WebsiteContent.Equals(""))
-                    {
-                        return champ.RankedStatistics.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.RankedStatistics.Text.PositionUpdate = delegate
-                {
-                    return champ.RankedStatistics.Position;
-                };
-                champ.RankedStatistics.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.RankedStatistics.Text.OutLined = true;
-                champ.RankedStatistics.Text.Add(4);
-                champ.RankedStatistics.FinishedLoading = true;
-            }
 
-            if (champ.MMR.FinishedLoading != true)
-            {
-                champ.MMR.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.MMR.Text.TextUpdate = delegate
-                {
-                    if (!champ.MMR.WebsiteContent.Equals(""))
-                    {
-                        return champ.MMR.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.MMR.Text.PositionUpdate = delegate
-                {
-                    return champ.MMR.Position;
-                };
-                champ.MMR.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.MMR.Text.OutLined = true;
-                champ.MMR.Text.Add(4);
-                champ.MMR.FinishedLoading = true;
-            }
+            String text1 = hero.Name;
+            String text2 = champ.Divison.WebsiteContent;
+            String text3 = champ.RankedStatistics.WebsiteContent;
+            String text4 = champ.RecentStatistics.WebsiteContent;
+            String text5 = champ.OverallKDA.WebsiteContent;
+            String text6 = GetMasteries(hero) + " | ";
+            String text7 = hero.ChampionName;
+            String text8 = "";
+            String text9 = champ.MMR.WebsiteContent;
+            String text10 = champ.ChampionGames.WebsiteContent;
+            String text11 = champ.ChampionKDA.WebsiteContent;
+            String text12 = "Click here!";
+            List<String> line3 = CalcNeededWhitespaces(
+                        new List<string>(new String[] { text1, text2, text3, text4, text5 }));
+            List<String> line4 = CalcNeededWhitespaces(
+                new List<string>(new String[] { text7, text8, text9, text10, text11 }));
 
-            if (champ.RecentStatistics.FinishedLoading != true)
-            {
-                champ.RecentStatistics.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.RecentStatistics.Text.TextUpdate = delegate
-                {
-                    if (!champ.RecentStatistics.WebsiteContent.Equals(""))
-                    {
-                        return champ.RecentStatistics.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.RecentStatistics.Text.PositionUpdate = delegate
-                {
-                    return champ.RecentStatistics.Position;
-                };
-                champ.RecentStatistics.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.RecentStatistics.Text.OutLined = true;
-                champ.RecentStatistics.Text.Add(4);
-                champ.RecentStatistics.FinishedLoading = true;
-            }
+            text = String.Format("{0}{1}{2}{3}{4}{5}\n{6}{7}{8}{9}{10}{11}\n",
+                line3[0], line3[1], line3[2], line3[3], line3[4], text6,
+                line4[0], line4[1], line4[2], line4[3], line4[4], text12);
 
-            if (champ.ChampionGames.FinishedLoading != true)
-            {
-                champ.ChampionGames.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.ChampionGames.Text.TextUpdate = delegate
-                {
-                    if (!champ.ChampionGames.WebsiteContent.Equals(""))
-                    {
-                        return champ.ChampionGames.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.ChampionGames.Text.PositionUpdate = delegate
-                {
-                    return champ.ChampionGames.Position;
-                };
-                champ.ChampionGames.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.ChampionGames.Text.OutLined = true;
-                champ.ChampionGames.Text.Add(4);
-                champ.ChampionGames.FinishedLoading = true;
-            }
+            //if (champ.Divison.FinishedLoading != true)
+            //{
+            //    champ.Divison.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.Divison.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.Divison.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.Divison.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.Divison.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.Divison.Position;
+            //    };
+            //    champ.Divison.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.Divison.Text.OutLined = true;
+            //    champ.Divison.Text.Add(4);
+            //    champ.Divison.FinishedLoading = true;
+            //}
 
-            if (champ.OverallKDA.FinishedLoading != true)
-            {
-                champ.OverallKDA.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.OverallKDA.Text.TextUpdate = delegate
-                {
-                    if (!champ.OverallKDA.WebsiteContent.Equals(""))
-                    {
-                        return champ.OverallKDA.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.OverallKDA.Text.PositionUpdate = delegate
-                {
-                    return champ.OverallKDA.Position;
-                };
-                champ.OverallKDA.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.OverallKDA.Text.OutLined = true;
-                champ.OverallKDA.Text.Add(4);
-                champ.OverallKDA.FinishedLoading = true;
-            }
+            //if (champ.RankedStatistics.FinishedLoading != true)
+            //{
+            //    champ.RankedStatistics.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.RankedStatistics.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.RankedStatistics.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.RankedStatistics.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.RankedStatistics.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.RankedStatistics.Position;
+            //    };
+            //    champ.RankedStatistics.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.RankedStatistics.Text.OutLined = true;
+            //    champ.RankedStatistics.Text.Add(4);
+            //    champ.RankedStatistics.FinishedLoading = true;
+            //}
 
-            if (champ.ChampionKDA.FinishedLoading != true)
-            {
-                champ.ChampionKDA.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-                champ.ChampionKDA.Text.TextUpdate = delegate
-                {
-                    if (!champ.ChampionKDA.WebsiteContent.Equals(""))
-                    {
-                        return champ.ChampionKDA.WebsiteContent;
-                    }
-                    return "";
-                };
-                champ.ChampionKDA.Text.PositionUpdate = delegate
-                {
-                    return champ.ChampionKDA.Position;
-                };
-                champ.ChampionKDA.Text.VisibleCondition = sender =>
-                {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-                };
-                champ.ChampionKDA.Text.OutLined = true;
-                champ.ChampionKDA.Text.Add(4);
-                champ.ChampionKDA.FinishedLoading = true;
-            }
+            //if (champ.MMR.FinishedLoading != true)
+            //{
+            //    champ.MMR.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.MMR.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.MMR.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.MMR.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.MMR.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.MMR.Position;
+            //    };
+            //    champ.MMR.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.MMR.Text.OutLined = true;
+            //    champ.MMR.Text.Add(4);
+            //    champ.MMR.FinishedLoading = true;
+            //}
+
+            //if (champ.RecentStatistics.FinishedLoading != true)
+            //{
+            //    champ.RecentStatistics.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.RecentStatistics.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.RecentStatistics.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.RecentStatistics.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.RecentStatistics.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.RecentStatistics.Position;
+            //    };
+            //    champ.RecentStatistics.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.RecentStatistics.Text.OutLined = true;
+            //    champ.RecentStatistics.Text.Add(4);
+            //    champ.RecentStatistics.FinishedLoading = true;
+            //}
+
+            //if (champ.ChampionGames.FinishedLoading != true)
+            //{
+            //    champ.ChampionGames.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.ChampionGames.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.ChampionGames.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.ChampionGames.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.ChampionGames.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.ChampionGames.Position;
+            //    };
+            //    champ.ChampionGames.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.ChampionGames.Text.OutLined = true;
+            //    champ.ChampionGames.Text.Add(4);
+            //    champ.ChampionGames.FinishedLoading = true;
+            //}
+
+            //if (champ.OverallKDA.FinishedLoading != true)
+            //{
+            //    champ.OverallKDA.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.OverallKDA.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.OverallKDA.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.OverallKDA.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.OverallKDA.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.OverallKDA.Position;
+            //    };
+            //    champ.OverallKDA.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.OverallKDA.Text.OutLined = true;
+            //    champ.OverallKDA.Text.Add(4);
+            //    champ.OverallKDA.FinishedLoading = true;
+            //}
+
+            //if (champ.ChampionKDA.FinishedLoading != true)
+            //{
+            //    champ.ChampionKDA.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //    champ.ChampionKDA.Text.TextUpdate = delegate
+            //    {
+            //        if (!champ.ChampionKDA.WebsiteContent.Equals(""))
+            //        {
+            //            return champ.ChampionKDA.WebsiteContent;
+            //        }
+            //        return "";
+            //    };
+            //    champ.ChampionKDA.Text.PositionUpdate = delegate
+            //    {
+            //        return champ.ChampionKDA.Position;
+            //    };
+            //    champ.ChampionKDA.Text.VisibleCondition = sender =>
+            //    {
+            //        return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //    };
+            //    champ.ChampionKDA.Text.OutLined = true;
+            //    champ.ChampionKDA.Text.Add(4);
+            //    champ.ChampionKDA.FinishedLoading = true;
+            //}
 
             
         }
@@ -468,73 +587,73 @@ namespace SAssemblies.Miscs
         {
             Obj_AI_Hero hero = heroPair.Key;
             ChampionEloDisplayer champ = heroPair.Value;
-            champ.SummonerName.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-            champ.SummonerName.Text.TextUpdate = delegate
-            {
-                return hero.Name;
-            };
-            champ.SummonerName.Text.PositionUpdate = delegate
-            {
-                return champ.SummonerName.Position;
-            };
-            champ.SummonerName.Text.VisibleCondition = sender =>
-            {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-            };
-            champ.SummonerName.Text.OutLined = true;
-            champ.SummonerName.Text.Add(4);
+            //champ.SummonerName.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //champ.SummonerName.Text.TextUpdate = delegate
+            //{
+            //    return hero.Name;
+            //};
+            //champ.SummonerName.Text.PositionUpdate = delegate
+            //{
+            //    return champ.SummonerName.Position;
+            //};
+            //champ.SummonerName.Text.VisibleCondition = sender =>
+            //{
+            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //};
+            //champ.SummonerName.Text.OutLined = true;
+            //champ.SummonerName.Text.Add(4);
 
-            champ.ChampionName.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-            champ.ChampionName.Text.TextUpdate = delegate
-            {
-                return hero.ChampionName;
-            };
-            champ.ChampionName.Text.PositionUpdate = delegate
-            {
-                return champ.ChampionName.Position;
-            };
-            champ.ChampionName.Text.VisibleCondition = sender =>
-            {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-            };
-            champ.ChampionName.Text.OutLined = true;
-            champ.ChampionName.Text.Add(4);
+            //champ.ChampionName.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //champ.ChampionName.Text.TextUpdate = delegate
+            //{
+            //    return hero.ChampionName;
+            //};
+            //champ.ChampionName.Text.PositionUpdate = delegate
+            //{
+            //    return champ.ChampionName.Position;
+            //};
+            //champ.ChampionName.Text.VisibleCondition = sender =>
+            //{
+            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //};
+            //champ.ChampionName.Text.OutLined = true;
+            //champ.ChampionName.Text.Add(4);
 
-            champ.Masteries.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-            champ.Masteries.Text.TextUpdate = delegate
-            {
-                return GetMasteries(hero);
-            };
-            champ.Masteries.Text.PositionUpdate = delegate
-            {
-                return champ.Masteries.Position;
-            };
-            champ.Masteries.Text.VisibleCondition = sender =>
-            {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-            };
-            champ.Masteries.Text.OutLined = true;
-            champ.Masteries.Text.Add(4);
+            //champ.Masteries.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //champ.Masteries.Text.TextUpdate = delegate
+            //{
+            //    return GetMasteries(hero);
+            //};
+            //champ.Masteries.Text.PositionUpdate = delegate
+            //{
+            //    return champ.Masteries.Position;
+            //};
+            //champ.Masteries.Text.VisibleCondition = sender =>
+            //{
+            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //};
+            //champ.Masteries.Text.OutLined = true;
+            //champ.Masteries.Text.Add(4);
 
-            champ.Runes.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
-            champ.Runes.Text.TextUpdate = delegate
-            {
-                return "Click here!";
-            };
-            champ.Runes.Text.PositionUpdate = delegate
-            {
-                return champ.Runes.Position;
-            };
-            champ.Runes.Text.VisibleCondition = sender =>
-            {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
-                        && champ.IsFinished();
-            };
-            champ.Runes.Text.OutLined = true;
-            champ.Runes.Text.Add(4);
+            //champ.Runes.Text = new Render.Text(0, 0, "", 20, SharpDX.Color.Orange);
+            //champ.Runes.Text.TextUpdate = delegate
+            //{
+            //    return "Click here!";
+            //};
+            //champ.Runes.Text.PositionUpdate = delegate
+            //{
+            //    return champ.Runes.Position;
+            //};
+            //champ.Runes.Text.VisibleCondition = sender =>
+            //{
+            //    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+            //            && champ.IsFinished();
+            //};
+            //champ.Runes.Text.OutLined = true;
+            //champ.Runes.Text.Add(4);
         }
 
         private void LoadSpritesAsync()
@@ -542,12 +661,14 @@ namespace SAssemblies.Miscs
             foreach (var ally in _allies)
             {
                 ally.Value.SummonerIcon.WebsiteContent = GetSummonerIcon(ally.Key, ally.Value);
-                SpriteHelper.DownloadImageOpGg(ally.Value.SummonerIcon.WebsiteContent, @"EloDisplayer\");
+                //SpriteHelper.DownloadImageOpGg(ally.Value.SummonerIcon.WebsiteContent, @"EloDisplayer\");
+                SpriteHelper.DownloadImageRiot(ally.Value.SummonerIcon.WebsiteContent, SpriteHelper.ChampionType.None, SpriteHelper.DownloadType.ProfileIcon, @"EloDisplayer\");
             }
             foreach (var enemy in _enemies)
             {
                 enemy.Value.SummonerIcon.WebsiteContent = GetSummonerIcon(enemy.Key, enemy.Value);
-                SpriteHelper.DownloadImageOpGg(enemy.Value.SummonerIcon.WebsiteContent, @"EloDisplayer\");
+                //SpriteHelper.DownloadImageOpGg(enemy.Value.SummonerIcon.WebsiteContent, @"EloDisplayer\");
+                SpriteHelper.DownloadImageRiot(enemy.Value.SummonerIcon.WebsiteContent, SpriteHelper.ChampionType.None, SpriteHelper.DownloadType.ProfileIcon, @"EloDisplayer\");
             }
         }
 
@@ -727,11 +848,11 @@ namespace SAssemblies.Miscs
         private String GetSummonerIcon(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
-            String patternWin = "<div class=\"rectImage\"><img src=\"//(.*?)op.gg/images/profile_icons/(.*?)\"></div>";
-            return GetMatch(websiteContent, patternWin, 0, 2);
+            String patternWin = "<div class=\"rectImage\"><img src=\"//(.*?)op.gg/images/profile_icons/profileIcon(.*?)\\.jpg\"></div>";
+            return GetMatch(websiteContent, patternWin, 0, 2) + ".png";
         }
 
-        private String GetDivision(Obj_AI_Hero hero, ChampionEloDisplayer elo, ref bool ranked)
+        private String GetDivision(Obj_AI_Hero hero, ChampionEloDisplayer elo, ref bool ranked) //Bugged
         {
             String division = "";
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
@@ -818,18 +939,21 @@ namespace SAssemblies.Miscs
             int utility = 0;
             for (int i = 0; i < hero.Masteries.Count(); i++)
             {
-                var mastery = hero.Masteries[i];
-                if (mastery.Page == MasteryPage.Offense)
+                if (hero.Masteries[i] != null)
                 {
-                    offense += mastery.Points;
-                } 
-                else if (mastery.Page == MasteryPage.Defense)
-                {
-                    defense += mastery.Points;
-                }
-                else
-                {
-                    utility += mastery.Points;
+                    var mastery = hero.Masteries[i];
+                    if (mastery.Page == MasteryPage.Offense)
+                    {
+                        offense += mastery.Points;
+                    }
+                    else if (mastery.Page == MasteryPage.Defense)
+                    {
+                        defense += mastery.Points;
+                    }
+                    else
+                    {
+                        utility += mastery.Points;
+                    }
                 }
             }
             return offense + "/" + defense + "/" + utility;
@@ -998,7 +1122,7 @@ namespace SAssemblies.Miscs
                 string replacement = Regex.Replace(websiteContent, @"\t|\n|\r", "");
                 replacement = Regex.Replace(replacement, @"\\t|\\n|\\r", "");
                 replacement = Regex.Replace(replacement, @"\\""", "\"");
-                Match websiteMatcher = new Regex(@pattern).Matches(replacement)[index];
+                Match websiteMatcher = new Regex(pattern).Matches(replacement)[index];
                 //Match elementMatch = new Regex(websiteMatcher.Groups[groupIndex].ToString()).Matches(replacement)[0];
                 //return elementMatch.ToString();
                 return websiteMatcher.Groups[groupIndex].ToString();
@@ -1142,9 +1266,43 @@ namespace SAssemblies.Miscs
             return true;
         }
 
+        public static List<String> CalcNeededWhitespaces(List<String> strings)
+        {
+            Font font = new Font(
+                    Drawing.Direct3DDevice,
+                    new FontDescription
+                    {
+                        FaceName = "Calibri",
+                        Height = 20,
+                        OutputPrecision = FontPrecision.Default,
+                        Quality = FontQuality.Default
+                    });
+            Drawing.OnPreReset += args => font.OnLostDevice();
+            Drawing.OnPostReset += args => font.OnResetDevice();
+            List<String> ws = new List<String>();
+            foreach (var s in strings)
+            {
+                if(s == null)
+                    continue;
+                Rectangle rec = font.MeasureText(null, s, FontDrawFlags.Center);
+                StringBuilder sb = new StringBuilder(s);
+                sb = sb.Append("!");
+                while (rec.Width < 150)
+                {
+                    sb = sb.Insert(s.Length, " ");
+                    rec = font.MeasureText(null, sb.ToString(), FontDrawFlags.Center);
+                }
+                sb.Replace("!", "");
+                ws.Add(sb.ToString());
+            }
+            font.Dispose();
+            return ws;
+        }
+
         class ChampionEloDisplayer
         {
             public bool Ranked = false;
+            public TextInfo Summarized = new TextInfo();
             public TextInfo SummonerIcon = new TextInfo();
             public TextInfo ChampionName = new TextInfo();
             public TextInfo SummonerName = new TextInfo();
@@ -1201,7 +1359,7 @@ namespace SAssemblies.Miscs
             public TextInfo TeamChampionGames = new TextInfo();
         }
 
-        class TextInfo
+        internal class TextInfo
         {
             public bool FinishedLoading = false;
             public String WebsiteContent = "";

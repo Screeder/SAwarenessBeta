@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Speech.Synthesis.TtsEngine;
+using System.Threading;
+using System.Web.Script.Serialization;
 using LeagueSharp;
 using LeagueSharp.Common;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SharpDX;
 
 namespace SAssemblies.Miscs
 {
@@ -10,7 +18,9 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SkinChangerMisc = new Menu.MenuItemSettings(typeof(SkinChanger));
 
         public static Dictionary<String, String[]> Skins = new Dictionary<string, string[]>();
+        private static List<String> _skins = new List<string>(); 
         private int _lastSkinId = -1;
+        private bool _isDead = false;
         private int lastGameUpdateTime = 0;
 
         static SkinChanger()
@@ -1172,6 +1182,10 @@ namespace SAssemblies.Miscs
         public SkinChanger()
         {
             Game.OnUpdate += Game_OnGameUpdate;
+            Obj_AI_Base.OnCreate += Obj_AI_Base_OnCreate;
+            new Thread(LoadSpritesAsync).Start();
+            SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName).ValueChanged += SkinChanger_ValueChanged;
+            Game.OnWndProc += Game_OnWndProc;
         }
 
         ~SkinChanger()
@@ -1189,11 +1203,77 @@ namespace SAssemblies.Miscs
         {
             SkinChangerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SKINCHANGER_MAIN"), "SAssembliesMiscsSkinChanger"));
             SkinChangerMisc.MenuItems.Add(
-                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesSkinChangerSkinName" + ObjectManager.Player.ChampionName, Language.GetString("MISCS_SKINCHANGER_SKIN")).SetValue(
-                        new StringList(GetSkinList(ObjectManager.Player.ChampionName)))));
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName, Language.GetString("MISCS_SKINCHANGER_SKIN")).SetValue(
+                        new StringList(GetSkins().ToArray()))));
+            SkinChangerMisc.MenuItems.Add(
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameLoading", Language.GetString("MISCS_SKINCHANGER_SKIN_LOADING")).SetValue(false).DontSave()));
+            SkinChangerMisc.MenuItems.Add(
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameSplash", Language.GetString("MISCS_SKINCHANGER_SKIN_SPLASH")).SetValue(false).DontSave()));
             SkinChangerMisc.MenuItems.Add(
                 SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SkinChangerMisc;
+        }
+
+        void Game_OnWndProc(WndEventArgs args)
+        {
+            if (!IsActive())
+                return;
+
+            HandleInput((WindowsMessages)args.Msg, Utils.GetCursorPos(), args.WParam);
+        }
+
+        private void HandleInput(WindowsMessages message, Vector2 cursorPos, uint key)
+        {
+            if (message != WindowsMessages.WM_LBUTTONDOWN || !SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>())
+            {
+                return;
+            }
+            int active = GetActiveIndex();
+            if (ChampSkinGUI.ChampSkins[active] != null && Common.IsInside(cursorPos, ChampSkinGUI.ChampSkins[active].Pos, ChampSkinGUI.ChampSkins[active].SpriteInfoSmall.Sprite.Width,
+                    ChampSkinGUI.ChampSkins[active].SpriteInfoSmall.Sprite.Height))
+            {
+                return;
+            }
+            for (int i = active - 1; i >= 0; i--)
+            {
+                if (ChampSkinGUI.ChampSkins[i] != null && Common.IsInside(cursorPos, ChampSkinGUI.ChampSkins[i].Pos, ChampSkinGUI.ChampSkins[i].SpriteInfoSmall.Sprite.Width,
+                    ChampSkinGUI.ChampSkins[i].SpriteInfoSmall.Sprite.Height))
+                {
+                    StringList list =
+                        SkinChangerMisc.GetMenuItem(
+                            "SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName)
+                            .GetValue<StringList>();
+                    list.SelectedIndex = i;
+                    SkinChangerMisc.GetMenuItem(
+                        "SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName).SetValue(list);
+                    return;
+                }
+            }
+            for (int i = active + 1; i < ChampSkinGUI.ChampSkins.Length; i++)
+            {
+                if (ChampSkinGUI.ChampSkins[i] != null && Common.IsInside(cursorPos, ChampSkinGUI.ChampSkins[i].Pos, ChampSkinGUI.ChampSkins[i].SpriteInfoSmall.Sprite.Width,
+                    ChampSkinGUI.ChampSkins[i].SpriteInfoSmall.Sprite.Height))
+                {
+                    StringList list =
+                        SkinChangerMisc.GetMenuItem(
+                            "SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName)
+                            .GetValue<StringList>();
+                    list.SelectedIndex = i;
+                    SkinChangerMisc.GetMenuItem(
+                        "SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName).SetValue(list);
+                    return;
+                }
+            }
+        }
+
+        private void Obj_AI_Base_OnCreate(GameObject sender, EventArgs args)
+        {
+            var unit = sender as Obj_AI_Base;
+
+            if (unit != null && unit.IsValid && unit.Name.Equals(ObjectManager.Player.Name))
+            {
+                SetSkin(unit, SpriteHelper.ConvertNames(ObjectManager.Player.BaseSkinName), GetActiveIndex());
+            }
         }
 
         private void Game_OnGameUpdate(EventArgs args)
@@ -1203,12 +1283,91 @@ namespace SAssemblies.Miscs
 
             lastGameUpdateTime = Environment.TickCount;
             var mode =
-                SkinChangerMisc.GetMenuItem("SAssembliesSkinChangerSkinName" + ObjectManager.Player.ChampionName)
+                SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName)
                     .GetValue<StringList>();
+            if (!ObjectManager.Player.IsDead && _isDead)
+            {
+                SetSkin(ObjectManager.Player, SpriteHelper.ConvertNames(ObjectManager.Player.BaseSkinName), GetActiveIndex());
+                _isDead = false;
+            }
+            else if (ObjectManager.Player.IsDead && !_isDead)
+            {
+                _isDead = true;
+            }
             if (mode.SelectedIndex != _lastSkinId)
             {
                 _lastSkinId = mode.SelectedIndex;
-                GenAndSendModelPacket(ObjectManager.Player.ChampionName, mode.SelectedIndex);
+                SetSkin(ObjectManager.Player, SpriteHelper.ConvertNames(ObjectManager.Player.BaseSkinName), GetActiveIndex());
+            }
+            LoadSprites();
+        }
+
+        private void SetSkin(Obj_AI_Base unit, String name, int id)
+        {
+            unit.SetSkin(SpriteHelper.ConvertNames(name), id);
+
+            var hero = unit as Obj_AI_Hero;
+
+            if (hero != null && hero.ChampionName.Equals("Lulu") && !hero.IsDead)
+            {
+                var pix = ObjectManager.Get<Obj_AI_Base>().FirstOrDefault(obj => obj.IsValid && obj.Name.Equals("RobotBuddy"));
+                if (pix != null && pix.IsValid)
+                {
+                    pix.SetSkin(pix.BaseSkinName, id);
+                }
+            }
+        }
+
+        void SkinChanger_ValueChanged(object sender, OnValueChangeEventArgs e)
+        {
+            ChampSkinGUI.ChangeOrder(e.GetNewValue<StringList>().SelectedIndex);
+        }
+
+        private void LoadSprites()
+        {
+            foreach (var champSkin in ChampSkinGUI.ChampSkins)
+            {
+                if (champSkin.SpriteInfoSmall == null || champSkin.SpriteInfoSmall.Sprite == null)
+                {
+                    SpriteHelper.LoadTexture(champSkin.PicName, ref champSkin.SpriteInfoSmall, "SkinChanger\\Loading");
+                }
+                if (champSkin.SpriteInfoSmall != null && champSkin.SpriteInfoSmall.DownloadFinished && !champSkin.SpriteInfoSmall.LoadingFinished)
+                {
+                    champSkin.Pos = new Vector2(Drawing.Width / 2 - champSkin.SpriteInfoSmall.Sprite.Width / 2, Drawing.Height / 1.75f);
+                    champSkin.SpriteInfoSmall.Sprite.Scale = new Vector2(0.4f, 0.4f);
+                    champSkin.SpriteInfoSmall.Sprite.PositionUpdate = delegate
+                    {
+                        return champSkin.Pos;
+                    };
+                    champSkin.SpriteInfoSmall.Sprite.VisibleCondition = delegate
+                    {
+                        return Misc.Miscs.GetActive() && SkinChangerMisc.GetActive() && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>();
+                    };
+                    champSkin.SpriteInfoSmall.Sprite.Add(0);
+                    champSkin.SpriteInfoSmall.LoadingFinished = true;
+                    ChampSkinGUI.ChangeOrder(GetActiveIndex());
+                }
+
+                if (champSkin.SpriteInfoBig == null || champSkin.SpriteInfoBig.Sprite == null)
+                {
+                    SpriteHelper.LoadTexture(champSkin.PicName, ref champSkin.SpriteInfoBig, "SkinChanger\\Splash");
+                }
+                if (champSkin.SpriteInfoBig != null && champSkin.SpriteInfoBig.DownloadFinished && !champSkin.SpriteInfoBig.LoadingFinished)
+                {
+                    champSkin.SpriteInfoBig.Sprite.Scale = new Vector2(0.7f, 0.7f);
+                    champSkin.SpriteInfoBig.Sprite.PositionUpdate = delegate
+                    {
+                        return new Vector2(champSkin.Pos.X + champSkin.SpriteInfoSmall.Sprite.Width / 2 - champSkin.SpriteInfoBig.Sprite.Width / 2, champSkin.Pos.Y - champSkin.SpriteInfoBig.Sprite.Height / 2);
+                    };
+                    champSkin.SpriteInfoBig.Sprite.VisibleCondition = delegate
+                    {
+                        return Misc.Miscs.GetActive() && SkinChangerMisc.GetActive() && champSkin.Active
+                            && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>()
+                            && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplash").GetValue<bool>();
+                    };
+                    champSkin.SpriteInfoBig.Sprite.Add(-1);
+                    champSkin.SpriteInfoBig.LoadingFinished = true;
+                }
             }
         }
 
@@ -1219,6 +1378,149 @@ namespace SAssemblies.Miscs
                 return Skins[championName];
             }
             return new []{""};
+        }
+
+        private static void LoadSpritesAsync()
+        {
+            for (int i = 0; i < ChampSkinGUI.ChampSkins.Length; i++)
+            {
+                ChampSkinGUI.ChampSkins[i].PicName = SpriteHelper.DownloadImageRiot(ObjectManager.Player.ChampionName, SpriteHelper.ChampionType.ChampionSkin, SpriteHelper.DownloadType.ChampionSkinSmall, "SkinChanger\\Loading", i);
+                ChampSkinGUI.ChampSkins[i].PicName = SpriteHelper.DownloadImageRiot(ObjectManager.Player.ChampionName, SpriteHelper.ChampionType.ChampionSkin, SpriteHelper.DownloadType.ChampionSkinBig, "SkinChanger\\Splash", i);
+            }
+        }
+
+        private static List<String> GetSkins() //http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg Big Skin pic
+        {
+            if (_skins.Count != 0)
+                return _skins;
+            String version = "";
+            try
+            {
+                String jsonV = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+                version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(jsonV)["v"];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Cannot load DDragon Version: Exception: {1}", ex);
+            }
+            String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + SpriteHelper.ConvertNames(ObjectManager.Player.ChampionName) + ".json");
+            JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+            List<String> skinList = new List<string>();
+            for (int i = 0; i < 15; i++)
+            {
+                try
+                {
+                    skinList.Add(data.SelectToken(data["data"].First.First["skins"].Path + "[" + i + "]")["name"].ToString());
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+            }
+            if (skinList.Count == 0)
+            {
+                skinList.Add("NOT WORKING!");
+            }
+            else
+            {
+                ChampSkinGUI.ChampSkins = new ChampSkin[skinList.Count];
+                for (int i = 0; i < ChampSkinGUI.ChampSkins.Length; i++)
+                {
+                    ChampSkinGUI.ChampSkins[i] = new ChampSkin(i, skinList[i]);
+                }
+            }
+            _skins = skinList;
+            return skinList;
+        }
+
+        private int GetActiveIndex()
+        {
+            return SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName) .GetValue<StringList>().SelectedIndex;
+        }
+
+        class ChampSkinGUI
+        {
+            public static ChampSkin[] ChampSkins;
+
+            public ChampSkinGUI()
+            {
+                
+            }
+
+            public static void ChangeOrder(int activeId)
+            {
+                if(ChampSkins.All(x => x.SpriteInfoSmall != null && x.SpriteInfoSmall.LoadingFinished))
+                { 
+                    for (int i = 0; i < ChampSkins.Length; i++)
+                    {
+                        ChampSkins[i].Active = false;
+                        ChampSkins[i].SpriteInfoSmall.Sprite.Remove();
+                    }
+                    ChampSkins[activeId].Active = true;
+                    ChampSkins[activeId].Pos = new Vector2(Drawing.Width / 2 - ChampSkins[activeId].SpriteInfoSmall.Sprite.Width / 2, Drawing.Height / 1.75f);
+                    ChampSkins[activeId].SpriteInfoSmall.Sprite.Add(0);
+
+                    float count = 0;
+                    float renderId = 1;
+                    for (int i = activeId - 1; i >= 0; i--)
+                    {
+                        float offset = ChampSkins[activeId].SpriteInfoSmall.Sprite.Width + 20 + (30 * count);
+                        ChampSkins[i].Pos = new Vector2(ChampSkins[activeId].Pos.X - offset, ChampSkins[activeId].Pos.Y);
+                        count++;
+                        renderId = renderId - 0.01f;
+                        ChampSkins[i].SpriteInfoSmall.Sprite.Add(renderId);
+                    }
+
+                    renderId = 0;
+                    count = ChampSkins.Length - activeId - 2;
+                    for (int i = ChampSkins.Length - 1; i > activeId; i--)
+                    {
+                        float offset = ChampSkins[activeId].SpriteInfoSmall.Sprite.Width + 20 + (30 * count);
+                        ChampSkins[i].Pos = new Vector2(ChampSkins[activeId].Pos.X + offset, ChampSkins[activeId].Pos.Y);
+                        count--;
+                        ChampSkins[i].SpriteInfoSmall.Sprite.Add(renderId);
+                    }
+                }
+            }
+        }
+
+        class ChampSkin
+        {
+            public int Id;
+            public SpriteHelper.SpriteInfo SpriteInfoSmall;
+            public SpriteHelper.SpriteInfo SpriteInfoBig;
+            public Render.Text Name;
+            public String PicName;
+            public bool Active = true;
+            public Vector2 Pos = new Vector2();
+
+            public ChampSkin(int id, String name)
+            {
+                Id = id;
+                Name = new Render.Text(0, 0, name, 18, SharpDX.Color.Orange);
+                Name.PositionUpdate = delegate
+                {
+                    if (SpriteInfoSmall == null || SpriteInfoSmall.Sprite == null || SpriteInfoBig.Sprite == null)
+                    {
+                        return new Vector2(-50,-50);
+                    }
+                    if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplash").GetValue<bool>())
+                    {
+                        return new Vector2(SpriteInfoBig.Sprite.Position.X + SpriteInfoBig.Sprite.Width / 2, SpriteInfoBig.Sprite.Position.Y - 18);
+                    }
+                    else
+                    {
+                        return new Vector2(SpriteInfoSmall.Sprite.Position.X + SpriteInfoSmall.Sprite.Width / 2, SpriteInfoSmall.Sprite.Position.Y - 18);
+                    }
+                };
+                Name.VisibleCondition = sender =>
+                {
+                    return Misc.Miscs.GetActive() && SkinChangerMisc.GetActive() && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>() && Active;
+                };
+                Name.OutLined = true;
+                Name.Centered = true;
+                Name.Add(4);
+            }
         }
 
         public static void GenAndSendModelPacket(String champName, int skinId)

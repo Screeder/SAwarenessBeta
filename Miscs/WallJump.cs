@@ -362,35 +362,7 @@ namespace SAssemblies.Miscs
                 return;
 
             lastGameUpdateTime = Environment.TickCount;
-            WallTumble();
-            //if (_positions != null)
-            //{
-            //    foreach (var position in _positions.Position)
-            //    {
-
-            //        if (ObjectManager.Player.Position.X < 12000 || ObjectManager.Player.Position.X > 12070 || ObjectManager.Player.Position.Y < 4800 ||
-            //            ObjectManager.Player.Position.Y > 4872)
-            //        {
-            //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
-            //            MoveTo(new Vector2(12050, 4827).To3D());
-            //        }
-            //        else
-            //        {
-            //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
-            //            MoveTo(new Vector2(12050, 4827).To3D());
-            //            _positions.Spell.Cast(position.PositionEnd, true);
-            //        }
-            //        //if (Vector3.Distance(ObjectManager.Player.ServerPosition, position.PositionStart) <= 200)
-            //        //{
-            //        //    MoveTo(position.PositionStart);
-            //        //}
-            //        //if (Vector3.Distance(ObjectManager.Player.ServerPosition, position.PositionStart) <= 50)
-            //        //{
-            //        //    MoveTo(position.PositionStart);
-            //        //    _positions.Spell.Cast(position.PositionEnd, true);
-            //        //}
-            //    }
-            //}
+            //WallTumble();
         }
 
         void Drawing_OnDraw(EventArgs args)
@@ -413,64 +385,64 @@ namespace SAssemblies.Miscs
             }
         }
 
-        void WallTumble()
-        {
-            Vector2 MidWallQPos = new Vector2(6707.485f, 8802.744f);
-            Vector2 DrakeWallQPos = new Vector2(11514, 4462);
-            Spell Q = new Spell(SpellSlot.Q);
-            if (ObjectManager.Player.Distance(MidWallQPos) >= ObjectManager.Player.Distance(DrakeWallQPos))
-            {
+        //void WallTumble()
+        //{
+        //    Vector2 MidWallQPos = new Vector2(6707.485f, 8802.744f);
+        //    Vector2 DrakeWallQPos = new Vector2(11514, 4462);
+        //    Spell Q = new Spell(SpellSlot.Q);
+        //    if (ObjectManager.Player.Distance(MidWallQPos) >= ObjectManager.Player.Distance(DrakeWallQPos))
+        //    {
 
-                if (Vector3.Distance(ObjectManager.Player.Position, new Vector2(12050, 4827).To3D()) <= 200)
-                {
-                    //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
-                    MoveToLimited(new Vector2(12050, 4827).To3D());
-                }
-                else if (Vector3.Distance(ObjectManager.Player.Position, new Vector2(12050, 4827).To3D()) <= 100)
-                {
-                    //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
-                    MoveToLimited(new Vector2(12050, 4827).To3D());
-                    Q.Cast(DrakeWallQPos, true);
-                }
-            }
-            else
-            {
-                if (ObjectManager.Player.Position.X < 6908 || ObjectManager.Player.Position.X > 6978 || ObjectManager.Player.Position.Y < 8917 ||
-                    ObjectManager.Player.Position.Y > 8989)
-                {
-                    // Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(6958, 8944)).Send();
-                    MoveToLimited(new Vector2(6958, 8944).To3D());
-                }
-                else
-                {
-                    //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(6958, 8944)).Send();
-                    MoveToLimited(new Vector2(6958, 8944).To3D());
-                    Q.Cast(MidWallQPos, true);
-                }
-            }
-        }
+        //        if (Vector3.Distance(ObjectManager.Player.Position, new Vector2(12050, 4827).To3D()) <= 200)
+        //        {
+        //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
+        //            MoveToLimited(new Vector2(12050, 4827).To3D());
+        //        }
+        //        else if (Vector3.Distance(ObjectManager.Player.Position, new Vector2(12050, 4827).To3D()) <= 100)
+        //        {
+        //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(12050, 4827)).Send();
+        //            MoveToLimited(new Vector2(12050, 4827).To3D());
+        //            Q.Cast(DrakeWallQPos, true);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (ObjectManager.Player.Position.X < 6908 || ObjectManager.Player.Position.X > 6978 || ObjectManager.Player.Position.Y < 8917 ||
+        //            ObjectManager.Player.Position.Y > 8989)
+        //        {
+        //            // Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(6958, 8944)).Send();
+        //            MoveToLimited(new Vector2(6958, 8944).To3D());
+        //        }
+        //        else
+        //        {
+        //            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(6958, 8944)).Send();
+        //            MoveToLimited(new Vector2(6958, 8944).To3D());
+        //            Q.Cast(MidWallQPos, true);
+        //        }
+        //    }
+        //}
 
-        void MoveToLimited(Vector3 where)
-        {
-            if (Environment.TickCount - LastMove < 80)
-            {
-                return;
-            }
-            LastMove = Environment.TickCount;
-            ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, where);
-        }
+        //void MoveToLimited(Vector3 where)
+        //{
+        //    if (Environment.TickCount - LastMove < 80)
+        //    {
+        //        return;
+        //    }
+        //    LastMove = Environment.TickCount;
+        //    ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, where);
+        //}
 
-        private float LastMove = 0.0f;
+        //private float LastMove = 0.0f;
 
-        void MoveTo(Vector3 where)
-        {
-            if (Environment.TickCount - LastMove < 80)
-            {
-                return;
-            }
-            LastMove = Environment.TickCount;
-            ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, where);
-        }
+        //void MoveTo(Vector3 where)
+        //{
+        //    if (Environment.TickCount - LastMove < 80)
+        //    {
+        //        return;
+        //    }
+        //    LastMove = Environment.TickCount;
+        //    ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, where);
+        //}
 
         class InternalWallJump
         {

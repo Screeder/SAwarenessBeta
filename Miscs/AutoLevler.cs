@@ -5,8 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security;
+using System.Web.Script.Serialization;
 using LeagueSharp;
 using LeagueSharp.Common;
+using LeagueSharp.Sandbox;
 using Newtonsoft.Json;
 using SharpDX;
 using SharpDX.Direct3D9;
@@ -479,14 +482,14 @@ namespace SAssemblies.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Config",
-                "SAssemblies", "autolevel.conf"
+                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                "SAssemblies", "AutoLevler", "autolevel.conf"
             });
             try
             {
                 String output = JsonConvert.SerializeObject(sLevler);
-                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp",
-                        "Config", "SAssemblies"));
+                Directory.CreateDirectory(
+                    Path.Combine(SandboxConfig.DataDirectory, "Assemblies", "cache", "SAssemblies", "AutoLevler"));
                 if (output.Contains("[]"))
                 {
                     throw new Exception("[], your latest changes are not getting saved!");
@@ -495,6 +498,15 @@ namespace SAssemblies.Miscs
                 {
                     File.WriteAllText(loc, output);
                 }
+            }
+            catch (SecurityException ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            catch (Newtonsoft.Json.JsonSerializationException ex)
+            {
+                SecurityException ex2 = (SecurityException)ex.InnerException;
+                Console.WriteLine(ex2.ToString());
             }
             catch (Exception ex)
             {
@@ -506,8 +518,8 @@ namespace SAssemblies.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Config",
-                "SAssemblies", "autolevel.conf"
+                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                "SAssemblies", "AutoLevler", "autolevel.conf"
             });
             try
             {
