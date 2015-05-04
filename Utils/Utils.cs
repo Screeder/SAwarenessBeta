@@ -1462,6 +1462,8 @@ namespace SAssemblies
         public enum DownloadType
         {
             Champion,
+            ChampionSkinSmall,
+            ChampionSkinBig,
             Spell,
             Summoner,
             Passive,
@@ -1472,6 +1474,7 @@ namespace SAssemblies
         public enum ChampionType
         {
             Champion,
+            ChampionSkin,
             SpellQ,
             SpellW,
             SpellE,
@@ -1691,6 +1694,13 @@ namespace SAssemblies
             return data["data"].First.First["image"]["full"].ToString();
         }
 
+        private static String GetChampionSkinPicName(String url, int skinId)
+        {
+            String json = new WebClient().DownloadString(url);
+            JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+            return data["data"].First.First["image"]["full"].ToString().Replace(".png", "_" + skinId + ".jpg");
+        }
+
         private static String GetSpellPicName(String url, int index)
         {
             String json = new WebClient().DownloadString(url);
@@ -1729,7 +1739,7 @@ namespace SAssemblies
             return realName["image"]["full"].ToString();
         }
 
-        public static String DownloadImageRiot(String sName, ChampionType champType, DownloadType type, String subFolder)
+        public static String DownloadImageRiot(String sName, ChampionType champType, DownloadType type, String subFolder, int skinId = 0)
         {
             String name = "";
             String version = "";
@@ -1750,6 +1760,10 @@ namespace SAssemblies
                 {
                     case ChampionType.Champion:
                         name = GetChampionPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json");
+                        break;
+
+                    case ChampionType.ChampionSkin:
+                        name = GetChampionSkinPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + sName + ".json", skinId);
                         break;
 
                     case ChampionType.SpellQ:
@@ -1791,6 +1805,22 @@ namespace SAssemblies
                 WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name);
                 requestSize =
                 WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + name);
+                requestSize.Method = "HEAD";
+            }
+            else if (type == DownloadType.ChampionSkinSmall)
+            {
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name);
+                requestSize =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name);
+                requestSize.Method = "HEAD";
+            }
+            else if (type == DownloadType.ChampionSkinBig)
+            {
+                request =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + name);
+                requestSize =
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + name);
                 requestSize.Method = "HEAD";
             }
             else if (type == DownloadType.Spell)
@@ -1873,13 +1903,13 @@ namespace SAssemblies
             return name;
         }
 
-        private static int GetFileSize(String name, String subFolder)
+        private static int GetFileSize(String name, String subFolder, bool png = true)
         {
             int size = 0;
             string loc = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp", "Assemblies", "cache",
-                "SAssemblies", subFolder, name  + ".png"
+                "SAssemblies", subFolder, name  + (png ? ".png" : ".jpg")
             });
             try
             {
