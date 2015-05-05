@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,8 @@ namespace SAssemblies.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
+            DisReconnectDetector.MenuItems.Add(
+                DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             DisReconnectDetector.MenuItems.Add(
                 DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             DisReconnectDetector.MenuItems.Add(
@@ -90,6 +93,10 @@ namespace SAssemblies.Detectors
                 {
                     Speech.Speak("Champion " + disconnect.Player.ChampionName + " has disconnected!");
                 }
+                if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectNotification").GetValue<bool>())
+                {
+                    Common.ShowNotification("Champion " + disconnect.Player.ChampionName + " has disconnected!", Color.LawnGreen, 3);
+                }
             }
             catch (Exception ex)
             {
@@ -130,6 +137,10 @@ namespace SAssemblies.Detectors
                 if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectSpeech").GetValue<bool>())
                 {
                     Speech.Speak("Champion " + reconnect.Player.ChampionName + " has reconnected!");
+                }
+                if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectNotification").GetValue<bool>())
+                {
+                    Common.ShowNotification("Champion " + reconnect.Player.ChampionName + " has reconnected!", Color.Yellow, 3);
                 }
             }
             catch (Exception ex)

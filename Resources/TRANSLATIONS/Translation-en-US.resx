@@ -738,4 +738,10 @@
   <data name="MISCS_SKINCHANGER_SKIN_SPLASH" xml:space="preserve">
     <value>Big Pic</value>
   </data>
+  <data name="GLOBAL_NOTIFICATION" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="TIMERS_SPELL_MAIN" xml:space="preserve">
+    <value>Spell</value>
+  </data>
 </root>

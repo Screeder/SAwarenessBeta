@@ -19,7 +19,7 @@ namespace SAssemblies.Detectors
         {
             foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
             {
-                if (enemy.IsEnemy)
+                if (enemy.IsMe)
                 {
                     Recalls.Add(new Packet.S2C.Teleport.Struct(enemy.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0));
                 }
@@ -52,6 +52,8 @@ namespace SAssemblies.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
+            RecallDetector.MenuItems.Add(
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             RecallDetector.MenuItems.Add(
                 RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             RecallDetector.MenuItems.Add(
@@ -128,6 +130,11 @@ namespace SAssemblies.Detectors
                             {
                                 Speech.Speak(obj.ChampionName + " " + text);
                             }
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallNotification").GetValue<bool>())
+                            {
+                                Common.ShowNotification(obj.ChampionName + " " + text + " " + (int)obj.Health + " " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " (" + percentHealth + ")", System.Drawing.Color.OrangeRed, 3);
+                            }
                         }
                         else if (recallEx.Status == Packet.S2C.Teleport.Status.Finish)
                         {
@@ -159,6 +166,11 @@ namespace SAssemblies.Detectors
                             {
                                 Speech.Speak(obj.ChampionName + " " + text);
                             }
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallNotification").GetValue<bool>())
+                            {
+                                Common.ShowNotification(obj.ChampionName + " " + text + " " + (int)obj.Health + " " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " (" + percentHealth + ")", System.Drawing.Color.Red, 3);
+                            }
                         }
                         else
                         {
@@ -186,6 +198,11 @@ namespace SAssemblies.Detectors
                             if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED"));
+                            }
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallNotification").GetValue<bool>())
+                            {
+                                Common.ShowNotification(obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " + (int)obj.Health + " " +
+                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " (" + percentHealth + ")", System.Drawing.Color.LawnGreen, 3);
                             }
                         }
                         return;

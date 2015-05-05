@@ -72,6 +72,8 @@ namespace SAssemblies.Trackers
                     Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                 }))));
             SsCallerTracker.MenuItems.Add(
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
+            SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerDisableTime", Language.GetString("TRACKERS_SSCALLER_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerCircleRange", Language.GetString("TRACKERS_SSCALLER_CIRCLE_RANGE")).SetValue(new Slider(2000, 15000, 100))));
@@ -173,6 +175,10 @@ namespace SAssemblies.Trackers
                 if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerSpeech").GetValue<bool>())
                 {
                     Speech.Speak("Miss " + hero.ChampionName);
+                }
+                if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerNotification").GetValue<bool>())
+                {
+                    Common.ShowNotification("Miss " + hero.ChampionName, System.Drawing.Color.Red, 3);
                 }
                 enemy.Value.LastTimeCalled = (int)Game.Time;
                 enemy.Value.Called = true;

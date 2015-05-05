@@ -96,6 +96,8 @@ namespace SAssemblies.Detectors
                             Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                         }))));
             GankDetector.MenuItems.Add(
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
+            GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankTrackRangeMin", Language.GetString("DETECTORS_GANK_RANGE_MIN")).SetValue(new Slider(1, 10000, 1))));
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankTrackRangeMax", Language.GetString("DETECTORS_GANK_RANGE_MAX")).SetValue(new Slider(1, 10000, 1))));
@@ -165,6 +167,10 @@ namespace SAssemblies.Detectors
             if (GankDetector.GetMenuItem("SAssembliesDetectorsGankVoice").GetValue<bool>())
             {
                 Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT") + ": " + hero.ChampionName);
+            }
+            if (GankDetector.GetMenuItem("SAssembliesDetectorsGankNotification").GetValue<bool>())
+            {
+                Common.ShowNotification(Language.GetString("DETECTORS_GANK_TEXT") + ": " + hero.ChampionName, System.Drawing.Color.Red, 3);
             }
             
             //TODO: Check for Teleport etc.                    

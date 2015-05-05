@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace SAssemblies.Timers
 {
@@ -48,6 +49,8 @@ namespace SAssemblies.Timers
                     Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
                 }))));
             Timers.MenuItems.Add(
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
+            Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersTextScale", Language.GetString("TIMERS_TIMER_SCALE")).SetValue(new Slider(12, 8, 20))));
             Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAssembliesTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return Timers;
@@ -65,7 +68,7 @@ namespace SAssemblies.Timers
             return "";
         }
 
-        public static bool PingAndCall(String text, Vector3 pos, bool call = true, bool ping = true)
+        public static bool PingAndCall(String text, Vector3 pos, bool call = true, bool ping = true, bool notification = true)
         {
             if (ping)
             {
@@ -98,6 +101,13 @@ namespace SAssemblies.Timers
                          Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say(text);
+                }
+            }
+            if (notification)
+            {
+                if (Timers.GetMenuItem("SAssembliesTimersNotification").GetValue<bool>())
+                {
+                    Common.ShowNotification(text, Color.White, 3);
                 }
             }
             return true;
