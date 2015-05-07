@@ -1516,16 +1516,19 @@ namespace SAssemblies
         {
             if (name == null)
                 return name;
-            if (name.ToLower().Contains("summonersmite") || name.ToLower().Contains("smiteaoe"))
-            {
-                return "SummonerSmite";
-            }
             if (name.ToLower().Contains("snowball"))
             {
                 return "SummonerPoroThrow";
             }
             switch (name)
             {
+                case "s5summonersmiteplayerganker":
+                case "itemsmiteaoe":
+                case "s5_summonersmitequick":
+                case "s5_summonersmiteduel":
+                case "summonersmite":
+                    return "SummonerSmite";
+
                 case "Wukong":
                     return "MonkeyKing";
 
