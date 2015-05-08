@@ -1394,6 +1394,7 @@ namespace SAssemblies.Miscs
             if (_skins.Count != 0)
                 return _skins;
             String version = "";
+            List<String> skinList = new List<string>();
             try
             {
                 String jsonV = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
@@ -1402,10 +1403,11 @@ namespace SAssemblies.Miscs
             catch (Exception ex)
             {
                 Console.WriteLine("Cannot load DDragon Version: Exception: {0}", ex);
+                skinList.Add("NOT WORKING!");
+                return skinList;
             }
             String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + SpriteHelper.ConvertNames(ObjectManager.Player.ChampionName) + ".json");
             JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
-            List<String> skinList = new List<string>();
             for (int i = 0; i < 15; i++)
             {
                 try
