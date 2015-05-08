@@ -1401,7 +1401,7 @@ namespace SAssemblies.Miscs
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Cannot load DDragon Version: Exception: {1}", ex);
+                Console.WriteLine("Cannot load DDragon Version: Exception: {0}", ex);
             }
             String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion/" + SpriteHelper.ConvertNames(ObjectManager.Player.ChampionName) + ".json");
             JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
