@@ -40,6 +40,7 @@ namespace SAssemblies.Trackers
         {
             if (!IsActive())
                 return;
+
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
                 if (hero.IsEnemy && !hero.IsDead && hero.IsVisible)

@@ -127,9 +127,9 @@ namespace SAssemblies.Detectors
         private void ChatAndPing(KeyValuePair<Obj_AI_Hero, InternalGankDetector> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            var pingType = Packet.PingType.Normal;
+            var pingType = PingCategory.Normal;
             var t = GankDetector.GetMenuItem("SAssembliesDetectorsGankPingType").GetValue<StringList>();
-            pingType = (Packet.PingType)t.SelectedIndex + 1;
+            pingType = (PingCategory)t.SelectedIndex + 1;
             Vector3 pos = hero.ServerPosition;
             GamePacket gPacketT;
             for (int i = 0;
@@ -138,15 +138,13 @@ namespace SAssemblies.Detectors
             {
                 if (GankDetector.GetMenuItem("SAssembliesDetectorsGankLocalPing").GetValue<bool>())
                 {
-                    gPacketT = Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(pos[0], pos[1], 0, 0, pingType));
-                    gPacketT.Process();
+                    Game.ShowPing(pingType, pos, true);
                 }
                 else if (!GankDetector.GetMenuItem("SAssembliesDetectorsGankLocalPing").GetValue<bool>() &&
                          Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                              .GetValue<bool>())
                 {
-                    gPacketT = Packet.C2S.Ping.Encoded(new Packet.C2S.Ping.Struct(pos[0], pos[1], 0, pingType));
-                    gPacketT.Send();
+                    Game.SendPing(pingType, pos);
                 }
             }
 

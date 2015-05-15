@@ -19,13 +19,13 @@ namespace SAssemblies.Miscs
         public PingerName()
         {
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnProcessPacket += Game_OnGameProcessPacket;
+            Game.OnPing += Game_OnPing;
         }
 
         ~PingerName()
         {
             Drawing.OnDraw -= Drawing_OnDraw;
-            Game.OnProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnPing -= Game_OnPing;
             pingInfo = null;
         }
 
@@ -37,27 +37,33 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             PingerNameMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_PINGERNAME_MAIN"), "SAssembliesMiscsPingerName"));
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if(hero.IsEnemy)
+                    continue;
+
+                PingerNameMisc.MenuItems.Add(
+                    PingerNameMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsPingerNameIgnore" + hero.Name, "Ignore " + hero.Name).SetValue(false).DontSave()));
+            }
             PingerNameMisc.MenuItems.Add(
                 PingerNameMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsPingerNameActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return PingerNameMisc;
         }
 
-        void Game_OnGameProcessPacket(GamePacketEventArgs args)
+        void Game_OnPing(GamePingEventArgs args)
         {
             if (!IsActive())
                 return;
 
-            var reader = new BinaryReader(new MemoryStream(args.PacketData));
-
-            byte packetId = reader.ReadByte();
-            if (packetId == Packet.S2C.Ping.Header)
+            Obj_AI_Hero hero = args.Source as Obj_AI_Hero;
+            if (hero != null && hero.IsValid)
             {
-                Packet.S2C.Ping.Struct ping = Packet.S2C.Ping.Decoded(args.PacketData);
-                Obj_AI_Hero hero = ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(ping.SourceNetworkId);
-                if (hero != null && hero.IsValid)
+                foreach (var ally in ObjectManager.Get<Obj_AI_Hero>())
                 {
-                    pingInfo.Add(new PingInfo(hero.ChampionName, new Vector2(ping.X, ping.Y), Game.Time + 2));
+                    //if (ally.Name.Equals(hero.Name))
+                    //    args.Process = false;
                 }
+                pingInfo.Add(new PingInfo(hero.ChampionName, args.Position, Game.Time + 2));
             }
         }
 

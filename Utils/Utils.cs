@@ -2296,7 +2296,10 @@ namespace SAssemblies
             public void Dispose()
             {
                 if (Sprite != null)
+                {
+                    Sprite.Remove();
                     Sprite.Dispose();
+                }
 
                 if (Bitmap != null)
                     Bitmap.Dispose();

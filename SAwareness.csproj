@@ -118,10 +118,16 @@
     <Compile Include="Miscs\AntiLatern.cs" />
     <Compile Include="Miscs\AntiNexusTurret.cs" />
     <Compile Include="Miscs\AntiVisualScreenStealth.cs" />
+    <Compile Include="Miscs\AutoBuy.cs" />
     <Compile Include="Miscs\AutoJump.cs" />
     <Compile Include="Miscs\AutoLatern.cs" />
     <Compile Include="Miscs\EasyRangedJungle.cs" />
     <Compile Include="Miscs\ShowSupporterStacks.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Timers\Execute.cs" />
     <Compile Include="Miscs\PingerName.cs" />
     <Compile Include="Miscs\RealTime.cs" />
@@ -135,6 +141,7 @@
     <Compile Include="Timers\Spell.cs" />
     <Compile Include="Timers\Summoner.cs" />
     <Compile Include="Timers\Timer.cs" />
+    <Compile Include="Trackers\Avoid.cs" />
     <Compile Include="Trackers\CrowdControl.cs" />
     <Compile Include="Trackers\Jungler.cs" />
     <Compile Include="Wards\FowWardPlacement.cs" />
@@ -156,11 +163,6 @@
     <Compile Include="Miscs\MoveToMouse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -443,11 +445,13 @@
     <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGuiSave.png" />
     <Content Include="Resources\SPRITES\AutoLevler\SkillPoint.png" />
     <Content Include="Resources\SPRITES\EloDisplayer\EloGui.png" />
-    <Content Include="Resources\SPRITES\SmartPing\directionindicator.dds" />
-    <Content Include="Resources\SPRITES\SmartPing\pingcomehere.dds" />
-    <Content Include="Resources\SPRITES\SmartPing\pinggetback.dds" />
-    <Content Include="Resources\SPRITES\SmartPing\pingmia.dds" />
-    <Content Include="Resources\SPRITES\SmartPing\pingomw.dds" />
+    <None Include="Resources\SPRITES\SmartPing\directionindicator.png" />
+    <None Include="Resources\SPRITES\SmartPing\pingcomehere.png" />
+    <None Include="Resources\SPRITES\SmartPing\pinggetback.png" />
+    <None Include="Resources\SPRITES\SmartPing\pingmarker.png" />
+    <None Include="Resources\SPRITES\SmartPing\pingmarker_red.png" />
+    <None Include="Resources\SPRITES\SmartPing\pingmia.png" />
+    <None Include="Resources\SPRITES\SmartPing\pingomw.png" />
     <Content Include="Resources\SPRITES\Ui\BarBackground.png" />
     <Content Include="Resources\SPRITES\Ui\GoldCsLvlBar.png" />
     <Content Include="Resources\SPRITES\Ui\HealthBar.png" />

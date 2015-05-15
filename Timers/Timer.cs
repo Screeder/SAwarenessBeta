@@ -77,17 +77,13 @@ namespace SAssemblies.Timers
                     GamePacket gPacketT;
                     if (Timers.GetMenuItem("SAssembliesTimersLocalPing").GetValue<bool>())
                     {
-                        gPacketT =
-                            Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(pos[0], pos[1], 0, 0,
-                                Packet.PingType.Normal));
-                        gPacketT.Process();
+                        Game.ShowPing(PingCategory.Normal, pos, true);
                     }
                     else if (!Timers.GetMenuItem("SAssembliesTimersLocalPing").GetValue<bool>() &&
                              Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                  .GetValue<bool>())
                     {
-                        gPacketT = Packet.C2S.Ping.Encoded(new Packet.C2S.Ping.Struct(pos.X, pos.Y));
-                        gPacketT.Send();
+                        Game.SendPing(PingCategory.Normal, pos);
                     }
                 }
             }

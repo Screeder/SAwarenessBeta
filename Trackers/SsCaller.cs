@@ -137,9 +137,9 @@ namespace SAssemblies.Trackers
             if (enemy.Value.InvisibleTime > 5 && !enemy.Value.Called && Game.Time - enemy.Value.LastTimeCalled > 30)
             {
                 var pos = new Vector2(hero.Position.X, hero.Position.Y);
-                var pingType = Packet.PingType.Normal;
+                var pingType = PingCategory.Normal;
                 var t = SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerPingType").GetValue<StringList>();
-                pingType = (Packet.PingType)t.SelectedIndex + 1;
+                pingType = (PingCategory)t.SelectedIndex + 1;
                 GamePacket gPacketT;
                 for (int i = 0;
                     i < SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerPingTimes").GetValue<Slider>().Value;
@@ -147,18 +147,13 @@ namespace SAssemblies.Trackers
                 {
                     if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerLocalPing").GetValue<bool>())
                     {
-                        gPacketT =
-                            Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(pos[0], pos[1], 0, 0, pingType));
-                        gPacketT.Process();
+                        Game.ShowPing(pingType, pos, true);
                     }
                     else if (!SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerLocalPing").GetValue<bool>() &&
                              Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                  .GetValue<bool>())
                     {
-                        gPacketT =
-                            Packet.C2S.Ping.Encoded(new Packet.C2S.Ping.Struct(enemy.Value.LastPosition.X,
-                                enemy.Value.LastPosition.Y, 0, pingType));
-                        gPacketT.Send();
+                        Game.SendPing(pingType, pos);
                     }
                 }
                 if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex == 1)

@@ -1417,7 +1417,7 @@ namespace SAssemblies
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionBars, Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionLocation, Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.MoveToMouse, Miscs.MoveToMouse.SetupMenu(MainMenu.Misc.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.PingerName, Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.PingerName, Miscs.PingerName.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.RealTime, Miscs.RealTime.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.SafeMovement, Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.ShowPing, Miscs.ShowPing.SetupMenu(MainMenu.Misc.Menu));
@@ -1431,12 +1431,12 @@ namespace SAssemblies
                     menu.AddSubMenu(new LeagueSharp.Common.Menu("Global Settings", "SAwarenessGlobalSettings"));
                 Menu.GlobalSettings.MenuItems.Add(
                     Menu.GlobalSettings.Menu.AddItem(
-                        new MenuItem("SAwarenessGlobalSettingsServerChatPingActive", "Server Chat/Ping").SetValue(false)));
+                        new MenuItem("SAssembliesGlobalSettingsServerChatPingActive", "Server Chat/Ping").SetValue(false)));
                 Menu.GlobalSettings.MenuItems.Add(
                     Menu.GlobalSettings.Menu.AddItem(
-                        new MenuItem("SAwarenessGlobalSettingsVoiceVolume", "Voice Volume").SetValue(new Slider(100, 0, 100))));
+                        new MenuItem("SAssembliesGlobalSettingsVoiceVolume", "Voice Volume").SetValue(new Slider(100, 0, 100))));
                 
-                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.0.4"));
+                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.5.8"));
                 menu.AddToMainMenu();
             }
             catch (Exception ex)

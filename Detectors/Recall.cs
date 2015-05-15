@@ -19,7 +19,7 @@ namespace SAssemblies.Detectors
         {
             foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
             {
-                if (enemy.IsMe)
+                if (enemy.IsEnemy)
                 {
                     Recalls.Add(new Packet.S2C.Teleport.Struct(enemy.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0));
                 }
@@ -126,6 +126,21 @@ namespace SAssemblies.Detectors
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text, (int)obj.Health,
                                     hColor, percentHealth);
                             }
+                            for (int j = 0;
+                                j < RecallDetector.GetMenuItem("SAssembliesDetectorsRecallPingTimes").GetValue<Slider>().Value;
+                                j++)
+                            {
+                                if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallLocalPing").GetValue<bool>())
+                                {
+                                    Game.ShowPing(PingCategory.EnemyMissing, obj.ServerPosition, true);
+                                }
+                                else if (!RecallDetector.GetMenuItem("SAssembliesDetectorsRecallLocalPing").GetValue<bool>() &&
+                                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
+                                             .GetValue<bool>())
+                                {
+                                    Game.SendPing(PingCategory.EnemyMissing, obj.ServerPosition);
+                                }
+                            }
                             if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(obj.ChampionName + " " + text);
@@ -162,6 +177,21 @@ namespace SAssemblies.Detectors
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
                                     (int)obj.Health, hColor, percentHealth);
                             }
+                            for (int j = 0;
+                                j < RecallDetector.GetMenuItem("SAssembliesDetectorsRecallPingTimes").GetValue<Slider>().Value;
+                                j++)
+                            {
+                                if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallLocalPing").GetValue<bool>())
+                                {
+                                    Game.ShowPing(PingCategory.Fallback, obj.ServerPosition, true);
+                                }
+                                else if (!RecallDetector.GetMenuItem("SAssembliesDetectorsRecallLocalPing").GetValue<bool>() &&
+                                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
+                                             .GetValue<bool>())
+                                {
+                                    Game.SendPing(PingCategory.Fallback, obj.ServerPosition);
+                                }
+                            }
                             if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {
                                 Speech.Speak(obj.ChampionName + " " + text);
@@ -194,6 +224,21 @@ namespace SAssemblies.Detectors
                                 Game.Say("{0}" + obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " 
                                     + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
                                     Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", sColor, (int)obj.Health);
+                            }
+                            for (int j = 0;
+                                j < RecallDetector.GetMenuItem("SAssembliesDetectorsRecallPingTimes").GetValue<Slider>().Value;
+                                j++)
+                            {
+                                if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallLocalPing").GetValue<bool>())
+                                {
+                                    Game.ShowPing(PingCategory.Danger, obj.ServerPosition, true);
+                                }
+                                else if (!RecallDetector.GetMenuItem("SAssembliesDetectorsRecallLocalPing").GetValue<bool>() &&
+                                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
+                                             .GetValue<bool>())
+                                {
+                                    Game.SendPing(PingCategory.Danger, obj.ServerPosition);
+                                }
                             }
                             if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallSpeech").GetValue<bool>())
                             {

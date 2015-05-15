@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using Color = SharpDX.Color;
 
 namespace SAssemblies.Miscs
 {
@@ -19,12 +21,14 @@ namespace SAssemblies.Miscs
 
         public SmartPingImprove()
         {
-            Game.OnProcessPacket += Game_OnGameProcessPacket;
+            Game.OnPing += Game_OnPing;
+            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         ~SmartPingImprove()
         {
-            Game.OnProcessPacket -= Game_OnGameProcessPacket;
+            Game.OnPing -= Game_OnPing;
+            Drawing.OnDraw -= Drawing_OnDraw;
             pingInfo = null;
         }
 
@@ -41,22 +45,15 @@ namespace SAssemblies.Miscs
             return SmartPingImproveMisc;
         }
 
-        void Game_OnGameProcessPacket(GamePacketEventArgs args)
+        void Game_OnPing(GamePingEventArgs args)
         {
             if (!IsActive())
                 return;
 
-            var reader = new BinaryReader(new MemoryStream(args.PacketData));
-
-            byte packetId = reader.ReadByte();
-            if (packetId == Packet.S2C.Ping.Header)
+            Obj_AI_Hero hero = args.Source as Obj_AI_Hero;
+            if (hero != null && hero.IsValid)
             {
-                Packet.S2C.Ping.Struct ping = Packet.S2C.Ping.Decoded(args.PacketData);
-                Obj_AI_Hero hero = ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(ping.SourceNetworkId);
-                if (hero != null && hero.IsValid)
-                {
-                    pingInfo.Add(new PingInfo(hero.NetworkId, new Vector2(ping.X, ping.Y), Game.Time + 2, ping.Type));
-                }
+                pingInfo.Add(new PingInfo(hero.NetworkId, args.Position, Game.Time + 2, args.PingType));
             }
         }
 
@@ -78,15 +75,15 @@ namespace SAssemblies.Miscs
                 Drawing.DrawText(screenPos.X - 25, screenPos.Y, System.Drawing.Color.DeepSkyBlue, hero.ChampionName);
                 switch (info.Type)
                 {
-                    case Packet.PingType.AssistMe://TODO: ADD https://www.youtube.com/watch?v=HBvZZWSrmng
+                    case PingCategory.AssistMe://TODO: ADD https://www.youtube.com/watch?v=HBvZZWSrmng
                         CreateSprites(info);
                         break;
 
-                    case Packet.PingType.Danger: //TODO: ADD https://www.youtube.com/watch?v=HBvZZWSrmng
+                    case PingCategory.Danger: //TODO: ADD https://www.youtube.com/watch?v=HBvZZWSrmng
                         CreateSprites(info);
                         break;
 
-                    case Packet.PingType.OnMyWay:
+                    case PingCategory.OnMyWay:
                         if (!hero.Position.IsOnScreen())
                         {
                             DrawWaypoint(hero, info.Pos.To3D2());
@@ -107,10 +104,10 @@ namespace SAssemblies.Miscs
             }
         }
 
-        private Vector2 GetScreenPosition(Vector2 wtsPos)
+        private Vector2 GetScreenPosition(Vector2 wtsPos, Size size)
         {
-            int apparentX = (int)Math.Max(0, Math.Min(wtsPos.X, Drawing.Width));
-            int apparentY = (int)Math.Max(0, Math.Min(wtsPos.Y, Drawing.Height));
+            int apparentX = (int)Math.Max(1, Math.Min(wtsPos.X, Drawing.Width - size.Width));
+            int apparentY = (int)Math.Max(1, Math.Min(wtsPos.Y, Drawing.Height - size.Height));
             return new Vector2(apparentX, apparentY);
         }
 
@@ -139,17 +136,17 @@ namespace SAssemblies.Miscs
 
             switch (info.Type)
             {
-                case Packet.PingType.AssistMe:
-                    iconName = "?????????????????";
-                    iconBackgroundName = "?????????????????";
-                    directionName = "?????????????????";
+                case PingCategory.AssistMe:
+                    iconName = "pingcomehere";
+                    iconBackgroundName = "pingmarker";
+                    directionName = "directionindicator";
                     directionColor = Color.DeepSkyBlue;
                     break;
 
-                case Packet.PingType.Danger:
-                    iconName = "?????????????????";
-                    iconBackgroundName = "?????????????????";
-                    directionName = "?????????????????";
+                case PingCategory.Danger:
+                    iconName = "pinggetback";
+                    iconBackgroundName = "pingmarker_red";
+                    directionName = "directionindicator";
                     directionColor = Color.Red;
                     break;
             }
@@ -160,7 +157,7 @@ namespace SAssemblies.Miscs
             SpriteHelper.LoadTexture(iconName, ref info.Icon, SpriteHelper.TextureType.Default);
             info.Icon.Sprite.PositionUpdate = delegate
             {
-                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()));
+                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), info.Icon.Bitmap.Size);
             };
             info.Icon.Sprite.VisibleCondition = delegate
             {
@@ -171,7 +168,7 @@ namespace SAssemblies.Miscs
             SpriteHelper.LoadTexture(iconBackgroundName, ref info.IconBackground, SpriteHelper.TextureType.Default);
             info.IconBackground.Sprite.PositionUpdate = delegate
             {
-                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()));
+                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), info.IconBackground.Bitmap.Size);
             };
             info.IconBackground.Sprite.VisibleCondition = delegate
             {
@@ -183,7 +180,7 @@ namespace SAssemblies.Miscs
             info.Direction.Sprite.PositionUpdate = delegate
             {
                 Vector2 normPos = Drawing.WorldToScreen(info.Pos.To3D2());
-                Vector2 screenPos = GetScreenPosition(normPos);
+                Vector2 screenPos = GetScreenPosition(normPos, info.Direction.Bitmap.Size);
                 float angle = screenPos.AngleBetween(normPos);
                 info.Direction.Sprite.Rotation = angle; //Check if it is degree
                 angle = Geometry.DegreeToRadian(angle);
@@ -204,12 +201,12 @@ namespace SAssemblies.Miscs
             public Vector2 Pos;
             public int NetworkId;
             public float Time;
-            public Packet.PingType Type;
+            public PingCategory Type;
             public SpriteHelper.SpriteInfo Icon;
             public SpriteHelper.SpriteInfo IconBackground;
             public SpriteHelper.SpriteInfo Direction;
 
-            public PingInfo(int networkId, Vector2 pos, float time, Packet.PingType type)
+            public PingInfo(int networkId, Vector2 pos, float time, PingCategory type)
             {
                 NetworkId = networkId;
                 Pos = pos;
