@@ -39,7 +39,7 @@ namespace SAssemblies.Miscs
             PingerNameMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_PINGERNAME_MAIN"), "SAssembliesMiscsPingerName"));
             foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
             {
-                if(hero.IsEnemy)
+                if(hero.IsEnemy || hero.IsMe)
                     continue;
 
                 PingerNameMisc.MenuItems.Add(
@@ -60,8 +60,8 @@ namespace SAssemblies.Miscs
             {
                 foreach (var ally in ObjectManager.Get<Obj_AI_Hero>())
                 {
-                    //if (ally.Name.Equals(hero.Name))
-                    //    args.Process = false;
+                    if (ally.Name.Equals(hero.Name))
+                        args.Process = false;
                 }
                 pingInfo.Add(new PingInfo(hero.ChampionName, args.Position, Game.Time + 2));
             }
