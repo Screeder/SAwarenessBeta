@@ -26,6 +26,7 @@ using SharpDX;
 using Menu = SAssemblies.Menu;
 using MenuItem = LeagueSharp.Common.MenuItem;
 using SAssemblies.Timers;
+using SAwareness.Miscs;
 
 namespace SAssemblies
 {
@@ -98,12 +99,13 @@ namespace SAssemblies
         public static MenuItemSettings RealTime = new MenuItemSettings();
         public static MenuItemSettings ShowPing = new MenuItemSettings();
         public static MenuItemSettings PingerName = new MenuItemSettings();
-        private static MenuItemSettings AntiVisualScreenStealth = new MenuItemSettings();
+        public static MenuItemSettings AntiVisualScreenStealth = new MenuItemSettings();
         public static MenuItemSettings EloDisplayer = new MenuItemSettings();
         public static MenuItemSettings SmartPingImprove = new MenuItemSettings();
         public static MenuItemSettings WallJump = new MenuItemSettings();
         public static MenuItemSettings AntiNexusTurret = new MenuItemSettings();
         public static MenuItemSettings AntiLatern = new MenuItemSettings();
+        public static MenuItemSettings AutoBuy = new MenuItemSettings();
 
         //public static MenuItemSettings AutoSmite;
         //public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
@@ -201,7 +203,8 @@ namespace SAssemblies
                 { SmartPingImprove, () => new Miscs.SmartPingImprove() },
                 { WallJump, () => new Miscs.WallJump() },
                 { AntiNexusTurret, () => new Miscs.AntiNexusTurret() },
-                { AntiLatern, () => new Miscs.AntiLatern() },               
+                { AntiLatern, () => new Miscs.AntiLatern() },   
+                { AutoBuy, () => new Miscs.AutoBuy() },
             };
         }
 
@@ -236,11 +239,6 @@ namespace SAssemblies
             AssemblyResolver.Init();
             AppDomain.CurrentDomain.DomainUnload += delegate { threadActive = false; };
             AppDomain.CurrentDomain.ProcessExit += delegate { threadActive = false; };
-            //Thread.Sleep(1000);
-            //RAFMasterFileList _rafList;// = new RAFMasterFileList(@"D:\Spiele\League of Legends\RADS\projects\lol_game_client\filearchives");
-            //_rafList = new RAFMasterFileList(@"D:\Spiele\League of Legends\RADS\projects\lol_game_client\filearchives");
-            //_rafList.SearchFileEntries("aatrox_e.dds")[0].GetContent();
-            //Render.Sprite s = new Render.Sprite(_rafList.SearchFileEntries("aatrox_e.dds")[0].GetContent(), new Vector2(0, 0));
             Instance().Load();
         }
 
@@ -1405,14 +1403,15 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.TurretHealth, Healths.Turret.SetupMenu(MainMenu.Health.Menu));
 
                 MainMenu.Misc = Miscs.Misc.SetupMenu(menu);
-                //mainMenu.UpdateDirEntry(ref MainMenu.AntiVisualScreenStealth, Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AntiVisualScreenStealth, Miscs.AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiNexusTurret, Miscs.AntiNexusTurret.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiLatern, Miscs.AntiLatern.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.AutoBuy, Miscs.AutoBuy.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AutoJump, Miscs.AutoJump.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.AutoLatern, Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.AutoLevler, Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu)); //Hängt bei linkslick
                 mainMenu.UpdateDirEntry(ref MainMenu.EasyRangedJungle, Miscs.EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu));
-                mainMenu.UpdateDirEntry(ref MainMenu.EloDisplayer, Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu));
+                //mainMenu.UpdateDirEntry(ref MainMenu.EloDisplayer, Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.FlashJuke, Miscs.FlashJuke.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionBars, Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionLocation, Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu));
@@ -1436,7 +1435,7 @@ namespace SAssemblies
                     Menu.GlobalSettings.Menu.AddItem(
                         new MenuItem("SAssembliesGlobalSettingsVoiceVolume", "Voice Volume").SetValue(new Slider(100, 0, 100))));
                 
-                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.5.8"));
+                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.5.9"));
                 menu.AddToMainMenu();
             }
             catch (Exception ex)
@@ -1485,7 +1484,7 @@ namespace SAssemblies
                             {
                                 try
                                 {
-                                    item.Item = entry.Value.Invoke();
+                                    item.Item = entry.Value();
                                 }
                                 catch (Exception e)
                                 {

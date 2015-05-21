@@ -13,7 +13,7 @@ using Color = SharpDX.Color;
 
 namespace SAssemblies.Miscs
 {
-    internal class SmartPingImprove
+    internal class SmartPingImprove //https://www.youtube.com/watch?v=HBvZZWSrmng
     {
         public static Menu.MenuItemSettings SmartPingImproveMisc = new Menu.MenuItemSettings(typeof(SmartPingImprove));
 
@@ -53,7 +53,18 @@ namespace SAssemblies.Miscs
             Obj_AI_Hero hero = args.Source as Obj_AI_Hero;
             if (hero != null && hero.IsValid)
             {
-                pingInfo.Add(new PingInfo(hero.NetworkId, args.Position, Game.Time + 2, args.PingType));
+                PingInfo pingInfoN = new PingInfo(hero.NetworkId, args.Position, Game.Time + 2, args.PingType);
+                pingInfo.Add(pingInfoN);
+                switch (args.PingType)
+                {
+                    case PingCategory.AssistMe:
+                        CreateSprites(pingInfoN);
+                        break;
+
+                    case PingCategory.Danger:
+                        CreateSprites(pingInfoN);
+                        break;
+                }
             }
         }
 
@@ -66,7 +77,7 @@ namespace SAssemblies.Miscs
             {
                 if (info.Time < Game.Time)
                 {
-                    DeleteSprites(info);
+                    //DeleteSprites(info);
                     pingInfo.Remove(info);
                     continue;
                 }
@@ -75,14 +86,6 @@ namespace SAssemblies.Miscs
                 Drawing.DrawText(screenPos.X - 25, screenPos.Y, System.Drawing.Color.DeepSkyBlue, hero.ChampionName);
                 switch (info.Type)
                 {
-                    case PingCategory.AssistMe://TODO: ADD https://www.youtube.com/watch?v=HBvZZWSrmng
-                        CreateSprites(info);
-                        break;
-
-                    case PingCategory.Danger: //TODO: ADD https://www.youtube.com/watch?v=HBvZZWSrmng
-                        CreateSprites(info);
-                        break;
-
                     case PingCategory.OnMyWay:
                         if (!hero.Position.IsOnScreen())
                         {
@@ -155,9 +158,10 @@ namespace SAssemblies.Miscs
                 return;
 
             SpriteHelper.LoadTexture(iconName, ref info.Icon, SpriteHelper.TextureType.Default);
+            info.Icon.Sprite.Scale = new Vector2(0.4f);
             info.Icon.Sprite.PositionUpdate = delegate
             {
-                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), info.Icon.Bitmap.Size);
+                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
             };
             info.Icon.Sprite.VisibleCondition = delegate
             {
@@ -166,9 +170,10 @@ namespace SAssemblies.Miscs
             info.Icon.Sprite.Add(1);
 
             SpriteHelper.LoadTexture(iconBackgroundName, ref info.IconBackground, SpriteHelper.TextureType.Default);
+            info.IconBackground.Sprite.Scale = new Vector2(1.5f);
             info.IconBackground.Sprite.PositionUpdate = delegate
             {
-                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), info.IconBackground.Bitmap.Size);
+                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.IconBackground.Sprite.Width, info.IconBackground.Sprite.Height));
             };
             info.IconBackground.Sprite.VisibleCondition = delegate
             {
@@ -177,15 +182,16 @@ namespace SAssemblies.Miscs
             info.IconBackground.Sprite.Add(0);
 
             SpriteHelper.LoadTexture(directionName, ref info.Direction, SpriteHelper.TextureType.Default);
+            info.Direction.Sprite.Scale = new Vector2(0.6f);
             info.Direction.Sprite.PositionUpdate = delegate
             {
                 Vector2 normPos = Drawing.WorldToScreen(info.Pos.To3D2());
-                Vector2 screenPos = GetScreenPosition(normPos, info.Direction.Bitmap.Size);
-                float angle = screenPos.AngleBetween(normPos);
-                info.Direction.Sprite.Rotation = angle; //Check if it is degree
+                Vector2 screenPos = GetScreenPosition(normPos, new Size(info.Direction.Sprite.Width, info.Direction.Sprite.Height));
+                float angle = AngleBetween(screenPos, normPos);//screenPos.AngleBetween(normPos);
                 angle = Geometry.DegreeToRadian(angle);
-                screenPos = screenPos.Rotated(angle); //Check if needed
-                screenPos = screenPos.Extend(normPos, 100);
+                info.Direction.Sprite.Rotation = angle; //Check if it is degree
+                //screenPos = screenPos.Extend(normPos, 100);
+                //screenPos = screenPos.Rotated(angle); //Check if needed
                 return screenPos;
             };
             info.Direction.Sprite.VisibleCondition = delegate
@@ -194,6 +200,22 @@ namespace SAssemblies.Miscs
             };
             info.Direction.Sprite.Color = directionColor;
             info.Direction.Sprite.Add(2);
+        }
+
+        /// <summary>
+        /// AngleBetween - the angle between 2 vectors
+        /// </summary>
+        /// <returns>
+        /// Returns the the angle in degrees between vector1 and vector2
+        /// </returns>
+        /// <param name="vector1"> The first Vector </param>
+        /// <param name="vector2"> The second Vector </param>
+        public static float AngleBetween(Vector2 vector1, Vector2 vector2)
+        {
+            double sin = vector1.X * vector2.Y - vector2.X * vector1.Y;
+            double cos = vector1.X * vector2.X + vector1.Y * vector2.Y;
+
+            return (float)(Math.Atan2(sin, cos) * (180 / Math.PI));
         }
 
         private class PingInfo

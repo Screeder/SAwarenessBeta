@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClipperLib;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
@@ -137,8 +138,9 @@ namespace SAssemblies.Detectors
                 {   
                     foreach (Object obj in Objects)
                     {
-                        if (((Obj_AI_Minion)sender).BaseSkinName == obj.ObjectName && !ObjectExist(sender.Position))
+                        if (((Obj_AI_Minion)sender).BaseSkinName.ToLower().Equals(obj.ObjectName.ToLower())/* && !ObjectExist(sender.Position)*/)
                         {
+                            ObjectRemove(sender.Position, Game.Time + ((Obj_AI_Base) sender).Mana);
                             HidObjects.Add(new ObjectData(obj, sender.Position, Game.Time + ((Obj_AI_Base)sender).Mana, sender.Name,
                                 sender.NetworkId));
                             break;
@@ -148,7 +150,7 @@ namespace SAssemblies.Detectors
                 
                 if (sender is Obj_SpellLineMissile && ObjectManager.Player.Team != ((Obj_SpellMissile)sender).SpellCaster.Team)
                 {
-                    if (((Obj_SpellMissile)sender).SData.Name.Contains("itemplacementmissile"))
+                    if (((Obj_SpellMissile)sender).SData.Name.ToLower().Contains("itemplacementmissile"))
                     {
                         Utility.DelayAction.Add(10, () =>
                         {
@@ -317,6 +319,15 @@ namespace SAssemblies.Detectors
             return HidObjects.Any(obj => pos.Distance(obj.EndPosition) < 30);
         }
 
+        private void ObjectRemove(Vector3 pos, float time)
+        {
+            var obj = HidObjects.FirstOrDefault(hidObj => pos.Distance(hidObj.EndPosition) < 30 || time.Equals(hidObj.EndTime));
+            if (obj != null)
+            {
+                HidObjects.Remove(obj);
+            }
+        }
+
         private void Game_OnGameProcessPacket(GamePacketEventArgs args)
         {
             if (!IsActive())
@@ -410,8 +421,8 @@ namespace SAssemblies.Detectors
                 for (int i = 0; i < HidObjects.Count; i++)
                 {
                     ObjectData obj = HidObjects[i];
-                    if ((obj.ObjectBase != null && sender.Name == obj.ObjectBase.ObjectName) ||
-                        sender.Name.Contains("Ward") && sender.Name.Contains("Death"))
+                    if ((obj.ObjectBase != null && sender.Name.ToLower().Equals(obj.ObjectBase.ObjectName.ToLower())) ||
+                        (sender.Name.ToLower().Contains("ward") || sender.Name.ToLower().Contains("trinket")) && sender.Name.ToLower().Contains("death"))
                         if (sender.Position.Distance(obj.EndPosition) < 30 || sender.Position.Distance(obj.StartPosition) < 30)
                         {
                             HidObjects.RemoveAt(i);
@@ -436,7 +447,7 @@ namespace SAssemblies.Detectors
                 {
                     foreach (Object obj in Objects)
                     {
-                        if (args.SData.Name == obj.SpellName && !ObjectExist(args.End))
+                        if (args.SData.Name.ToLower().Equals(obj.SpellName.ToLower()) && !ObjectExist(args.End))
                         {
                             HidObjects.Add(new ObjectData(obj, args.End, Game.Time + obj.Duration, sender.Name,
                                 sender.NetworkId));
@@ -489,11 +500,33 @@ namespace SAssemblies.Detectors
             public ObjectData(Object objectBase, Vector3 endPosition, float endTime, String creator, int networkId, Vector3 startPosition = new Vector3())
             {
                 ObjectBase = objectBase;
+                if (ObjectBase.Type != ObjectType.Unknown)
+                    endPosition = GetRealPosition(endPosition);
                 EndPosition = endPosition;
                 EndTime = endTime;
                 Creator = creator;
                 NetworkId = networkId;
                 StartPosition = startPosition;
+            }
+
+            private Vector3 GetRealPosition(Vector3 end)
+            {
+                if (end.IsWall())
+                {
+                    for (var i = 0; i < 500; i = i + 2)
+                    {
+                        List<IntPoint> circlePath = new Geometry.Polygon.Circle(end, i, 10).ToClipperPath();
+                        foreach (var item in circlePath)
+                        {
+                            Vector3 newPos = new Vector2(item.X, item.Y).To3D2();
+                            if (!newPos.IsWall())
+                            {
+                                return newPos;
+                            }
+                        }
+                    }
+                }
+                return end;
             }
         }
     }

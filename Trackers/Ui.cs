@@ -113,6 +113,7 @@ namespace SAssemblies.Trackers
                     _allies.Add(hero, champ);
                 }
             }
+            InitCustomSpells();
             //UpdateItems(true);
             //UpdateItems(false);
             //CalculateSizes(true);
@@ -130,6 +131,7 @@ namespace SAssemblies.Trackers
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket; //TODO:Enable for Gold View currently bugged packet id never received
             Game.OnWndProc += Game_OnWndProc;
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
+            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
         }
         
          ~Ui()
@@ -139,6 +141,7 @@ namespace SAssemblies.Trackers
             //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             Game.OnProcessPacket -= Game_OnGameProcessPacket;
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
+            Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Base_OnProcessSpellCast;
         }
 
          public bool IsActive()
@@ -230,6 +233,9 @@ namespace SAssemblies.Trackers
 
          void Obj_AI_Base_OnTeleport(GameObject sender, GameObjectTeleportEventArgs args)
          {
+             if (!IsActive())
+                 return;
+
              Packet.S2C.Teleport.Struct decoded = Packet.S2C.Teleport.Decoded(sender, args);
              foreach (var enemy in _enemies)
              {
@@ -240,10 +246,75 @@ namespace SAssemblies.Trackers
              }
          }
 
+         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+         {
+             if (!IsActive())
+                 return;
+
+             var hero = sender as Obj_AI_Hero;
+             if (hero != null)
+             {
+                 ChampInfos.CustomSpell cdData = null;
+                 if(hero.IsAlly)
+                 {
+                     foreach (var ally in _allies)
+                     {
+                         if ((cdData = GetCustomSpellData(ally, args.SData.Name)) != null)
+                         {
+                             break;
+                         }
+                     }
+                 }
+                 else
+                 {
+                     foreach (var enemy in _enemies)
+                     {
+                         if ((cdData = GetCustomSpellData(enemy, args.SData.Name)) != null)
+                         {
+                             break;
+                         }
+                     }
+                 }
+                 if (cdData != null)
+                 {
+                     var heroSpell = hero.Spellbook.GetSpell(cdData.Slot);
+                     if (heroSpell != null)
+                     {
+                         float cooldown = cdData.BaseCooldown - heroSpell.Level - 1 * cdData.DecreaseCooldown;
+                         float cdr = hero.PercentCooldownMod * - 1 * 100;
+                         float nCooldown = cooldown - (cooldown / 100 * (cdr > 40 ? 40 : cdr)) + cdData.AdditionalCooldown;
+                         cdData.ActualCooldown = nCooldown + Game.Time;
+                     }
+                 }
+             }
+         }
+
+         private ChampInfos.CustomSpell GetCustomSpellData(KeyValuePair<Obj_AI_Hero, ChampInfos> champInfo, String spellName)
+        {
+            if (champInfo.Value.SpellQ.Custom != null && champInfo.Value.SpellQ.Custom.SpellName.ToLower().Equals(spellName.ToLower()))
+            {
+                return champInfo.Value.SpellQ.Custom;
+            }
+            else if (champInfo.Value.SpellW.Custom != null && champInfo.Value.SpellW.Custom.SpellName.ToLower().Equals(spellName.ToLower()))
+            {
+                return champInfo.Value.SpellW.Custom;
+            }
+            else if (champInfo.Value.SpellE.Custom != null && champInfo.Value.SpellE.Custom.SpellName.ToLower().Equals(spellName.ToLower()))
+            {
+                return champInfo.Value.SpellE.Custom;
+            }
+            else if (champInfo.Value.SpellR.Custom != null && champInfo.Value.SpellR.Custom.SpellName.ToLower().Equals(spellName.ToLower()))
+            {
+                return champInfo.Value.SpellR.Custom;
+            }
+             return null;
+        }
+
         private void Game_OnWndProc(WndEventArgs args)
         {
             if (!IsActive())
                 return;
+
             HandleInput((WindowsMessages) args.Msg, Utils.GetCursorPos(), args.WParam);
         }
 
@@ -3192,7 +3263,11 @@ namespace SAssemblies.Trackers
                                 }
                             }
 
-                            if (hero.Spellbook.GetSpell(SpellSlot.Q).CooldownExpires - Game.Time > 0.0f)
+                            if (enemy.Value.SpellQ.Custom != null)
+                            {
+                                enemy.Value.SpellQ.Value = (int) (enemy.Value.SpellQ.Custom.ActualCooldown - Game.Time);
+                            }
+                            else if (hero.Spellbook.GetSpell(SpellSlot.Q).CooldownExpires - Game.Time > 0.0f)
                             {
                                 enemy.Value.SpellQ.Value = (int)(hero.Spellbook.GetSpell(SpellSlot.Q).CooldownExpires - Game.Time);
                             }
@@ -3200,7 +3275,11 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.SpellQ.Value = 0;
                             }
-                            if (hero.Spellbook.GetSpell(SpellSlot.W).CooldownExpires - Game.Time > 0.0f)
+                            if (enemy.Value.SpellW.Custom != null)
+                            {
+                                enemy.Value.SpellW.Value = (int)(enemy.Value.SpellW.Custom.ActualCooldown - Game.Time);
+                            }
+                            else if (hero.Spellbook.GetSpell(SpellSlot.W).CooldownExpires - Game.Time > 0.0f)
                             {
                                 enemy.Value.SpellW.Value = (int)(hero.Spellbook.GetSpell(SpellSlot.W).CooldownExpires - Game.Time);
                             }
@@ -3208,7 +3287,11 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.SpellW.Value = 0;
                             }
-                            if (hero.Spellbook.GetSpell(SpellSlot.E).CooldownExpires - Game.Time > 0.0f)
+                            if (enemy.Value.SpellE.Custom != null)
+                            {
+                                enemy.Value.SpellE.Value = (int)(enemy.Value.SpellE.Custom.ActualCooldown - Game.Time);
+                            }
+                            else if (hero.Spellbook.GetSpell(SpellSlot.E).CooldownExpires - Game.Time > 0.0f)
                             {
                                 enemy.Value.SpellE.Value = (int)(hero.Spellbook.GetSpell(SpellSlot.E).CooldownExpires - Game.Time);
                             }
@@ -3216,7 +3299,11 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.SpellE.Value = 0;
                             }
-                            if (hero.Spellbook.GetSpell(SpellSlot.R).CooldownExpires - Game.Time > 0.0f)
+                            if (enemy.Value.SpellR.Custom != null)
+                            {
+                                enemy.Value.SpellR.Value = (int)(enemy.Value.SpellR.Custom.ActualCooldown - Game.Time);
+                            }
+                            else if (hero.Spellbook.GetSpell(SpellSlot.R).CooldownExpires - Game.Time > 0.0f)
                             {
                                 enemy.Value.SpellR.Value = (int)(hero.Spellbook.GetSpell(SpellSlot.R).CooldownExpires - Game.Time);
                             }
@@ -3530,6 +3617,53 @@ namespace SAssemblies.Trackers
             //    _sumF = new Font(Drawing.Direct3DDevice, font);
         }
 
+        private void InitCustomSpells()
+        {
+            foreach (var ally in _allies)
+            {
+                FillCustomSpells(ally);
+            }
+            foreach (var enemy in _enemies)
+            {
+                FillCustomSpells(enemy);
+            }
+        }
+
+        private void FillCustomSpells(KeyValuePair<Obj_AI_Hero, ChampInfos> champInfo)
+        {
+            switch (champInfo.Key.ChampionName)
+            {
+                case "Fizz":
+                    champInfo.Value.SpellE.Custom = new ChampInfos.CustomSpell("FizzJump", SpellSlot.E, 16f, 2f, 0.75f);
+                    break;
+                case "Gragas":
+                    champInfo.Value.SpellQ.Custom = new ChampInfos.CustomSpell("GragasQ", SpellSlot.Q, 11f, 1f);
+                    break;
+                case "Lux":
+                    champInfo.Value.SpellE.Custom = new ChampInfos.CustomSpell("LuxLightStrikeKugel", SpellSlot.E, 10f);
+                    break;
+                case "Riven":
+                    champInfo.Value.SpellQ.Custom = new ChampInfos.CustomSpell("RivenTriCleave", SpellSlot.Q, 13f);
+                    champInfo.Value.SpellR.Custom = new ChampInfos.CustomSpell("RivenFengShuiEngine", SpellSlot.R, 110f, 30f, 15f);
+                    break;
+                case "Rumble":
+                    champInfo.Value.SpellE.Custom = new ChampInfos.CustomSpell("RumbleGrenade", SpellSlot.E, 10f);
+                    break;
+                case "TwistedFate":
+                    champInfo.Value.SpellW.Custom = new ChampInfos.CustomSpell("PickACard", SpellSlot.W, 6f);
+                    break;
+                case "Velkoz":
+                    champInfo.Value.SpellQ.Custom = new ChampInfos.CustomSpell("VelkozQ", SpellSlot.Q, 7f, 0f, 0.75f);
+                    break;
+                case "Xerath":
+                    champInfo.Value.SpellQ.Custom = new ChampInfos.CustomSpell("xeratharcanopulse2", SpellSlot.Q, 9f, 1f);
+                    break;
+                case "Ziggs":
+                    champInfo.Value.SpellW.Custom = new ChampInfos.CustomSpell("ZiggsW", SpellSlot.W, 26f, 2f);
+                    break;
+            }
+        }
+
         public class ChampInfos
         {
             public SpriteInfos BackBar = new SpriteInfos();
@@ -3591,11 +3725,31 @@ namespace SAssemblies.Trackers
                 public Render.Text[] Text = new Render.Text[10];
                 public Render.Line[] Line = new Render.Line[10];
                 public int Value;
+                public CustomSpell Custom;
                 public Size CoordsHpBar;
                 public Size CoordsSideBar;
                 public Size SizeHpBar;
                 public Size SizeSideBar;
                 public String Name;
+            }
+
+            public class CustomSpell
+            {
+                public CustomSpell(string spellName, SpellSlot slot, float baseCooldown, float decreaseCooldown = 0, float additionalCooldown = 0)
+                {
+                    SpellName = spellName;
+                    Slot = slot;
+                    BaseCooldown = baseCooldown;
+                    DecreaseCooldown = decreaseCooldown;
+                    AdditionalCooldown = additionalCooldown;
+                }
+
+                public string SpellName;
+                public SpellSlot Slot;
+                public float BaseCooldown;
+                public float DecreaseCooldown;
+                public float AdditionalCooldown;
+                public float ActualCooldown = 0.0f;
             }
         }
     }

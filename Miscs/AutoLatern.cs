@@ -52,6 +52,7 @@ namespace SAssemblies.Miscs
                     !ObjectManager.Player.ChampionName.Contains("Thresh"))
                 {
                     ((Obj_AI_Base) gObject).UseObject();
+                    ObjectManager.Player.Spellbook.CastSpell((SpellSlot) 62, gObject);
                 }
             }
         }

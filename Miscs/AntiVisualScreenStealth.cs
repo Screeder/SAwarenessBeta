@@ -13,7 +13,7 @@ namespace SAssemblies.Miscs
     {
         public static Menu.MenuItemSettings AntiVisualScreenStealthMisc = new Menu.MenuItemSettings(typeof(AntiVisualScreenStealth));
 
-        private static int Header = 0xDB;
+        private static int Header = 0xE1;
 
         public AntiVisualScreenStealth()
         {
@@ -97,9 +97,9 @@ namespace SAssemblies.Miscs
             byte packetId = reader.ReadByte();
             if (packetId == Header)
             {
-                reader.ReadInt32();
-                byte visualStealthActive = reader.ReadByte();
-                if (visualStealthActive == 1)
+                //reader.ReadInt32();
+                //byte visualStealthActive = reader.ReadByte();
+                //if (visualStealthActive == 1)
                     args.Process = false;
             }
         }
