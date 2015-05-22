@@ -31,11 +31,21 @@ namespace SAssemblies.Miscs
             menu.AddToMainMenu();
         }
 
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            Miscs.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MISC_MAIN"), "SAssembliesMiscs"));
-            Miscs.MenuItems.Add(Miscs.Menu.AddItem(new MenuItem("SAssembliesMiscsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            if (useExisitingMenu)
+            {
+                Miscs.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MISC_MAIN"), "SAssembliesMiscs"));
+            }
+            else
+            {
+                Miscs.Menu = menu;
+            }
+            if (!useExisitingMenu)
+            {
+                Miscs.MenuItems.Add(Miscs.Menu.AddItem(new MenuItem("SAssembliesMiscsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            }
             return Miscs;
         }
     }

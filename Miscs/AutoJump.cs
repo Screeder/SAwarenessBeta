@@ -83,7 +83,7 @@ namespace SAssemblies.Miscs
             foreach (GameObject gObject in ObjectManager.Get<GameObject>())
             {
                 if ((_useWard && (gObject.Name.Contains("SightWard") || gObject.Name.Contains("VisionWard"))) ||
-                    gObject.Type == GameObjectType.obj_AI_Minion)
+                    gObject.Type == GameObjectType.obj_AI_Minion || gObject.Type == GameObjectType.obj_AI_Hero)
                 {
                     if (!_onlyAlly && !_onlyEnemy || (_onlyAlly && gObject.IsAlly) || (_onlyEnemy && gObject.IsEnemy))
                     {
@@ -93,8 +93,7 @@ namespace SAssemblies.Miscs
                             continue;
                         if (_lastCast + 1 > Game.Time)
                             continue;
-                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(gObject.Position.X, gObject.Position.Y))
-                            .Send();
+                        ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, gObject);
                         _jumpSpell.Cast((Obj_AI_Base)gObject, true);
                         _lastCast = Game.Time;
                         return;
@@ -121,7 +120,7 @@ namespace SAssemblies.Miscs
             {
                 if (Game.CursorPos.Distance(sender.Position) > 150)
                     return;
-                Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(sender.Position.X, sender.Position.Y)).Send();
+                ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, sender);
                 _jumpSpell.Cast((Obj_AI_Base)sender, true);
                 _lastCast = Game.Time;
             }

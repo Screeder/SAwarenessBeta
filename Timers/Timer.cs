@@ -31,10 +31,17 @@ namespace SAssemblies.Timers
             menu.AddToMainMenu();
         }
 
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            Timers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_TIMER_MAIN"), "SAssembliesTimers"));
+            if (useExisitingMenu)
+            {
+                Timers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_TIMER_MAIN"), "SAssembliesTimers"));
+            }
+            else
+            {
+                Timers.Menu = menu;
+            }
             Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersPingTimes", Language.GetString("GLOBAL_PING_TIMES")).SetValue(new Slider(0, 5, 0))));
             Timers.MenuItems.Add(
@@ -52,7 +59,10 @@ namespace SAssemblies.Timers
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersTextScale", Language.GetString("TIMERS_TIMER_SCALE")).SetValue(new Slider(12, 8, 20))));
-            Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAssembliesTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            if (!useExisitingMenu)
+            {
+                Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAssembliesTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            }
             return Timers;
         }
 

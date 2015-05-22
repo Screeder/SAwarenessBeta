@@ -33,11 +33,21 @@ namespace SAssemblies.Wards
             menu.AddToMainMenu();
         }
 
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            Wards.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu("Wards", "SAssembliesWards"));
-            Wards.MenuItems.Add(Wards.Menu.AddItem(new MenuItem("SAssembliesWardsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            if (useExisitingMenu)
+            {
+                Wards.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu("Wards", "SAssembliesWards"));
+            }
+            else
+            {
+                Wards.Menu = menu;
+            }
+            if (!useExisitingMenu)
+            {
+                Wards.MenuItems.Add(Wards.Menu.AddItem(new MenuItem("SAssembliesWardsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            }
             return Wards;
         }
     }

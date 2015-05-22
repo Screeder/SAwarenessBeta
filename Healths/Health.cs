@@ -29,17 +29,27 @@ namespace SAssemblies.Healths
             menu.AddToMainMenu();
         }
 
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            Healths.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_HEALTH_MAIN"), "SAssembliesHealths"));
+            if (useExisitingMenu)
+            {
+                Healths.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_HEALTH_MAIN"), "SAssembliesHealths"));
+            }
+            else
+            {
+                Healths.Menu = menu;
+            }
             Healths.MenuItems.Add(
                 Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsMode", Language.GetString("GLOBAL_MODE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("GLOBAL_MODE_PERCENT"), 
                     Language.GetString("GLOBAL_MODE_VALUE")
                 }))));
-            Healths.MenuItems.Add(Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            if (!useExisitingMenu)
+            {
+                Healths.MenuItems.Add(Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            }
             return Healths;
         }
 

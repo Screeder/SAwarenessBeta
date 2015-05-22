@@ -26,6 +26,7 @@ namespace SAssemblies.Miscs
                 case "Vayne": //By AsunaChan
                     _positions = new InternalWallJump(ObjectManager.Player.ChampionName, new Spell(SpellSlot.Q), new List<InternalWallJump.Positions>(new[]
                     {
+                        new InternalWallJump.Positions(new Vector3(5833f, 5590f, NavMesh.GetHeightForPosition(5833f, 5590f)), new Vector3(6124f, 5232f, NavMesh.GetHeightForPosition(6124f, 5232f))), 
                         new InternalWallJump.Positions(new Vector3(12050f, 4827f, NavMesh.GetHeightForPosition(12050f, 4827f)), new Vector3(11514f, 4462f, NavMesh.GetHeightForPosition(11514f, 4462f))), 
                         new InternalWallJump.Positions(new Vector3(6958f, 8944f, NavMesh.GetHeightForPosition(6958f, 8944f)), new Vector3(6707.485f, 8802.744f, NavMesh.GetHeightForPosition(6707.485f, 8802.744f))), 
                     }));

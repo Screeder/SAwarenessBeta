@@ -29,11 +29,21 @@ namespace SAssemblies.Detectors
             menu.AddToMainMenu();
         }
 
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            Detectors.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_DETECTOR_MAIN"), "SAssembliesDetectors"));
-            Detectors.MenuItems.Add(Detectors.Menu.AddItem(new MenuItem("SAssembliesDetectorsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            if (useExisitingMenu)
+            {
+                Detectors.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_DETECTOR_MAIN"), "SAssembliesDetectors"));
+            }
+            else
+            {
+                Detectors.Menu = menu;
+            }
+            if (!useExisitingMenu)
+            {
+                Detectors.MenuItems.Add(Detectors.Menu.AddItem(new MenuItem("SAssembliesDetectorsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            }
             return Detectors;
         }
     }

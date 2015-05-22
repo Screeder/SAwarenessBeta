@@ -29,11 +29,21 @@ namespace SAssemblies.Ranges
             menu.AddToMainMenu();
         }
 
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            Ranges.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_RANGE_MAIN"), "SAwarenessRanges"));
-            Ranges.MenuItems.Add(Ranges.Menu.AddItem(new MenuItem("SAwarenessRangesActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            if (useExisitingMenu)
+            {
+                Ranges.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_RANGE_MAIN"), "SAwarenessRanges"));
+            }
+            else
+            {
+                Ranges.Menu = menu;
+            }
+            if (!useExisitingMenu)
+            {
+                Ranges.MenuItems.Add(Ranges.Menu.AddItem(new MenuItem("SAwarenessRangesActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            }
             return Ranges;
         }
     }
