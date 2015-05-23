@@ -412,7 +412,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_MurkwolfMini2.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 3, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(6982, 5408, 52), new Vector3(7069.483f, 5800.1f, 1064.815f),
+                new Vector3(6981, 5460, 53), new Vector3(7030.898f, 5618.524f, 58.68471f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Razorbeak3.1.1", Utility.Map.MapType.SummonersRift),
