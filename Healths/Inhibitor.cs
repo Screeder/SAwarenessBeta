@@ -32,7 +32,11 @@ namespace SAssemblies.Healths
 
         public bool IsActive()
         {
+#if HEALTHS
             return Health.Healths.GetActive() && InhibitorHealth.GetActive();
+#else
+            return InhibitorHealth.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

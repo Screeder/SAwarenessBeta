@@ -66,8 +66,13 @@ namespace SAssemblies.Detectors
 
         public bool IsActive()
         {
+#if DETECTORS
             return Detector.Detectors.GetActive() && GankDetector.GetActive() &&
-                Game.Time < (GankDetector.GetMenuItem("SAssembliesDetectorsGankDisableTime").GetValue<Slider>().Value * 60); ;
+                Game.Time < (GankDetector.GetMenuItem("SAssembliesDetectorsGankDisableTime").GetValue<Slider>().Value * 60);
+#else
+            return GankDetector.GetActive() &&
+                Game.Time < (GankDetector.GetMenuItem("SAssembliesDetectorsGankDisableTime").GetValue<Slider>().Value * 60);
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

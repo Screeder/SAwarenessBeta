@@ -32,7 +32,7 @@ namespace SAssemblies.Detectors
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            if (useExisitingMenu)
+            if (!useExisitingMenu)
             {
                 Detectors.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_DETECTOR_MAIN"), "SAssembliesDetectors"));
             }

@@ -107,7 +107,11 @@ namespace SAwareness.Trackers
 
         public bool IsActive()
         {
+#if TRACKERS
             return Tracker.Trackers.GetActive() && AvoidTracker.GetActive();
+#else
+            return AvoidTracker.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

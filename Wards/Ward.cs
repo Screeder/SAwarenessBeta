@@ -36,7 +36,7 @@ namespace SAssemblies.Wards
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            if (useExisitingMenu)
+            if (!useExisitingMenu)
             {
                 Wards.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu("Wards", "SAssembliesWards"));
             }

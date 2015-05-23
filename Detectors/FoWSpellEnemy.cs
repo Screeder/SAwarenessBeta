@@ -67,7 +67,11 @@ namespace SAssemblies.Detectors
 
         public bool IsActive()
         {
+#if DETECTORS
             return Detector.Detectors.GetActive() && FoWSpellEnemyDetector.GetActive();
+#else
+            return FoWSpellEnemyDetector.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

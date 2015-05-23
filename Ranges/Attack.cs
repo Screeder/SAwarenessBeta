@@ -25,7 +25,11 @@ namespace SAssemblies.Ranges
 
         public bool IsActive()
         {
+#if RANGES
             return Range.Ranges.GetActive() && AttackRange.GetActive();
+#else
+            return AttackRange.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

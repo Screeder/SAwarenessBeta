@@ -32,7 +32,7 @@ namespace SAssemblies.Healths
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            if (useExisitingMenu)
+            if (!useExisitingMenu)
             {
                 Healths.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_HEALTH_MAIN"), "SAssembliesHealths"));
             }

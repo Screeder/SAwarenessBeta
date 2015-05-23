@@ -32,7 +32,7 @@ namespace SAssemblies.Trackers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu, bool useExisitingMenu = false)
         {
             Language.SetLanguage();
-            if (useExisitingMenu)
+            if (!useExisitingMenu)
             {
                 Trackers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_TRACKER_MAIN"), "SAssembliesTracker"));
             }

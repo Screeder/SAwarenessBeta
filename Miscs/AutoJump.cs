@@ -59,7 +59,11 @@ namespace SAssemblies.Miscs
 
         public bool IsActive()
         {
+#if MISCS
             return Misc.Miscs.GetActive() && AutoJumpMisc.GetActive();
+#else
+            return AutoJumpMisc.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

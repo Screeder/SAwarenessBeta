@@ -52,7 +52,11 @@ namespace SAssemblies.Trackers
 
         public bool IsActive()
         {
+#if TRACKERS
             return Tracker.Trackers.GetActive() && JunglerTracker.GetActive();
+#else
+            return JunglerTracker.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

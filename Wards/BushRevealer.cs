@@ -34,7 +34,11 @@ namespace SAssemblies.Wards
 
         public bool IsActive()
         {
+#if WARDS
             return Ward.Wards.GetActive() && BushRevealerWard.GetActive();
+#else
+            return BushRevealerWard.GetActive();
+#endif
         }
 
         private static void SetupMainMenu()

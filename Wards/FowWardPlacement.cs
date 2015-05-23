@@ -42,7 +42,7 @@ namespace SAssemblies.Wards
         {
             foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
             {
-                if (hero.IsEnemy)
+                if (hero.IsMe)
                 {
                     List<ExpandedWardItem> wards = new List<ExpandedWardItem>();
 					wards = GetWardItems(hero);
@@ -61,7 +61,11 @@ namespace SAssemblies.Wards
 
         public bool IsActive()
         {
+#if WARDS
             return Ward.Wards.GetActive() && FowWardPlacementWard.GetActive();
+#else
+            return FowWardPlacementWard.GetActive();
+#endif
         }
 
         private static void SetupMainMenu()

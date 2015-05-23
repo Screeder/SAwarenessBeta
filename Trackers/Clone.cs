@@ -25,7 +25,11 @@ namespace SAssemblies.Trackers
 
         public bool IsActive()
         {
+#if TRACKERS
             return Tracker.Trackers.GetActive() && CloneTracker.GetActive();
+#else
+            return CloneTracker.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

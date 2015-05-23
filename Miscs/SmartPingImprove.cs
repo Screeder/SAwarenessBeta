@@ -34,7 +34,11 @@ namespace SAssemblies.Miscs
 
         public bool IsActive()
         {
+#if MISCS
             return Misc.Miscs.GetActive() && SmartPingImproveMisc.GetActive();
+#else
+            return SmartPingImproveMisc.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

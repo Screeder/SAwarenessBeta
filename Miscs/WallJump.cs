@@ -344,7 +344,11 @@ namespace SAssemblies.Miscs
 
         public bool IsActive()
         {
+#if MISCS
             return Misc.Miscs.GetActive() && WallJumpMisc.GetActive();
+#else
+            return WallJumpMisc.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

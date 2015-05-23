@@ -33,7 +33,11 @@ namespace SAssemblies.Timers
 
         public bool IsActive()
         {
+#if TIMERS
             return Timer.Timers.GetActive() && AltarTimer.GetActive();
+#else
+            return AltarTimer.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

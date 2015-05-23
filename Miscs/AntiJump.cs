@@ -20,8 +20,20 @@ namespace SAwareness.Miscs
         {
             switch (ObjectManager.Player.ChampionName)
             {
+                case "Azir":
+                    Champion = new Champ("Azir", 250, SpellSlot.R, true);
+                    break;
+
+                case "Cassiopeia":
+                    Champion = new Champ("Cassiopeia", 825, SpellSlot.R, true);
+                    break;
+
                 case "Draven":
                     Champion = new Champ("Draven", 1000, SpellSlot.E, true);
+                    break;
+
+                case "Syndra":
+                    Champion = new Champ("Syndra", 700, SpellSlot.E, true);
                     break;
 
                 case "Thresh":
@@ -30,6 +42,10 @@ namespace SAwareness.Miscs
 
                 case "Tristana":
                     Champion = new Champ("Tristana", 500, SpellSlot.R, false);
+                    break;
+
+                case "Quinn":
+                    Champion = new Champ("Quinn", 700, SpellSlot.E, false);
                     break;
 
                 case "Vayne":
@@ -49,7 +65,11 @@ namespace SAwareness.Miscs
 
         public bool IsActive()
         {
+#if MISCS
             return Misc.Miscs.GetActive() && AntiJumpMisc.GetActive();
+#else
+            return AntiJumpMisc.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
@@ -87,17 +107,20 @@ namespace SAwareness.Miscs
 
         bool IsJumping(Obj_AI_Hero champion, String animation)
         {
-            switch (champion.ChampionName)
+            if (ObjectManager.Player.Distance(champion) <= Champion.Range)
             {
-                case "Rengar":
-                    if (animation.Contains("Spell5") && ObjectManager.Player.Distance(champion) <= Champion.Range)
-                        return true;
-                    break;
+                switch (champion.ChampionName)
+                {
+                    case "Rengar":
+                        if (animation.Contains("Spell5"))
+                            return true;
+                        break;
 
-                case "Khazix":
-                    if (animation.Contains("Spell3") && ObjectManager.Player.Distance(champion) <= Champion.Range)
-                        return true;
-                    break;
+                    case "Khazix":
+                        if (animation.Contains("Spell3"))
+                            return true;
+                        break;
+                }
             }
             return false;
         }

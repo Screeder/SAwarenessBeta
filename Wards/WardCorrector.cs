@@ -12,7 +12,7 @@ namespace SAssemblies.Wards
 {
     class WardCorrector
     {
-        public static Menu.MenuItemSettings WardCorrector_Wards = new Menu.MenuItemSettings(typeof(WardCorrector));
+        public static Menu.MenuItemSettings WardCorrectorWard = new Menu.MenuItemSettings(typeof(WardCorrector));
 
         private static List<WardSpot> WardSpots = new List<WardSpot>();
 
@@ -115,7 +115,11 @@ namespace SAssemblies.Wards
 
         public bool IsActive()
         {
-            return Ward.Wards.GetActive() && WardCorrector_Wards.GetActive();
+#if WARDS
+            return Ward.Wards.GetActive() && WardCorrectorWard.GetActive();
+#else
+            return WardCorrectorWard.GetActive();
+#endif
         }
 
         private static void SetupMainMenu()
@@ -127,12 +131,12 @@ namespace SAssemblies.Wards
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            WardCorrector_Wards.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_WARDCORRECTOR_MAIN"), "SAssembliesWardsWardCorrector"));
-            WardCorrector_Wards.MenuItems.Add(
-                WardCorrector_Wards.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorKey", Language.GetString("WARDS_WARDCORRECTOR_TRINKET")).SetValue(new KeyBind(52, KeyBindType.Press))));
-            WardCorrector_Wards.MenuItems.Add(
-                WardCorrector_Wards.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return WardCorrector_Wards;
+            WardCorrectorWard.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_WARDCORRECTOR_MAIN"), "SAssembliesWardsWardCorrector"));
+            WardCorrectorWard.MenuItems.Add(
+                WardCorrectorWard.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorKey", Language.GetString("WARDS_WARDCORRECTOR_TRINKET")).SetValue(new KeyBind(52, KeyBindType.Press))));
+            WardCorrectorWard.MenuItems.Add(
+                WardCorrectorWard.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return WardCorrectorWard;
         }
 
         void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
@@ -287,7 +291,7 @@ namespace SAssemblies.Wards
             if (MenuGUI.IsChatOpen)
                 return;
             uint trinketKey =
-                WardCorrector_Wards.GetMenuItem("SAssembliesWardsWardCorrectorKey").GetValue<KeyBind>().Key;
+                WardCorrectorWard.GetMenuItem("SAssembliesWardsWardCorrectorKey").GetValue<KeyBind>().Key;
             if (args.Msg == WM_KEYDOWN)
             {
                 //Console.WriteLine("Hero: " + ObjectManager.Player.ServerPosition);

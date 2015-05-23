@@ -59,7 +59,11 @@ namespace SAssemblies.Trackers
 
         public bool IsActive()
         {
+#if TRACKERS
             return Tracker.Trackers.GetActive() && GankTracker.GetActive();
+#else
+            return GankTracker.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

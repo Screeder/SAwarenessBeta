@@ -34,7 +34,11 @@ namespace SAssemblies.Detectors
 
         public bool IsActive()
         {
+#if DETECTORS
             return Detector.Detectors.GetActive() && RecallDetector.GetActive();
+#else
+            return RecallDetector.GetActive();
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)

@@ -42,8 +42,13 @@ namespace SAssemblies.Trackers
 
         public bool IsActive()
         {
+#if TRACKERS
             return Tracker.Trackers.GetActive() && SsCallerTracker.GetActive() &&
                    Game.Time < (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerDisableTime").GetValue<Slider>().Value * 60);
+#else
+            return SsCallerTracker.GetActive() &&
+                   Game.Time < (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerDisableTime").GetValue<Slider>().Value * 60);
+#endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
