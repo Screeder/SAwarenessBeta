@@ -429,7 +429,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_RedMini4.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Order, 5, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(8422f, 2654f, 50.67624f), new Vector3(8346.029f, 2733.336f, 51.13f),
+                new Vector3(8422f, 2654f, 50.67624f), new Vector3(8295.447f, 2783.954f, 51.13f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Krug5.1.2", Utility.Map.MapType.SummonersRift),
