@@ -1345,7 +1345,7 @@ namespace SAssemblies
                 //Menu.EloDisplayer.MenuItems.Add(
                 //    Menu.EloDisplayer.Menu.AddItem(new MenuItem("SAwarenessEloDisplayerActive", "Active").SetValue(false)));
                 
-                MainMenu.Tracker = Tracker.SetupMenu(menu, true);
+                MainMenu.Tracker = Tracker.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.GankTracker, Gank.SetupMenu(MainMenu.Tracker.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.CloneTracker, Clone.SetupMenu(MainMenu.Tracker.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.DestinationTracker, Destination.SetupMenu(MainMenu.Tracker.Menu));
@@ -1357,7 +1357,7 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.JunglerTracker, Jungler.SetupMenu(MainMenu.Tracker.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.CrowdControlTracker, Trackers.CrowdControl.SetupMenu(MainMenu.Tracker.Menu));
 
-                MainMenu.Timers = Timer.SetupMenu(menu, true);
+                MainMenu.Timers = Timer.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.AltarTimer, Altar.SetupMenu(MainMenu.Timers.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.HealthTimer, Health.SetupMenu(MainMenu.Timers.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.ImmuneTimer, Immune.SetupMenu(MainMenu.Timers.Menu));
@@ -1367,20 +1367,20 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.SummonerTimer, Summoner.SetupMenu(MainMenu.Timers.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.SpellTimer, Spell.SetupMenu(MainMenu.Timers.Menu));
 
-                MainMenu.Detector = Detector.SetupMenu(menu, true);
+                MainMenu.Detector = Detector.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.VisionDetector, Vision.SetupMenu(MainMenu.Detector.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.RecallDetector, Recall.SetupMenu(MainMenu.Detector.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.GankDetector, Detectors.Gank.SetupMenu(MainMenu.Detector.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.DisconnectDetector, Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.FoWSpellEnemyDetector, FoWSpellEnemy.SetupMenu(MainMenu.Detector.Menu));
 
-                MainMenu.Wards = Wards.Ward.SetupMenu(menu, true);
+                MainMenu.Wards = Wards.Ward.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.BushRevealer, BushRevealer.SetupMenu(MainMenu.Wards.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.InvisibleRevealer, InvisibleRevealer.SetupMenu(MainMenu.Wards.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.WardCorrector, WardCorrector.SetupMenu(MainMenu.Wards.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.FowWardPlacement, Wards.FowWardPlacement.SetupMenu(MainMenu.Wards.Menu));
 
-                MainMenu.Range = Range.SetupMenu(menu, true);
+                MainMenu.Range = Range.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.SpellQRange, SpellQ.SetupMenu(MainMenu.Range.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.SpellWRange, SpellW.SetupMenu(MainMenu.Range.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.SpellERange, SpellE.SetupMenu(MainMenu.Range.Menu));
@@ -1391,11 +1391,11 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.AttackRange, Attack.SetupMenu(MainMenu.Range.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.TurretRange, Ranges.Turret.SetupMenu(MainMenu.Range.Menu));
 
-                MainMenu.Health = Healths.Health.SetupMenu(menu, true);
+                MainMenu.Health = Healths.Health.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.InhibitorHealth, Healths.Inhibitor.SetupMenu(MainMenu.Health.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.TurretHealth, Turret.SetupMenu(MainMenu.Health.Menu));
 
-                MainMenu.Misc = Misc.SetupMenu(menu, true);
+                MainMenu.Misc = Misc.SetupMenu(menu);
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiVisualScreenStealth, AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiNexusTurret, AntiNexusTurret.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiLatern, AntiLatern.SetupMenu(MainMenu.Misc.Menu));
