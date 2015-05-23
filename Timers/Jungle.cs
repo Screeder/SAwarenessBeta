@@ -396,7 +396,7 @@ namespace SAssemblies.Timers
             
 
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Order, 1, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(3872, 7926, 51), new Vector3(3641.058f, 8144.426f, 1105.46f),
+                new Vector3(3791, 7901, 52), new Vector3(3641.904f, 8098.774f, 50.87435f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Blue1.1.1", Utility.Map.MapType.SummonersRift),
