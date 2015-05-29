@@ -396,7 +396,7 @@ namespace SAssemblies.Timers
             
 
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Order, 1, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(3872, 7926, 51), new Vector3(3641.058f, 8144.426f, 1105.46f),
+                new Vector3(3791, 7901, 52), new Vector3(3641.904f, 8098.774f, 50.87435f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Blue1.1.1", Utility.Map.MapType.SummonersRift),
@@ -404,7 +404,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_BlueMini21.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Order, 2, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(3920, 6536, 52), new Vector3(3730.419f, 6744.748f, 1100.24f),
+                new Vector3(3826, 6481, 52), new Vector3(3793.65f, 6580.254f, 52.46237f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Murkwolf2.1.1", Utility.Map.MapType.SummonersRift),
@@ -412,7 +412,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_MurkwolfMini2.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 3, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(6982, 5408, 52), new Vector3(7069.483f, 5800.1f, 1064.815f),
+                new Vector3(6981, 5460, 53), new Vector3(7030.898f, 5567.907f, 57.33538f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Razorbeak3.1.1", Utility.Map.MapType.SummonersRift),
@@ -421,7 +421,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_RazorbeakMini3.1.4", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("red", GameObjectTeam.Order, 4, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(7752, 4010, 54), new Vector3(7710.639f, 3963.267f, 1200.182f),
+                new Vector3(7752, 4010, 54), new Vector3(7739.046f, 4100.004f, 54.0293f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Red4.1.1", Utility.Map.MapType.SummonersRift),
@@ -429,17 +429,17 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_RedMini4.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("golems", GameObjectTeam.Order, 5, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(8414f, 2678f, 50.79845f), new Vector3(8419.813f, 3239.516f, 1280.222f),
+                new Vector3(8422f, 2654f, 50.67624f), new Vector3(8295.447f, 2783.954f, 51.13f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Krug5.1.2", Utility.Map.MapType.SummonersRift),
                     GetJungleMobByName("SRU_KrugMini5.1.1", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wight", GameObjectTeam.Order, 13, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(2282, 8388, 51), new Vector3(2263.463f, 8571.541f, 1136.772f),
+                new Vector3(2147, 8456, 51), new Vector3(2175.026f, 8554.33f, 51.77746f),
                 new[] { GetJungleMobByName("SRU_Gromp13.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Chaos, 7, 115, 300, Utility.Map.MapType.SummonersRift,
-                new Vector3(11142, 6820, 51), new Vector3(11014.81f, 7251.099f, 1073.918f),
+                new Vector3(10989, 6944, 51), new Vector3(11077.46f, 7086.427f, 51.72424f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Blue7.1.1", Utility.Map.MapType.SummonersRift),
@@ -447,7 +447,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_BlueMini27.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wolves", GameObjectTeam.Chaos, 8, 115, 100, Utility.Map.MapType.SummonersRift,
-                new Vector3(10886, 8230, 62), new Vector3(11233.96f, 8789.653f, 1051.235f),
+                new Vector3(10991, 8348, 62), new Vector3(11128.04f, 8503.731f, 59.90768f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Murkwolf8.1.1", Utility.Map.MapType.SummonersRift),
@@ -455,7 +455,7 @@ namespace SAssemblies.Timers
                     GetJungleMobByName("SRU_MurkwolfMini8.1.3", Utility.Map.MapType.SummonersRift)
                 }));
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Chaos, 9, 115, 100,
-                Utility.Map.MapType.SummonersRift, new Vector3(7884, 9466, 52), new Vector3(7962.764f, 10028.573f, 1023.06f),
+                Utility.Map.MapType.SummonersRift, new Vector3(7884, 9466, 52), new Vector3(7789.627f, 9819.764f, 51.45492f),
                 new[]
                 {
                     GetJungleMobByName("SRU_Razorbeak9.1.1", Utility.Map.MapType.SummonersRift),
@@ -482,10 +482,10 @@ namespace SAssemblies.Timers
                 new Vector3(12668, 6360, 51), new Vector3(12671.58f, 6617.756f, 1118.074f),
                 new[] { GetJungleMobByName("SRU_Gromp14.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("crab", GameObjectTeam.Neutral, 15, 2 * 60 + 30, 180, Utility.Map.MapType.SummonersRift,
-                new Vector3(10586, 5114, -62), new Vector3(10586, 5114, -62),
+                new Vector3(10586, 5114, -62), new Vector3(10501, 5159, -62),
                 new[] { GetJungleMobByName("SRU_Crab15.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("crab", GameObjectTeam.Neutral, 16, 2 * 60 + 30, 180, Utility.Map.MapType.SummonersRift,
-                new Vector3(4274, 9696, -68), new Vector3(4274, 9696, -68),
+                new Vector3(4402, 9589, -66), new Vector3(4274, 9696, -68),
                 new[] { GetJungleMobByName("SRU_Crab16.1.1", Utility.Map.MapType.SummonersRift) }));
             JungleCamps.Add(new JungleCamp("dragon", GameObjectTeam.Neutral, 6, 2 * 60 + 30, 360,
                 Utility.Map.MapType.SummonersRift, new Vector3(10116, 4438, -71), new Vector3(10109.18f, 4850.93f, 1032.274f),
