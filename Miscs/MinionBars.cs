@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace SAssemblies.Miscs
 {
@@ -36,8 +37,6 @@ namespace SAssemblies.Miscs
         {
             MinionBarsMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MINIONBARS_MAIN"), "SAssembliesMiscsMinionBars"));
             MinionBarsMisc.MenuItems.Add(
-                MinionBarsMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMinionBarsGlowActive", Language.GetString("MISCS_MINIONBARS_GLOW")).SetValue(false)));
-            MinionBarsMisc.MenuItems.Add(
                 MinionBarsMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMinionBarsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return MinionBarsMisc;
         }
@@ -49,114 +48,319 @@ namespace SAssemblies.Miscs
 
             foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
             {
-                if (!minion.IsVisible || minion.IsDead || minion.IsAlly)
+                if (!minion.IsVisible || minion.IsDead || minion.IsAlly || minion.Health == 0 || !minion.IsHPBarRendered)
                     continue;
-                Vector2 hpPos = minion.HPBarPosition;
-                //hpPos.Y -= 3;
-                double damageMinion = ObjectManager.Player.GetAutoAttackDamage(minion);
-                double hitsToKill = Math.Ceiling(minion.MaxHealth / damageMinion);
-                double barsToDraw = Math.Floor(minion.MaxHealth / 100.0);
-                double barDistance = 100.0 / (minion.MaxHealth / 62.0);
-                double myDamageDistance = damageMinion / (minion.MaxHealth / 62.0);
-                double barsDrawn = 0;
-                int heightOffset = 1;
-                int barSize = 2;
-                int barWidth = 1;
-                //hpPos.X = hpPos.X - 32;
-                hpPos.Y = hpPos.Y + heightOffset;
-                //if (minion.BaseSkinName == "Dragon" || minion.BaseSkinName == "Worm" ||
-                //    minion.BaseSkinName == "TT_Spiderboss")
-                //{
-                //    double healthDraw = 500.0;
-                //    if (minion.BaseSkinName == "Dragon")
-                //    {
-                //        hpPos.X -= 31;
-                //        hpPos.Y -= 7;
-                //    }
-                //    else if (minion.BaseSkinName == "Worm")
-                //    {
-                //        hpPos.X -= 31;
-                //        healthDraw = 1000.0;
-                //    }
-                //    else if (minion.BaseSkinName == "TT_Spiderboss")
-                //        hpPos.X -= 3;
-                //    barsToDraw = Math.Floor(minion.MaxHealth / healthDraw);
-                //    barDistance = healthDraw / (minion.MaxHealth / 124.0);
-                //    double drawDistance = 0;
-                //    while (barsDrawn != barsToDraw && barsToDraw != 0 && barsToDraw < 200)
-                //    {
-                //        drawDistance = drawDistance + barDistance;
-                //        if (barsDrawn % 2 == 1)
-                //        {
-                //            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth + 1, barSize,
-                //                System.Drawing.Color.Black);
-                //        }
-                //        else
-                //            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
-                //                System.Drawing.Color.Black);
-                //        barsDrawn = barsDrawn + 1;
-                //    }
-                //    DrawRectangleAL(hpPos.X + 43 + myDamageDistance, hpPos.Y + 19, barWidth, barSize, System.Drawing.Color.GreenYellow);
-                //    if (damageMinion > minion.Health)
-                //    {
-                //        OutLineBar(hpPos.X + 43, hpPos.Y + 20, System.Drawing.Color.GreenYellow);
-                //    }
-                //}
-                //else
-                //{
-                //    double drawDistance = 0;
-                //    while (barsDrawn != barsToDraw && barsToDraw != 0 && barsToDraw < 50)
-                //    {
-                //        drawDistance = drawDistance + barDistance;
-                //        if (barsToDraw > 20)
-                //        {
-                //            if (barsDrawn % 5 == 4)
-                //                if (barsDrawn % 10 == 9)
-                //                    DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth + 1, barSize,
-                //                        System.Drawing.Color.Black);
-                //                else
-                //                    DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
-                //                        System.Drawing.Color.Black);
-                //        }
-                //        else
-                //            DrawRectangleAL(hpPos.X + 43 + drawDistance, hpPos.Y + 19, barWidth, barSize,
-                //                System.Drawing.Color.Black);
-                //        barsDrawn = barsDrawn + 1;
 
-                //    }
-                //    DrawRectangleAL(hpPos.X + 43 + myDamageDistance, hpPos.Y + 19, barWidth, barSize, System.Drawing.Color.GreenYellow);
-                //    if (damageMinion > minion.Health && MinionBarsMisc.GetMenuItem("SAssembliesMiscsMinionBarsGlowActive").GetValue<bool>())
-                //    {
-                //        OutLineBar(hpPos.X + 43, hpPos.Y + 20, System.Drawing.Color.GreenYellow);
-                //    }
-                //}
+                var attackToKill = Math.Ceiling(minion.MaxHealth / ObjectManager.Player.GetAutoAttackDamage(minion, true));
+                var hpBarPosition = minion.HPBarPosition;
+                var lineSize = 1;
+                var xOffset = 45;
+                var yOffsetStart = 18;
+                var yOffsetEnd = 23;
+                var barWidth = 50;
+                switch (minion.BaseSkinName)
+                {
+                    //Summoners Rift
+                    case "SRU_ChaosMinionMelee":
+                    case "SRU_OrderMinionMelee":
+                        barWidth = 70;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_ChaosMinionRanged":
+                    case "SRU_OrderMinionRanged":
+                        barWidth = 75;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_ChaosMinionSiege":
+                    case "SRU_OrderMinionSiege":
+                        barWidth = 65;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_ChaosMinionSuper":
+                    case "SRU_OrderMinionSuper":
+                        barWidth = 80;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_Murkwolf":
+                        barWidth = 79;
+                        xOffset = 53;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_MurkwolfMini":
+                        barWidth = 65;
+                        xOffset = 40;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_Razorbeak":
+                        barWidth = 79;
+                        xOffset = 53;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_RazorbeakMini":
+                        barWidth = 65;
+                        xOffset = 35;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_Krug":
+                        barWidth = 79;
+                        xOffset = 58;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_KrugMini":
+                        barWidth = 65;
+                        xOffset = 35;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_Blue":
+                        barWidth = 147;
+                        xOffset = 3;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 28;
+                        break;
+
+                    case "SRU_BlueMini":
+                    case "SRU_BlueMini2":
+                        barWidth = 55;
+                        xOffset = 37;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_Red":
+                        barWidth = 147;
+                        xOffset = 3;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 28;
+                        break;
+
+                    case "SRU_RedMini":
+                        barWidth = 55;
+                        xOffset = 37;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "SRU_Gromp":
+                        barWidth = 92;
+                        xOffset = 60;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "Sru_Crab":
+                        barWidth = 65;
+                        xOffset = 45;
+                        yOffsetStart = 34;
+                        yOffsetEnd = 38;
+                        break;
+
+                    case "SRU_Dragon":
+                        barWidth = 147;
+                        xOffset = 3;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 27;
+                        lineSize = 2;
+                        break;
+
+                    case "SRU_Baron":
+                        barWidth = 190;
+                        xOffset = -20;
+                        yOffsetStart = 16;
+                        yOffsetEnd = 28;
+                        lineSize = 2;
+                        break;
+
+                    //TwistedTreeline
+
+                    case "Red_Minion_Basic":
+                    case "Blue_Minion_Basic":
+                        barWidth = 70;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "Red_Minion_Wizard":
+                    case "Blue_Minion_Wizard":
+                        barWidth = 75;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "Red_Minion_MechCannon":
+                    case "Blue_Minion_MechCannon":
+                        barWidth = 65;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "Red_Minion_MechMelee":
+                    case "Blue_Minion_MechMelee":
+                        barWidth = 80;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_NWraith":
+                        barWidth = 68;
+                        xOffset = 44;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_NWraith2":
+                        barWidth = 65;
+                        xOffset = 42;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_NGolem":
+                        barWidth = 68;
+                        xOffset = 44;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_NGolem2":
+                        barWidth = 65;
+                        xOffset = 42;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_NWolf":
+                        barWidth = 68;
+                        xOffset = 44;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_NWolf2":
+                        barWidth = 65;
+                        xOffset = 42;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "TT_Spiderboss":
+                        barWidth = 125;
+                        xOffset = 88;
+                        yOffsetStart = 19;
+                        yOffsetEnd = 23;
+                        lineSize = 2;
+                        break;
+
+                    //CrystalScare
+
+                    case "Odin_Red_Minion_Caster":
+                    case "Odin_Blue_Minion_Caster":
+                        barWidth = 75;
+                        xOffset = 40;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "OdinRedSuperminion":
+                    case "OdinBlueSuperminion":
+                        barWidth = 65;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    //Howling Abyss
+
+                    case "HA_ChaosMinionMelee":
+                    case "HA_OrderMinionMelee":
+                        barWidth = 70;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "HA_ChaosMinionRanged":
+                    case "HA_OrderMinionRanged":
+                        barWidth = 75;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "HA_ChaosMinionSiege":
+                    case "HA_OrderMinionSiege":
+                        barWidth = 65;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+
+                    case "HA_ChaosMinionSuper":
+                    case "HA_OrderMinionSuper":
+                        barWidth = 80;
+                        xOffset = 45;
+                        yOffsetStart = 18;
+                        yOffsetEnd = 23;
+                        break;
+                }
+                var barDistance = barWidth / attackToKill;
+                for (var i = 0; i < attackToKill; i++)
+                {
+                    if (i != 0)
+                    {
+                        if (attackToKill > 20 && attackToKill < 50)
+                        {
+                            if (i % 5 != 0)
+                            {
+                                continue;
+                            }
+                        }
+                        else if (attackToKill >= 50)
+                        {
+                            if (i % 10 != 0)
+                            {
+                                continue;
+                            }
+                        }
+                        var start = new Vector2(
+                            hpBarPosition.X + xOffset + (float) (barDistance) * i, hpBarPosition.Y + yOffsetStart);
+                        var end = new Vector2(
+                            hpBarPosition.X + xOffset + ((float) (barDistance) * i), hpBarPosition.Y + yOffsetEnd);
+                        if(Common.IsOnScreen(start) && Common.IsOnScreen(end))
+                        {
+                            Drawing.DrawLine(start, end, lineSize,
+                                (minion.Health <= ObjectManager.Player.GetAutoAttackDamage(minion, true) ? System.Drawing.Color.Red : System.Drawing.Color.Black));
+                        }
+                    }
+                }
             }
-        }
-
-        private void DrawRectangleAL(double x, double y, double w, double h, System.Drawing.Color color)
-        {
-            Vector2[] points = new Vector2[4];
-            points[0] = new Vector2((float)Math.Floor(x), (float)Math.Floor(y));
-            points[1] = new Vector2((float)Math.Floor(x + w), (float)Math.Floor(y));
-            points[2] = new Vector2((float)Math.Floor(x), (float)Math.Floor(y + h));
-            points[3] = new Vector2((float)Math.Floor(x + w), (float)Math.Floor(y + h));
-            if (Common.IsOnScreen(points[0]) && Common.IsOnScreen(points[1]))
-                Drawing.DrawLine(points[0], points[1], 1, color);
-            if (Common.IsOnScreen(points[0]) && Common.IsOnScreen(points[2]))
-                Drawing.DrawLine(points[0], points[2], 1, color);
-            if (Common.IsOnScreen(points[1]) && Common.IsOnScreen(points[3]))
-                Drawing.DrawLine(points[1], points[3], 1, color);
-            if (Common.IsOnScreen(points[2]) && Common.IsOnScreen(points[3]))
-                Drawing.DrawLine(points[2], points[3], 1, color);
-        }
-
-        private void OutLineBar(double x, double y, System.Drawing.Color color)
-        {
-            DrawRectangleAL(x, y - 3, 64, 1, color);
-            DrawRectangleAL(x, y + 2, 64, 1, color);
-
-            DrawRectangleAL(x, y, 1, 5, color);
-            DrawRectangleAL(x + 63, y, 1, 5, color);
         }
     }
 }
