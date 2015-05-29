@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +13,8 @@ using SAssemblies.Ranges;
 using SAssemblies.Timers;
 using SAssemblies.Trackers;
 using SAssemblies.Wards;
+using SharpDX;
+using Color = System.Drawing.Color;
 using Gank = SAssemblies.Trackers.Gank;
 using Health = SAssemblies.Timers.Health;
 using Inhibitor = SAssemblies.Timers.Inhibitor;
@@ -1406,7 +1408,7 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.EasyRangedJungle, EasyRangedJungle.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.EloDisplayer, Miscs.EloDisplayer.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.FlashJuke, FlashJuke.SetupMenu(MainMenu.Misc.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.MinionBars, Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.MinionBars, Miscs.MinionBars.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.MinionLocation, Miscs.MinionLocation.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.MoveToMouse, MoveToMouse.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.PingerName, PingerName.SetupMenu(MainMenu.Misc.Menu));
@@ -1427,8 +1429,8 @@ namespace SAssemblies
                 Menu.GlobalSettings.MenuItems.Add(
                     Menu.GlobalSettings.Menu.AddItem(
                         new MenuItem("SAssembliesGlobalSettingsVoiceVolume", "Voice Volume").SetValue(new Slider(100, 0, 100))));
-                
-                menu.AddItem(new MenuItem("By Screeder", "By Screeder V0.8.5.9"));
+
+                menu.AddItem(new MenuItem("By Screeder", "By Screeder V" + Assembly.GetExecutingAssembly().GetName().Version));
                 menu.AddToMainMenu();
             }
             catch (Exception ex)
