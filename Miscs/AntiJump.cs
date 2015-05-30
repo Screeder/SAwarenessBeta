@@ -20,6 +20,10 @@ namespace SAwareness.Miscs
         {
             switch (ObjectManager.Player.ChampionName)
             {
+                case "Ashe":
+                    Champion = new Champ("Ashe", 1000, SpellSlot.R, true);
+                    break;
+
                 case "Azir":
                     Champion = new Champ("Azir", 250, SpellSlot.R, true);
                     break;

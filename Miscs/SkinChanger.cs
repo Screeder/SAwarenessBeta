@@ -1345,7 +1345,7 @@ namespace SAssemblies.Miscs
                     };
                     champSkin.SpriteInfoSmall.Sprite.VisibleCondition = delegate
                     {
-                        return Misc.Miscs.GetActive() && SkinChangerMisc.GetActive() && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>();
+                        return IsActive() && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>();
                     };
                     champSkin.SpriteInfoSmall.Sprite.Add(0);
                     champSkin.SpriteInfoSmall.LoadingFinished = true;
@@ -1365,7 +1365,7 @@ namespace SAssemblies.Miscs
                     };
                     champSkin.SpriteInfoBig.Sprite.VisibleCondition = delegate
                     {
-                        return Misc.Miscs.GetActive() && SkinChangerMisc.GetActive() && champSkin.Active
+                        return IsActive() && champSkin.Active
                             && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>()
                             && SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplash").GetValue<bool>();
                     };

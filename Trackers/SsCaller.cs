@@ -70,12 +70,7 @@ namespace SAssemblies.Trackers
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[] 
-                { 
-                    Language.GetString("GLOBAL_CHAT_CHOICE_NONE"),  
-                    Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
-                    Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
-                }))));
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerChatChoice", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
@@ -161,13 +156,8 @@ namespace SAssemblies.Trackers
                         Game.SendPing(pingType, pos);
                     }
                 }
-                if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex == 1)
-                {
-                    Game.PrintChat("ss {0}", hero.ChampionName);
-                }
-                else if (
-                    SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerChatChoice").GetValue<StringList>().SelectedIndex ==
-                    2 &&
+                if (
+                    SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerChatChoice").GetValue<bool>() &&
                     Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say("ss {0}", hero.ChampionName);

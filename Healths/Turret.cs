@@ -117,7 +117,7 @@ namespace SAssemblies.Healths
                 {
                     if (!turret.IsValid)
                         return false;
-                    return Health.Healths.GetActive() && TurretHealth.GetActive() && turret.IsValid && !turret.IsDead && turret.IsValid && turret.Health != 9999 &&
+                    return IsActive() && turret.IsValid && !turret.IsDead && turret.IsValid && turret.Health != 9999 &&
                     ((turret.Health / turret.MaxHealth) * 100) != 100;
                 };
                 Text.OutLined = true;

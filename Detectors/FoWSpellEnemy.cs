@@ -49,7 +49,7 @@ namespace SAssemblies.Detectors
                 };
                 text.VisibleCondition = sender =>
                 {
-                    return Detector.Detectors.GetActive() && FoWSpellEnemyDetector.GetActive() && ObjectManager.Player.Spellbook.CanUseSpell(spell) == SpellState.Ready;
+                    return IsActive() && ObjectManager.Player.Spellbook.CanUseSpell(spell) == SpellState.Ready;
                 };
                 text.OutLined = true;
                 text.Centered = true;

@@ -90,7 +90,7 @@ namespace SAssemblies.Timers
             Abilities = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && SpellTimer.GetActive();
@@ -155,7 +155,7 @@ namespace SAssemblies.Timers
             };
             text.VisibleCondition = delegate
             {
-                return Timer.Timers.GetActive() && SpellTimer.GetActive() &&
+                return IsActive() &&
                         ability.Casted && ability.TimeCasted > -1;
             };
             text.Add();

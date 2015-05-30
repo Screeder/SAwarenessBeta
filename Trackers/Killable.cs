@@ -32,7 +32,7 @@ namespace SAssemblies.Trackers
                     text.VisibleCondition = sender =>
                     {
                         return (killable.Combo != null ? killable.Combo.Killable : false) && enemy.IsVisible && !enemy.IsDead &&
-                            Tracker.Trackers.GetActive() && KillableTracker.GetActive();
+                            IsActive();
                     };
                     text.PositionUpdate = delegate
                     {

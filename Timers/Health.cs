@@ -30,7 +30,7 @@ namespace SAssemblies.Timers
             Healths = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && HealthTimer.GetActive();
@@ -182,7 +182,7 @@ namespace SAssemblies.Timers
                 };
                 TextMinimap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && HealthTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
@@ -199,7 +199,7 @@ namespace SAssemblies.Timers
                 };
                 TextMap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && HealthTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 TextMap.OutLined = true;
                 TextMap.Centered = true;

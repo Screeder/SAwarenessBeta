@@ -49,12 +49,7 @@ namespace SAssemblies.Timers
             Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[]
-                {
-                    Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
-                    Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
-                    Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
-                }))));
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersChatChoice", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
             Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             Timers.MenuItems.Add(
@@ -99,11 +94,7 @@ namespace SAssemblies.Timers
             }
             if (call)
             {
-                if (Timers.GetMenuItem("SAssembliesTimersChatChoice").GetValue<StringList>().SelectedIndex == 1)
-                {
-                    Game.PrintChat(text);
-                }
-                else if (Timers.GetMenuItem("SAssembliesTimersChatChoice").GetValue<StringList>().SelectedIndex == 2 &&
+                if (Timers.GetMenuItem("SAssembliesTimersChat").GetValue<bool>() &&
                          Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say(text);

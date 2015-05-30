@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SAssemblies;
 using SAssemblies.Miscs;
-using SAssemblies.Trackers;
 using Menu = SAssemblies.Menu;
 
 //Extend Picture with place for item panel

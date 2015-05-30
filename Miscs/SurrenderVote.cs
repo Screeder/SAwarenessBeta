@@ -34,6 +34,8 @@ namespace SAssemblies.Miscs
         {
             SurrenderVoteMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SURRENDERVOTE_MAIN"), "SAssembliesMiscsSurrenderVote"));
             SurrenderVoteMisc.MenuItems.Add(
+                SurrenderVoteMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSurrenderVoteChat", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
+            SurrenderVoteMisc.MenuItems.Add(
                 SurrenderVoteMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSurrenderVoteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SurrenderVoteMisc;
         }
@@ -58,16 +60,7 @@ namespace SAssemblies.Miscs
                         if (surrender.NoVotes > _lastNoVoteCount)
                         {
                             if (
-                                SurrenderVoteMisc.GetMenuItem("SAssembliesSurrenderVoteChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 1)
-                            {
-                                Game.PrintChat("{0} voted NO", hero.ChampionName);
-                            }
-                            else if (
-                                SurrenderVoteMisc.GetMenuItem("SAssembliesSurrenderVoteChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 2 &&
+                                SurrenderVoteMisc.GetMenuItem("SAssembliesMiscsSurrenderVoteChat").GetValue<bool>() &&
                                 Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                     .GetValue<bool>())
                             {
@@ -77,16 +70,7 @@ namespace SAssemblies.Miscs
                         else
                         {
                             if (
-                                SurrenderVoteMisc.GetMenuItem("SAssembliesSurrenderVoteChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 1)
-                            {
-                                Game.PrintChat("{0} voted YES", hero.ChampionName);
-                            }
-                            else if (
-                                SurrenderVoteMisc.GetMenuItem("SAssembliesSurrenderVoteChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 2 &&
+                                SurrenderVoteMisc.GetMenuItem("SAssembliesMiscsSurrenderVoteChat").GetValue<bool>() &&
                                 Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                     .GetValue<bool>())
                             {

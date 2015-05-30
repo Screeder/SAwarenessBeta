@@ -32,7 +32,7 @@ namespace SAssemblies.Timers
             Relics = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && RelicTimer.GetActive();
@@ -189,7 +189,7 @@ namespace SAssemblies.Timers
                 };
                 TextMinimap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && RelicTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
@@ -206,7 +206,7 @@ namespace SAssemblies.Timers
                 };
                 TextMap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && RelicTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 TextMap.OutLined = true;
                 TextMap.Centered = true;

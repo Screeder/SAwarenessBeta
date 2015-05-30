@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using Color = SharpDX.Color;
 
 namespace SAssemblies.Detectors
 {
@@ -13,7 +15,7 @@ namespace SAssemblies.Detectors
     {
         public static Menu.MenuItemSettings RecallDetector = new Menu.MenuItemSettings(typeof(Recall));
 
-        public List<Packet.S2C.Teleport.Struct> Recalls = new List<Packet.S2C.Teleport.Struct>();
+        private List<RecallRender> _recalls = new List<RecallRender>();
 
         public Recall()
         {
@@ -21,18 +23,26 @@ namespace SAssemblies.Detectors
             {
                 if (enemy.IsEnemy)
                 {
-                    Recalls.Add(new Packet.S2C.Teleport.Struct(enemy.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0));
+                    Packet.S2C.Teleport.Struct p = new Packet.S2C.Teleport.Struct(enemy.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
+                    _recalls.Add(new RecallRender(p));
                 }
             }
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
+            Render.Rectangle rec = new Render.Rectangle(Drawing.Width / 2 - 200 / 2, (int)(Drawing.Height / 1.5f), 200, 10, SharpDX.Color.Black);
+            rec.VisibleCondition = delegate
+            {
+                return IsActive() && _recalls.Any(x => x.Recall.Status == Packet.S2C.Teleport.Status.Start);
+            };
+            rec.Add();
         }
 
         ~Recall()
         {
-            Recalls = null;
+            Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
+            _recalls = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if DETECTORS
             return Detector.Detectors.GetActive() && RecallDetector.GetActive();
@@ -49,13 +59,7 @@ namespace SAssemblies.Detectors
             RecallDetector.MenuItems.Add(
                 RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(
-                        new StringList(new[]
-                        {
-                            Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
-                            Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
-                            Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
-                        }))));
+                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallChat", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
             RecallDetector.MenuItems.Add(
                 RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             RecallDetector.MenuItems.Add(
@@ -84,9 +88,9 @@ namespace SAssemblies.Detectors
         {
             int time = Environment.TickCount - Game.Ping;
 
-            for (int i = 0; i < Recalls.Count; i++)
+            for (int i = 0; i < _recalls.Count; i++)
             {
-                Packet.S2C.Teleport.Struct recall = Recalls[i];
+                Packet.S2C.Teleport.Struct recall = _recalls[i].Recall;
                 if (true/*recallEx.Type == Recall.ObjectType.Player*/)
                 {
                     var obj = ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(recall.UnitNetworkId);
@@ -95,7 +99,7 @@ namespace SAssemblies.Detectors
                         continue;
                     if (obj.NetworkId == objEx.NetworkId) //already existing
                     {
-                        recall = recallEx;
+                        _recalls[i].Recall = recallEx;
                         //recall.Recall2 = new Recall.Struct();
 
                         var percentHealth = (int)((obj.Health / obj.MaxHealth) * 100);
@@ -111,18 +115,7 @@ namespace SAssemblies.Detectors
                             sColor = "<font color='#FFFF00'>";
                             recall.Start = (int)Game.Time;
                             if (
-                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 1)
-                            {
-                                Game.PrintChat("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
-                                    (int)obj.Health, hColor, percentHealth);
-                            }
-                            else if (
-                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 2 &&
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChat").GetValue<bool>() &&
                                 Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
                                     .GetValue<bool>())
                             {
@@ -161,19 +154,7 @@ namespace SAssemblies.Detectors
                                 ? Language.GetString("DETECTORS_RECALL_TEXT_RECALLED")
                                 : Language.GetString("DETECTORS_RECALL_TEXT_PORTED"));
                             sColor = "<font color='#FF0000'>";
-                            if (
-                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 1)
-                            {
-                                Game.PrintChat("{0}" + obj.ChampionName + " {1} " + Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {2} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + " {3}({4})", sColor, text,
-                                    (int)obj.Health, hColor, percentHealth);
-                            }
-                            else if (
-                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 2 &&
+                            if (RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice").GetValue<bool>() &&
                                 Menu.GlobalSettings.GetMenuItem(
                                     "SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
@@ -210,18 +191,7 @@ namespace SAssemblies.Detectors
                         {
                             sColor = "<font color='#00FF00'>";
                             if (
-                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 1)
-                            {
-                                Game.PrintChat("{0}" + obj.ChampionName + " " + Language.GetString("DETECTORS_RECALL_TEXT_CANCELED") + " " + 
-                                    Language.GetString("DETECTORS_RECALL_TEXT_WITH") + " {1} " +
-                                    Language.GetString("DETECTORS_RECALL_TEXT_HP") + "", sColor, (int)obj.Health);
-                            }
-                            else if (
-                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChatChoice")
-                                    .GetValue<StringList>()
-                                    .SelectedIndex == 2 &&
+                                RecallDetector.GetMenuItem("SAssembliesDetectorsRecallChat").GetValue<bool>() &&
                                 Menu.GlobalSettings.GetMenuItem(
                                     "SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                             {
@@ -257,6 +227,89 @@ namespace SAssemblies.Detectors
                         return;
                     }
                 }
+            }
+        }
+
+        class RecallRender // Test against cr
+        {
+            public Render.Rectangle Rectangle;
+            public Render.Text Text;
+            public Render.Line Line;
+            public Packet.S2C.Teleport.Struct Recall;
+
+            public RecallRender(Packet.S2C.Teleport.Struct recall)
+            {
+                var recWidth = 200;
+                Recall = recall;
+                Rectangle = new Render.Rectangle(Drawing.Width / 2, Drawing.Height / 4, recWidth, 10, SharpDX.Color.Green);
+                Rectangle.PositionUpdate += delegate
+                {
+                    float percent = RecallStatusPercent();
+                    var newWidth = (int) (recWidth - (recWidth * percent));
+                    if (!Rectangle.Width.Equals(newWidth))
+                    {
+                        Rectangle.Width = newWidth;
+                    }
+                    ColorBGRA newCol = Common.PercentColorRedToGreen(percent, (int)(255 - (255 * percent)));
+                    if (!Equals(newCol, Rectangle.Color))
+                    {
+                        Rectangle.Color = newCol;
+                    }
+                    return new Vector2(Drawing.Width / 2 - recWidth / 2, Drawing.Height / 1.5f);
+                };
+                Rectangle.VisibleCondition = delegate
+                {
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start;
+                };
+                Rectangle.Add(1);
+                Line = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 1, SharpDX.Color.WhiteSmoke);
+                Line.StartPositionUpdate += delegate
+                {
+                    return new Vector2(Rectangle.X + Rectangle.Width, Rectangle.Y - 5);
+                };
+                Line.EndPositionUpdate += delegate
+                {
+                    return new Vector2(Rectangle.X + Rectangle.Width, Rectangle.Y);
+                };
+                Line.VisibleCondition = delegate
+                {
+                    Color newCol = new Color(255, 255, 255, (int)(255 - (255 * RecallStatusPercent())));
+                    if (!Equals(newCol, Line.Color))
+                    {
+                        Line.Color = newCol;
+                    }
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start;
+                };
+                Line.Add();
+                Text = new Render.Text(ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName, 0 ,0, 18, SharpDX.Color.WhiteSmoke);
+                Text.PositionUpdate += delegate
+                {
+                    return new Vector2(Line.Start.X, Line.Start.Y - 15);
+                };
+                Text.TextUpdate = delegate
+                {
+                    Color newCol = new Color(255, 255, 255, (int)(255 - (150 * RecallStatusPercent())));
+                    if (!Equals(newCol, Text.Color))
+                    {
+                        Text.Color = newCol;
+                    }
+                    TimeSpan t = TimeSpan.FromMilliseconds(Recall.Start + Recall.Duration - Environment.TickCount);
+                    string time = string.Format("{0:D2},{1:D3}", t.Seconds, t.Milliseconds);
+                    return ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName + "\n" + time;
+                };
+                Text.Centered = true;
+                Text.VisibleCondition = delegate
+                {
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start;
+                };
+                Text.Add();
+            }
+
+            private float RecallStatusPercent()
+            {
+                float percent = (100f / Recall.Duration * (Environment.TickCount - Recall.Start));
+                percent = (percent <= 100 && percent >= 0 ? percent / 100 : 1f);
+                return percent;
             }
         }
     }

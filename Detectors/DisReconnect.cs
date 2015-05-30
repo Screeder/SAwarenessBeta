@@ -42,12 +42,7 @@ namespace SAssemblies.Detectors
         {
             DisReconnectDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_DISRECONNECT_MAIN"), "SAssembliesDetectorsDisReconnect"));
             DisReconnectDetector.MenuItems.Add(
-                DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(new StringList(new[]
-                        {
-                            Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
-                            Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
-                            Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
-                        }))));
+                DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectChat", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
             DisReconnectDetector.MenuItems.Add(
                 DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             DisReconnectDetector.MenuItems.Add(
@@ -78,18 +73,8 @@ namespace SAssemblies.Detectors
                 {
                     _disconnects.Add(disconnect.Player, true);
                 }
-                if (
-                    DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChatChoice")
-                        .GetValue<StringList>()
-                        .SelectedIndex == 1)
-                {
-                    Game.PrintChat("Champion " + disconnect.Player.ChampionName + " has disconnected!");
-                }
-                else if (
-                    DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChatChoice")
-                        .GetValue<StringList>()
-                        .SelectedIndex == 2 &&
-                    Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
+                if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
+                        Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say("Champion " + disconnect.Player.ChampionName + " has disconnected!");
                 }
@@ -124,16 +109,7 @@ namespace SAssemblies.Detectors
                     _reconnects.Add(reconnect.Player, true);
                 }
                 if (
-                    DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChatChoice")
-                        .GetValue<StringList>()
-                        .SelectedIndex == 1)
-                {
-                    Game.PrintChat("Champion " + reconnect.Player.ChampionName + " has reconnected!");
-                }
-                else if (
-                    DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChatChoice")
-                        .GetValue<StringList>()
-                        .SelectedIndex == 2 &&
+                    DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
                     Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
                     Game.Say("Champion " + reconnect.Player.ChampionName + " has reconnected!");

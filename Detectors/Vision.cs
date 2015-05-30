@@ -91,7 +91,7 @@ namespace SAssemblies.Detectors
 #if DETECTORS
             return Detector.Detectors.GetActive() && VisionDetector.GetActive();
 #else
-            return Detector.Detectors.GetActive() && VisionDetector.GetActive();
+            return VisionDetector.GetActive();
 #endif
         }
 

@@ -53,7 +53,7 @@ namespace SAssemblies.Miscs
             sLevler = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if MISCS
             return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive();
@@ -831,7 +831,7 @@ namespace SAssemblies.Miscs
                 };
                 MainFrame.Sprite.VisibleCondition = delegate
                 {
-                    return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
+                    return IsActive() &&
                         (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
@@ -845,7 +845,7 @@ namespace SAssemblies.Miscs
                 };
                 Save.Sprite.VisibleCondition = delegate
                 {
-                    return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
+                    return IsActive() &&
                         (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
@@ -859,7 +859,7 @@ namespace SAssemblies.Miscs
                 };
                 Cancel.Sprite.VisibleCondition = delegate
                 {
-                    return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
+                    return IsActive() &&
                         (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                 };
@@ -879,7 +879,7 @@ namespace SAssemblies.Miscs
                     };
                     Text[i].VisibleCondition = sender =>
                     {
-                        return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
+                        return IsActive() &&
                         (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
@@ -899,7 +899,7 @@ namespace SAssemblies.Miscs
                     };
                     Skill[i].Sprite.VisibleCondition = delegate
                     {
-                        return Misc.Miscs.GetActive() && AutoLevlerMisc.GetActive() &&
+                        return IsActive() &&
                             (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };

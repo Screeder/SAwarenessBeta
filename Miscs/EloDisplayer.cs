@@ -51,7 +51,7 @@ namespace SAssemblies.Miscs
             };
             MainFrame.Sprite.VisibleCondition = delegate
             {
-                return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
             };
             MainFrame.Sprite.Add(1);
         }
@@ -64,7 +64,7 @@ namespace SAssemblies.Miscs
             int index = 0;
             foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
             {
-                if (hero.Name.ToLower().Contains("bot"))
+                if (hero.IsBot)
                     continue;
 
                 if (hero.IsEnemy)
@@ -116,7 +116,7 @@ namespace SAssemblies.Miscs
         {
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if MISCS
             return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive();
@@ -237,7 +237,7 @@ namespace SAssemblies.Miscs
                 };
                 champ.SummonerIcon.Sprite.Sprite.VisibleCondition = delegate
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
+                    return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active
                         && champ.IsFinished();
                 };
                 champ.SummonerIcon.Sprite.Sprite.Add(2);
@@ -302,9 +302,9 @@ namespace SAssemblies.Miscs
                 };
                 Header.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                    return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
                 };
-                Header.Text.OutLined = true;
+                Header.Text.OutLined = false;
                 Header.Text.Add(4);
                 Header.FinishedLoading = true;
             }
@@ -330,10 +330,10 @@ namespace SAssemblies.Miscs
                 };
                 SummarizedAlly.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                    return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
                 };
-                SummarizedAlly.Text.OutLined = true;
-                //SummarizedAlly.Text.Add(4);
+                SummarizedAlly.Text.OutLined = false;
+                SummarizedAlly.Text.Add(4);
                 SummarizedAlly.FinishedLoading = true;
             }
 
@@ -358,10 +358,10 @@ namespace SAssemblies.Miscs
                 };
                 SummarizedEnemy.Text.VisibleCondition = sender =>
                 {
-                    return Misc.Miscs.GetActive() && EloDisplayerMisc.GetActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+                    return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
                 };
-                SummarizedEnemy.Text.OutLined = true;
-                //SummarizedEnemy.Text.Add(4);
+                SummarizedEnemy.Text.OutLined = false;
+                SummarizedEnemy.Text.Add(4);
                 SummarizedEnemy.FinishedLoading = true;
             }
         }
@@ -389,7 +389,7 @@ namespace SAssemblies.Miscs
             List<String> line4 = CalcNeededWhitespaces(
                 new List<string>(new String[] { text7, text8, text9, text10, text11 }));
 
-            text = String.Format("{0}{1}{2}{3}{4}{5}\n{6}{7}{8}{9}{10}{11}\n",
+            text += String.Format("{0}{1}{2}{3}{4}{5}\n{6}{7}{8}{9}{10}{11}\n",
                 line3[0], line3[1], line3[2], line3[3], line3[4], text6,
                 line4[0], line4[1], line4[2], line4[3], line4[4], text12);
 

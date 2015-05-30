@@ -446,7 +446,7 @@ namespace SAssemblies.Trackers
             }
         }
 
-        public async static Task Init()
+        public async Task Init()
         {
             if (
                 UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
@@ -547,7 +547,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellQ.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -561,7 +561,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellW.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -575,7 +575,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellE.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -589,7 +589,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -608,7 +608,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellQ.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                     champ.SpellQ.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellQ.Text[1].OutLined = true;
@@ -626,7 +626,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellW.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellW.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellW.Text[1].OutLined = true;
@@ -644,7 +644,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellE.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellE.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellE.Text[1].OutLined = true;
@@ -662,7 +662,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellR.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellR.Text[1].OutLined = true;
@@ -680,7 +680,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum1.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellSum1.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellSum1.Text[1].OutLined = true;
@@ -698,7 +698,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum2.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellSum2.Value > 0.0f && enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
             champ.SpellSum2.Text[1].OutLined = true;
@@ -718,7 +718,7 @@ namespace SAssemblies.Trackers
             };
             champ.Exp[0].Line[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -735,7 +735,7 @@ namespace SAssemblies.Trackers
             };
             champ.Exp[1].Line[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -752,7 +752,7 @@ namespace SAssemblies.Trackers
             };
             champ.Exp[2].Line[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -769,7 +769,7 @@ namespace SAssemblies.Trackers
             };
             champ.Exp[3].Line[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 &&
                         enemy.Key.IsVisible && !enemy.Key.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
             };
@@ -790,7 +790,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Rectangle[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 1 && champ.Draw(true);
             };
@@ -809,7 +809,7 @@ namespace SAssemblies.Trackers
             };
             champ.HealthBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
             };
             champ.HealthBar.Text[0].OutLined = true;
@@ -827,7 +827,7 @@ namespace SAssemblies.Trackers
             };
             champ.ManaBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
             };
             champ.ManaBar.Text[0].OutLined = true;
@@ -845,7 +845,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellQ.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        champ.SpellQ.Value > 0.0f && GetUiActive(hero.IsEnemy) &&
                        GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
@@ -865,7 +865,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellW.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        champ.SpellW.Value > 0.0f && GetUiActive(hero.IsEnemy) &&
                        GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
@@ -885,7 +885,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellE.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        champ.SpellE.Value > 0.0f && GetUiActive(hero.IsEnemy) &&
                        GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
@@ -905,7 +905,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        champ.SpellR.Value > 0.0f && GetUiActive(hero.IsEnemy) && champ.Draw(true);
             };
@@ -928,7 +928,7 @@ namespace SAssemblies.Trackers
             };
             champ.Champ.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        ((champ.DeathTimeDisplay > 0.0f && hero.IsDead) ||
                         (champ.InvisibleTime > 0.0f && !hero.IsVisible)) &&
@@ -949,7 +949,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum1.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        champ.SpellSum1.Value > 0.0f && GetUiActive(hero.IsEnemy) && champ.Draw(true);
             };
@@ -968,7 +968,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum2.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        champ.SpellSum2.Value > 0.0f && GetUiActive(hero.IsEnemy) && champ.Draw(true);
             };
@@ -991,7 +991,7 @@ namespace SAssemblies.Trackers
                 };
                 item.Text[0].VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                            item.Value > 0.0f && UiTracker.GetMenuItem("SAssembliesItemPanelActive").GetValue<bool>() &&
                            GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
@@ -1012,7 +1012,7 @@ namespace SAssemblies.Trackers
             };
             champ.Level.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
             };
@@ -1031,7 +1031,7 @@ namespace SAssemblies.Trackers
             };
             champ.Cs.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
             };
@@ -1069,7 +1069,7 @@ namespace SAssemblies.Trackers
             };
             champ.RecallBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                        GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                        GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
             };
@@ -1171,7 +1171,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.Champ.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
                 champ.Champ.Sprite[0].Sprite.Add(1);
                 champ.Champ.Sprite[0].LoadingFinished = true;
@@ -1190,7 +1190,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellPassive.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.SpellPassive.Sprite[0].Sprite.Add(0);
@@ -1210,7 +1210,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellQ.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.SpellQ.Sprite[0].Sprite.Add(0);
@@ -1230,7 +1230,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellW.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.SpellW.Sprite[0].Sprite.Add(0);
@@ -1250,7 +1250,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellE.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.SpellE.Sprite[0].Sprite.Add(0);
@@ -1270,7 +1270,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellR.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
                 champ.SpellR.Sprite[0].Sprite.Add(0);
@@ -1290,7 +1290,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum1.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
                 champ.SpellSum1.Sprite[0].Sprite.Add(0);
                 champ.SpellSum1.Sprite[0].LoadingFinished = true;
@@ -1309,7 +1309,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum2.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
                 champ.SpellSum2.Sprite[0].Sprite.Add(0);
                 champ.SpellSum2.Sprite[0].LoadingFinished = true;
@@ -1327,7 +1327,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.BackBar.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
                 champ.BackBar.Sprite[0].Sprite.Add(0);
@@ -1346,7 +1346,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.HealthBar.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
                 champ.HealthBar.Sprite[0].Sprite.Add(0);
@@ -1365,7 +1365,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.ManaBar.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy) && champ.Draw(true);
                 };
                 champ.ManaBar.Sprite[0].Sprite.Add(0);
@@ -1384,7 +1384,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.RecallBar.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                            GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
@@ -1405,7 +1405,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.GoldCsLvlBar.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                            GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0 && champ.Draw(true);
                 };
@@ -1433,7 +1433,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum1.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
                 champ.SpellSum1.Sprite[1].Sprite.Add();
                 champ.SpellSum1.Sprite[1].LoadingFinished = true;
@@ -1452,7 +1452,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum2.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
                 champ.SpellSum2.Sprite[1].Sprite.Add();
                 champ.SpellSum2.Sprite[1].LoadingFinished = true;
@@ -1471,7 +1471,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellPassive.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
@@ -1492,7 +1492,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellQ.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
@@ -1513,7 +1513,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellW.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
@@ -1534,7 +1534,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellE.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
@@ -1555,7 +1555,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellR.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy) && champ.Draw(false);
                 };
@@ -1564,7 +1564,7 @@ namespace SAssemblies.Trackers
             }
         }
 
-        private async static Task<ChampInfos> CreateSideHud(Obj_AI_Hero hero, ChampInfos champ, float percentScale)
+        private async Task<ChampInfos> CreateSideHud(Obj_AI_Hero hero, ChampInfos champ, float percentScale)
         {
             float percentHealth = CalcHpBar(hero);
             float percentMana = CalcManaBar(hero);
@@ -1586,7 +1586,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.Champ.Sprite[0].Sprite.VisibleCondition = delegate
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
                 };
                 champ.Champ.Sprite[0].Sprite.Add(0);
             }
@@ -1607,7 +1607,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellQ.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && 
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && 
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
                 champ.SpellQ.Sprite[0].Sprite.Add(0);
@@ -1628,7 +1628,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellW.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
                 champ.SpellW.Sprite[0].Sprite.Add(0);
@@ -1649,7 +1649,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellE.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
                 champ.SpellE.Sprite[0].Sprite.Add(0);
@@ -1670,7 +1670,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellR.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
                 champ.SpellR.Sprite[0].Sprite.Add(0);
@@ -1691,7 +1691,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum1.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellSum1.Sprite[0].Sprite.Add(0);
             }
@@ -1711,7 +1711,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum2.Sprite[0].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellSum2.Sprite[0].Sprite.Add(0);
             }
@@ -1725,7 +1725,7 @@ namespace SAssemblies.Trackers
             };
             champ.BackBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.BackBar.Sprite[0].Sprite.Add(0);
 
@@ -1740,7 +1740,7 @@ namespace SAssemblies.Trackers
             };
             champ.HealthBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.HealthBar.Sprite[0].Sprite.Add(1);
 
@@ -1755,7 +1755,7 @@ namespace SAssemblies.Trackers
             };
             champ.ManaBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.ManaBar.Sprite[0].Sprite.Add(1);
 
@@ -1768,7 +1768,7 @@ namespace SAssemblies.Trackers
             };
             champ.RecallBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && 
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && 
                     GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.RecallBar.Sprite[0].Sprite.Color = new ColorBGRA(Color3.White, 0.55f);
@@ -1783,7 +1783,7 @@ namespace SAssemblies.Trackers
             };
             champ.GoldCsLvlBar.Sprite[0].Sprite.VisibleCondition = delegate
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.GoldCsLvlBar.Sprite[0].Sprite.Color = new ColorBGRA(Color3.White, 0.55f);
@@ -1799,7 +1799,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Rectangle[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 1;
             };
@@ -1818,7 +1818,7 @@ namespace SAssemblies.Trackers
             };
             champ.HealthBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.HealthBar.Text[0].OutLined = true;
             champ.HealthBar.Text[0].Centered = true;
@@ -1835,7 +1835,7 @@ namespace SAssemblies.Trackers
             };
             champ.ManaBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 && GetUiActive(hero.IsEnemy);
             };
             champ.ManaBar.Text[0].OutLined = true;
             champ.ManaBar.Text[0].Centered = true;
@@ -1852,7 +1852,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellQ.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellQ.Value > 0.0f && GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.SpellQ.Text[0].OutLined = true;
@@ -1870,7 +1870,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellW.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellW.Value > 0.0f && GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.SpellW.Text[0].OutLined = true;
@@ -1888,7 +1888,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellE.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellE.Value > 0.0f && GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.SpellE.Text[0].OutLined = true;
@@ -1906,7 +1906,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellR.Value > 0.0f && GetUiActive(hero.IsEnemy);
             };
             champ.SpellR.Text[0].OutLined = true;
@@ -1928,7 +1928,7 @@ namespace SAssemblies.Trackers
             };
             champ.Champ.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     ((champ.DeathTimeDisplay > 0.0f && hero.IsDead) || (champ.InvisibleTime > 0.0f && !hero.IsVisible)) && 
                     GetUiActive(hero.IsEnemy);
             };
@@ -1947,7 +1947,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum1.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellSum1.Value > 0.0f && GetUiActive(hero.IsEnemy);
             };
             champ.SpellSum1.Text[0].OutLined = true;
@@ -1965,7 +1965,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum2.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellSum2.Value > 0.0f && GetUiActive(hero.IsEnemy);
             };
             champ.SpellSum2.Text[0].OutLined = true;
@@ -1987,7 +1987,7 @@ namespace SAssemblies.Trackers
                 };
                 item.Text[0].VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                         item.Value > 0.0f && UiTracker.GetMenuItem("SAssembliesItemPanelActive").GetValue<bool>() &&
                         GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
                 };
@@ -2007,7 +2007,7 @@ namespace SAssemblies.Trackers
             };
             champ.Level.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0; 
             };
             champ.Level.Text[0].OutLined = true;
@@ -2025,7 +2025,7 @@ namespace SAssemblies.Trackers
             };
             champ.Cs.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.Cs.Text[0].OutLined = true;
@@ -2062,7 +2062,7 @@ namespace SAssemblies.Trackers
             };
             champ.RecallBar.Text[0].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     GetUiActive(hero.IsEnemy) && GetSideDisplayMode(hero.IsEnemy).SelectedIndex == 0;
             };
             champ.RecallBar.Text[0].OutLined = true;
@@ -2080,7 +2080,7 @@ namespace SAssemblies.Trackers
             return champ;
         }
 
-        private async static Task<ChampInfos> CreateOverHeadHud(Obj_AI_Hero hero, ChampInfos champ, float percentScale)
+        private async Task<ChampInfos> CreateOverHeadHud(Obj_AI_Hero hero, ChampInfos champ, float percentScale)
         {
             float scaleSpell = GetHeadMode(hero.IsEnemy).SelectedIndex == 1 ? 1.7f : 1.0f;
             float scaleSum = GetHeadMode(hero.IsEnemy).SelectedIndex == 1 ? 1.0f : 0.8f;
@@ -2100,7 +2100,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum1.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 0 && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
                 champ.SpellSum1.Sprite[1].Sprite.Add();
             }
@@ -2119,7 +2119,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellSum2.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                            GetMode(hero.IsEnemy).SelectedIndex != 0 &&
                            hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
@@ -2142,7 +2142,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellQ.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
@@ -2163,7 +2163,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellW.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
@@ -2184,7 +2184,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellE.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
@@ -2205,7 +2205,7 @@ namespace SAssemblies.Trackers
                 };
                 champ.SpellR.Sprite[1].Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                    return IsActive() &&
                             GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 0 &&
                             hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
                 };
@@ -2222,7 +2222,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellQ.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
@@ -2236,7 +2236,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellW.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
@@ -2250,7 +2250,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellE.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
@@ -2264,7 +2264,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Rectangle[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                         GetMode(hero.IsEnemy).SelectedIndex != 0 && GetHeadDisplayMode(hero.IsEnemy).SelectedIndex == 1 &&
                         hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
@@ -2283,7 +2283,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellQ.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() &&
+                return IsActive() &&
                     champ.SpellQ.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellQ.Text[1].OutLined = true;
@@ -2301,7 +2301,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellW.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellW.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellW.Text[1].OutLined = true;
@@ -2319,7 +2319,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellE.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellE.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellE.Text[1].OutLined = true;
@@ -2337,7 +2337,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellR.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellR.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellR.Text[1].OutLined = true;
@@ -2355,7 +2355,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum1.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellSum1.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy);
             };
             champ.SpellSum1.Text[1].OutLined = true;
@@ -2373,7 +2373,7 @@ namespace SAssemblies.Trackers
             };
             champ.SpellSum2.Text[1].VisibleCondition = sender =>
             {
-                return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
+                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1 &&
                     champ.SpellSum2.Value > 0.0f && hero.IsVisible && !hero.IsDead && GetUiActive(hero.IsEnemy); 
             };
             champ.SpellSum2.Text[1].OutLined = true;
@@ -2960,7 +2960,7 @@ namespace SAssemblies.Trackers
             MiniMap
         }
 
-        public async static void UpdateChampImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, UpdateMethod method)
+        public async void UpdateChampImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, UpdateMethod method)
         {
             Task<SpriteHelper.SpriteInfo> taskInfo = null;
             taskInfo = SpriteHelper.LoadTextureAsync(hero.ChampionName, sprite, SpriteHelper.DownloadType.Champion);
@@ -2981,7 +2981,7 @@ namespace SAssemblies.Trackers
                     };
                     sprite.Sprite.VisibleCondition = delegate
                     {
-                        return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                        return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
                     };
                 }
                 else if (method == UpdateMethod.MiniMap)
@@ -3004,7 +3004,7 @@ namespace SAssemblies.Trackers
             }
         }
 
-        private async static void UpdateSpellImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, SpellSlot slot, UpdateMethod method)
+        private async void UpdateSpellImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, SpellSlot slot, UpdateMethod method)
         {
             Task<SpriteHelper.SpriteInfo> taskInfo = null;
             switch (slot)
@@ -3044,7 +3044,7 @@ namespace SAssemblies.Trackers
                     };
                     sprite.Sprite.VisibleCondition = delegate
                     {
-                        return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                        return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
                     };
                 }
                 else if (method == UpdateMethod.Hp)
@@ -3055,7 +3055,7 @@ namespace SAssemblies.Trackers
                     };
                     sprite.Sprite.VisibleCondition = delegate
                     {
-                        return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                        return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
                     };
                 }
                 else if (method == UpdateMethod.MiniMap)
@@ -3066,14 +3066,14 @@ namespace SAssemblies.Trackers
                     };
                     sprite.Sprite.VisibleCondition = delegate
                     {
-                        return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                        return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
                     };
                 }
                 sprite.Sprite.Add();
             }
         }
 
-        private async static void UpdateSummonerSpellImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, SpellSlot slot, UpdateMethod method)
+        private async void UpdateSummonerSpellImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, SpellSlot slot, UpdateMethod method)
         {
             Task<SpriteHelper.SpriteInfo> taskInfo = null;
             switch (slot)
@@ -3103,7 +3103,7 @@ namespace SAssemblies.Trackers
                 };
                 sprite.Sprite.VisibleCondition = sender =>
                 {
-                    return Tracker.Trackers.GetActive() && UiTracker.GetActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+                    return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
                 };
                 sprite.Sprite.Add();
             }

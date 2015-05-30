@@ -31,7 +31,7 @@ namespace SAssemblies.Timers
             Altars = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && AltarTimer.GetActive();
@@ -198,7 +198,7 @@ namespace SAssemblies.Timers
                 };
                 TextMinimap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && AltarTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type && TextMinimap.X != 0;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type && TextMinimap.X != 0;
                 };
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
@@ -217,7 +217,7 @@ namespace SAssemblies.Timers
                 };
                 TextMap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && AltarTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type && TextMinimap.X != 0;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type && TextMinimap.X != 0;
                 };
                 TextMap.OutLined = true;
                 TextMap.Centered = true;

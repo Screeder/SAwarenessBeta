@@ -105,7 +105,7 @@ namespace SAssemblies.Trackers
                         recall = true;
                     }
                 }
-                return Tracker.Trackers.GetActive() && UimTracker.GetActive() && recall || champ.Timer.InvisibleTime != 0;
+                return IsActive() && recall || champ.Timer.InvisibleTime != 0;
             };
             champ.Text.OutLined = true;
             champ.Text.Centered = true;
@@ -154,7 +154,7 @@ namespace SAssemblies.Trackers
                     };
                     enemy.Value.SpriteInfo.Sprite.VisibleCondition = delegate
                     {
-                        return Tracker.Trackers.GetActive() && UimTracker.GetActive() && !enemy.Key.IsVisible;
+                        return IsActive() && !enemy.Key.IsVisible;
                     };
                     enemy.Value.SpriteInfo.Sprite.Add(0);
                     enemy.Value.SpriteInfo.LoadingFinished = true;

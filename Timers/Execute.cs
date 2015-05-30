@@ -21,6 +21,12 @@ namespace SAssemblies.Timers
                 lastDmg.Add(hero, 0);
             }
             Game.OnUpdate += Game_OnGameUpdate;
+            AttackableUnit.OnDamage += AttackableUnit_OnDamage;
+        }
+
+        void AttackableUnit_OnDamage(AttackableUnit sender, AttackableUnitDamageEventArgs args)
+        {
+            throw new NotImplementedException();
         }
 
         ~Execute()

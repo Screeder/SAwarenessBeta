@@ -30,7 +30,7 @@ namespace SAssemblies.Timers
             _inhibitors = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && InhibitorTimer.GetActive();
@@ -153,7 +153,7 @@ namespace SAssemblies.Timers
                 };
                 TextMinimap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && InhibitorTimer.GetActive() && NextRespawnTime > 0;
+                    return IsActive() && NextRespawnTime > 0;
                 };
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
@@ -172,7 +172,7 @@ namespace SAssemblies.Timers
                 };
                 TextMap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && InhibitorTimer.GetActive() && NextRespawnTime > 0;
+                    return IsActive() && InhibitorTimer.GetActive() && NextRespawnTime > 0;
                 };
                 TextMap.OutLined = true;
                 TextMap.Centered = true;

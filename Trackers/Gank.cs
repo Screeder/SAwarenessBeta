@@ -34,7 +34,7 @@ namespace SAssemblies.Trackers
                     };
                     line.VisibleCondition = delegate
                     {
-                        return Tracker.Trackers.GetActive() && GankTracker.GetActive() &&
+                        return IsActive() &&
                                 GankTracker.GetMenuItem("SAssembliesTrackersGankDraw").GetValue<bool>() &&
                                hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
                                GankTracker.GetMenuItem("SAssembliesTrackersGankTrackRange").GetValue<Slider>().Value &&

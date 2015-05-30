@@ -29,7 +29,7 @@ namespace SAssemblies.Timers
             Summoners = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && SummonerTimer.GetActive();

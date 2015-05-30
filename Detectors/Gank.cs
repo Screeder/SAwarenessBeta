@@ -93,13 +93,7 @@ namespace SAssemblies.Detectors
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankChatChoice", Language.GetString("GLOBAL_CHAT_CHOICE")).SetValue(
-                        new StringList(new[]
-                        {
-                            Language.GetString("GLOBAL_CHAT_CHOICE_NONE"), 
-                            Language.GetString("GLOBAL_CHAT_CHOICE_LOCAL"), 
-                            Language.GetString("GLOBAL_CHAT_CHOICE_SERVER")
-                        }))));
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankChat", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             GankDetector.MenuItems.Add(
@@ -154,15 +148,7 @@ namespace SAssemblies.Detectors
             }
 
             if (
-                GankDetector.GetMenuItem("SAssembliesDetectorsGankChatChoice").GetValue<StringList>().SelectedIndex ==
-                1)
-            {
-                Game.PrintChat(Language.GetString("DETECTORS_GANK_TEXT") + ": {0}", hero.ChampionName);
-            }
-            else if (
-                GankDetector.GetMenuItem("SAssembliesDetectorsGankChatChoice")
-                    .GetValue<StringList>()
-                    .SelectedIndex == 2 &&
+                GankDetector.GetMenuItem("SAssembliesDetectorsGankChat").GetValue<bool>() &&
                 Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
             {
                 Game.Say(Language.GetString("DETECTORS_GANK_TEXT") + ": {0}", hero.ChampionName);

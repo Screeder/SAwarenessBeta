@@ -324,7 +324,7 @@
   <data name="GLOBAL_MODE_PERCENT" xml:space="preserve">
     <value>Percent</value>
   </data>
-  <data name="GLOBAl_MODE_VALUE" xml:space="preserve">
+  <data name="GLOBAL_MODE_VALUE" xml:space="preserve">
     <value>Value</value>
   </data>
   <data name="GLOBAL_PING_ASSISTME" xml:space="preserve">
@@ -743,5 +743,8 @@
   </data>
   <data name="TIMERS_SPELL_MAIN" xml:space="preserve">
     <value>Spell</value>
+  </data>
+  <data name="GLOBAL_CHAT" xml:space="preserve">
+    <value>Chat</value>
   </data>
 </root>

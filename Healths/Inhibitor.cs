@@ -118,7 +118,7 @@ namespace SAssemblies.Healths
                 {
                     if (!inhibitor.IsValid)
                         return false;
-                    return Health.Healths.GetActive() && InhibitorHealth.GetActive() && inhibitor.IsValid && !inhibitor.IsDead && inhibitor.IsValid && inhibitor.Health > 0.1f &&
+                    return IsActive() && inhibitor.IsValid && !inhibitor.IsDead && inhibitor.IsValid && inhibitor.Health > 0.1f &&
                     ((inhibitor.Health / inhibitor.MaxHealth) * 100) != 100;
                 };
                 Text.OutLined = true;
@@ -162,7 +162,7 @@ namespace SAssemblies.Healths
                 {
                     if (!inhibitor.IsValid)
                         return false;
-                    return Health.Healths.GetActive() && InhibitorHealth.GetActive() && inhibitor.IsValid && !inhibitor.IsDead && inhibitor.IsValid && inhibitor.Health > 0.1f &&
+                    return IsActive() && inhibitor.IsValid && !inhibitor.IsDead && inhibitor.IsValid && inhibitor.Health > 0.1f &&
                     ((inhibitor.Health / inhibitor.MaxHealth) * 100) != 100;
                 };
                 Text.OutLined = true;
