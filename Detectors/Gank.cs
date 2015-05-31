@@ -35,7 +35,7 @@ namespace SAssemblies.Detectors
                     bool hasSmite = false;
                     foreach (SpellDataInst spell in hero.Spellbook.Spells)
                     {
-                        if (spell.Name.ToLower().Contains("heal"))
+                        if (spell.Name.ToLower().Contains("smite"))
                         {
                             hasSmite = true;
                             break;
@@ -67,7 +67,7 @@ namespace SAssemblies.Detectors
                     bool hasSmite = false;
                     foreach (SpellDataInst spell in hero.Spellbook.Spells)
                     {
-                        if (spell.Name.ToLower().Contains("heal"))
+                        if (spell.Name.ToLower().Contains("smite"))
                         {
                             hasSmite = true;
                             break;
