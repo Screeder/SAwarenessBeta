@@ -44,7 +44,7 @@ namespace SAssemblies.Timers
             JungleMobList = null;
         }
 
-        public bool IsActive()
+        public static bool IsActive()
         {
 #if TIMERS
             return Timer.Timers.GetActive() && JungleTimer.GetActive();
@@ -393,7 +393,7 @@ namespace SAssemblies.Timers
             JungleMobs.Add(new JungleMob("TT_NWolf6.1.1", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
             JungleMobs.Add(new JungleMob("TT_NWolf26.1.2", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
             JungleMobs.Add(new JungleMob("TT_NWolf26.1.3", null, false, false, false, Utility.Map.MapType.TwistedTreeline));
-            
+
 
             JungleCamps.Add(new JungleCamp("blue", GameObjectTeam.Order, 1, 115, 300, Utility.Map.MapType.SummonersRift,
                 new Vector3(3791, 7901, 52), new Vector3(3641.904f, 8098.774f, 50.87435f),
@@ -622,7 +622,7 @@ namespace SAssemblies.Timers
                 };
                 TextMinimap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && JungleTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 TextMinimap.OutLined = true;
                 TextMinimap.Centered = true;
@@ -639,7 +639,7 @@ namespace SAssemblies.Timers
                 };
                 TextMap.VisibleCondition = sender =>
                 {
-                    return Timer.Timers.GetActive() && JungleTimer.GetActive() && NextRespawnTime > 0 && MapType == GMap.Type;
+                    return IsActive() && NextRespawnTime > 0 && MapType == GMap.Type;
                 };
                 TextMap.OutLined = true;
                 TextMap.Centered = true;
