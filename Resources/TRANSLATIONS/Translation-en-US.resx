@@ -255,7 +255,7 @@
   <data name="DETECTORS_GANK_TEXT" xml:space="preserve">
     <value>Gank</value>
   </data>
-  <data name="DETECTORS_GANK_TEXT_JUNGLER" xml:space="preserve">
+  <data name="DETECTORS_GANK_TEXT_JUNGLER_ENEMY" xml:space="preserve">
     <value>Enemy jungler approaching</value>
   </data>
   <data name="DETECTORS_RECALL_MAIN" xml:space="preserve">
@@ -746,5 +746,8 @@
   </data>
   <data name="GLOBAL_CHAT" xml:space="preserve">
     <value>Chat</value>
+  </data>
+  <data name="DETECTORS_GANK_TEXT_JUNGLER_ALLY" xml:space="preserve">
+    <value>Ally jungler approaching</value>
   </data>
 </root>

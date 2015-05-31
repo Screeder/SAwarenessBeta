@@ -71,7 +71,7 @@ namespace SAssemblies.Detectors
 
         private void Obj_AI_Base_OnTeleport(GameObject sender, GameObjectTeleportEventArgs args)
         {
-            if (!IsActive())
+            if (!IsActive() && sender.Type != GameObjectType.obj_AI_Hero)
                 return;
             try
             {

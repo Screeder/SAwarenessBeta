@@ -20,37 +20,72 @@ namespace SAssemblies.Detectors
         {
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
+                Render.Text text = new Render.Text(new Vector2(0, 0), hero.IsEnemy ? Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ENEMY") : 
+                    Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ALLY"), 28, hero.IsEnemy ? Color.Red : Color.Green);
+                text.PositionUpdate = delegate
+                {
+                    if (hero.IsEnemy)
+                    {
+                        Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ENEMY"));
+                    }
+                    return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
+                };
+                text.VisibleCondition = sender =>
+                {
+                    bool hasSmite = false;
+                    foreach (SpellDataInst spell in hero.Spellbook.Spells)
+                    {
+                        if (spell.Name.ToLower().Contains("heal"))
+                        {
+                            hasSmite = true;
+                            break;
+                        }
+                    }
+                    return IsActive() &&
+                            GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
+                            hero.IsVisible && !hero.IsDead &&
+                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
+                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
+                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
+                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
+                            hasSmite;
+                };
+                text.OutLined = true;
+                text.Centered = true;
+                text.Add();
+                Render.Line line = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 4, hero.IsEnemy ? Color.Red : Color.Green);
+                line.StartPositionUpdate = delegate
+                {
+                    return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
+                };
+                line.EndPositionUpdate = delegate
+                {
+                    return Drawing.WorldToScreen(hero.ServerPosition);
+                };
+                line.VisibleCondition = sender =>
+                {
+                    bool hasSmite = false;
+                    foreach (SpellDataInst spell in hero.Spellbook.Spells)
+                    {
+                        if (spell.Name.ToLower().Contains("heal"))
+                        {
+                            hasSmite = true;
+                            break;
+                        }
+                    }
+                    return IsActive() &&
+                            GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
+                            hero.IsVisible && !hero.IsDead &&
+                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
+                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
+                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
+                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
+                            hasSmite;
+                };
+                line.Add();
                 if (hero.IsEnemy)
                 {
-                    Render.Text text = new Render.Text(new Vector2(0, 0), Language.GetString("DETECTORS_GANK_TEXT_JUNGLER"), 28, Color.Red);
-                    text.PositionUpdate = delegate
-                    {
-                        Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT_JUNGLER"));
-                        return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
-                    };
-                    text.VisibleCondition = sender =>
-                    {
-                        bool hasSmite = false;
-                        foreach (SpellDataInst spell in hero.Spellbook.Spells)
-                        {
-                            if (spell.Name.ToLower().Contains("smite"))
-                            {
-                                hasSmite = true;
-                                break;
-                            }
-                        }
-                        return IsActive() &&
-                               GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
-                               hero.IsVisible && !hero.IsDead &&
-                                Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
-                                GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
-                                Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
-                                GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
-                                hasSmite;
-                    };
-                    text.OutLined = true;
-                    text.Centered = true;
-                    Enemies.Add(hero, new InternalGankDetector(text));
+                    Enemies.Add(hero, new InternalGankDetector(text, line));
                 }
             }
             ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
@@ -221,10 +256,12 @@ namespace SAssemblies.Detectors
         {
             public Time Time = new Time();
             public Render.Text Text;
+            public Render.Line Line;
 
-            public InternalGankDetector(Render.Text text)
+            public InternalGankDetector(Render.Text text, Render.Line line)
             {
                 Text = text;
+                Line = line;
             }
         }
 
