@@ -728,57 +728,7 @@ namespace SAssemblies.Miscs
 
         public static String GetWebSiteContent(String webSite, String param = null)
         {
-            string website = "";
-            var request = (HttpWebRequest)WebRequest.Create(webSite);
-            TryAddCookie(request, new Cookie("customLocale", "en_US", "", GetWebSiteWithoutHttp()));
-            if (param != null)
-            {
-                Byte[] bytes = Encoding.ASCII.GetBytes(param);//GetBytes(param);
-                request.Method = "POST";
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.ContentLength = bytes.Length;
-                using (var stream = request.GetRequestStream())
-                {
-                    stream.Write(bytes, 0, bytes.Length);
-                }
-                //Stream dataStream = request.GetRequestStream();
-                //dataStream.Write(bytes, 0, bytes.Length);
-                //dataStream.Close();
-            }
-            try
-            {
-                using (var response = (HttpWebResponse)request.GetResponse())
-                {
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        Stream receiveStream = response.GetResponseStream();
-                        if (receiveStream != null)
-                        {
-                            if (response.CharacterSet == null)
-                            {
-                                using (StreamReader readStream = new StreamReader(receiveStream))
-                                {
-                                    website = @readStream.ReadToEnd();
-                                }
-                            }
-                            else
-                            {
-                                using (
-                                    StreamReader readStream = new StreamReader(receiveStream,
-                                        Encoding.GetEncoding(response.CharacterSet)))
-                                {
-                                    website = @readStream.ReadToEnd();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Cannot load EloDisplayer Data. Exception: " + ex.ToString());
-            }
-            return website;
+            return Website.GetWebSiteContent(webSite, new Cookie("customLocale", "en_US", "", GetWebSiteWithoutHttp()), param);
         }
 
         public static String GetLolWebSiteContentOverview(Obj_AI_Hero hero)
@@ -853,7 +803,7 @@ namespace SAssemblies.Miscs
         {
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
             String patternWin = "<div class=\"rectImage\"><img src=\"//(.*?)op.gg/images/profile_icons/profileIcon(.*?)\\.jpg\"></div>";
-            return GetMatch(websiteContent, patternWin, 0, 2) + ".png";
+            return Website.GetMatch(websiteContent, patternWin, 0, 2) + ".png";
         }
 
         private String GetDivision(Obj_AI_Hero hero, ChampionEloDisplayer elo, ref bool ranked) //Bugged
@@ -862,28 +812,28 @@ namespace SAssemblies.Miscs
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
             String patternTierRank = "<div class=\"TierRank\">";
             String patternLeaguePoints = "<div class=\"LeaguePoints\">";
-            if (!GetMatch(websiteContent, patternTierRank).Equals("") && !GetMatch(websiteContent, patternLeaguePoints).Equals(""))
+            if (!Website.GetMatch(websiteContent, patternTierRank).Equals("") && !Website.GetMatch(websiteContent, patternLeaguePoints).Equals(""))
             {
                 if (websiteContent.Contains("TypeTeam"))
                 {
                     String patternRank = "<span class=\"tierRank\">(.*?)</span>";
                     String patternPoints = "<span class=\"leaguePoints\">(.*?) LP</span>";
-                    division = GetMatch(websiteContent, patternRank) + " (" + GetMatch(websiteContent, patternPoints) + " LP)";
+                    division = Website.GetMatch(websiteContent, patternRank) + " (" + Website.GetMatch(websiteContent, patternPoints) + " LP)";
                     //TODO: GetBestRank();
                 }
                 else
                 {
                     String patternRank = "<span class=\"tierRank\">(.*?)</span>";
                     String patternPoints = "<span class=\"leaguePoints\">(.*?) LP</span>";
-                    division = GetMatch(websiteContent, patternRank) + " (" + GetMatch(websiteContent, patternPoints) + " LP)";
+                    division = Website.GetMatch(websiteContent, patternRank) + " (" + Website.GetMatch(websiteContent, patternPoints) + " LP)";
                 }
                 ranked = true;
             }
-            else if (!GetMatch(websiteContent, patternTierRank).Equals("") && GetMatch(websiteContent, patternLeaguePoints).Equals(""))
+            else if (!Website.GetMatch(websiteContent, patternTierRank).Equals("") && Website.GetMatch(websiteContent, patternLeaguePoints).Equals(""))
             {
                 division = "Unranked";
             }
-            else if (GetMatch(websiteContent, patternTierRank).Equals(""))
+            else if (Website.GetMatch(websiteContent, patternTierRank).Equals(""))
             {
                 division = "Unranked (<30)";
             }
@@ -898,19 +848,19 @@ namespace SAssemblies.Miscs
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
             String patternWin = @"<br><span class=""wins"">(.*?)W</span>";
             String patternLoose = @"</span><span class=""losses"">(.*?)L</span>";
-            return GetMatch(websiteContent, patternWin) + "W/" +
-                  GetMatch(websiteContent, patternLoose) + "L";
+            return Website.GetMatch(websiteContent, patternWin) + "W/" +
+                  Website.GetMatch(websiteContent, patternLoose) + "L";
         }
 
         private String GetRecentStatistics(Obj_AI_Hero hero, ChampionEloDisplayer elo)
         {
             String websiteContent = elo.GetLolWebSiteContentOverview(hero);
             String patternWl = @"<div class=""WinRatioTitle"">(.*?)</div>";
-            String matchWl = GetMatch(websiteContent, patternWl);
+            String matchWl = Website.GetMatch(websiteContent, patternWl);
             String patternWin = @"(\d*?)W";
             String patternLoose = @"(\d*?)L";
-            return GetMatch(matchWl, patternWin, 0, 0) + "/" +
-                  GetMatch(matchWl, patternLoose, 0, 0);
+            return Website.GetMatch(matchWl, patternWin, 0, 0) + "/" +
+                  Website.GetMatch(matchWl, patternLoose, 0, 0);
         }
 
         private String GetOverallKDA(Obj_AI_Hero hero, ChampionEloDisplayer elo)
@@ -919,9 +869,9 @@ namespace SAssemblies.Miscs
             String patternKill = "<div class=\"KDA\"><div class=\"kda\"><span class=\"kill\">(.*?)</span>";
             String patternDeath = "<div class=\"KDA\"><div class=\"kda\">(.*?)<span class=\"death\">(.*?)</span>";
             String patternAssist = "<div class=\"KDA\"><div class=\"kda\">(.*?)<span class=\"assist\">(.*?)</span>";
-            return GetMatch(websiteContent, patternKill) + "/" +
-                  GetMatch(websiteContent, patternDeath, 0, 2) + "/" +
-                  GetMatch(websiteContent, patternAssist, 0, 2);
+            return Website.GetMatch(websiteContent, patternKill) + "/" +
+                  Website.GetMatch(websiteContent, patternDeath, 0, 2) + "/" +
+                  Website.GetMatch(websiteContent, patternAssist, 0, 2);
         }
 
         private String GetMmr(Obj_AI_Hero hero, bool ranked)
@@ -932,8 +882,8 @@ namespace SAssemblies.Miscs
             String websiteContent = GetLolWebSiteContent("summoner/ajax/mmr.json/", "userName=" + GetEncodedPlayerName(hero));
             String patternMmr = "\"mmr\":\"(.*?)\"";
             String patternAverageMmr = "<b>(.*?)<\\\\/b>";
-            return GetMatch(websiteContent, patternMmr) + "/" +
-                   GetMatch(websiteContent, patternAverageMmr);
+            return Website.GetMatch(websiteContent, patternMmr) + "/" +
+                   Website.GetMatch(websiteContent, patternAverageMmr);
         }
 
         private String GetMasteries(Obj_AI_Hero hero)
@@ -967,15 +917,15 @@ namespace SAssemblies.Miscs
         {
             String runes = "";
             String patternActiveRuneSite = "data-page=(.*?)]";
-            String matchActiveRuneSite = GetMatch(GetLolWebSiteContentRunes(hero), patternActiveRuneSite);
+            String matchActiveRuneSite = Website.GetMatch(GetLolWebSiteContentRunes(hero), patternActiveRuneSite);
             String patternInnerRunePage = "<div class=\"Title\">(.*?)</div>\n.*<div class=\"Stat\">(.*?)</div>";
             String patternOuterRunePage =
                 "<div class=\"RunePageWrap\" id=\"SummonerRunePage-" + matchActiveRuneSite + "\"([\\s\\S]*?)</dd>(.*?)</dl>.*\\n</div>(.*?)</div>";
-            String matchOuterRunePage = GetMatch(GetLolWebSiteContentRunes(hero), patternOuterRunePage);
+            String matchOuterRunePage = Website.GetMatch(GetLolWebSiteContentRunes(hero), patternOuterRunePage);
             for (int i = 0; ; i++)
             {
-                String matchInnerRunePageTitle = GetMatch(matchOuterRunePage, patternOuterRunePage, i, 1);
-                String matchInnerRunePageStat = GetMatch(matchOuterRunePage, patternOuterRunePage, i, 2);
+                String matchInnerRunePageTitle = Website.GetMatch(matchOuterRunePage, patternOuterRunePage, i, 1);
+                String matchInnerRunePageStat = Website.GetMatch(matchOuterRunePage, patternOuterRunePage, i, 2);
                 if (matchInnerRunePageTitle.Equals("") || matchInnerRunePageStat.Equals(""))
                 {
                     break;
@@ -998,12 +948,12 @@ namespace SAssemblies.Miscs
 
             for (int i = 0; ; i++)
             {
-                String matchChampion = GetMatch(championContent, patternChampion, i);
+                String matchChampion = Website.GetMatch(championContent, patternChampion, i);
                 if (matchChampion.Contains(hero.ChampionName))
                 {
-                    matchKill = GetMatch(championContent, patternKill, i);
-                    matchDeath = GetMatch(championContent, patternDeath, i);
-                    matchAssist = GetMatch(championContent, patternAssist, i);
+                    matchKill = Website.GetMatch(championContent, patternKill, i);
+                    matchDeath = Website.GetMatch(championContent, patternDeath, i);
+                    matchAssist = Website.GetMatch(championContent, patternAssist, i);
                     break;
                 }
                 else if (matchChampion.Equals(""))
@@ -1040,11 +990,11 @@ namespace SAssemblies.Miscs
 
             for (int i = 0; ; i++)
             {
-                String matchChampion = GetMatch(championContent, patternChampion, i);
+                String matchChampion = Website.GetMatch(championContent, patternChampion, i);
                 if (matchChampion.Contains(hero.ChampionName))
                 {
-                    matchWins = GetMatch(championContent, patternWins, i);
-                    matchLosses = GetMatch(championContent, patternLosses, i);
+                    matchWins = Website.GetMatch(championContent, patternWins, i);
+                    matchLosses = Website.GetMatch(championContent, patternLosses, i);
                     break;
                 }
                 else if (matchChampion.Equals(""))
@@ -1115,27 +1065,7 @@ namespace SAssemblies.Miscs
         {
             //data-summoner-id=19491264
             String pattern = "data-summoner-id=\"(.*?)\"";
-            return GetMatch(websiteContent, pattern);
-        }
-
-
-        private String GetMatch(String websiteContent, String pattern, int index = 0, int groupIndex = 1)
-        {
-            try
-            {
-                string replacement = Regex.Replace(websiteContent, @"\t|\n|\r", "");
-                replacement = Regex.Replace(replacement, @"\\t|\\n|\\r", "");
-                replacement = Regex.Replace(replacement, @"\\""", "\"");
-                Match websiteMatcher = new Regex(pattern).Matches(replacement)[index];
-                //Match elementMatch = new Regex(websiteMatcher.Groups[groupIndex].ToString()).Matches(replacement)[0];
-                //return elementMatch.ToString();
-                return websiteMatcher.Groups[groupIndex].ToString();
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine("Cannot get value for {0}, pattern {1}, index {2}, groupIndex {3}\n Exception: ", @websiteContent, @pattern, index, groupIndex, e);
-            }
-            return "";
+            return Website.GetMatch(websiteContent, pattern);
         }
 
         private static T FromJson<T>(string input)
@@ -1251,23 +1181,6 @@ namespace SAssemblies.Miscs
             webBrowser.Dispose();
 
             return bitmap;
-        }
-
-        public static bool TryAddCookie(WebRequest webRequest, Cookie cookie)
-        {
-            HttpWebRequest httpRequest = webRequest as HttpWebRequest;
-            if (httpRequest == null)
-            {
-                return false;
-            }
-
-            if (httpRequest.CookieContainer == null)
-            {
-                httpRequest.CookieContainer = new CookieContainer();
-            }
-
-            httpRequest.CookieContainer.Add(cookie);
-            return true;
         }
 
         public static List<String> CalcNeededWhitespaces(List<String> strings)

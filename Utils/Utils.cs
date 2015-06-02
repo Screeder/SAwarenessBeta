@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -2433,6 +2435,7 @@ namespace SAssemblies
 
             public Render.Sprite Sprite;
             public Bitmap Bitmap;
+            public Render.Text Text;
             public bool DownloadFinished = false;
             public bool LoadingFinished = false;
             public OVD Mode = OVD.Small;
@@ -3456,6 +3459,104 @@ namespace SAssemblies
         public static void Init()
         {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+    }
+
+    public static class Website
+    {
+        public static String GetWebSiteContent(String webSite, Cookie cookie = null, String param = null)
+        {
+            string website = "";
+            var request = (HttpWebRequest)WebRequest.Create(webSite);
+            if (cookie != null)
+            {
+                TryAddCookie(request, cookie);
+            }
+            if (param != null)
+            {
+                Byte[] bytes = Encoding.ASCII.GetBytes(param);//GetBytes(param);
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = bytes.Length;
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(bytes, 0, bytes.Length);
+                }
+                //Stream dataStream = request.GetRequestStream();
+                //dataStream.Write(bytes, 0, bytes.Length);
+                //dataStream.Close();
+            }
+            try
+            {
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        Stream receiveStream = response.GetResponseStream();
+                        if (receiveStream != null)
+                        {
+                            if (response.CharacterSet == null)
+                            {
+                                using (StreamReader readStream = new StreamReader(receiveStream))
+                                {
+                                    website = @readStream.ReadToEnd();
+                                }
+                            }
+                            else
+                            {
+                                using (
+                                    StreamReader readStream = new StreamReader(receiveStream,
+                                        Encoding.GetEncoding(response.CharacterSet)))
+                                {
+                                    website = @readStream.ReadToEnd();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Cannot load {0} Data. Exception: " + ex.ToString(), website);
+            }
+            return website;
+        }
+
+        private static bool TryAddCookie(WebRequest webRequest, Cookie cookie)
+        {
+            HttpWebRequest httpRequest = webRequest as HttpWebRequest;
+            if (httpRequest == null)
+            {
+                return false;
+            }
+
+            if (httpRequest.CookieContainer == null)
+            {
+                httpRequest.CookieContainer = new CookieContainer();
+            }
+
+            httpRequest.CookieContainer.Add(cookie);
+            return true;
+        }
+
+        public static String GetMatch(String websiteContent, String pattern, int index = 0, int groupIndex = 1)
+        {
+            try
+            {
+                string replacement = Regex.Replace(websiteContent, @"\t|\n|\r", "");
+                replacement = Regex.Replace(replacement, @"\\t|\\n|\\r", "");
+                replacement = Regex.Replace(replacement, @"\\""", "\"");
+                //File.WriteAllText(Config.AppDataDirectory + "\\omg.txt", replacement);
+                Match websiteMatcher = new Regex(pattern).Matches(replacement)[index];
+                //Match elementMatch = new Regex(websiteMatcher.Groups[groupIndex].ToString()).Matches(replacement)[0];
+                //return elementMatch.ToString();
+                return websiteMatcher.Groups[groupIndex].ToString();
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine("Cannot get match for pattern {0}", pattern);
+            }
+            return "";
         }
     }
 

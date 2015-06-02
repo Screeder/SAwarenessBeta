@@ -165,11 +165,18 @@ namespace SAssemblies.Miscs
             info.Icon.Sprite.Scale = new Vector2(0.4f);
             info.Icon.Sprite.PositionUpdate = delegate
             {
-                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
+                //return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
+                Vector2 wts = new Vector2();
+                if (DirectXDrawer.WorldToScreen(info.Pos.To3D2(), ref wts))
+                    return GetScreenPosition(wts, new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
+                else
+                {
+                    return new Vector2(200,200);
+                }
             };
             info.Icon.Sprite.VisibleCondition = delegate
             {
-                return Misc.Miscs.GetActive() && SmartPingImproveMisc.GetActive();
+                return IsActive();
             };
             info.Icon.Sprite.Add(1);
 
@@ -177,11 +184,18 @@ namespace SAssemblies.Miscs
             info.IconBackground.Sprite.Scale = new Vector2(1.5f);
             info.IconBackground.Sprite.PositionUpdate = delegate
             {
-                return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.IconBackground.Sprite.Width, info.IconBackground.Sprite.Height));
+                //return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.IconBackground.Sprite.Width, info.IconBackground.Sprite.Height));
+                Vector2 wts = new Vector2();
+                if (DirectXDrawer.WorldToScreen(info.Pos.To3D2(), ref wts))
+                    return GetScreenPosition(wts, new Size(info.IconBackground.Sprite.Width, info.IconBackground.Sprite.Height));
+                else
+                {
+                    return new Vector2(200, 200);
+                }
             };
             info.IconBackground.Sprite.VisibleCondition = delegate
             {
-                return Misc.Miscs.GetActive() && SmartPingImproveMisc.GetActive();
+                return IsActive();
             };
             info.IconBackground.Sprite.Add(0);
 
@@ -200,7 +214,7 @@ namespace SAssemblies.Miscs
             };
             info.Direction.Sprite.VisibleCondition = delegate
             {
-                return Misc.Miscs.GetActive() && SmartPingImproveMisc.GetActive();
+                return IsActive();
             };
             info.Direction.Sprite.Color = directionColor;
             info.Direction.Sprite.Add(2);

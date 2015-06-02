@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SAssemblies;
 using SAssemblies.Miscs;
+using SharpDX;
 using Menu = SAssemblies.Menu;
 
 //Extend Picture with place for item panel
@@ -26,14 +27,38 @@ namespace SAssemblies.Miscs
 
         public static Menu.MenuItemSettings AutoBuyMisc = new Menu.MenuItemSettings(typeof(AutoBuy));
 
+        private int lastGameUpdateTime = 0;
+        private static List<Build> builds = new List<Build>();
+        private AutoBuyGUI Gui = new AutoBuyGUI();
+
         public AutoBuy()
         {
-            GetItemConfig();
+            //LoadLevelFile();
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").ValueChanged += ChangeBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").ValueChanged += ShowBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").ValueChanged += NewBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyActive").ValueChanged += Active_OnValueChanged;
+
+            LolBuilder.GetLolBuilderData();
+
+            Game.OnUpdate += Game_OnGameUpdate;
+            Game.OnWndProc += Game_OnWndProc;
+            AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
         }
 
         ~AutoBuy()
         {
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").ValueChanged -= NewBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyActive").ValueChanged -= Active_OnValueChanged;
 
+            Game.OnUpdate -= Game_OnGameUpdate;
+            Game.OnWndProc -= Game_OnWndProc;
+            builds = null;
         }
 
         public bool IsActive()
@@ -49,85 +74,607 @@ namespace SAssemblies.Miscs
         {
             AutoBuyMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOBUY_MAIN"), "SAssembliesMiscsAutoBuy"));
             AutoBuyMisc.MenuItems.Add(
-                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyLoadChoice", Language.GetString("MISCS_AUTOBUY_SEQUENCE_BUILD_CHOICE"))
+                        .SetValue(GetBuildNames())
+                            .DontSave()));
+            AutoBuyMisc.MenuItems.Add(
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyShowBuild", Language.GetString("MISCS_AUTOBUY_SEQUENCE_BUILD_LOAD")).SetValue(false)
+                        .DontSave()));
+            AutoBuyMisc.MenuItems.Add(
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyNewBuild", Language.GetString("MISCS_AUTOBUY_SEQUENCE_CREATE_CHOICE")).SetValue(false)
+                        .DontSave()));
+            AutoBuyMisc.MenuItems.Add(
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyDeleteBuild", Language.GetString("MISCS_AUTOBUY_SEQUENCE_DELETE_CHOICE")).SetValue(false)
+                        .DontSave()));
+            AutoBuyMisc.MenuItems.Add(
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
             return AutoBuyMisc;
         }
 
-        static ItemInfo GetItemConfig() //Does not download the item.json correctly, it is missing the tags attribute somehow!!!
+        void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
-            String name = "";
-            String version = "";
-            try
+            //WriteBuildFile();
+        }
+
+        void CurrentDomain_DomainUnload(object sender, EventArgs e)
+        {
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").ValueChanged -= ChangeBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").ValueChanged -= NewBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyActive").ValueChanged -= Active_OnValueChanged;
+
+            Game.OnUpdate -= Game_OnGameUpdate;
+            Game.OnWndProc -= Game_OnWndProc;
+            //WriteBuildFile();
+            builds = null;
+        }
+
+        private void Game_OnWndProc(WndEventArgs args)
+        {
+            if (!IsActive() &&
+                            (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").GetValue<bool>() ||
+                            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").GetValue<bool>()))
+                return;
+            HandleInput((WindowsMessages)args.Msg, Utils.GetCursorPos(), args.WParam);
+        }
+
+        private void HandleInput(WindowsMessages message, Vector2 cursorPos, uint key)
+        {
+
+        }
+
+        private void ResetMenuEntries()
+        {
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild")
+                .SetValue(false);
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild")
+                .SetValue(false);
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild")
+                .SetValue(false);
+        }
+
+        private void ChangeBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            if (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild")
+                .GetValue<bool>() || AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild")
+                .GetValue<bool>() || AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild")
+                .GetValue<bool>())
             {
-                String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
-                version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+                onValueChangeEventArgs.Process = false;
+                return;
             }
-            catch (Exception ex)
+
+            StringList list = onValueChangeEventArgs.GetNewValue<StringList>();
+            Build curLevler = null;
+            foreach (Build levler in builds.ToArray())
             {
-                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-                return null;
-            }
-            List<ItemInfo> itemInfoList = new List<ItemInfo>();
-            try
-            {
-                String url = "http://ddragon.leagueoflegends.com/cdn/5.8.1/data/en_US/item.json"; //temp fix for riot fault otherwise + version +
-                String json = new WebClient().DownloadString(url);
-                JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
-                JToken token = data["data"].First;
-                while ((token = token.Next) != null)
+                if (levler.Name.Contains(list.SList[list.SelectedIndex]))
                 {
-                    ItemInfo itemInfo = new ItemInfo();
-                    itemInfo.ItemId = (ItemId)Convert.ToInt32(((JProperty)token).Name);
-                    itemInfo.Name = token.First["name"].ToString();
-                    itemInfo.Description = token.First["description"].ToString();
-                    if (token.First["from"] != null)
+                    curLevler = levler;
+                }
+            }
+            if (curLevler != null)
+            {
+                AutoBuyGUI.CurrentBuilder = new Build(curLevler.Name, curLevler.ItemIdList, Game.MapId);
+            }
+            else
+            {
+                AutoBuyGUI.CurrentBuilder = new Build();
+            }
+        }
+
+        private void ShowBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            if (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild")
+                .GetValue<bool>() || AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
+            if (onValueChangeEventArgs.GetNewValue<bool>())
+            {
+                StringList list =
+                    AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice")
+                        .GetValue<StringList>();
+                Build curBuilder = null;
+                foreach (Build levler in builds.ToArray())
+                {
+                    if (list.SList[list.SelectedIndex].Equals(""))
+                        continue;
+                    if (levler.Name.Contains(list.SList[list.SelectedIndex]))
                     {
-                        itemInfo.ToItemIds = token.First["from"].Values<int>().Select(x => (ItemId)x).ToList();
+                        curBuilder = levler;
+                        break;
                     }
-                    if (token.First["into"] != null)
+                }
+                if (curBuilder != null)
+                {
+                    AutoBuyGUI.CurrentBuilder = new Build(curBuilder.Name, curBuilder.ItemIdList, Game.MapId);
+                }
+                else
+                {
+                    onValueChangeEventArgs.Process = false;
+                    //SequenceLevlerGUI.CurrentLevler = new SequenceLevler();
+                }
+                //gui.CurrentLevler = curLevler ?? new SequenceLevler();
+            }
+        }
+
+        private void NewBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            if (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild")
+                .GetValue<bool>() || AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
+            if (onValueChangeEventArgs.GetNewValue<bool>())
+            {
+                AutoBuyGUI.CurrentBuilder = new Build();
+                AutoBuyGUI.CurrentBuilder.Name = GetFreeSequenceName();
+                AutoBuyGUI.CurrentBuilder.ChampionName = ObjectManager.Player.ChampionName;
+            }
+        }
+
+        private void DeleteBuild_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            if (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild")
+                .GetValue<bool>() || AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild")
+                .GetValue<bool>())
+            {
+                onValueChangeEventArgs.Process = false;
+                return;
+            }
+
+            if (onValueChangeEventArgs.GetNewValue<bool>())
+            {
+                DeleteSequence();
+                AutoBuyGUI.CurrentBuilder = new Build();
+                onValueChangeEventArgs.Process = false;
+            }
+        }
+
+        private void Active_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            //if (!onValueChangeEventArgs.GetNewValue<bool>())
+            //{
+            //    WriteLevelFile();
+            //}
+        }
+
+        private void Game_OnGameUpdate(EventArgs args)
+        {
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+                return;
+
+            lastGameUpdateTime = Environment.TickCount;
+
+        }
+
+        public static StringList GetBuildNames()
+        {
+            StringList list = new StringList();
+            if (builds == null)
+            {
+                builds = new List<Build>();
+            }
+            if (builds.Count == 0)
+            {
+                list.SList = new[] { "" };
+            }
+            else
+            {
+                List<String> elements = new List<string>();
+                foreach (Build levler in builds)
+                {
+                    if (levler.ChampionName.Contains(ObjectManager.Player.ChampionName))
                     {
-                        itemInfo.ToItemIds = token.First["into"].Values<int>().Select(x => (ItemId)x).ToList();
+                        elements.Add(levler.Name);
                     }
-                    itemInfo.Price = token.First["gold"]["base"].Value<int>();
-                    itemInfo.TotalGold = token.First["gold"]["total"].Value<int>();
-                    itemInfo.ItemTypeList = token.First["tags"].Values<String>().Select(ItemInfo.StringToItemType).ToList(); ;//tags -> String
-                    itemInfo.MapId = new List<GameMapId>();//null = everything, maps -> MapId: false
-                    if (token.First["maps"] != null)
+                }
+                if (elements.Count == 0)
+                {
+                    list.SList = new[] { "" };
+                }
+                else
+                {
+                    list = new StringList(elements.ToArray());
+                }
+            }
+            return list;
+        }
+
+        private void DeleteSequence()
+        {
+            StringList list = AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").GetValue<StringList>();
+            foreach (Build levler in builds.ToArray())
+            {
+                if (levler.Name.Contains(list.SList[list.SelectedIndex]))
+                {
+                    builds.Remove(levler);
+                    List<String> temp = list.SList.ToList();
+                    temp.RemoveAt(list.SelectedIndex);
+                    if (temp.Count == 0)
                     {
-                        JToken mapToken = token.First["maps"];
-                        while ((mapToken = mapToken.Next) != null)
+                        temp.Add("");
+                    }
+                    if (list.SelectedIndex > 0)
+                    {
+                        list.SelectedIndex -= 1;
+                    }
+                    list.SList = temp.ToArray();
+                    AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").SetValue<StringList>(list);
+                    break;
+                }
+            }
+        }
+
+        private static void SaveSequence(bool newEntry)
+        {
+            StringList list = AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").GetValue<StringList>();
+            Console.WriteLine(AutoBuyGUI.CurrentBuilder.New);
+            if (AutoBuyGUI.CurrentBuilder.New)
+            {
+                Console.WriteLine(AutoBuyGUI.CurrentBuilder.Name);
+                AutoBuyGUI.CurrentBuilder.New = false;
+                builds.Add(AutoBuyGUI.CurrentBuilder);
+                List<String> temp = list.SList.ToList();
+                if (temp.Count == 1)
+                {
+                    if (temp[0].Equals(""))
+                    {
+                        temp.RemoveAt(0);
+                    }
+                    else
+                    {
+                        list.SelectedIndex += 1;
+                    }
+                }
+                else
+                {
+                    list.SelectedIndex += 1;
+                }
+                temp.Add(AutoBuyGUI.CurrentBuilder.Name);
+                list.SList = temp.ToArray();
+            }
+            else
+            {
+                foreach (var levler in builds.ToArray())
+                {
+                    if (levler.Name.Equals(AutoBuyGUI.CurrentBuilder.Name))
+                    {
+                        builds[list.SelectedIndex] = AutoBuyGUI.CurrentBuilder;
+                    }
+                }
+            }
+            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyLoadChoice").SetValue<StringList>(list);
+        }
+
+        private String GetFreeSequenceName()
+        {
+            List<int> endings = new List<int>();
+            List<Build> sequences = new List<Build>();
+            for (int i = 0; i < builds.Count; i++)
+            {
+                if (builds[i].ChampionName.Contains(ObjectManager.Player.ChampionName))
+                {
+                    String ending = builds[i].Name.Substring(ObjectManager.Player.ChampionName.Length);
+                    try
+                    {
+                        endings.Add(Convert.ToInt32(ending));
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            for (int i = 0; i < 10000; i++)
+            {
+                if (!endings.Contains(i))
+                {
+                    return ObjectManager.Player.ChampionName + i;
+                }
+            }
+            return ObjectManager.Player.ChampionName + 0;
+        }
+
+        private class LolBuilder
+        {
+
+            public static void GetLolBuilderData()
+            {
+                //BuildData.BuildsList = new List<BuildData.BuildInfo>();
+                String lolBuilderData = null;
+                try
+                {
+                    lolBuilderData = Website.GetWebSiteContent("http://lolbuilder.net/" + ObjectManager.Player.ChampionName);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                //String patternSkillOrder = "window.skillOrder\\[(.*?)\\] = \\[(.*?)\\];";
+
+                //for (int i = 0; ; i++)
+                //{
+                //    String matchSkillOrder = Website.GetMatch(lolBuilderData, patternSkillOrder, i, 2);
+                //    Console.WriteLine(matchSkillOrder);
+                //    if (matchSkillOrder.Equals(""))
+                //    {
+                //        break;
+                //    }
+                //    String[] splitSkillOrder = matchSkillOrder.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                //    SpellSlot[] spellSlots = new SpellSlot[18];
+                //    for (int j = 0; j < splitSkillOrder.Length; j++)
+                //    {
+                //        var skill = splitSkillOrder[j];
+                //        try
+                //        {
+                //            spellSlots[j] = (SpellSlot)(Convert.ToInt32(skill) - 1);
+                //        }
+                //        catch (Exception e)
+                //        {
+                //            Console.WriteLine("Cannot convert SkillOrder to SpellSlot {0}: {1}", skill, e);
+                //        }
+                //    }
+                //    SequenceLevler seqLevler = new SequenceLevler(ObjectManager.Player.ChampionName + " LolBuilder " + i, spellSlots, true);
+                //    seqLevler.New = true;
+                //    SequenceLevlerGUI.CurrentLevler = seqLevler;
+                //    SaveSequence(seqLevler.New);
+                //}
+
+
+                String patternBuilds = "id=\"build-content-([\\S\\s]*?)-([\\S\\s]*?)\">([\\S\\s]*?)<div class=\"tab-pane";//<div class=\"build-body\"([\\S\\s]*?)id=\"build-content-([\\S\\s]*?)";
+                String patternBuildStart = "starting-item-sets row(.*?)</section>";
+                String patternBuildStartInner = "col-lg-6 col-md-6 col-sm-12 starting-item-set([\\S\\s]*?)col-lg-6 col-md-6 col-sm-12 starting-item-set";
+                String patternBuildOrder = "Build Order(.*?)</section>";
+                String patternBuildFinal = "Final Items(.*?)</section>";
+                String patternBuildItem = "<small class=\"t-overflow\">([\\S\\s]*?)</small>";
+                String patternBuildItemCount = "<span class=\"count\"><span class=\"multiple\">([\\S\\s]*?)</span><span class=\"times\"> &times; </span></span>([\\S\\s]*?$)";
+
+                List<Build> builds = new List<Build>();
+
+                for (int i = 0; ; i++)
+                {
+                    List<String> buildItems = new List<string>();
+                    List<String> startItems = new List<string>();
+                    List<String> buildOrderItems = new List<string>();
+                    List<String> finalItems = new List<string>();
+                    GameMapId mapId = 0;
+                    String matchBuilds = Website.GetMatch(lolBuilderData, patternBuilds, i, 3);
+                    if (matchBuilds.Equals(""))
+                    {
+                        break;
+                    }
+                    String matchBuildsMapId = Website.GetMatch(lolBuilderData, patternBuilds, i, 2);
+                    switch (matchBuildsMapId)
+                    {
+                        case "sr":
+                            mapId = GameMapId.SummonersRift;
+                            break;
+                            
+                        case "tt":
+                            mapId = GameMapId.TwistedTreeline;
+                            break;
+
+                        case "cs":
+                            mapId = GameMapId.CrystalScar;
+                            break;
+
+                        case "ha":
+                            mapId = GameMapId.HowlingAbyss;
+                            break;
+                    }
+                    String matchBuildStart = Website.GetMatch(matchBuilds, patternBuildStart, 0);
+                    if (!matchBuildStart.Equals(""))
+                    {
+                        String matchBuildStartInner = Website.GetMatch(matchBuildStart, patternBuildStartInner);
+                        if (!matchBuildStartInner.Equals(""))
                         {
-                            itemInfo.MapId.Add((GameMapId)Convert.ToInt32(((JProperty)mapToken).Name));
+                            for (int j = 0; ; j++)
+                            {
+                                String matchBuildItem = Website.GetMatch(matchBuildStartInner, patternBuildItem, j);
+                                if (matchBuildItem.Equals(""))
+                                {
+                                    break;
+                                }
+                                String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
+                                if (matchBuildItemCount.Equals(""))
+                                {
+                                    startItems.Add(matchBuildItem);
+                                }
+                                else
+                                {
+                                    String matchBuildItemName = Website.GetMatch(matchBuildItem, patternBuildItemCount, 0, 2);
+                                    try
+                                    {
+                                        int count = Convert.ToInt32(matchBuildItemCount);
+                                        for (int k = 0; k < count; k++)
+                                        {
+                                            startItems.Add(matchBuildItemName);
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 0; ; j++)
+                            {
+                                String matchBuildItem = Website.GetMatch(matchBuildStart, patternBuildItem, j);
+                                if (matchBuildItem.Equals(""))
+                                {
+                                    break;
+                                }
+                                String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
+                                if (matchBuildItemCount.Equals(""))
+                                {
+                                    startItems.Add(matchBuildItem);
+                                }
+                                else
+                                {
+                                    String matchBuildItemName = Website.GetMatch(matchBuildItem, patternBuildItemCount, 0, 2);
+                                    try
+                                    {
+                                        int count = Convert.ToInt32(matchBuildItemCount);
+                                        for (int k = 0; k < count; k++)
+                                        {
+                                            startItems.Add(matchBuildItemName);
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                    }
+                                }
+                            }
                         }
                     }
-                    itemInfoList.Add(itemInfo);
+                    String matchBuildOrder = Website.GetMatch(matchBuilds, patternBuildOrder, 0);
+                    if (!matchBuildOrder.Equals(""))
+                    {
+                        for (int j = 0; ; j++)
+                        {
+                            String matchBuildItem = Website.GetMatch(matchBuildOrder, patternBuildItem, j);
+                            if (matchBuildItem.Equals(""))
+                            {
+                                break;
+                            }
+                            String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
+                            if (matchBuildItemCount.Equals(""))
+                            {
+                                startItems.Add(matchBuildItem);
+                            }
+                            else
+                            {
+                                String matchBuildItemName = Website.GetMatch(matchBuildItem, patternBuildItemCount, 0, 2);
+                                try
+                                {
+                                    int count = Convert.ToInt32(matchBuildItemCount);
+                                    for (int k = 0; k < count; k++)
+                                    {
+                                        startItems.Add(matchBuildItemName);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                }
+                            }
+                        }
+                    }
+                    String matchBuildFinal = Website.GetMatch(matchBuilds, patternBuildFinal, 0);
+                    if (!matchBuildFinal.Equals(""))
+                    {
+                        for (int j = 0; ; j++)
+                        {
+                            String matchBuildItem = Website.GetMatch(matchBuildFinal, patternBuildItem, j);
+                            if (matchBuildItem.Equals(""))
+                            {
+                                break;
+                            }
+                            String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
+                            if (matchBuildItemCount.Equals(""))
+                            {
+                                startItems.Add(matchBuildItem);
+                            }
+                            else
+                            {
+                                String matchBuildItemName = Website.GetMatch(matchBuildItem, patternBuildItemCount, 0, 2);
+                                try
+                                {
+                                    int count = Convert.ToInt32(matchBuildItemCount);
+                                    for (int k = 0; k < count; k++)
+                                    {
+                                        startItems.Add(matchBuildItemName);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                }
+                            }
+                        }
+                    }
+                    buildItems.AddRange(startItems);
+                    buildItems.AddRange(buildOrderItems);
+                    buildItems.AddRange(finalItems);
+                    List<ItemId> itemIdList = new List<ItemId>();
+                    foreach (var b in buildItems)
+                    {
+                        ItemId id = ConvertNameToId(b);
+                        if (id != ItemId.Unknown)
+                        {
+                            itemIdList.Add(id);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unknown: " + b);
+                        }
+                    }
+                    Build build = new Build(ObjectManager.Player.ChampionName + " LolBuilder " + i, itemIdList, mapId);
+                    build.New = true;
+                    AutoBuyGUI.CurrentBuilder = build;
+                    //builds.Add(new Build(ObjectManager.Player.ChampionName + " LolBuilder " + i, itemIdList, mapId));
+                    SaveSequence(build.New);
                 }
-                //name = data["data"].First.First["image"]["full"].ToString().Replace(".png", "_" + skinId + ".jpg");
+
+                for (int i = 0; i < builds.Count; i++)
+                {
+                    Console.WriteLine("\n" + i + ". Build " + builds[i].MapId.ToString() + ":");
+                    foreach (var itemId in builds[i].ItemIdList)
+                    {
+                        Console.WriteLine(itemId.ToString());
+                    }
+                }
             }
-            catch (Exception ex)
+
+            private static ItemId ConvertNameToId(String itemName)
             {
-                Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
-                return null;
+                var firstOrDefault = ItemInfo.GetItemList().FirstOrDefault(x => x.Name.ToLower().Equals(itemName.ToLower()));
+                if (firstOrDefault != null)
+                {
+                    return firstOrDefault.ItemId;
+                }
+                return ItemId.Unknown;
             }
-            return null;
         }
 
         [Serializable]
         class Build
         {
             public String Name;
-            private List<ItemId> _itemId = new List<ItemId>(36);
+            public String ChampionName;
+            public List<ItemId> ItemIdList = new List<ItemId>(36);
+            public bool New = true;
+            public bool Web = false;
+            public GameMapId MapId = 0;
 
             public Build(string name)
             {
                 Name = name;
-                _itemId = new List<ItemId>();
+                ChampionName = ObjectManager.Player.ChampionName;
+                ItemIdList = new List<ItemId>();
+
             }
 
-            public Build(string name, List<ItemId> itemId)
+            public Build(string name, List<ItemId> itemId, GameMapId mapId)
             {
                 Name = name;
-                _itemId = itemId;
+                ChampionName = ObjectManager.Player.ChampionName;
+                ItemIdList = itemId;
+                MapId = mapId;
+            }
+
+            public Build()
+            {
+
             }
 
         }
@@ -178,9 +725,10 @@ namespace SAssemblies.Miscs
             public List<ItemId> ToItemIds = new List<ItemId>();
             public int TotalGold;
 
-            private static Dictionary<String, ItemType> dicItemType; 
+            private static Dictionary<String, ItemType> dicItemType;
+            private static List<ItemInfo> _items = null;
 
-            public static ItemType StringToItemType(String sItemType)
+            private static ItemType StringToItemType(String sItemType)
             {
                 if (dicItemType == null)
                 {
@@ -204,11 +752,77 @@ namespace SAssemblies.Miscs
                     return ItemType.Nothing;
                 }
             }
+
+            public static List<ItemInfo> GetItemList() // Boots of Speed 1001 is not included check //Does not download the item.json correctly, it is missing the tags attribute somehow!!!
+            {
+                if (_items != null)
+                {
+                    return _items;
+                }
+                String name = "";
+                String version = "";
+                try
+                {
+                    String json = new WebClient().DownloadString("http://ddragon.leagueoflegends.com/realms/euw.json");
+                    version = (string)new JavaScriptSerializer().Deserialize<Dictionary<String, Object>>(json)["v"];
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+                    return null;
+                }
+                List<ItemInfo> itemInfoList = new List<ItemInfo>();
+                try
+                {
+                    String url = "http://ddragon.leagueoflegends.com/cdn/5.8.1/data/en_US/item.json"; //temp fix for riot fault otherwise + version +
+                    String json = new WebClient().DownloadString(url);
+                    JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+                    JToken token = data["data"].First;
+                    do
+                    {
+                        ItemInfo itemInfo = new ItemInfo();
+                        itemInfo.ItemId = (ItemId) Convert.ToInt32(((JProperty) token).Name);
+                        itemInfo.Name = token.First["name"].ToString();
+                        itemInfo.Description = token.First["description"].ToString();
+                        if (token.First["from"] != null)
+                        {
+                            itemInfo.ToItemIds = token.First["from"].Values<int>().Select(x => (ItemId) x).ToList();
+                        }
+                        if (token.First["into"] != null)
+                        {
+                            itemInfo.ToItemIds = token.First["into"].Values<int>().Select(x => (ItemId) x).ToList();
+                        }
+                        itemInfo.Price = token.First["gold"]["base"].Value<int>();
+                        itemInfo.TotalGold = token.First["gold"]["total"].Value<int>();
+                        itemInfo.ItemTypeList =
+                            token.First["tags"].Values<String>().Select(ItemInfo.StringToItemType).ToList();
+                        ; //tags -> String
+                        itemInfo.MapId = new List<GameMapId>(); //null = everything, maps -> MapId: false
+                        if (token.First["maps"] != null)
+                        {
+                            JToken mapToken = token.First["maps"];
+                            while ((mapToken = mapToken.Next) != null)
+                            {
+                                itemInfo.MapId.Add((GameMapId) Convert.ToInt32(((JProperty) mapToken).Name));
+                            }
+                        }
+                        itemInfoList.Add(itemInfo);
+                    } while ((token = token.Next) != null);
+                    //name = data["data"].First.First["image"]["full"].ToString().Replace(".png", "_" + skinId + ".jpg");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Cannot download file: {0}, Exception: {1}", name, ex);
+                    return null;
+                }
+                _items = itemInfoList;
+                return _items;
+            }
         }
 
         class AutoBuyGUI
         {
-            
+            public static Build CurrentBuilder = new Build();
         }
 
     }

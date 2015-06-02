@@ -329,6 +329,9 @@ namespace SAssemblies.Miscs
                         yOffsetStart = 18;
                         yOffsetEnd = 23;
                         break;
+
+                    default:
+                        return;
                 }
                 var barDistance = barWidth / attackToKill;
                 for (var i = 0; i < attackToKill; i++)
