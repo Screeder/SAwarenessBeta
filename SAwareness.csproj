@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="Detectors\DisReconnect.cs" />
     <Compile Include="Detectors\FoWSpellEnemy.cs" />
+    <Compile Include="Detectors\JungleMinion.cs" />
     <Compile Include="Detectors\Recall.cs" />
     <Compile Include="Detectors\Vision.cs" />
     <Compile Include="Detectors\Gank.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Miscs\AutoJump.cs" />
     <Compile Include="Miscs\AutoLatern.cs" />
     <Compile Include="Miscs\EasyRangedJungle.cs" />
+    <Compile Include="Miscs\SafeFlash.cs" />
     <Compile Include="Miscs\ShowSupporterStacks.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -440,6 +442,9 @@
     <EmbeddedResource Include="Resources\DLL\LeagueSharp.GameFiles.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\SPRITES\AutoBuy\BuildFrame.png" />
+    <Content Include="Resources\SPRITES\AutoBuy\ItemEmpty.png" />
+    <Content Include="Resources\SPRITES\AutoBuy\ShopFrame.png" />
     <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGui.png" />
     <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGuiCancel.png" />
     <Content Include="Resources\SPRITES\AutoLevler\SkillOrderGuiSave.png" />
@@ -465,9 +470,11 @@
     <Content Include="Resources\SPRITES\Ui\SummonerSpellTint.png" />
     <Content Include="Resources\SPRITES\Ui\SummonerTint.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent></PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
