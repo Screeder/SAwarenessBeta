@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security;
+using System.Threading;
 using System.Web.Script.Serialization;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -13,6 +14,8 @@ using LeagueSharp.Sandbox;
 using Newtonsoft.Json;
 using SharpDX;
 using SharpDX.Direct3D9;
+
+//HandleInput Crashing and SequenceLevler
 
 namespace SAssemblies.Miscs
 {
@@ -25,6 +28,7 @@ namespace SAssemblies.Miscs
         private static int _useMode;
         private static List<SequenceLevler> sLevler = new List<SequenceLevler>();
         private int lastGameUpdateTime = 0;
+        private SequenceLevlerGUI Gui = new SequenceLevlerGUI();
 
         public AutoLevler()
         {
@@ -34,6 +38,14 @@ namespace SAssemblies.Miscs
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged += NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged += DeleteBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged += Active_OnValueChanged;
+
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                LolBuilder.GetLolBuilderData();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
 
             Game.OnUpdate += Game_OnGameUpdate;
             Game.OnWndProc += Game_OnWndProc;
@@ -47,6 +59,7 @@ namespace SAssemblies.Miscs
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").ValueChanged -= ShowBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged -= Active_OnValueChanged;
 
             Game.OnUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
@@ -136,6 +149,7 @@ namespace SAssemblies.Miscs
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").ValueChanged -= NewBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged -= DeleteBuild_OnValueChanged;
+            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").ValueChanged -= Active_OnValueChanged;
 
             Game.OnUpdate -= Game_OnGameUpdate;
             Game.OnWndProc -= Game_OnWndProc;
@@ -338,10 +352,10 @@ namespace SAssemblies.Miscs
 
         private void Active_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
         {
-            if (!onValueChangeEventArgs.GetNewValue<bool>())
-            {
-                WriteLevelFile();
-            }
+            //if (!onValueChangeEventArgs.GetNewValue<bool>())
+            //{
+            //    WriteLevelFile();
+            //}
         }
 
         private void Game_OnGameUpdate(EventArgs args)
@@ -401,12 +415,16 @@ namespace SAssemblies.Miscs
                 }
                 else if (_useMode == 1)
                 {
-                    if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
-                        .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").GetValue<bool>())
-                    {
-                        SpellSlot spellSlot = SequenceLevlerGUI.CurrentLevler.Sequence[player.Level - 1];
-                        player.Spellbook.LevelSpell(spellSlot);
-                    }
+                    //if (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence")
+                    //    .GetMenuItem("SAssembliesMiscsAutoLevlerSequenceActive").GetValue<bool>())
+                    //{
+                    //    SpellSlot spellSlot = SequenceLevlerGUI.CurrentLevler.Sequence[player.Level - 1];
+                    //    if (spellSlot == SpellSlot.Q || spellSlot == SpellSlot.W || spellSlot == SpellSlot.E ||
+                    //        spellSlot == SpellSlot.R)
+                    //    {
+                    //        player.Spellbook.LevelSpell(spellSlot);
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -446,8 +464,10 @@ namespace SAssemblies.Miscs
             //int value = Convert.ToInt32(name[name.Length - 1]);
             //name = name.Remove(name.Length - 1);
             //name += value.ToString();
+            Console.WriteLine(SequenceLevlerGUI.CurrentLevler.New);
             if (SequenceLevlerGUI.CurrentLevler.New)
             {
+                Console.WriteLine(SequenceLevlerGUI.CurrentLevler.Name);
                 SequenceLevlerGUI.CurrentLevler.New = false;
                 sLevler.Add(SequenceLevlerGUI.CurrentLevler);
                 List<String> temp = list.SList.ToList();
@@ -491,7 +511,7 @@ namespace SAssemblies.Miscs
             });
             try
             {
-                String output = JsonConvert.SerializeObject(sLevler);
+                String output = JsonConvert.SerializeObject(sLevler.Where(x => !x.Web));
                 Directory.CreateDirectory(
                     Path.Combine(SandboxConfig.DataDirectory, "Assemblies", "cache", "SAssemblies", "AutoLevler"));
                 if (output.Contains("[]"))
@@ -775,6 +795,52 @@ namespace SAssemblies.Miscs
             return ObjectManager.Player.ChampionName + 0;
         }
 
+        private class LolBuilder
+        {
+
+            public static void GetLolBuilderData()
+            {
+                String lolBuilderData = null;
+                try
+                {
+                    lolBuilderData = Website.GetWebSiteContent("http://lolbuilder.net/" + ObjectManager.Player.ChampionName);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                String patternSkillOrder = "window.skillOrder\\[(.*?)\\] = \\[(.*?)\\];";
+
+                for (int i = 0; ; i++)
+                {
+                    String matchSkillOrder = Website.GetMatch(lolBuilderData, patternSkillOrder, i, 2);
+                    if (matchSkillOrder.Equals(""))
+                    {
+                        break;
+                    }
+                    String[] splitSkillOrder = matchSkillOrder.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    SpellSlot[] spellSlots = new SpellSlot[18];
+                    for (int j = 0; j < splitSkillOrder.Length; j++)
+                    {
+                        var skill = splitSkillOrder[j];
+                        try
+                        {
+                            spellSlots[j] = (SpellSlot)(Convert.ToInt32(skill) - 1);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Cannot convert SkillOrder to SpellSlot {0}: {1}", skill, e);
+                        }
+                    }
+                    SequenceLevler seqLevler = new SequenceLevler(ObjectManager.Player.ChampionName + " LolBuilder " + i, spellSlots, true);
+                    seqLevler.New = true;
+                    SequenceLevlerGUI.CurrentLevler = seqLevler;
+                    SaveSequence(seqLevler.New);
+                }
+            }
+        }
+
         [Serializable]
         private class SequenceLevler
         {
@@ -782,13 +848,15 @@ namespace SAssemblies.Miscs
             public String ChampionName;
             public SpellSlot[] Sequence = new SpellSlot[18];
             public bool New = true;
+            public bool Web = false;
 
-            public SequenceLevler(String name, SpellSlot[] sequence)
+            public SequenceLevler(String name, SpellSlot[] sequence, bool web = false)
             {
                 Name = name;
                 Sequence = sequence;
                 New = false;
                 ChampionName = ObjectManager.Player.ChampionName;
+                Web = web;
             }
 
             public SequenceLevler()
@@ -803,7 +871,7 @@ namespace SAssemblies.Miscs
             public static SpriteHelper.SpriteInfo Save;
             public static SpriteHelper.SpriteInfo Cancel;
             public static SpriteHelper.SpriteInfo[] Skill = new SpriteHelper.SpriteInfo[18];
-            public static Render.Text[] Text = new Render.Text[4];
+            public static SpriteHelper.SpriteInfo[] Text = new SpriteHelper.SpriteInfo[4];
             public static SequenceLevler CurrentLevler = new SequenceLevler();
             public static Vector2 SkillStart = new Vector2(225, 45);
             public static Vector2 SkillIncrement = new Vector2(32.5f, 33); //35,35
@@ -822,94 +890,134 @@ namespace SAssemblies.Miscs
                     }
                 }
                 SkillBlock = list;
+            }
 
-                MainFrame = new SpriteHelper.SpriteInfo();
-                SpriteHelper.LoadTexture("SkillOrderGui", ref MainFrame, SpriteHelper.TextureType.Default);
-                MainFrame.Sprite.PositionUpdate = delegate
-                {
-                    return new Vector2(Drawing.Width / 2 - MainFrame.Bitmap.Width / 2, Drawing.Height / 2 - MainFrame.Bitmap.Height / 2);
-                };
-                MainFrame.Sprite.VisibleCondition = delegate
-                {
-                    return IsActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
-                };
-                MainFrame.Sprite.Add(1);
+            public SequenceLevlerGUI()
+            {
+                Game.OnUpdate += Game_OnUpdate;
+            }
 
-                Save = new SpriteHelper.SpriteInfo();
-                SpriteHelper.LoadTexture("SkillOrderGuiSave", ref Save, SpriteHelper.TextureType.Default);
-                Save.Sprite.PositionUpdate = delegate
-                {
-                    return new Vector2(MainFrame.Sprite.Position.X, MainFrame.Sprite.Position.Y + MainFrame.Sprite.Height - Save.Sprite.Height);
-                };
-                Save.Sprite.VisibleCondition = delegate
-                {
-                    return IsActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
-                };
-                Save.Sprite.Add(1);
+            void Game_OnUpdate(EventArgs args)
+            {
+                if(!IsActive())
+                    return;
 
-                Cancel = new SpriteHelper.SpriteInfo();
-                SpriteHelper.LoadTexture("SkillOrderGuiCancel", ref Cancel, SpriteHelper.TextureType.Default);
-                Cancel.Sprite.PositionUpdate = delegate
+                if (MainFrame == null || !MainFrame.DownloadFinished)
                 {
-                    return new Vector2(MainFrame.Sprite.Position.X + MainFrame.Sprite.Width - Cancel.Sprite.Width, MainFrame.Sprite.Position.Y + MainFrame.Sprite.Height - Cancel.Sprite.Height);
-                };
-                Cancel.Sprite.VisibleCondition = delegate
+                    SpriteHelper.LoadTexture("SkillOrderGui", ref MainFrame, SpriteHelper.TextureType.Default);
+                }
+                if (MainFrame != null && MainFrame.DownloadFinished && !MainFrame.LoadingFinished)
                 {
-                    return IsActive() &&
-                        (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
-                        AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
-                };
-                Cancel.Sprite.Add(1);
-
-                for (int index = 0; index <= 3; index++)
-                {
-                    int i = 0 + index;
-                    Text[i] = new Render.Text(0, 0, "", 20, SharpDX.Color.LawnGreen);
-                    Text[i].TextUpdate = delegate
+                    MainFrame.Sprite.PositionUpdate = delegate
                     {
-                        return ObjectManager.Player.Spellbook.GetSpell(GetSpellSlot(i)).Name;
+                        return new Vector2(Drawing.Width / 2 - MainFrame.Bitmap.Width / 2, Drawing.Height / 2 - MainFrame.Bitmap.Height / 2);
                     };
-                    Text[i].PositionUpdate = delegate
-                    {
-                        return new Vector2(MainFrame.Sprite.Position.X + 30, MainFrame.Sprite.Position.Y + 40 + (i * 33));
-                    };
-                    Text[i].VisibleCondition = sender =>
+                    MainFrame.Sprite.VisibleCondition = delegate
                     {
                         return IsActive() &&
                         (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                         AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
-                    Text[i].OutLined = true;
-                    Text[i].Centered = false;
-                    Text[i].Add(2);
+                    MainFrame.Sprite.Add(1);
+                    MainFrame.LoadingFinished = true;
                 }
 
-                for (int index = 0; index < 18; index++)
+                if (Save == null || !Save.DownloadFinished)
                 {
-                    int i = 0 + index;
-                    Skill[i] = new SpriteHelper.SpriteInfo();
-                    SpriteHelper.LoadTexture("SkillPoint", ref Skill[i], SpriteHelper.TextureType.Default);
-                    Skill[i].Sprite.PositionUpdate = delegate
+                    SpriteHelper.LoadTexture("SkillOrderGuiSave", ref Save, SpriteHelper.TextureType.Default);
+                }
+                if (Save != null && Save.DownloadFinished && !Save.LoadingFinished)
+                {
+                    Save.Sprite.PositionUpdate = delegate
                     {
-                        return GetSpellSlotPosition(GetSpellSlotId(CurrentLevler.Sequence[i]), i);
+                        return new Vector2(MainFrame.Sprite.Position.X, MainFrame.Sprite.Position.Y + MainFrame.Sprite.Height - Save.Sprite.Height);
                     };
-                    Skill[i].Sprite.VisibleCondition = delegate
+                    Save.Sprite.VisibleCondition = delegate
                     {
                         return IsActive() &&
                             (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
                             AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
                     };
-                    Skill[i].Sprite.Add(3);
+                    Save.Sprite.Add(1);
+                    Save.LoadingFinished = true;
                 }
-            }
 
-            public SequenceLevlerGUI()
-            {
-                
+                if (Cancel == null || !Cancel.DownloadFinished)
+                {
+                    SpriteHelper.LoadTexture("SkillOrderGuiCancel", ref Cancel, SpriteHelper.TextureType.Default);
+                }
+                if (Cancel != null && Cancel.DownloadFinished && !Cancel.LoadingFinished)
+                {
+                    Cancel.Sprite.PositionUpdate = delegate
+                    {
+                        return new Vector2(MainFrame.Sprite.Position.X + MainFrame.Sprite.Width - Cancel.Sprite.Width, MainFrame.Sprite.Position.Y + MainFrame.Sprite.Height - Cancel.Sprite.Height);
+                    };
+                    Cancel.Sprite.VisibleCondition = delegate
+                    {
+                        return IsActive() &&
+                            (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                    };
+                    Cancel.Sprite.Add(1);
+                    Cancel.LoadingFinished = true;
+                }
+
+                for (int index = 0; index <= 3; index++)
+                {
+                    int i = 0 + index;
+
+                    if (Text[i] == null || !Text[i].DownloadFinished)
+                    {
+                        Text[i] = new SpriteHelper.SpriteInfo();
+                        Text[i].Text = new Render.Text(0, 0, "", 20, SharpDX.Color.LawnGreen);
+                        Text[i].DownloadFinished = true;
+                    }
+                    if (Text[i] != null && Text[i].DownloadFinished && !Text[i].LoadingFinished)
+                    {
+                        Text[i].Text.TextUpdate = delegate
+                        {
+                            return ObjectManager.Player.Spellbook.GetSpell(GetSpellSlot(i)).Name;
+                        };
+                        Text[i].Text.PositionUpdate = delegate
+                        {
+                            return new Vector2(MainFrame.Sprite.Position.X + 30, MainFrame.Sprite.Position.Y + 40 + (i * 33));
+                        };
+                        Text[i].Text.VisibleCondition = sender =>
+                        {
+                            return IsActive() &&
+                            (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                            AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                        };
+                        Text[i].Text.OutLined = true;
+                        Text[i].Text.Centered = false;
+                        Text[i].Text.Add(2);
+                        Text[i].LoadingFinished = true;
+                    }
+                }
+
+                for (int index = 0; index < 18; index++)
+                {
+                    int i = 0 + index;
+                    if (Skill[i] == null || !Skill[i].DownloadFinished)
+                    {
+                        SpriteHelper.LoadTexture("SkillPoint", ref Skill[i], SpriteHelper.TextureType.Default);
+                    }
+                    if (Skill[i] != null && Skill[i].DownloadFinished && !Skill[i].LoadingFinished)
+                    {
+                        Skill[i].Sprite.PositionUpdate = delegate
+                        {
+                            return GetSpellSlotPosition(GetSpellSlotId(CurrentLevler.Sequence[i]), i);
+                        };
+                        Skill[i].Sprite.VisibleCondition = delegate
+                        {
+                            return IsActive() &&
+                                (AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceNewBuild").GetValue<bool>() ||
+                                AutoLevlerMisc.GetMenuSettings("SAssembliesMiscsAutoLevlerSequence").GetMenuItem("SAssembliesMiscsAutoLevlerSequenceShowBuild").GetValue<bool>());
+                        };
+                        Skill[i].Sprite.Add(3);
+                        Skill[i].LoadingFinished = true;
+                    }
+                }
             }
 
             private static Vector2 GetSpellSlotPosition(int row, int column)

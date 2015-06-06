@@ -750,4 +750,22 @@
   <data name="DETECTORS_GANK_TEXT_JUNGLER_ALLY" xml:space="preserve">
     <value>Ally jungler approaching</value>
   </data>
+  <data name="MISCS_AUTOBUY_BUILD_CHOICE" xml:space="preserve">
+    <value>Build Choice</value>
+  </data>
+  <data name="MISCS_AUTOBUY_BUILD_LOAD" xml:space="preserve">
+    <value>Show Build</value>
+  </data>
+  <data name="MISCS_AUTOBUY_CREATE_BUILD" xml:space="preserve">
+    <value>New Build</value>
+  </data>
+  <data name="MISCS_AUTOBUY_DELETE_BUILD" xml:space="preserve">
+    <value>Delete Build</value>
+  </data>
+  <data name="MISCS_AUTOBUY_MAIN" xml:space="preserve">
+    <value>AutoBuyer</value>
+  </data>
+  <data name="MISCS_SAFEFLASH_MAIN" xml:space="preserve">
+    <value>Safe Flash</value>
+  </data>
 </root>

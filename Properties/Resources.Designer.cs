@@ -63,16 +63,6 @@ namespace SAwareness.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
-        internal static byte[] _1001 {
-            get {
-                object obj = ResourceManager.GetObject("_1001", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
         internal static byte[] _1004 {
             get {
                 object obj = ResourceManager.GetObject("_1004", resourceCulture);
@@ -3721,6 +3711,16 @@ namespace SAwareness.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BuildFrame {
+            get {
+                object obj = ResourceManager.GetObject("BuildFrame", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
         internal static byte[] BurningAgony {
@@ -4327,6 +4327,16 @@ namespace SAwareness.Properties {
             get {
                 object obj = ResourceManager.GetObject("DianaVortex", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap directionindicator {
+            get {
+                object obj = ResourceManager.GetObject("directionindicator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -5863,6 +5873,16 @@ namespace SAwareness.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ItemEmpty {
+            get {
+                object obj = ResourceManager.GetObject("ItemEmpty", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ItemSlotEmpty {
             get {
                 object obj = ResourceManager.GetObject("ItemSlotEmpty", resourceCulture);
@@ -6906,6 +6926,16 @@ namespace SAwareness.Properties {
         internal static byte[] LayWaste {
             get {
                 object obj = ResourceManager.GetObject("LayWaste", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] LeagueSharp_GameFiles {
+            get {
+                object obj = ResourceManager.GetObject("LeagueSharp_GameFiles", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -8113,6 +8143,16 @@ namespace SAwareness.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
+        internal static byte[] Newtonsoft_Json {
+            get {
+                object obj = ResourceManager.GetObject("Newtonsoft_Json", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
         internal static byte[] Nidalee {
             get {
                 object obj = ResourceManager.GetObject("Nidalee", resourceCulture);
@@ -8517,6 +8557,66 @@ namespace SAwareness.Properties {
             get {
                 object obj = ResourceManager.GetObject("PickACard", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingcomehere {
+            get {
+                object obj = ResourceManager.GetObject("pingcomehere", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pinggetback {
+            get {
+                object obj = ResourceManager.GetObject("pinggetback", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingmarker {
+            get {
+                object obj = ResourceManager.GetObject("pingmarker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingmarker_red {
+            get {
+                object obj = ResourceManager.GetObject("pingmarker_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingmia {
+            get {
+                object obj = ResourceManager.GetObject("pingmia", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingomw {
+            get {
+                object obj = ResourceManager.GetObject("pingomw", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -9407,6 +9507,16 @@ namespace SAwareness.Properties {
             get {
                 object obj = ResourceManager.GetObject("ShenVorpalStar", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ShopFrame {
+            get {
+                object obj = ResourceManager.GetObject("ShopFrame", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

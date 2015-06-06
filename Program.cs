@@ -101,6 +101,7 @@ namespace SAssemblies
         public static MenuItemSettings AntiNexusTurret = new MenuItemSettings();
         public static MenuItemSettings AntiLatern = new MenuItemSettings();
         public static MenuItemSettings AutoBuy = new MenuItemSettings();
+        public static MenuItemSettings SafeFlash = new MenuItemSettings();
 
         //public static MenuItemSettings AutoSmite;
         //public static MenuItemSettings AutoPot = new MenuItemSettings(typeof(AutoPot));
@@ -200,6 +201,7 @@ namespace SAssemblies
                 { AntiNexusTurret, () => new AntiNexusTurret() },
                 { AntiLatern, () => new AntiLatern() },   
                 { AutoBuy, () => new AutoBuy() },
+                { SafeFlash, () => new SafeFlash() },
             };
         }
 
@@ -1401,7 +1403,7 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiVisualScreenStealth, AntiVisualScreenStealth.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiNexusTurret, AntiNexusTurret.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AntiLatern, AntiLatern.SetupMenu(MainMenu.Misc.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.AutoBuy, Miscs.AutoBuy.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.AutoBuy, Miscs.AutoBuy.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.AutoJump, AutoJump.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.AutoLatern, Miscs.AutoLatern.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.AutoLevler, Miscs.AutoLevler.SetupMenu(MainMenu.Misc.Menu)); //Hängt bei linkslick
@@ -1413,6 +1415,7 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.MoveToMouse, MoveToMouse.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.PingerName, PingerName.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.RealTime, RealTime.SetupMenu(MainMenu.Misc.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.SafeFlash, SafeFlash.SetupMenu(MainMenu.Misc.Menu));
                 //mainMenu.UpdateDirEntry(ref MainMenu.SafeMovement, Miscs.SafeMovement.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.ShowPing, ShowPing.SetupMenu(MainMenu.Misc.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.SkinChanger, SkinChanger.SetupMenu(MainMenu.Misc.Menu));
@@ -1443,6 +1446,7 @@ namespace SAssemblies
         private async /*static*/ void Game_OnGameLoad(EventArgs args)
         {
             CreateMenu();
+            //Console.Clear();
             Common.ShowNotification("SAwareness loaded!", Color.LawnGreen, 5000);
 
             new Thread(GameOnOnGameUpdate).Start();

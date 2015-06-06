@@ -157,13 +157,14 @@ namespace SAssemblies
 
     //class Menu2
     //{
+    //    protected Dictionary<MenuItemSettings, Func<dynamic>> MenuEntries;
     //    public static MenuItemSettings GlobalSettings = new MenuItemSettings();
 
     //    public static LeagueSharp.SDK.Core.UI.Menu CreateMainMenu()
     //    {
     //        Language.SetLanguage();
     //        LeagueSharp.SDK.Core.UI.Menu mainMenu;
-    //        if (MenuManager.Instance["SAssemblies"] == null)
+    //        if (LeagueSharp.SDK.Core.UI.MenuManager.Instance["SAssemblies"] == null)
     //        {
     //            mainMenu = new LeagueSharp.SDK.Core.UI.Menu("SAssemblies", "SAssemblies", true);
     //            mainMenu.Add(new LeagueSharp.SDK.Core.UI.Menu("By Screeder", "By Screeder V" + Assembly.GetExecutingAssembly().GetName().Version));
@@ -171,9 +172,51 @@ namespace SAssemblies
     //        }
     //        else
     //        {
-    //            mainMenu = MenuManager.Instance["SAssemblies"];
+    //            mainMenu = LeagueSharp.SDK.Core.UI.MenuManager.Instance["SAssemblies"];
     //        }
     //        return mainMenu;
+    //    }
+
+    //    public static void CreateGlobalMenuItems(LeagueSharp.SDK.Core.UI.Menu menu)
+    //    {
+    //        if (GlobalSettings.Menu != null)
+    //            return;
+
+    //        AddComponent(ref menu, new LeagueSharp.SDK.Core.UI.Menu("SAssembliesGlobalSettings", "Global Settings"));
+    //        GlobalSettings.Menu = (LeagueSharp.SDK.Core.UI.Menu)menu["SAssembliesGlobalSettings"];
+    //        AddComponent(ref GlobalSettings.Menu, new LeagueSharp.SDK.Core.UI.MenuItem<LeagueSharp.SDK.Core.UI.Values.MenuBool>
+    //            ("SAssembliesGlobalSettingsServerChatPingActive", "Server Chat/Ping") { Value = new LeagueSharp.SDK.Core.UI.Values.MenuBool() });
+    //        AddComponent(ref GlobalSettings.Menu, new LeagueSharp.SDK.Core.UI.MenuItem<LeagueSharp.SDK.Core.UI.Values.MenuSlider>
+    //            ("SAssembliesGlobalSettingsVoiceVolume", "Voice Volume") { Value = new LeagueSharp.SDK.Core.UI.Values.MenuSlider() { MaxValue = 100, MinValue = 0, Value = 100 } });
+    //    }
+
+    //    public static void AddComponent(ref LeagueSharp.SDK.Core.UI.Menu menu, LeagueSharp.SDK.Core.UI.Abstracts.AMenuComponent component)
+    //    {
+    //        if (menu == null)
+    //            return;
+
+    //        if (!menu.Components.Any(x => x.Value.Name.Equals(component.Name)))
+    //        {
+    //            menu.Add(component);
+    //        }
+    //    }
+
+    //    public Tuple<MenuItemSettings, Func<dynamic>> GetDirEntry(MenuItemSettings menuItem)
+    //    {
+    //        return new Tuple<MenuItemSettings, Func<dynamic>>(menuItem, MenuEntries[menuItem]);
+    //    }
+
+    //    public Dictionary<MenuItemSettings, Func<dynamic>> GetDirEntries()
+    //    {
+    //        return MenuEntries;
+    //    }
+
+    //    public void UpdateDirEntry(ref MenuItemSettings oldMenuItem, MenuItemSettings newMenuItem)
+    //    {
+    //        Func<dynamic> save = MenuEntries[oldMenuItem];
+    //        MenuEntries.Remove(oldMenuItem);
+    //        MenuEntries.Add(newMenuItem, save);
+    //        oldMenuItem = newMenuItem;
     //    }
 
     //    public class MenuItemSettings
@@ -217,7 +260,7 @@ namespace SAssemblies
     //            {
     //                if (menuComponent.Value.DisplayName == Language.GetString("GLOBAL_ACTIVE"))
     //                {
-    //                    if (menuComponent.Value.GetValue<MenuBool>().Value)
+    //                    if (menuComponent.Value.GetValue<LeagueSharp.SDK.Core.UI.Values.MenuBool>().Value)
     //                    {
     //                        return true;
     //                    }
@@ -235,8 +278,20 @@ namespace SAssemblies
     //            {
     //                if (menuComponent.Value.DisplayName == Language.GetString("GLOBAL_ACTIVE"))
     //                {
-    //                    menuComponent.Value.GetValue<MenuBool>().Value = active;
+    //                    menuComponent.Value.GetValue<LeagueSharp.SDK.Core.UI.Values.MenuBool>().Value = active;
     //                }
+    //            }
+    //        }
+
+    //        public void CreateActiveMenuItem(String menuName)
+    //        {
+    //            if (Menu == null)
+    //                return;
+
+    //            if (!Menu.Components.Any(x => x.Value.Name.Equals(menuName)))
+    //            {
+    //                Menu.Add(new LeagueSharp.SDK.Core.UI.MenuItem<LeagueSharp.SDK.Core.UI.Values.MenuBool>
+    //                    (menuName, Language.GetString("GLOBAL_ACTIVE")) { Value = new LeagueSharp.SDK.Core.UI.Values.MenuBool() });
     //            }
     //        }
 
@@ -248,7 +303,7 @@ namespace SAssemblies
     //            {
     //                if (menuComponent.Value.Name == menuName)
     //                {
-    //                    return (MenuItem<T>)menuComponent.Value;
+    //                    return (LeagueSharp.SDK.Core.UI.MenuItem<T>)menuComponent.Value;
     //                }
     //            }
     //            return null;
@@ -344,12 +399,12 @@ namespace SAssemblies
             return size;
         }
 
-        public static bool IsInside(Vector2 mousePos, Size windowPos, int width, int height)
+        public static bool IsInside(Vector2 mousePos, Size windowPos, float width, float height)
         {
             return Utils.IsUnderRectangle(mousePos, windowPos.Width, windowPos.Height, width, height);
         }
 
-        public static bool IsInside(Vector2 mousePos, Vector2 windowPos, int width, int height)
+        public static bool IsInside(Vector2 mousePos, Vector2 windowPos, float width, float height)
         {
             return Utils.IsUnderRectangle(mousePos, windowPos.X, windowPos.Y, width, height);
         }
@@ -1888,6 +1943,14 @@ namespace SAssemblies
             return realName["image"]["full"].ToString();
         }
 
+        private static String GetItemPicName(String url, String itemId)
+        {
+            String json = new WebClient().DownloadString(url);
+            JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
+            var realName = JObject.Parse(data["data"].ToString()).GetValue(itemId, StringComparison.OrdinalIgnoreCase).Value<JToken>();
+            return realName["image"]["full"].ToString();
+        }
+
         public static String DownloadImageRiot(String sName, ChampionType champType, DownloadType type, String subFolder, int skinId = 0)
         {
             String name = "";
@@ -1938,6 +2001,10 @@ namespace SAssemblies
                     case ChampionType.Summoner1:
                     case ChampionType.Summoner2:
                         name = GetSummonerSpellPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/summoner.json", name);
+                        break;
+
+                    case ChampionType.Item:
+                        name = GetItemPicName("http://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/item.json", name);
                         break;
                 }
             }
@@ -2004,11 +2071,10 @@ namespace SAssemblies
             }
             else if (type == DownloadType.Item)
             {
-                //http://ddragon.leagueoflegends.com/cdn/4.20.1/img/spell/AhriFoxFire.png
                 request =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/item/" + name);
                 requestSize =
-                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/spell/" + name);
+                WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + version + "/img/item/" + name);
                 requestSize.Method = "HEAD";
             }
             else if (type == DownloadType.ProfileIcon)
@@ -2436,6 +2502,7 @@ namespace SAssemblies
             public Render.Sprite Sprite;
             public Bitmap Bitmap;
             public Render.Text Text;
+            public Rectangle TextLength;
             public bool DownloadFinished = false;
             public bool LoadingFinished = false;
             public OVD Mode = OVD.Small;
@@ -2453,10 +2520,10 @@ namespace SAssemblies
 
             }
 
-            ~SpriteInfo()
-            {
-                Dispose();
-            }
+            //~SpriteInfo()
+            //{
+            //    Dispose();
+            //}
         }
     }
 

@@ -2899,9 +2899,6 @@
   <data name="Zyra_MM" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CHAMP_MM\Zyra_MM.dds;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="_1001" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ITEMS\1001.dds;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="_1004" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ITEMS\1004.dds;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3746,54 +3743,90 @@
     <value>..\Resources\DLL\Evade.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="BarBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\BarBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GoldCsLvlBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\GoldCsLvlBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="HealthBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\HealthBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ItemSlotEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\ItemSlotEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ManaBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\ManaBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="QuestionMark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\QuestionMark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RecallBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\RecallBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SkillOrderGui" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SkillOrderGui.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SkillPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SkillPoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SpellTint" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SpellTint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SpellTintGreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SpellTintGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SpellTintRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SpellTintRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SummonerSpellTint" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SummonerSpellTint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SummonerTint" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SummonerTint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\SPRITES\Ui\BarBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EloGui" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\EloGui.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\SPRITES\EloDisplayer\EloGui.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoldCsLvlBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\GoldCsLvlBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\HealthBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ItemSlotEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\ItemSlotEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\ManaBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QuestionMark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\QuestionMark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RecallBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\RecallBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkillOrderGui" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\AutoLevler\SkillOrderGui.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SkillOrderGuiCancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SkillOrderGuiCancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\SPRITES\AutoLevler\SkillOrderGuiCancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SkillOrderGuiSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EXT\SkillOrderGuiSave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\SPRITES\AutoLevler\SkillOrderGuiSave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkillPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\AutoLevler\SkillPoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SpellTint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\SpellTint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SpellTintGreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\SpellTintGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SpellTintRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\SpellTintRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SummonerSpellTint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\SummonerSpellTint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SummonerTint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\Ui\SummonerTint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LeagueSharp_GameFiles" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DLL\LeagueSharp.GameFiles.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Newtonsoft_Json" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DLL\Newtonsoft.Json.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="directionindicator" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\directionindicator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pingcomehere" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\pingcomehere.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pinggetback" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\pinggetback.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pingmarker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\pingmarker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pingmarker_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\pingmarker_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pingmia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\pingmia.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pingomw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\SmartPing\pingomw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BuildFrame" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\AutoBuy\BuildFrame.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ItemEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\AutoBuy\ItemEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShopFrame" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SPRITES\AutoBuy\ShopFrame.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
