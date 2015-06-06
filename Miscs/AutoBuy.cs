@@ -12,7 +12,6 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using LeagueSharp.GameFiles.Tools.LuaObjReader;
 using LeagueSharp.Sandbox;
-using LeagueSharp.SDK.Core.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SAssemblies;
@@ -88,17 +87,17 @@ namespace SAssemblies.Miscs
             LoadBuildFile();
             AutoBuyMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOBUY_MAIN"), "SAssembliesMiscsAutoBuy"));
             AutoBuyMisc.MenuItems.Add(
-                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyLoadChoice", Language.GetString("MISCS_AUTOBUY_SEQUENCE_BUILD_CHOICE"))
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyLoadChoice", Language.GetString("MISCS_AUTOBUY_BUILD_CHOICE"))
                         .SetValue(GetBuildNames())
                             .DontSave()));
             AutoBuyMisc.MenuItems.Add(
-                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyShowBuild", Language.GetString("MISCS_AUTOBUY_SEQUENCE_BUILD_LOAD")).SetValue(false)
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyShowBuild", Language.GetString("MISCS_AUTOBUY_BUILD_LOAD")).SetValue(false)
                         .DontSave()));
             AutoBuyMisc.MenuItems.Add(
-                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyNewBuild", Language.GetString("MISCS_AUTOBUY_SEQUENCE_CREATE_CHOICE")).SetValue(false)
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyNewBuild", Language.GetString("MISCS_AUTOBUY_CREATE_BUILD")).SetValue(false)
                         .DontSave()));
             AutoBuyMisc.MenuItems.Add(
-                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyDeleteBuild", Language.GetString("MISCS_AUTOBUY_SEQUENCE_DELETE_CHOICE")).SetValue(false)
+                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyDeleteBuild", Language.GetString("MISCS_AUTOBUY_DELETE_BUILD")).SetValue(false)
                         .DontSave()));
             AutoBuyMisc.MenuItems.Add(
                 AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
@@ -216,7 +215,6 @@ namespace SAssemblies.Miscs
                     cursorPos, spriteInfo.Sprite.Sprite.Position, spriteInfo.Sprite.Sprite.Width,
                     spriteInfo.Sprite.Sprite.Height))
                 {
-                    Console.WriteLine("Hover: " + spriteInfo.Item.Name);
                     AutoBuyGUI.BuildFrame.Rectangle.X = spriteInfo.Text.Text.X;
                     AutoBuyGUI.BuildFrame.Rectangle.Y = spriteInfo.Text.Text.Y;
                     AutoBuyGUI.BuildFrame.Rectangle.Width = spriteInfo.Text.TextLength.Width;
