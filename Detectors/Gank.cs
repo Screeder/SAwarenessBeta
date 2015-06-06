@@ -32,28 +32,12 @@ namespace SAssemblies.Detectors
                 };
                 text.VisibleCondition = sender =>
                 {
-                    bool hasSmite = false;
-                    foreach (SpellDataInst spell in hero.Spellbook.Spells)
-                    {
-                        if (spell.Name.ToLower().Contains("smite"))
-                        {
-                            hasSmite = true;
-                            break;
-                        }
-                    }
-                    return IsActive() &&
-                            GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
-                            hero.IsVisible && !hero.IsDead &&
-                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
-                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
-                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
-                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
-                            hasSmite;
+                    return IsVisible(hero);
                 };
                 text.OutLined = true;
                 text.Centered = true;
                 text.Add();
-                Render.Line line = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 4, hero.IsEnemy ? Color.Red : Color.Green);
+                Render.Line line = new Render.Line(new Vector2(1, 1), new Vector2(1, 1), 4, hero.IsEnemy ? Color.Red : Color.Green);
                 line.StartPositionUpdate = delegate
                 {
                     return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
@@ -64,23 +48,7 @@ namespace SAssemblies.Detectors
                 };
                 line.VisibleCondition = sender =>
                 {
-                    bool hasSmite = false;
-                    foreach (SpellDataInst spell in hero.Spellbook.Spells)
-                    {
-                        if (spell.Name.ToLower().Contains("smite"))
-                        {
-                            hasSmite = true;
-                            break;
-                        }
-                    }
-                    return IsActive() &&
-                            GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
-                            hero.IsVisible && !hero.IsDead &&
-                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
-                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
-                            Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
-                            GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
-                            hasSmite;
+                    return IsVisible(hero);
                 };
                 line.Add();
                 if (hero.IsEnemy)
@@ -156,6 +124,27 @@ namespace SAssemblies.Detectors
             {
                 UpdateTime(enemy);
             }
+        }
+
+        private bool IsVisible(Obj_AI_Hero hero)
+        {
+            bool hasSmite = false;
+            foreach (SpellDataInst spell in hero.Spellbook.Spells)
+            {
+                if (spell.Name.ToLower().Contains("smite"))
+                {
+                    hasSmite = true;
+                    break;
+                }
+            }
+            return IsActive() &&
+                    GankDetector.GetMenuItem("SAssembliesDetectorsGankShowJungler").GetValue<bool>() &&
+                    hero.IsVisible && !hero.IsDead &&
+                    Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
+                    GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMin").GetValue<Slider>().Value &&
+                    Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) <
+                    GankDetector.GetMenuItem("SAssembliesDetectorsGankTrackRangeMax").GetValue<Slider>().Value &&
+                    hasSmite;
         }
 
         private void ChatAndPing(KeyValuePair<Obj_AI_Hero, InternalGankDetector> enemy)
