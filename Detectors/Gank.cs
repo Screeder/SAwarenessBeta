@@ -25,14 +25,14 @@ namespace SAssemblies.Detectors
                 Game.OnUpdate -= a;
             };
             Game.OnUpdate += a;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~Gank()
         {
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             Enemies = null;
         }
 
@@ -125,7 +125,7 @@ namespace SAssemblies.Detectors
             }
         }
 
-        private void Game_OnGameUpdate(object sender, EventArgs args)
+        private void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
