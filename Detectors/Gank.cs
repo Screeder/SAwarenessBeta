@@ -18,46 +18,13 @@ namespace SAssemblies.Detectors
 
         public Gank()
         {
-            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
             {
-                Render.Text text = new Render.Text(new Vector2(0, 0), hero.IsEnemy ? Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ENEMY") : 
-                    Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ALLY"), 28, hero.IsEnemy ? Color.Red : Color.Green);
-                text.PositionUpdate = delegate
-                {
-                    if (hero.IsEnemy)
-                    {
-                        Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ENEMY"));
-                    }
-                    return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
-                };
-                text.VisibleCondition = sender =>
-                {
-                    return IsVisible(hero);
-                };
-                text.OutLined = true;
-                text.Centered = true;
-                text.Add();
-                Render.Line line = new Render.Line(new Vector2(1, 1), new Vector2(1, 1), 4, hero.IsEnemy ? Color.Red : Color.Green);
-                line.StartPositionUpdate = delegate
-                {
-                    return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
-                };
-                line.EndPositionUpdate = delegate
-                {
-                    return Drawing.WorldToScreen(hero.ServerPosition);
-                };
-                line.VisibleCondition = sender =>
-                {
-                    return IsVisible(hero);
-                };
-                line.Add();
-                if (hero.IsEnemy)
-                {
-                    Enemies.Add(hero, new InternalGankDetector(text, line));
-                }
-            }
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Gank()
@@ -112,6 +79,50 @@ namespace SAssemblies.Detectors
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return GankDetector;
+        }
+
+        private void Init()
+        {
+            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                Render.Text text = new Render.Text(new Vector2(0, 0), hero.IsEnemy ? Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ENEMY") :
+                    Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ALLY"), 28, hero.IsEnemy ? Color.Red : Color.Green);
+                text.PositionUpdate = delegate
+                {
+                    if (hero.IsEnemy)
+                    {
+                        Speech.Speak(Language.GetString("DETECTORS_GANK_TEXT_JUNGLER_ENEMY"));
+                    }
+                    return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
+                };
+                text.VisibleCondition = sender =>
+                {
+                    return IsVisible(hero);
+                };
+                text.OutLined = true;
+                text.Centered = true;
+                text.Add();
+                Render.Line line = new Render.Line(new Vector2(1, 1), new Vector2(1, 1), 4, hero.IsEnemy ? Color.Red : Color.Green);
+                line.StartPositionUpdate = delegate
+                {
+                    return Drawing.WorldToScreen(ObjectManager.Player.ServerPosition);
+                };
+                line.EndPositionUpdate = delegate
+                {
+                    return Drawing.WorldToScreen(hero.ServerPosition);
+                };
+                line.VisibleCondition = sender =>
+                {
+                    return IsVisible(hero);
+                };
+                line.Add();
+                if (hero.IsEnemy)
+                {
+                    Enemies.Add(hero, new InternalGankDetector(text, line));
+                }
+            }
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         private void Game_OnGameUpdate(object sender, EventArgs args)
