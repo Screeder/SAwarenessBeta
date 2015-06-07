@@ -18,6 +18,45 @@ namespace SAssemblies.Trackers
 
         public Killable() //TODO: Add more option for e.g. most damage first, add ignite spell
         {
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+        }
+
+        ~Killable()
+        {
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            _enemies = null;
+        }
+
+        public bool IsActive()
+        {  
+#if TRACKERS
+            return Tracker.Trackers.GetActive() && KillableTracker.GetActive();
+#else
+            return KillableTracker.GetActive();
+#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        {
+            KillableTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_KILLABLE_MAIN"), "SAssembliesTrackersKillable"));
+            KillableTracker.MenuItems.Add(
+                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            KillableTracker.MenuItems.Add(
+                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return KillableTracker;
+        }
+
+        private void Init()
+        {
             int index = 0;
             foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
             {
@@ -58,34 +97,6 @@ namespace SAssemblies.Trackers
                 }
                 index++;
             }
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
-        }
-
-        ~Killable()
-        {
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
-            _enemies = null;
-        }
-
-        public bool IsActive()
-        {  
-#if TRACKERS
-            return Tracker.Trackers.GetActive() && KillableTracker.GetActive();
-#else
-            return KillableTracker.GetActive();
-#endif
-        }
-
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
-        {
-            KillableTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_KILLABLE_MAIN"), "SAssembliesTrackersKillable"));
-            KillableTracker.MenuItems.Add(
-                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            KillableTracker.MenuItems.Add(
-                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return KillableTracker;
         }
 
         private void CalculateKillable()

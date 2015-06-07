@@ -18,7 +18,13 @@ namespace SAssemblies.Healths
 
         public Inhibitor()
         {
-            InitInhibitorHealth();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
             //Game.OnGameUpdate += Game_OnGameUpdate;
             ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
@@ -78,7 +84,7 @@ namespace SAssemblies.Healths
             }
         }
 
-        private void InitInhibitorHealth()
+        private void Init()
         {
             if (!IsActive())
                 return;

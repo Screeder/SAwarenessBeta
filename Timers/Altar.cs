@@ -22,7 +22,13 @@ namespace SAssemblies.Timers
         public Altar()
         {
             Game.OnUpdate += Game_OnGameUpdate;
-            InitAltarObjects();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Altar()
@@ -140,7 +146,7 @@ namespace SAssemblies.Timers
             }
         }
 
-        public void InitAltarObjects()
+        public void Init()
         {
             foreach (Obj_AI_Minion objectType in ObjectManager.Get<Obj_AI_Minion>())
             {

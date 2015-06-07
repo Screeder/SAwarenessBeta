@@ -18,7 +18,46 @@ namespace SAssemblies.Timers
 
         public Immune()
         {
-            //Immune
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+
+            GameObject.OnCreate += Obj_AI_Base_OnCreate;
+            Game.OnUpdate += Game_OnGameUpdate;
+        }
+
+        ~Immune()
+        {
+            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            Abilities = null;
+        }
+
+        public static bool IsActive()
+        {
+#if TIMERS
+            return Timer.Timers.GetActive() && ImmuneTimer.GetActive();
+#else
+            return ImmuneTimer.GetActive();
+#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        {
+            ImmuneTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_IMMUNE_MAIN"), "SAssembliesTimersImmune"));
+            ImmuneTimer.MenuItems.Add(
+                ImmuneTimer.Menu.AddItem(new MenuItem("SAssembliesTimersImmuneSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            ImmuneTimer.MenuItems.Add(
+                ImmuneTimer.Menu.AddItem(new MenuItem("SAssembliesTimersImmuneActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return ImmuneTimer;
+        }
+
+        private void Init()
+        {
             Abilities.Add(new Ability("zhonyas_ring_activate", 2.5f, "Zhonyas"), null);
             Abilities.Add(new Ability("Aatrox_Passive_Death_Activate", 3f, "Aatrox Passive"), null);
             Abilities.Add(new Ability("LifeAura", 4f, "Ressurection"), null); //Zil und GA
@@ -66,35 +105,6 @@ namespace SAssemblies.Timers
                 text.Add();
                 Abilities[ability.Key] = text;
             }
-
-            GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnUpdate += Game_OnGameUpdate;
-        }
-
-        ~Immune()
-        {
-            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Game.OnUpdate -= Game_OnGameUpdate;
-            Abilities = null;
-        }
-
-        public static bool IsActive()
-        {
-#if TIMERS
-            return Timer.Timers.GetActive() && ImmuneTimer.GetActive();
-#else
-            return ImmuneTimer.GetActive();
-#endif
-        }
-
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
-        {
-            ImmuneTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_IMMUNE_MAIN"), "SAssembliesTimersImmune"));
-            ImmuneTimer.MenuItems.Add(
-                ImmuneTimer.Menu.AddItem(new MenuItem("SAssembliesTimersImmuneSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            ImmuneTimer.MenuItems.Add(
-                ImmuneTimer.Menu.AddItem(new MenuItem("SAssembliesTimersImmuneActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return ImmuneTimer;
         }
 
         private void Game_OnGameUpdate(EventArgs args)

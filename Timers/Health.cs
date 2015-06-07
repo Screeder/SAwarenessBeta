@@ -21,7 +21,13 @@ namespace SAssemblies.Timers
         public Health()
         {
             Game.OnUpdate += Game_OnGameUpdate;
-            InitHealthObjects();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Health()
@@ -129,7 +135,7 @@ namespace SAssemblies.Timers
             }
         }
 
-        public void InitHealthObjects()
+        public void Init()
         {
             foreach (Obj_AI_Minion objectType in ObjectManager.Get<Obj_AI_Minion>())
             {

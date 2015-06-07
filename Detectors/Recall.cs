@@ -28,12 +28,13 @@ namespace SAssemblies.Detectors
                 }
             }
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
-            Render.Rectangle rec = new Render.Rectangle(Drawing.Width / 2 - 200 / 2, (int)(Drawing.Height / 1.5f), 200, 10, SharpDX.Color.Black);
-            rec.VisibleCondition = delegate
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
             {
-                return IsActive() && _recalls.Any(x => x.Recall.Status == Packet.S2C.Teleport.Status.Start);
+                Init();
+                Game.OnUpdate -= a;
             };
-            rec.Add();
+            Game.OnUpdate += a;
         }
 
         ~Recall()
@@ -67,6 +68,16 @@ namespace SAssemblies.Detectors
             RecallDetector.MenuItems.Add(
                 RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return RecallDetector;
+        }
+
+        private void Init()
+        {
+            Render.Rectangle rec = new Render.Rectangle(Drawing.Width / 2 - 200 / 2, (int)(Drawing.Height / 1.5f), 200, 10, SharpDX.Color.Black);
+            rec.VisibleCondition = delegate
+            {
+                return IsActive() && _recalls.Any(x => x.Recall.Status == Packet.S2C.Teleport.Status.Start);
+            };
+            rec.Add();
         }
 
         private void Obj_AI_Base_OnTeleport(GameObject sender, GameObjectTeleportEventArgs args)

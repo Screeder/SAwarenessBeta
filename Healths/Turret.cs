@@ -18,7 +18,13 @@ namespace SAssemblies.Healths
 
         public Turret()
         {
-            InitTurrentHealth();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
             //Game.OnGameUpdate += Game_OnGameUpdate;
             ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
@@ -78,7 +84,7 @@ namespace SAssemblies.Healths
             }
         }
 
-        private void InitTurrentHealth() //TODO: Draw HP above BarPos
+        private void Init() //TODO: Draw HP above BarPos
         {
             if (!IsActive())
                 return;

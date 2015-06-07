@@ -20,7 +20,13 @@ namespace SAssemblies.Timers
         public Summoner()
         {
             Game.OnUpdate += Game_OnGameUpdate;
-            InitSummonerObjects();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Summoner()
@@ -48,7 +54,7 @@ namespace SAssemblies.Timers
             return SummonerTimer;
         }
 
-        public void InitSummonerObjects()
+        public void Init()
         {
             foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
             {

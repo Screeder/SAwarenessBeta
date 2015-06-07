@@ -18,6 +18,46 @@ namespace SAssemblies.Timers
 
         public Spell()
         {
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+
+            GameObject.OnCreate += Obj_AI_Base_OnCreate;
+            Game.OnUpdate += Game_OnGameUpdate;
+        }
+
+        ~Spell()
+        {
+            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            Abilities = null;
+        }
+
+        public static bool IsActive()
+        {
+#if TIMERS
+            return Timer.Timers.GetActive() && SpellTimer.GetActive();
+#else
+            return SpellTimer.GetActive();
+#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        {
+            SpellTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SPELL_MAIN"), "SAssembliesTimersSpell"));
+            SpellTimer.MenuItems.Add(
+                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            SpellTimer.MenuItems.Add(
+                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return SpellTimer;
+        }
+
+        private void Init()
+        {
             Abilities.Add(new Ability("LifeAura", 4f, Position.Sender, "Guardian Angel / Zilean Revive"), new List<AbilityDetails>());
             Abilities.Add(new Ability("Global_Ss_Teleport_", 3.5f, Position.Default, "Teleport"), new List<AbilityDetails>());
             Abilities.Add(new Ability("Zhonyas_Ring_activate", 2.5f, Position.Hero, "Zhonya Hourglass"), new List<AbilityDetails>());
@@ -78,35 +118,6 @@ namespace SAssemblies.Timers
             Abilities.Add(new Ability("Zed_Base_R_cloneswap_buf", 7.5f, Position.Default, "Zed R"), new List<AbilityDetails>());
             Abilities.Add(new Ability("Nickoftime_tar", 5f, Position.Hero, "Zilean R"), new List<AbilityDetails>());
             Abilities.Add(new Ability("Zyra_R_cast_", 2f, Position.Default, "Zyra R"), new List<AbilityDetails>());
-
-            GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnUpdate += Game_OnGameUpdate;
-        }
-
-        ~Spell()
-        {
-            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Game.OnUpdate -= Game_OnGameUpdate;
-            Abilities = null;
-        }
-
-        public static bool IsActive()
-        {
-#if TIMERS
-            return Timer.Timers.GetActive() && SpellTimer.GetActive();
-#else
-            return SpellTimer.GetActive();
-#endif
-        }
-
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
-        {
-            SpellTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SPELL_MAIN"), "SAssembliesTimersSpell"));
-            SpellTimer.MenuItems.Add(
-                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            SpellTimer.MenuItems.Add(
-                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return SpellTimer;
         }
 
         private void CreateText(Ability ability, Obj_AI_Hero owner, GameObject sender)

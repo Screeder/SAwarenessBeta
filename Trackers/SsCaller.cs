@@ -18,13 +18,13 @@ namespace SAssemblies.Trackers
 
         public SsCaller()
         {
-            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
             {
-                if (hero.IsEnemy)
-                {
-                    Enemies.Add(hero, new Time());
-                }
-            }
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
             //Game.OnGameUpdate += Game_OnGameUpdate;
             ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Drawing.OnEndScene += Drawing_OnEndScene;
@@ -84,6 +84,17 @@ namespace SAssemblies.Trackers
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SsCallerTracker;
+        }
+
+        private void Init()
+        {
+            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if (hero.IsEnemy)
+                {
+                    Enemies.Add(hero, new Time());
+                }
+            }
         }
 
         void Drawing_OnEndScene(EventArgs args)

@@ -41,25 +41,18 @@ namespace SAssemblies.Miscs
         private TextInfo SummarizedAlly = new TextInfo();
         private TextInfo SummarizedEnemy = new TextInfo();
 
-        static EloDisplayer()
-        {
-            MainFrame = new SpriteHelper.SpriteInfo();
-            SpriteHelper.LoadTexture("EloGui", ref MainFrame, SpriteHelper.TextureType.Default);
-            MainFrame.Sprite.PositionUpdate = delegate
-            {
-                return new Vector2(Drawing.Width / 2 - MainFrame.Bitmap.Width / 2, Drawing.Height / 2 - MainFrame.Bitmap.Height / 2);
-            };
-            MainFrame.Sprite.VisibleCondition = delegate
-            {
-                return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
-            };
-            MainFrame.Sprite.Add(1);
-        }
-
         public EloDisplayer()
         {
             if (GetRegionPrefix().Equals(""))
                 return;
+
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
 
             int index = 0;
             foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
@@ -114,6 +107,9 @@ namespace SAssemblies.Miscs
 
         ~EloDisplayer()
         {
+            Game.OnUpdate -= Game_OnGameUpdateAsyncSprites;
+            Game.OnUpdate -= Game_OnGameUpdateAsyncTexts;
+            Game.OnUpdate -= Game_OnGameUpdate;
         }
 
         public static bool IsActive()
@@ -133,6 +129,21 @@ namespace SAssemblies.Miscs
             EloDisplayerMisc.MenuItems.Add(
                 EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesMiscsEloDisplayerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return EloDisplayerMisc;
+        }
+
+        private void Init()
+        {
+            MainFrame = new SpriteHelper.SpriteInfo();
+            SpriteHelper.LoadTexture("EloGui", ref MainFrame, SpriteHelper.TextureType.Default);
+            MainFrame.Sprite.PositionUpdate = delegate
+            {
+                return new Vector2(Drawing.Width / 2 - MainFrame.Bitmap.Width / 2, Drawing.Height / 2 - MainFrame.Bitmap.Height / 2);
+            };
+            MainFrame.Sprite.VisibleCondition = delegate
+            {
+                return IsActive() && EloDisplayerMisc.GetMenuItem("SAssembliesMiscsEloDisplayerKey").GetValue<KeyBind>().Active;
+            };
+            MainFrame.Sprite.Add(1);
         }
 
         void CalculatePositions(bool calcEnemy)

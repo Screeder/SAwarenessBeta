@@ -22,7 +22,13 @@ namespace SAssemblies.Timers
         {
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
             Game.OnUpdate += Game_OnGameUpdate;
-            InitRelicObjects();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Relic()
@@ -126,7 +132,7 @@ namespace SAssemblies.Timers
             }
         }
 
-        public void InitRelicObjects()
+        public void Init()
         {
             //Crystal Scar
             Relics.Add(new RelicObject(

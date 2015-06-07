@@ -18,6 +18,40 @@ namespace SAssemblies.Trackers
 
         public Jungler()
         {
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+            Obj_AI_Base.OnIssueOrder += Obj_AI_Base_OnIssueOrder;
+        }
+
+        ~Jungler()
+        {
+
+        }
+
+        public bool IsActive()
+        {
+#if TRACKERS
+            return Tracker.Trackers.GetActive() && JunglerTracker.GetActive();
+#else
+            return JunglerTracker.GetActive();
+#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        {
+            JunglerTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_JUNGLER_MAIN"), "SAssembliesTrackersJungler"));
+            JunglerTracker.MenuItems.Add(
+                JunglerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersJunglerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return JunglerTracker;
+        }
+
+        private void Init()
+        {
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
                 if (hero.IsEnemy && hero.Spellbook.Spells.Find(inst => inst.Name.ToLower().Contains("smite")) != null)
@@ -42,29 +76,6 @@ namespace SAssemblies.Trackers
                     text.Add();
                 }
             }
-            Obj_AI_Base.OnIssueOrder += Obj_AI_Base_OnIssueOrder;
-        }
-
-        ~Jungler()
-        {
-
-        }
-
-        public bool IsActive()
-        {
-#if TRACKERS
-            return Tracker.Trackers.GetActive() && JunglerTracker.GetActive();
-#else
-            return JunglerTracker.GetActive();
-#endif
-        }
-
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
-        {
-            JunglerTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_JUNGLER_MAIN"), "SAssembliesTrackersJungler"));
-            JunglerTracker.MenuItems.Add(
-                JunglerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersJunglerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return JunglerTracker;
         }
 
         void Obj_AI_Base_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args) //Will work when Jodus implemented it

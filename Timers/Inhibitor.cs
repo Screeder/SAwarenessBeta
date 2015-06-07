@@ -21,7 +21,13 @@ namespace SAssemblies.Timers
         public Inhibitor()
         {
             Game.OnUpdate += Game_OnGameUpdate;
-            InitInhibitorObjects();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Inhibitor()
@@ -104,7 +110,7 @@ namespace SAssemblies.Timers
             }
         }
 
-        public void InitInhibitorObjects()
+        public void Init()
         {
             _inhibitors = new InhibitorObject();
             foreach (Obj_BarracksDampener inhib in ObjectManager.Get<Obj_BarracksDampener>())

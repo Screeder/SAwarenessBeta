@@ -30,7 +30,13 @@ namespace SAssemblies.Timers
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
             Game.OnUpdate += Game_OnGameUpdate;
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket;
-            InitJungleMobs();
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
         }
 
         ~Jungle()
@@ -331,7 +337,7 @@ namespace SAssemblies.Timers
             }
         }
 
-        public void InitJungleMobs()
+        public void Init()
         {
             JungleMobs.Add(new JungleMob("SRU_Baron12.1.1", null, true, true, true, Utility.Map.MapType.SummonersRift));
             JungleMobs.Add(new JungleMob("SRU_Dragon6.1.1", null, true, false, true, Utility.Map.MapType.SummonersRift));

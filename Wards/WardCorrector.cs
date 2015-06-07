@@ -24,6 +24,10 @@ namespace SAssemblies.Wards
 
         public WardCorrector() //Coords by DrunkenNinja
         {
+            if (Game.MapId != GameMapId.SummonersRift)
+            {
+                return;
+            }
             WardSpots.Add(new WardSpot("", new Vector3(2729f, 10879f, -71f), new Vector3(2729f, 10879f, -71f), new Vector3(2729, 10879, -71f), new Vector3(2524f, 10406f, 54f)));
             WardSpots.Add(new WardSpot("", new Vector3(2303f, 10868f, 53f), new Vector3(2303f, 10868f, 53f), new Vector3(2303f, 10868f, 53f), new Vector3(1774f, 10756f, 52f)));
             WardSpots.Add(new WardSpot("", new Vector3(5223f, 6789f, 50f), new Vector3(5223f, 6789f, 50f), new Vector3(5223f, 6789f, 50f), new Vector3(5520f, 6342f, 51f)));

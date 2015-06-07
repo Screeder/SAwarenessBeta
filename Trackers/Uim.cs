@@ -21,20 +21,14 @@ namespace SAssemblies.Trackers
 
         public Uim()
         {
-            if (!IsActive())
-                return;
-
-            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
             {
-                if (hero.IsEnemy)
-                {
-                    InternalUimTracker champ = new InternalUimTracker(hero);
-                    champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
-                    champ = LoadTexts(champ);
-                    _enemies.Add(hero, champ);
-                }
-            }
-
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+            
             new System.Threading.Thread(LoadSprites).Start();
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
             Game.OnUpdate += Game_OnGameUpdate;
@@ -66,6 +60,20 @@ namespace SAssemblies.Trackers
             UimTracker.MenuItems.Add(
                 UimTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return UimTracker;
+        }
+
+        private void Init()
+        {
+            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if (hero.IsEnemy)
+                {
+                    InternalUimTracker champ = new InternalUimTracker(hero);
+                    champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
+                    champ = LoadTexts(champ);
+                    _enemies.Add(hero, champ);
+                }
+            }
         }
 
         InternalUimTracker LoadTexts(InternalUimTracker champ)

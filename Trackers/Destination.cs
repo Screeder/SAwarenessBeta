@@ -21,6 +21,49 @@ namespace SAssemblies.Trackers
 
         public Destination()
         {
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
+            {
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
+            GameObject.OnCreate += Obj_AI_Base_OnCreate;
+            Drawing.OnDraw += Drawing_OnDraw;
+        }
+
+        ~Destination()
+        {
+            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
+            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
+            Drawing.OnDraw -= Drawing_OnDraw;
+            Enemies = null;
+        }
+
+        public bool IsActive()
+        {
+#if TRACKERS
+            return Tracker.Trackers.GetActive() && DestinationTracker.GetActive();
+#else
+            return DestinationTracker.GetActive();
+#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        {
+            DestinationTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_DESTINATION_MAIN"), "SAssembliesTrackersDestination"));
+            DestinationTracker.MenuItems.Add(
+                DestinationTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersDestinationActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return DestinationTracker;
+        }
+
+        private void Init()
+        {
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
                 if (hero.IsEnemy)
@@ -101,38 +144,6 @@ namespace SAssemblies.Trackers
                         AddObject(hero, abilities);
                 }
             }
-            //Game.OnGameUpdate += Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
-            GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Drawing.OnDraw += Drawing_OnDraw;
-        }
-
-        ~Destination()
-        {
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
-            GameObject.OnCreate -= Obj_AI_Base_OnCreate;
-            Drawing.OnDraw -= Drawing_OnDraw;
-            Enemies = null;
-        }
-
-        public bool IsActive()
-        {
-#if TRACKERS
-            return Tracker.Trackers.GetActive() && DestinationTracker.GetActive();
-#else
-            return DestinationTracker.GetActive();
-#endif
-        }
-
-        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
-        {
-            DestinationTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_DESTINATION_MAIN"), "SAssembliesTrackersDestination"));
-            DestinationTracker.MenuItems.Add(
-                DestinationTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersDestinationActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return DestinationTracker;
         }
 
         private void Drawing_OnDraw(EventArgs args)

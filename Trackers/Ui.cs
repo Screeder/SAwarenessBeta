@@ -91,29 +91,14 @@ namespace SAssemblies.Trackers
             //        .SetValue(new Slider((int)_screen.Y, Drawing.Height, 0));
             //}
 
-            float percentScale =
-                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
-
-            int i = 0;
-            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
             {
-                if (hero.IsMe)
-                    continue;
-                i++;
-                var champ = new ChampInfos();
-
-                champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
-
-                if (hero.IsEnemy)
-                {
-                    _enemies.Add(hero, champ);
-                }
-                if (!hero.IsEnemy)
-                {
-                    _allies.Add(hero, champ);
-                }
-            }
-            InitCustomSpells();
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
+            
             //UpdateItems(true);
             //UpdateItems(false);
             //CalculateSizes(true);
@@ -446,67 +431,16 @@ namespace SAssemblies.Trackers
             }
         }
 
-        public async Task Init()
+        private void Init()
         {
-            if (
-                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
-                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
-                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
-                    .SetValue(new Slider((int) _screen.X, Drawing.Width, 0));
-            }
-            if (
-                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
-                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
-                    .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
-                    .SetValue(new Slider((int) _screen.Y, Drawing.Height, 0));
-            }
-            if (
-                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
-                    .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
-                    .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
-                    .SetValue(new Slider((int) 110, Drawing.Width, 0));
-            }
-            if (
-                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
-                    .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
-                    .GetValue<Slider>()
-                    .Value == 0)
-            {
-                UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
-                    .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
-                    .SetValue(new Slider((int) _screen.Y, Drawing.Height, 0));
-            }
-
-            float percentScale =
-                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
-
             int i = 0;
             foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
             {
-                if(hero.IsMe)
+                if (hero.IsMe)
                     continue;
                 i++;
                 var champ = new ChampInfos();
 
-                Console.WriteLine((i) + ". Loading Sprites for " + hero.ChampionName);
-                Task<ChampInfos> champInfos = CreateSideHud(hero, champ, percentScale);
-                champ = await champInfos;
-                Console.WriteLine("Loaded CreateSideHud Sprites");
-                champInfos = CreateOverHeadHud(hero, champ, percentScale);
-                champ = await champInfos;
-                Console.WriteLine("Loaded CreateOverHeadHud Sprites");
                 champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
 
                 if (hero.IsEnemy)
@@ -517,9 +451,84 @@ namespace SAssemblies.Trackers
                 {
                     _allies.Add(hero, champ);
                 }
-                Console.WriteLine("Created all Sprites");
-            }      
+            }
+            InitCustomSpells();
         }
+
+        //public async Task Init()
+        //{
+        //    if (
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
+        //            .GetValue<Slider>()
+        //            .Value == 0)
+        //    {
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerEnemyTrackerXPos")
+        //            .SetValue(new Slider((int) _screen.X, Drawing.Width, 0));
+        //    }
+        //    if (
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
+        //            .GetValue<Slider>()
+        //            .Value == 0)
+        //    {
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerEnemyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerEnemyTrackerYPos")
+        //            .SetValue(new Slider((int) _screen.Y, Drawing.Height, 0));
+        //    }
+        //    if (
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
+        //            .GetValue<Slider>()
+        //            .Value == 0)
+        //    {
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerAllyTrackerXPos")
+        //            .SetValue(new Slider((int) 110, Drawing.Width, 0));
+        //    }
+        //    if (
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
+        //            .GetValue<Slider>()
+        //            .Value == 0)
+        //    {
+        //        UiTracker.GetMenuSettings("SAssembliesUITrackerAllyTracker")
+        //            .GetMenuItem("SAssembliesUITrackerAllyTrackerYPos")
+        //            .SetValue(new Slider((int) _screen.Y, Drawing.Height, 0));
+        //    }
+
+        //    float percentScale =
+        //            (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
+
+        //    int i = 0;
+        //    foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+        //    {
+        //        if(hero.IsMe)
+        //            continue;
+        //        i++;
+        //        var champ = new ChampInfos();
+
+        //        Console.WriteLine((i) + ". Loading Sprites for " + hero.ChampionName);
+        //        Task<ChampInfos> champInfos = CreateSideHud(hero, champ, percentScale);
+        //        champ = await champInfos;
+        //        Console.WriteLine("Loaded CreateSideHud Sprites");
+        //        champInfos = CreateOverHeadHud(hero, champ, percentScale);
+        //        champ = await champInfos;
+        //        Console.WriteLine("Loaded CreateOverHeadHud Sprites");
+        //        champ.RecallInfo = new Packet.S2C.Teleport.Struct(hero.NetworkId, Packet.S2C.Teleport.Status.Unknown, Packet.S2C.Teleport.Type.Unknown, 0, 0);
+
+        //        if (hero.IsEnemy)
+        //        {
+        //            _enemies.Add(hero, champ);
+        //        }
+        //        if (!hero.IsEnemy)
+        //        {
+        //            _allies.Add(hero, champ);
+        //        }
+        //        Console.WriteLine("Created all Sprites");
+        //    }      
+        //}
 
         void LoadObjectsSync()
         {

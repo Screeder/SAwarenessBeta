@@ -18,34 +18,13 @@ namespace SAssemblies.Trackers
 
         public Gank()
         {
-            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            GameUpdate a = null;
+            a = delegate(EventArgs args)
             {
-                if (hero.IsEnemy)
-                {
-                    Render.Line line = new Render.Line(new Vector2(0,0), new Vector2(0,0), 2, Color.LightGreen);
-                    InternalGankTracker gank = new InternalGankTracker(line);
-                    line.StartPositionUpdate = delegate
-                    {
-                        return Drawing.WorldToScreen(ObjectManager.Player.Position);
-                    };
-                    line.EndPositionUpdate = delegate
-                    {
-                        return Drawing.WorldToScreen(hero.Position);
-                    };
-                    line.VisibleCondition = delegate
-                    {
-                        return IsActive() &&
-                                GankTracker.GetMenuItem("SAssembliesTrackersGankDraw").GetValue<bool>() &&
-                               hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
-                               GankTracker.GetMenuItem("SAssembliesTrackersGankTrackRange").GetValue<Slider>().Value &&
-                               hero.IsVisible && !hero.IsDead &&
-                               (GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>() && gank.Damage > hero.Health ||
-                               !GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>());
-                    };
-                    line.Add();
-                    _enemies.Add(hero, gank);
-                }
-            }
+                Init();
+                Game.OnUpdate -= a;
+            };
+            Game.OnUpdate += a;
             ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             //Game.OnGameUpdate += Game_OnGameUpdate;
         }
@@ -82,6 +61,38 @@ namespace SAssemblies.Trackers
             GankTracker.MenuItems.Add(
                 GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return GankTracker;
+        }
+
+        private void Init()
+        {
+            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if (hero.IsEnemy)
+                {
+                    Render.Line line = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 2, Color.LightGreen);
+                    InternalGankTracker gank = new InternalGankTracker(line);
+                    line.StartPositionUpdate = delegate
+                    {
+                        return Drawing.WorldToScreen(ObjectManager.Player.Position);
+                    };
+                    line.EndPositionUpdate = delegate
+                    {
+                        return Drawing.WorldToScreen(hero.Position);
+                    };
+                    line.VisibleCondition = delegate
+                    {
+                        return IsActive() &&
+                                GankTracker.GetMenuItem("SAssembliesTrackersGankDraw").GetValue<bool>() &&
+                               hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
+                               GankTracker.GetMenuItem("SAssembliesTrackersGankTrackRange").GetValue<Slider>().Value &&
+                               hero.IsVisible && !hero.IsDead &&
+                               (GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>() && gank.Damage > hero.Health ||
+                               !GankTracker.GetMenuItem("SAssembliesTrackersGankKillable").GetValue<bool>());
+                    };
+                    line.Add();
+                    _enemies.Add(hero, gank);
+                }
+            }
         }
 
         private void Game_OnGameUpdate(object sender, EventArgs args)

@@ -25,6 +25,8 @@ namespace SAssemblies.Detectors
                 Game.OnUpdate -= a;
             };
             Game.OnUpdate += a;
+            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            //Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         ~Gank()
@@ -121,8 +123,6 @@ namespace SAssemblies.Detectors
                     Enemies.Add(hero, new InternalGankDetector(text, line));
                 }
             }
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         private void Game_OnGameUpdate(object sender, EventArgs args)
