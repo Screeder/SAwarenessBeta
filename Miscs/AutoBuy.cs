@@ -4,13 +4,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using LeagueSharp;
 using LeagueSharp.Common;
-using LeagueSharp.GameFiles.Tools.LuaObjReader;
 using LeagueSharp.Sandbox;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,6 +23,7 @@ using Menu = SAssemblies.Menu;
 
 //add switching items
 //add total costs
+//add start and main items
 
 namespace SAssemblies.Miscs
 {
@@ -34,8 +35,8 @@ namespace SAssemblies.Miscs
         private int lastGameUpdateTime = 0;
         private static List<BuildLevler> builds = new List<BuildLevler>();
         private AutoBuyGUI Gui = new AutoBuyGUI();
-        private int lastClickedElementId = -1;
         private bool shiftActive = false;
+        private bool boughtStartItems = false;
 
         public AutoBuy()
         {
@@ -58,6 +59,16 @@ namespace SAssemblies.Miscs
             Game.OnWndProc += Game_OnWndProc;
             AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+
+            Drawing.OnDraw += Drawing_OnDraw;
+        }
+
+        void Drawing_OnDraw(EventArgs args)
+        {
+            for (int i = 0; i < AutoBuyGUI.CurrentBuilder.ItemIdList.Count; i++)
+            {
+                Drawing.DrawText(1400, 800 + (20 * i), System.Drawing.Color.Aqua, AutoBuyGUI.CurrentBuilder.ItemIdList[i].Type.ToString() + ":" + AutoBuyGUI.CurrentBuilder.ItemIdList[i].ItemId.ToString());
+            }
         }
 
         ~AutoBuy()
@@ -117,7 +128,15 @@ namespace SAssemblies.Miscs
             AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyDeleteBuild").ValueChanged -= DeleteBuild_OnValueChanged;
             AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyActive").ValueChanged -= Active_OnValueChanged;
 
-            foreach (var sprite in AutoBuyGUI.BuildFrame.ItemBuildSprites)
+            foreach (var sprite in AutoBuyGUI.BuildFrame.ItemBuildSpritesStart)
+            {
+                if (sprite != null && sprite.Sprite != null)
+                {
+                    sprite.Sprite.Dispose();
+                }
+            }
+
+            foreach (var sprite in AutoBuyGUI.BuildFrame.ItemBuildSpritesSummary)
             {
                 if (sprite != null && sprite.Sprite != null)
                 {
@@ -163,6 +182,11 @@ namespace SAssemblies.Miscs
             {
                 shiftActive = false;
             }
+            if (AutoBuyGUI.ShopFrame.ShopSprite == null || AutoBuyGUI.ShopFrame.ShopSprite.Sprite == null || !AutoBuyGUI.ShopFrame.ShopSprite.Sprite.Visible ||
+                AutoBuyGUI.BuildFrame.BuildSprite == null || AutoBuyGUI.BuildFrame.BuildSprite.Sprite == null || !AutoBuyGUI.BuildFrame.BuildSprite.Sprite.Visible)
+            {
+                return;
+            }
             HandleShopFrameMove(message, cursorPos, key);
             HandleBuildFrameMove(message, cursorPos, key);
             HandleShopFrameClick(message, cursorPos, key);
@@ -171,7 +195,7 @@ namespace SAssemblies.Miscs
 
         private void HandleShopFrameMove(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_MOUSEMOVE || !AutoBuyGUI.ShopFrame.ShopSprite.Sprite.Visible)
+            if (message != WindowsMessages.WM_MOUSEMOVE)
             {
                 return;
             }
@@ -201,11 +225,36 @@ namespace SAssemblies.Miscs
 
         private void HandleBuildFrameMove(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_MOUSEMOVE || !AutoBuyGUI.BuildFrame.BuildSprite.Sprite.Visible)
+            if (message != WindowsMessages.WM_MOUSEMOVE)
             {
                 return;
             }
-            foreach (var spriteInfo in AutoBuyGUI.BuildFrame.ItemBuildSprites)
+            foreach (var spriteInfo in AutoBuyGUI.BuildFrame.ItemBuildSpritesStart)
+            {
+                if (spriteInfo == null || spriteInfo.Sprite == null || spriteInfo.Sprite.Sprite == null)
+                {
+                    continue;
+                }
+                if (Common.IsInside(
+                    cursorPos, spriteInfo.Sprite.Sprite.Position, spriteInfo.Sprite.Sprite.Width,
+                    spriteInfo.Sprite.Sprite.Height))
+                {
+                    AutoBuyGUI.BuildFrame.Rectangle.X = spriteInfo.Text.Text.X;
+                    AutoBuyGUI.BuildFrame.Rectangle.Y = spriteInfo.Text.Text.Y;
+                    AutoBuyGUI.BuildFrame.Rectangle.Width = spriteInfo.Text.TextLength.Width;
+                    AutoBuyGUI.BuildFrame.Rectangle.Height = spriteInfo.Text.TextLength.Height;
+                    AutoBuyGUI.BuildFrame.Rectangle.Visible = true;
+                    spriteInfo.Text.Text.Visible = true;
+                    return;
+                }
+                else
+                {
+                    spriteInfo.Text.Text.Visible = false;
+                    AutoBuyGUI.BuildFrame.Rectangle.Visible = false;
+                }
+            }
+
+            foreach (var spriteInfo in AutoBuyGUI.BuildFrame.ItemBuildSpritesSummary)
             {
                 if (spriteInfo == null || spriteInfo.Sprite == null || spriteInfo.Sprite.Sprite == null)
                 {
@@ -233,13 +282,14 @@ namespace SAssemblies.Miscs
 
         private void HandleShopFrameClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP || !AutoBuyGUI.ShopFrame.ShopSprite.Sprite.Visible)
+            if (message != WindowsMessages.WM_LBUTTONUP)
             {
                 return;
             }
             HandleShopFrameItemClick(message, cursorPos, key);
             HandleShopFrameCategoryClick(message, cursorPos, key);
             HandleShopFrameExitClick(message, cursorPos, key);
+            HandleShopFrameStartFinalClick(message, cursorPos, key);
         }
 
         private void HandleShopFrameItemClick(WindowsMessages message, Vector2 cursorPos, uint key)
@@ -254,16 +304,54 @@ namespace SAssemblies.Miscs
                     cursorPos, spriteInfo.Sprite.Sprite.Position, spriteInfo.Sprite.Sprite.Width,
                     spriteInfo.Sprite.Sprite.Height))
                 {
-                    if (lastClickedElementId != -1)
+                    if (AutoBuyGUI.BuildFrame.LastClickedElementId != -1)
                     {
-                        AutoBuyGUI.BuildFrame.AddBuildSprite(spriteInfo, lastClickedElementId);
-                        AutoBuyGUI.CurrentBuilder.ItemIdList.Insert(lastClickedElementId, spriteInfo.Item.ItemId);
+                        //if (AutoBuyGUI.BuildFrame.AddBuildSprite(spriteInfo, AutoBuyGUI.BuildFrame.LastClickedElementId))
+                        //{
+                        //    AutoBuyGUI.CurrentBuilder.ItemIdList.Insert(AutoBuyGUI.BuildFrame.LastClickedElementId, 
+                        //        new BuildLevler.BuildItem(spriteInfo.Item.ItemId, AutoBuyGUI.ShopFrame.StartItemActive
+                        //        ? BuildLevler.BuildItem.ItemType.Start : BuildLevler.BuildItem.ItemType.Summary));
+                        //}
+                        //else
+                        //{
+                        //    int lastId = AutoBuyGUI.CurrentBuilder.ItemIdList.Count;
+                        //    var lastBId = AutoBuyGUI.ShopFrame.StartItemActive ?
+                        //        AutoBuyGUI.CurrentBuilder.ItemIdList.LastOrDefault(
+                        //        x => x.Type == BuildLevler.BuildItem.ItemType.Start) :
+                        //        AutoBuyGUI.CurrentBuilder.ItemIdList.LastOrDefault(
+                        //        x => x.Type == BuildLevler.BuildItem.ItemType.Summary);
+                        //    if (lastBId != null)
+                        //    {
+                        //        lastId = AutoBuyGUI.CurrentBuilder.ItemIdList.IndexOf(lastBId) + 1;
+                        //    }
+                            
+                        //    AutoBuyGUI.CurrentBuilder.ItemIdList.Insert(lastId, new BuildLevler.BuildItem(spriteInfo.Item.ItemId, AutoBuyGUI.ShopFrame.StartItemActive
+                        //        ? BuildLevler.BuildItem.ItemType.Start : BuildLevler.BuildItem.ItemType.Summary));
+                        //}
+                        AutoBuyGUI.CurrentBuilder.ItemIdList.Insert(AutoBuyGUI.BuildFrame.LastClickedElementId,
+                            new BuildLevler.BuildItem(spriteInfo.Item.ItemId, AutoBuyGUI.ShopFrame.StartItemActive
+                            ? BuildLevler.BuildItem.ItemType.Start : BuildLevler.BuildItem.ItemType.Summary));
+
+                        AutoBuyGUI.BuildFrame.LastClickedElementId = -1;
                     }
                     else
                     {
-                        AutoBuyGUI.BuildFrame.AddBuildSprite(spriteInfo);
-                        AutoBuyGUI.CurrentBuilder.ItemIdList.Add(spriteInfo.Item.ItemId);
+                        //AutoBuyGUI.BuildFrame.AddBuildSprite(spriteInfo);
+                        int lastId = AutoBuyGUI.CurrentBuilder.ItemIdList.Count;
+                        var lastBId = AutoBuyGUI.ShopFrame.StartItemActive ?
+                            AutoBuyGUI.CurrentBuilder.ItemIdList.LastOrDefault(
+                            x => x.Type == BuildLevler.BuildItem.ItemType.Start) :
+                            AutoBuyGUI.CurrentBuilder.ItemIdList.LastOrDefault(
+                            x => x.Type == BuildLevler.BuildItem.ItemType.Summary);
+                        if (lastBId != null)
+                        {
+                            lastId = AutoBuyGUI.CurrentBuilder.ItemIdList.IndexOf(lastBId) + 1;
+                        }
+
+                        AutoBuyGUI.CurrentBuilder.ItemIdList.Insert(lastId, new BuildLevler.BuildItem(spriteInfo.Item.ItemId, AutoBuyGUI.ShopFrame.StartItemActive
+                            ? BuildLevler.BuildItem.ItemType.Start : BuildLevler.BuildItem.ItemType.Summary));
                     }
+                    AutoBuyGUI.BuildFrame.CreateBuildSprites(AutoBuyGUI.CurrentBuilder);
                     break;
                 }
             }
@@ -288,10 +376,6 @@ namespace SAssemblies.Miscs
 
         private void HandleShopFrameExitClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (AutoBuyGUI.ShopFrame.ShopSprite == null || AutoBuyGUI.ShopFrame.ShopSprite.Sprite == null)
-            {
-                return;
-            }
             if (Common.IsInside(
                     cursorPos, AutoBuyGUI.ShopFrame.ShopSprite.Sprite.Position + new Vector2(970f, 10f), 40f, 40f))
             {
@@ -299,15 +383,37 @@ namespace SAssemblies.Miscs
             }
         }
 
+        private void HandleShopFrameStartFinalClick(WindowsMessages message, Vector2 cursorPos, uint key)
+        {
+            if (Common.IsInside(
+                    cursorPos, AutoBuyGUI.ShopFrame.ShopSprite.Sprite.Position + AutoBuyGUI.ShopFrame.StartItemsStart, AutoBuyGUI.ShopFrame.StartFinalItemsIncrement.X, AutoBuyGUI.ShopFrame.StartFinalItemsIncrement.Y))
+            {
+                if (!AutoBuyGUI.ShopFrame.StartItemActive)
+                {
+                    AutoBuyGUI.ShopFrame.StartItemActive = true;
+                    AutoBuyGUI.BuildFrame.LastClickedElementId = -1; 
+                }
+            }
+            if (Common.IsInside(
+                    cursorPos, AutoBuyGUI.ShopFrame.ShopSprite.Sprite.Position + AutoBuyGUI.ShopFrame.FinalItemsStart, AutoBuyGUI.ShopFrame.StartFinalItemsIncrement.X, AutoBuyGUI.ShopFrame.StartFinalItemsIncrement.Y))
+            {
+                if (AutoBuyGUI.ShopFrame.StartItemActive)
+                {
+                    AutoBuyGUI.ShopFrame.StartItemActive = false;
+                    AutoBuyGUI.BuildFrame.LastClickedElementId = -1;
+                }
+            }
+        }
+
         private void HandleBuildFrameClick(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONUP || !AutoBuyGUI.BuildFrame.BuildSprite.Sprite.Visible)
+            if (message != WindowsMessages.WM_LBUTTONUP)
             {
                 return;
             }
             if (!shiftActive)
             {
-                foreach (var spriteInfo in AutoBuyGUI.BuildFrame.ItemBuildSprites)
+                foreach (var spriteInfo in AutoBuyGUI.BuildFrame.ItemBuildSpritesStart)
                 {
                     if (spriteInfo == null || spriteInfo.Sprite == null || spriteInfo.Sprite.Sprite == null)
                     {
@@ -318,15 +424,12 @@ namespace SAssemblies.Miscs
                         spriteInfo.Sprite.Sprite.Height))
                     {
                         AutoBuyGUI.CurrentBuilder.ItemIdList.RemoveAt(AutoBuyGUI.BuildFrame.DeleteBuildSprite(spriteInfo));
+                        AutoBuyGUI.BuildFrame.CreateBuildSprites(AutoBuyGUI.CurrentBuilder);
                         break;
                     }
                 }
-            }
-            else
-            {
-                for (int i = 0; i < AutoBuyGUI.BuildFrame.ItemBuildSprites.Count; i++)
+                foreach (var spriteInfo in AutoBuyGUI.BuildFrame.ItemBuildSpritesSummary)
                 {
-                    var spriteInfo = AutoBuyGUI.BuildFrame.ItemBuildSprites[i];
                     if (spriteInfo == null || spriteInfo.Sprite == null || spriteInfo.Sprite.Sprite == null)
                     {
                         continue;
@@ -335,7 +438,49 @@ namespace SAssemblies.Miscs
                         cursorPos, spriteInfo.Sprite.Sprite.Position, spriteInfo.Sprite.Sprite.Width,
                         spriteInfo.Sprite.Sprite.Height))
                     {
-                        lastClickedElementId = i;
+                        AutoBuyGUI.CurrentBuilder.ItemIdList.RemoveAt(AutoBuyGUI.BuildFrame.DeleteBuildSprite(spriteInfo));
+                        AutoBuyGUI.BuildFrame.CreateBuildSprites(AutoBuyGUI.CurrentBuilder);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < AutoBuyGUI.BuildFrame.ItemBuildSpritesStart.Count; i++)
+                {
+                    if (!AutoBuyGUI.ShopFrame.StartItemActive)
+                    {
+                        break;
+                    }
+                    var spriteInfo = AutoBuyGUI.BuildFrame.ItemBuildSpritesStart[i];
+                    if (spriteInfo == null || spriteInfo.Sprite == null || spriteInfo.Sprite.Sprite == null)
+                    {
+                        continue;
+                    }
+                    if (Common.IsInside(
+                        cursorPos, spriteInfo.Sprite.Sprite.Position, spriteInfo.Sprite.Sprite.Width,
+                        spriteInfo.Sprite.Sprite.Height))
+                    {
+                        AutoBuyGUI.BuildFrame.LastClickedElementId = i;
+                        break;
+                    }
+                }
+                for (int i = 0; i < AutoBuyGUI.BuildFrame.ItemBuildSpritesSummary.Count; i++)
+                {
+                    if (AutoBuyGUI.ShopFrame.StartItemActive)
+                    {
+                        break;
+                    }
+                    var spriteInfo = AutoBuyGUI.BuildFrame.ItemBuildSpritesSummary[i];
+                    if (spriteInfo == null || spriteInfo.Sprite == null || spriteInfo.Sprite.Sprite == null)
+                    {
+                        continue;
+                    }
+                    if (Common.IsInside(
+                        cursorPos, spriteInfo.Sprite.Sprite.Position, spriteInfo.Sprite.Sprite.Width,
+                        spriteInfo.Sprite.Sprite.Height))
+                    {
+                        AutoBuyGUI.BuildFrame.LastClickedElementId = AutoBuyGUI.BuildFrame.ItemBuildSpritesStart.Count + i;
                         break;
                     }
                 }
@@ -521,7 +666,186 @@ namespace SAssemblies.Miscs
 
             lastGameUpdateTime = Environment.TickCount;
 
-            //TODO: Add buy logic 
+            if (AutoBuyGUI.CurrentBuilder == null || AutoBuyGUI.CurrentBuilder.ItemIdList.Count == 0)
+            {
+                return;
+            }
+
+            var itemList = ObjectManager.Player.InventoryItems.ToList();
+            var summaryItemList = AutoBuyGUI.CurrentBuilder.ItemIdList.Where(x => x.Type == BuildLevler.BuildItem.ItemType.Summary).ToList();
+            foreach (var item in summaryItemList)
+            {
+                if (ObjectManager.Player.InventoryItems.Any(x => x.Id == item.ItemId))
+                {
+                    boughtStartItems = true;
+                }
+            }
+            
+            if (!boughtStartItems)
+            {
+                var startItemList = AutoBuyGUI.CurrentBuilder.ItemIdList.Where(x => x.Type == BuildLevler.BuildItem.ItemType.Start).ToList();
+                foreach (var item in itemList)
+                {
+                    var nItem = startItemList.FirstOrDefault(x => x.ItemId == item.Id);
+                    if (nItem != null)
+                    {
+                        if (item.Stacks > 1)
+                        {
+                            for (int i = 0; i < item.Stacks; i++)
+                            {
+                                var internItem = startItemList.FirstOrDefault(x => x.ItemId == item.Id);
+                                startItemList.Remove(internItem);
+                            }
+                        }
+                        else
+                        {
+                            startItemList.Remove(nItem);
+                        }
+                        
+                        Console.WriteLine("Removing: {0}; Times: {1}", nItem.ItemId, item.Stacks);
+                    }
+                }
+                if (startItemList.Count == 0)
+                {
+                    boughtStartItems = true;
+                }
+                else
+                {
+                    Console.WriteLine(startItemList.Count);
+                    foreach (var item in startItemList)
+                    {
+                        ObjectManager.Player.BuyItem(item.ItemId);
+                        Console.WriteLine(item.ItemId);
+                    }
+                }
+            }
+
+            foreach (var item in itemList)
+            {
+                var nItem = summaryItemList.FirstOrDefault(x => x.ItemId == item.Id);
+                if (nItem != null)
+                {
+                    if (item.Stacks > 1)
+                    {
+                        for (int i = 0; i < item.Stacks; i++)
+                        {
+                            var internItem = summaryItemList.FirstOrDefault(x => x.ItemId == item.Id);
+                            summaryItemList.Remove(internItem);
+                        }
+                    }
+                    else
+                    {
+                        summaryItemList.Remove(nItem);
+                    }
+
+                    Console.WriteLine("Removing: {0}; Times: {1}", nItem.ItemId, item.Stacks);
+                }
+            }
+            if (summaryItemList.Count != 0)
+            {
+                Console.WriteLine(summaryItemList.Count);
+                var item = summaryItemList[0];
+                var bItem = ItemInfo.GetItemList().Find(x => x.ItemId == item.ItemId);
+                if (bItem != null)
+                {
+                    Console.WriteLine(itemList.Count(x => x.Slot <= 6 && x.Slot >= 0));
+                    if (itemList.Count(x => x.Slot <= 6 && x.Slot >= 0) == 7)
+                    {
+                        SellUselessItems();
+                    }
+                    if (ObjectManager.Player.BuyItem(item.ItemId) && ItemInfo.CanBuyItem(bItem))
+                    {
+                        Console.WriteLine("Bought: "+ item.ItemId);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Can't buy: " + item.ItemId);
+                        BuyNextItem(bItem.FromItemIds);
+                    }
+                }
+            }
+        }
+
+        private static void SellUselessItems()
+        {
+            var itemList = ObjectManager.Player.InventoryItems.ToList();
+            var uselessItemList = new List<ItemId>() { 
+                ItemId.Mana_Potion, 
+                ItemId.Health_Potion, 
+                ItemId.Crystalline_Flask, 
+                ItemId.Dorans_Blade, 
+                ItemId.Dorans_Ring, 
+                ItemId.Dorans_Shield, 
+                ItemId.Vision_Ward,
+                ItemId.Stealth_Ward
+            };
+            Console.WriteLine("Selling Useless Items");
+            foreach (var id in uselessItemList)
+            {
+                var item = itemList.FirstOrDefault(x => x.Id == id);
+                if (item == null)
+                {
+                    continue;
+                }
+                if (item.Stacks > 1)
+                {
+                    for (int i = 0; i < item.Stacks; i++)
+                    {
+                        var internItem = itemList.FirstOrDefault(x => x.Id == item.Id);
+                        ObjectManager.Player.SellItem(internItem.Slot);
+                        Console.WriteLine("Sold: " + item.Id);
+                        break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Sold: " + item.Id);
+                    ObjectManager.Player.SellItem(item.Slot);
+                    break;
+                }
+            }
+        }
+
+        private static void BuyNextItem(List<ItemId> fromItemList)
+        {
+            var itemList = ObjectManager.Player.InventoryItems.ToList();
+            foreach (var inventoryItem in itemList)
+            {
+                var nItem = fromItemList.FirstOrDefault(x => x == inventoryItem.Id);
+                if (nItem != ItemId.Unknown)
+                {
+                    if (inventoryItem.Stacks > 1)
+                    {
+                        for (int i = 0; i < inventoryItem.Stacks; i++)
+                        {
+                            var internItem = fromItemList.FirstOrDefault(x => x == inventoryItem.Id);
+                            fromItemList.Remove(internItem);
+                        }
+                    }
+                    else
+                    {
+                        fromItemList.Remove(nItem);
+                    }
+
+                    Console.WriteLine("Removing: {0}; Times: {1}", nItem, inventoryItem.Stacks);
+                }
+            }
+            foreach (var itemId in fromItemList)
+            {
+                var lItem = ItemInfo.GetItemList().Find(x => x.ItemId == itemId);
+                if (lItem != null)
+                {
+                    if (ObjectManager.Player.BuyItem(lItem.ItemId) && ItemInfo.CanBuyItem(lItem))
+                    {
+                        Console.WriteLine("Bought: " + lItem.ItemId);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Can't buy: " + lItem.ItemId);
+                        BuyNextItem(lItem.FromItemIds);
+                    }
+                }
+            }
         }
 
         public static StringList GetBuildNames()
@@ -667,6 +991,7 @@ namespace SAssemblies.Miscs
                 String patternBuilds = "id=\"build-content-([\\S\\s]*?)-([\\S\\s]*?)\">([\\S\\s]*?)<div class=\"tab-pane";//<div class=\"build-body\"([\\S\\s]*?)id=\"build-content-([\\S\\s]*?)";
                 String patternBuildStart = "starting-item-sets row(.*?)</section>";
                 String patternBuildStartInner = "col-lg-6 col-md-6 col-sm-12 starting-item-set([\\S\\s]*?)col-lg-6 col-md-6 col-sm-12 starting-item-set";
+                String patternBuildSummary = "Build Summary(.*?)<div class=\"row\">";
                 String patternBuildOrder = "Build Order(.*?)</section>";
                 String patternBuildFinal = "Final Items(.*?)</section>";
                 String patternBuildItem = "<small class=\"t-overflow\">([\\S\\s]*?)</small>";
@@ -676,7 +1001,7 @@ namespace SAssemblies.Miscs
 
                 for (int i = 0; ; i++)
                 {
-                    List<String> buildItems = new List<string>();
+                    List<String> summaryItems = new List<string>();
                     List<String> startItems = new List<string>();
                     List<String> buildOrderItems = new List<string>();
                     List<String> finalItems = new List<string>();
@@ -705,6 +1030,11 @@ namespace SAssemblies.Miscs
                             mapId = GameMapId.HowlingAbyss;
                             break;
                     }
+                    if (mapId != Game.MapId)
+                    {
+                        continue;
+                    }
+
                     String matchBuildStart = Website.GetMatch(matchBuilds, patternBuildStart, 0);
                     if (!matchBuildStart.Equals(""))
                     {
@@ -772,6 +1102,38 @@ namespace SAssemblies.Miscs
                             }
                         }
                     }
+                    String matchBuildSummary = Website.GetMatch(matchBuilds, patternBuildSummary, 0);
+                    if (!matchBuildSummary.Equals(""))
+                    {
+                        for (int j = 0; ; j++)
+                        {
+                            String matchBuildItem = Website.GetMatch(matchBuildSummary, patternBuildItem, j);
+                            if (matchBuildItem.Equals(""))
+                            {
+                                break;
+                            }
+                            String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
+                            if (matchBuildItemCount.Equals(""))
+                            {
+                                summaryItems.Add(matchBuildItem);
+                            }
+                            else
+                            {
+                                String matchBuildItemName = Website.GetMatch(matchBuildItem, patternBuildItemCount, 0, 2);
+                                try
+                                {
+                                    int count = Convert.ToInt32(matchBuildItemCount);
+                                    for (int k = 0; k < count; k++)
+                                    {
+                                        summaryItems.Add(matchBuildItemName);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                }
+                            }
+                        }
+                    }
                     String matchBuildOrder = Website.GetMatch(matchBuilds, patternBuildOrder, 0);
                     if (!matchBuildOrder.Equals(""))
                     {
@@ -785,7 +1147,7 @@ namespace SAssemblies.Miscs
                             String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
                             if (matchBuildItemCount.Equals(""))
                             {
-                                startItems.Add(matchBuildItem);
+                                buildOrderItems.Add(matchBuildItem);
                             }
                             else
                             {
@@ -795,7 +1157,7 @@ namespace SAssemblies.Miscs
                                     int count = Convert.ToInt32(matchBuildItemCount);
                                     for (int k = 0; k < count; k++)
                                     {
-                                        startItems.Add(matchBuildItemName);
+                                        buildOrderItems.Add(matchBuildItemName);
                                     }
                                 }
                                 catch (Exception e)
@@ -817,7 +1179,7 @@ namespace SAssemblies.Miscs
                             String matchBuildItemCount = Website.GetMatch(matchBuildItem, patternBuildItemCount);
                             if (matchBuildItemCount.Equals(""))
                             {
-                                startItems.Add(matchBuildItem);
+                                finalItems.Add(matchBuildItem);
                             }
                             else
                             {
@@ -827,7 +1189,7 @@ namespace SAssemblies.Miscs
                                     int count = Convert.ToInt32(matchBuildItemCount);
                                     for (int k = 0; k < count; k++)
                                     {
-                                        startItems.Add(matchBuildItemName);
+                                        finalItems.Add(matchBuildItemName);
                                     }
                                 }
                                 catch (Exception e)
@@ -836,22 +1198,44 @@ namespace SAssemblies.Miscs
                             }
                         }
                     }
-                    buildItems.AddRange(startItems);
-                    buildItems.AddRange(buildOrderItems);
-                    buildItems.AddRange(finalItems);
-                    List<ItemId> itemIdList = new List<ItemId>();
-                    foreach (var b in buildItems)
+                    List<BuildLevler.BuildItem> itemIdList = new List<BuildLevler.BuildItem>();
+                    foreach (var b in startItems)
                     {
                         ItemId id = ConvertNameToId(b);
                         if (id != ItemId.Unknown)
                         {
-                            itemIdList.Add(id);
+                            itemIdList.Add(new BuildLevler.BuildItem(id, BuildLevler.BuildItem.ItemType.Start));
                         }
                         else
                         {
                             Console.WriteLine("Unknown: " + b);
                         }
                     }
+                    //buildItems.AddRange(buildOrderItems);
+                    foreach (var b in summaryItems)
+                    {
+                        ItemId id = ConvertNameToId(b);
+                        if (id != ItemId.Unknown)
+                        {
+                            itemIdList.Add(new BuildLevler.BuildItem(id, BuildLevler.BuildItem.ItemType.Summary));
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unknown: " + b);
+                        }
+                    }
+                    //foreach (var b in finalItems)
+                    //{
+                    //    ItemId id = ConvertNameToId(b);
+                    //    if (id != ItemId.Unknown)
+                    //    {
+                    //        itemIdList.Add(new BuildLevler.BuildItem(id, BuildLevler.BuildItem.ItemType.Final));
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.WriteLine("Unknown: " + b);
+                    //    }
+                    //}
                     BuildLevler build = new BuildLevler(ObjectManager.Player.ChampionName + " LolBuilder " + i, itemIdList, mapId);
                     build.New = true;
                     AutoBuyGUI.CurrentBuilder = build;
@@ -875,7 +1259,7 @@ namespace SAssemblies.Miscs
         {
             public String Name;
             public String ChampionName;
-            public List<ItemId> ItemIdList = new List<ItemId>(36);
+            public List<BuildItem> ItemIdList = new List<BuildItem>(36);
             public bool New = true;
             public bool Web = false;
             public GameMapId MapId = 0;
@@ -884,11 +1268,11 @@ namespace SAssemblies.Miscs
             {
                 Name = name;
                 ChampionName = ObjectManager.Player.ChampionName;
-                ItemIdList = new List<ItemId>();
+                ItemIdList = new List<BuildItem>();
 
             }
 
-            public BuildLevler(string name, List<ItemId> itemId, GameMapId mapId)
+            public BuildLevler(string name, List<BuildItem> itemId, GameMapId mapId)
             {
                 Name = name;
                 ChampionName = ObjectManager.Player.ChampionName;
@@ -901,9 +1285,29 @@ namespace SAssemblies.Miscs
 
             }
 
+            public class BuildItem
+            {
+                public enum ItemType
+                {
+                    Unknown,
+                    Start,
+                    Summary,
+                    Final
+                }
+
+                public ItemId ItemId;
+                public ItemType Type;
+
+                public BuildItem(ItemId itemId, ItemType type)
+                {
+                    ItemId = itemId;
+                    Type = type;
+                }
+            }
+
         }
 
-        class ItemInfo
+        class ItemInfo // TODO: Add ItemData as main method to retriev item infos
         {
             public enum ItemType
             {
@@ -980,6 +1384,52 @@ namespace SAssemblies.Miscs
                 }
             }
 
+            public static bool CanBuyItem(ItemInfo item)
+            {
+                int price = item.Price;
+                var need = GetPrice(item.FromItemIds);
+                Console.WriteLine("ItemGold for: {0}; Required: {1}; Need: {2}", item.ItemId, price, need);
+                return ObjectManager.Player.Gold >= price + need;
+            }
+
+            private static int GetPrice(List<ItemId> fromItemList)
+            {
+                int need = 0;
+                var itemList = ObjectManager.Player.InventoryItems.ToList();
+                foreach (var inventoryItem in itemList)
+                {
+                    var nItem = fromItemList.FirstOrDefault(x => x == inventoryItem.Id);
+                    if (nItem != ItemId.Unknown)
+                    {
+                        if (inventoryItem.Stacks > 1)
+                        {
+                            for (int i = 0; i < inventoryItem.Stacks; i++)
+                            {
+                                var internItem = fromItemList.FirstOrDefault(x => x == inventoryItem.Id);
+                                fromItemList.Remove(internItem);
+                            }
+                        }
+                        else
+                        {
+                            fromItemList.Remove(nItem);
+                        }
+
+                        Console.WriteLine("Removing: {0}; Times: {1}", nItem, inventoryItem.Stacks);
+                    }
+                }
+                Console.WriteLine("GetPriceCount: " + fromItemList.Count);
+                foreach (var itemId in fromItemList)
+                {
+                    var lItem = ItemInfo.GetItemList().Find(x => x.ItemId == itemId);
+                    if (lItem != null)
+                    {
+                        need += lItem.Price;
+                        need += GetPrice(lItem.FromItemIds);
+                    }
+                }
+                return need;
+            }
+
             public static List<ItemInfo> GetItemList() //Does not download the item.json correctly, it is missing the tags attribute somehow!!!
             {
                 if (_items != null)
@@ -1001,7 +1451,7 @@ namespace SAssemblies.Miscs
                 List<ItemInfo> itemInfoList = new List<ItemInfo>();
                 try
                 {
-                    String url = "http://ddragon.leagueoflegends.com/cdn/5.8.1/data/en_US/item.json"; //temp fix for riot fault otherwise + version +
+                    String url = "http://ddragon.leagueoflegends.com/cdn/5.12.1/data/en_US/item.json"; //temp fix for riot fault otherwise + version +
                     String json = new WebClient().DownloadString(url);
                     JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
                     JToken token = data["data"].First;
@@ -1014,7 +1464,7 @@ namespace SAssemblies.Miscs
                         itemInfo.PlainDescription = token.First["plaintext"].ToString();
                         if (token.First["from"] != null)
                         {
-                            itemInfo.ToItemIds = token.First["from"].Values<int>().Select(x => (ItemId) x).ToList();
+                            itemInfo.FromItemIds = token.First["from"].Values<int>().Select(x => (ItemId) x).ToList();
                         }
                         if (token.First["into"] != null)
                         {
@@ -1025,7 +1475,7 @@ namespace SAssemblies.Miscs
                         itemInfo.Purchasable = token.First["gold"]["purchasable"].Value<bool>();
                         itemInfo.ItemTypeList =
                             token.First["tags"].Values<String>().Select(ItemInfo.StringToItemType).ToList();
-                        ; //tags -> String, not available after 5.8.1
+                        ; //tags -> String, not available after 5.12.1
                         itemInfo.MapId = new List<GameMapId>(); //null = everything, maps -> MapId: false
                         if (token.First["maps"] != null)
                         {
@@ -1130,6 +1580,12 @@ namespace SAssemblies.Miscs
                 {
                     Item = item;
                 }
+
+                public AutoBuySpriteInfo(ItemInfo item, SpriteHelper.SpriteInfo sprite)
+                {
+                    Item = item;
+                    Sprite = sprite;
+                }
             }
 
             public class ShopFrame
@@ -1137,11 +1593,17 @@ namespace SAssemblies.Miscs
                 public static SpriteHelper.SpriteInfo ShopSprite;
                 public static List<AutoBuySpriteInfo> ItemShopSprites = new List<AutoBuySpriteInfo>();
                 public static Render.Rectangle Rectangle = new Render.Rectangle(10, 10, 100, 100, new ColorBGRA(SharpDX.Color.Black.ToColor3(), 0.75f));
+                public static Render.Line LineLeft = new Render.Line(new Vector2(10, 10), new Vector2(100, 100), 1, SharpDX.Color.LightYellow);
+                public static Render.Line LineRight = new Render.Line(new Vector2(10, 10), new Vector2(100, 100), 1, SharpDX.Color.LightYellow);
                 public static Vector2 ShopStart = new Vector2(220, 125);
                 public static Vector2 ShopIncrement = new Vector2(64, 64);
                 public static Size ShopBlockSize = new Size(48, 48);
                 public static int ShopMaxRow = 12;
                 public static int ShopMaxColumn = 12;
+                public static bool StartItemActive = false;
+                public static Vector2 StartItemsStart = new Vector2(278, 628);
+                public static Vector2 FinalItemsStart = new Vector2(512, 628);
+                public static Vector2 StartFinalItemsIncrement = new Vector2(32, 32);
 
                 public void Game_OnUpdate()
                 {
@@ -1164,12 +1626,81 @@ namespace SAssemblies.Miscs
                         ShopSprite.Sprite.Add(1);
                         ShopSprite.LoadingFinished = true;
                     }
+
                     Rectangle.PositionUpdate = delegate
                     {
                         return Utils.GetCursorPos() + new Vector2(40, 0); 
                     };
                     Rectangle.Visible = false;
                     Rectangle.Add(3);
+
+                    LineLeft.StartPositionUpdate = delegate
+                    {
+                        if (StartItemActive)
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + StartItemsStart.X, ShopSprite.Sprite.Y + StartItemsStart.Y);
+                        }
+                        else
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + FinalItemsStart.X, ShopSprite.Sprite.Y + FinalItemsStart.Y);
+                        }
+                    };
+                    LineLeft.EndPositionUpdate = delegate
+                    {
+                        if (StartItemActive)
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + StartItemsStart.X + StartFinalItemsIncrement.X, ShopSprite.Sprite.Y + StartItemsStart.Y + StartFinalItemsIncrement.Y);
+                        }
+                        else
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + FinalItemsStart.X + StartFinalItemsIncrement.X, ShopSprite.Sprite.Y + FinalItemsStart.Y + +StartFinalItemsIncrement.Y);
+                        }
+                    };
+                    LineLeft.VisibleCondition = delegate
+                    {
+                        return IsActive() &&
+                            (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").GetValue<bool>() ||
+                            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").GetValue<bool>());
+                    };
+                    LineLeft.Add(4);
+
+                    LineRight.StartPositionUpdate = delegate
+                    {
+                        if (StartItemActive)
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + StartItemsStart.X + StartFinalItemsIncrement.X, ShopSprite.Sprite.Y + StartItemsStart.Y);
+                        }
+                        else
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + FinalItemsStart.X + StartFinalItemsIncrement.X, ShopSprite.Sprite.Y + FinalItemsStart.Y);
+                        }
+                    };
+                    LineRight.EndPositionUpdate = delegate
+                    {
+                        if (StartItemActive)
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + StartItemsStart.X, ShopSprite.Sprite.Y + StartItemsStart.Y + StartFinalItemsIncrement.Y);
+                        }
+                        else
+                        {
+                            return new Vector2(
+                                ShopSprite.Sprite.X + FinalItemsStart.X, ShopSprite.Sprite.Y + FinalItemsStart.Y + +StartFinalItemsIncrement.Y);
+                        }
+                    };
+                    LineRight.VisibleCondition = delegate
+                    {
+                        return IsActive() &&
+                            (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").GetValue<bool>() ||
+                            AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").GetValue<bool>());
+                    };
+                    LineRight.Add(4);
                 }
 
                 public static void CreateShopSprites(ItemInfo.ItemType type)
@@ -1239,13 +1770,16 @@ namespace SAssemblies.Miscs
             public class BuildFrame
             {
                 public static SpriteHelper.SpriteInfo BuildSprite;
-                public static List<AutoBuySpriteInfo> ItemBuildSprites = new List<AutoBuySpriteInfo>();
+                public static List<AutoBuySpriteInfo> ItemBuildSpritesStart = new List<AutoBuySpriteInfo>();
+                public static List<AutoBuySpriteInfo> ItemBuildSpritesSummary = new List<AutoBuySpriteInfo>();
                 public static Render.Rectangle Rectangle = new Render.Rectangle(10, 10, 100, 100, new ColorBGRA(SharpDX.Color.Black.ToColor3(), 0.75f));
-                public static Vector2 BuildStart = new Vector2(30, 25);
+                public static Vector2 BuildStart = new Vector2(30, 50);
+                public static Vector2 BuildFinal = new Vector2(30, 130);
                 public static Vector2 BuildIncrement = new Vector2(64, 64);
                 public static Size BuildBlockSize = new Size(48, 48);
                 public static int BuildMaxRow = 7;
                 public static int BuildMaxColumn = 7;
+                public static int LastClickedElementId = -1;
 
                 public void Game_OnUpdate()
                 {
@@ -1272,10 +1806,76 @@ namespace SAssemblies.Miscs
                     Rectangle.Add(3);
                 }
 
+                //public static void CreateBuildSprites(BuildLevler build)
+                //{
+                //    var itemInfos = build.ItemIdList.Select(x => ItemFrames.First(y => y.Key.ItemId == x.ItemId)).ToList();
+                //    foreach (var info in ItemBuildSprites)
+                //    {
+                //        if (info.Sprite != null && info.Sprite.Sprite != null)
+                //        {
+                //            info.Sprite.Sprite.Remove();
+                //            info.Sprite.Sprite.Dispose();
+                //        }
+                //        if (info.Text != null && info.Text.Text != null)
+                //        {
+                //            info.Text.Text.Remove();
+                //            info.Text.Text.Dispose();
+                //        }
+                //    }
+                //    ItemBuildSprites.Clear();
+                //    for (int index = 0; index < itemInfos.Count; index++)
+                //    {
+                //        int i = 0 + index;
+                //        var itemInfo = itemInfos[i];
+                //        var absi = new AutoBuySpriteInfo(itemInfo.Key);
+                //        var type = build.ItemIdList.First(x => x.ItemId == itemInfo.Key.ItemId).Type;
+
+                //        absi.Sprite = new SpriteHelper.SpriteInfo();
+                //        absi.Sprite.Bitmap = itemInfo.Value.Sprite.Bitmap;
+                //        absi.Sprite.Sprite = new Render.Sprite(itemInfo.Value.Sprite.Bitmap, new Vector2(0, 0));
+                //        absi.Sprite.Sprite.Scale = new Vector2(0.75f);
+                //        absi.Sprite.Sprite.PositionUpdate = delegate
+                //        {
+                //            if (type == BuildLevler.BuildItem.ItemType.Start)
+                //            {
+                //                return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn);
+                //            }
+                //            else
+                //            {
+                //                return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn);
+                //            }
+                            
+                //        };
+                //        absi.Sprite.Sprite.VisibleCondition = delegate
+                //        {
+                //            return IsActive() &&
+                //                (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").GetValue<bool>() ||
+                //                AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").GetValue<bool>());
+                //        };
+                //        absi.Sprite.Sprite.Add(2);
+
+                //        String text = itemInfo.Key.Name + "\n" + itemInfo.Key.PlainDescription;
+                //        absi.Text = new SpriteHelper.SpriteInfo();
+                //        absi.Text.Text = new Render.Text(text, 0, 0, 20, SharpDX.Color.White);
+                //        Font f = new Font(Drawing.Direct3DDevice, absi.Text.Text.TextFontDescription);
+                //        absi.Text.TextLength = f.MeasureText(null, text, FontDrawFlags.NoClip);
+                //        f.Dispose();
+                //        absi.Text.Text.PositionUpdate = delegate
+                //        {
+                //            return Utils.GetCursorPos() - new Vector2(40 + absi.Text.TextLength.Width, 0); 
+                //        };
+                //        absi.Text.Text.Visible = false;
+                //        absi.Text.Text.Add(4);
+
+                //        ItemBuildSprites.Add(absi);
+                //    }
+                //    Console.WriteLine("CreateBuildSprites: " + ItemBuildSprites.Count);
+                //}
+
                 public static void CreateBuildSprites(BuildLevler build)
                 {
-                    var itemInfos = build.ItemIdList.Select(x => ItemFrames.First(y => y.Key.ItemId == x)).ToList();
-                    foreach (var info in ItemBuildSprites)
+                    var itemInfosStart = build.ItemIdList.Select(x => ItemFrames.FirstOrDefault(y => y.Key.ItemId == x.ItemId && x.Type == BuildLevler.BuildItem.ItemType.Start)).ToList();
+                    foreach (var info in ItemBuildSpritesStart)
                     {
                         if (info.Sprite != null && info.Sprite.Sprite != null)
                         {
@@ -1288,59 +1888,101 @@ namespace SAssemblies.Miscs
                             info.Text.Text.Dispose();
                         }
                     }
-                    ItemBuildSprites.Clear();
-                    for (int index = 0; index < itemInfos.Count; index++)
+                    ItemBuildSpritesStart.Clear();
+                    for (int index = 0; index < itemInfosStart.Count; index++)
                     {
                         int i = 0 + index;
-                        var itemInfo = itemInfos[i];
-                        var absi = new AutoBuySpriteInfo(itemInfo.Key);
-
-                        absi.Sprite = new SpriteHelper.SpriteInfo();
-                        absi.Sprite.Bitmap = itemInfo.Value.Sprite.Bitmap;
-                        absi.Sprite.Sprite = new Render.Sprite(itemInfo.Value.Sprite.Bitmap, new Vector2(0, 0));
-                        absi.Sprite.Sprite.Scale = new Vector2(0.75f);
-                        absi.Sprite.Sprite.PositionUpdate = delegate
+                        var itemInfo = itemInfosStart[i];
+                        if (itemInfo.Key != null) //Default value is null if not found
                         {
-                            return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn);
-                        };
-                        absi.Sprite.Sprite.VisibleCondition = delegate
-                        {
-                            return IsActive() &&
-                                (AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyNewBuild").GetValue<bool>() ||
-                                AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").GetValue<bool>());
-                        };
-                        absi.Sprite.Sprite.Add(2);
+                            Console.WriteLine("Start: " + itemInfo.Key.Name);
 
-                        String text = itemInfo.Key.Name + "\n" + itemInfo.Key.PlainDescription;
-                        absi.Text = new SpriteHelper.SpriteInfo();
-                        absi.Text.Text = new Render.Text(text, 0, 0, 20, SharpDX.Color.White);
-                        Font f = new Font(Drawing.Direct3DDevice, absi.Text.Text.TextFontDescription);
-                        absi.Text.TextLength = f.MeasureText(null, text, FontDrawFlags.NoClip);
-                        f.Dispose();
-                        absi.Text.Text.PositionUpdate = delegate
-                        {
-                            return Utils.GetCursorPos() - new Vector2(40 + absi.Text.TextLength.Width, 0); 
-                        };
-                        absi.Text.Text.Visible = false;
-                        absi.Text.Text.Add(4);
-
-                        ItemBuildSprites.Add(absi);
+                            AddBuildSprite(new AutoBuySpriteInfo(itemInfo.Key, itemInfo.Value.Sprite), i, BuildLevler.BuildItem.ItemType.Start);
+                        }
                     }
-                    Console.WriteLine("CreateBuildSprites: " + ItemBuildSprites.Count);
+
+                    var itemInfosSummary = build.ItemIdList.Select(x => ItemFrames.FirstOrDefault(y => y.Key.ItemId == x.ItemId && x.Type == BuildLevler.BuildItem.ItemType.Summary)).ToList();
+                    foreach (var info in ItemBuildSpritesSummary)
+                    {
+                        if (info.Sprite != null && info.Sprite.Sprite != null)
+                        {
+                            info.Sprite.Sprite.Remove();
+                            info.Sprite.Sprite.Dispose();
+                        }
+                        if (info.Text != null && info.Text.Text != null)
+                        {
+                            info.Text.Text.Remove();
+                            info.Text.Text.Dispose();
+                        }
+                    }
+                    ItemBuildSpritesSummary.Clear();
+                    for (int index = 0; index < itemInfosSummary.Count; index++)
+                    {
+                        int i = 0 + index;
+                        var itemInfo = itemInfosSummary[i];
+
+                        if (itemInfo.Key != null) //Default value is null if not found
+                        {
+                            Console.WriteLine("Summary: " + itemInfo.Key.Name);
+
+                            AddBuildSprite(new AutoBuySpriteInfo(itemInfo.Key, itemInfo.Value.Sprite), i, BuildLevler.BuildItem.ItemType.Summary);
+                        }
+                    }
+                    ReorderBuildSprites();
+                    Console.WriteLine("CreateBuildSprites: " + ItemBuildSpritesStart.Count);
+                    Console.WriteLine("CreateBuildSprites: " + ItemBuildSpritesSummary.Count);
                 }
 
-                public static void AddBuildSprite(AutoBuySpriteInfo referenceSprite, int id = -1)
+                public static bool AddBuildSprite(AutoBuySpriteInfo referenceSprite, int id = -1, BuildLevler build = null) // null reference
                 {
-                    int i = 0 + ItemBuildSprites.Count;
                     var absi = new AutoBuySpriteInfo(referenceSprite.Item);
-                    absi.Sprite = new SpriteHelper.SpriteInfo();
-                    absi.Sprite.Bitmap = referenceSprite.Sprite.Bitmap;
-                    absi.Sprite.Sprite = new Render.Sprite(referenceSprite.Sprite.Bitmap, new Vector2(0, 0));
-                    absi.Sprite.Sprite.Scale = new Vector2(0.75f);
-                    absi.Sprite.Sprite.PositionUpdate = delegate
+                    List<AutoBuySpriteInfo> list = null;
+                    BuildLevler.BuildItem.ItemType type = BuildLevler.BuildItem.ItemType.Unknown;
+                    if (build != null)
                     {
-                        return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn);
-                    };
+                        var item = build.ItemIdList.FirstOrDefault(x => x.ItemId == referenceSprite.Item.ItemId);
+                        if (item != null)
+                        {
+                            type = item.Type;
+                            Console.WriteLine("Found Build item type");
+                        }
+                    }
+                    else
+                    {
+                        type = AutoBuyGUI.ShopFrame.StartItemActive
+                            ? BuildLevler.BuildItem.ItemType.Start
+                            : BuildLevler.BuildItem.ItemType.Summary;
+                    }
+                    return AddBuildSprite(referenceSprite, id, type);
+                }
+
+                public static bool AddBuildSprite(AutoBuySpriteInfo referenceSprite, int id = -1, BuildLevler.BuildItem.ItemType type = BuildLevler.BuildItem.ItemType.Unknown) // null reference
+                {
+                    var absi = new AutoBuySpriteInfo(referenceSprite.Item);
+                    List<AutoBuySpriteInfo> list = null;
+                    switch (type)
+                    {
+                        case BuildLevler.BuildItem.ItemType.Start:
+                            list = ItemBuildSpritesStart;
+                            break;
+
+                        case BuildLevler.BuildItem.ItemType.Summary:
+                            list = ItemBuildSpritesSummary;
+                            break;
+                    }
+                    Console.WriteLine("Type: " + type);
+                    if (list == null)
+                        return false;
+                    int i = 0 + list.Count;
+                    absi.Sprite = new SpriteHelper.SpriteInfo();
+                    Console.WriteLine("Add Sprite; id = {0}; i = {1}", id, i);
+                    absi.Sprite.Bitmap = referenceSprite.Sprite.Bitmap;
+                    absi.Sprite.Sprite = new Render.Sprite(absi.Sprite.Bitmap, new Vector2(0, 0));
+                    absi.Sprite.Sprite.Scale = new Vector2(0.75f);
+                    //absi.Sprite.Sprite.PositionUpdate = delegate
+                    //{
+                    //    return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn, type);
+                    //};
                     absi.Sprite.Sprite.VisibleCondition = delegate
                     {
                         return IsActive() &&
@@ -1348,46 +1990,113 @@ namespace SAssemblies.Miscs
                             AutoBuyMisc.GetMenuItem("SAssembliesMiscsAutoBuyShowBuild").GetValue<bool>());
                     };
                     absi.Sprite.Sprite.Add(2);
-                    if (id != -1)
+
+                    String text = referenceSprite.Item.Name + "\n" + referenceSprite.Item.PlainDescription;
+                    absi.Text = new SpriteHelper.SpriteInfo();
+                    absi.Text.Text = new Render.Text(text, 0, 0, 20, SharpDX.Color.White);
+                    Font f = new Font(Drawing.Direct3DDevice, absi.Text.Text.TextFontDescription);
+                    absi.Text.TextLength = f.MeasureText(null, text, FontDrawFlags.NoClip);
+                    f.Dispose();
+                    absi.Text.Text.PositionUpdate = delegate
                     {
-                        ItemBuildSprites.Insert(id, absi);
+                        return Utils.GetCursorPos() - new Vector2(40 + absi.Text.TextLength.Width, 0);
+                    };
+                    absi.Text.Text.Visible = false;
+                    absi.Text.Text.Add(4);
+
+                    Console.WriteLine("AddedBuildSprite: " + referenceSprite.Item.ItemId);
+                    if (id != -1 && id <= list.Count)
+                    {
+                        list.Insert(id, absi);
                         ReorderBuildSprites();
+                        return true;
                     }
                     else
                     {
-                        ItemBuildSprites.Add(absi);
+                        list.Add(absi);
+                        return false;
                     }
-                    Console.WriteLine("AddedBuildSprite: " + referenceSprite.Item.ItemId);
                 }
 
                 public static int DeleteBuildSprite(AutoBuySpriteInfo referenceSprite)
                 {
-                    int ret = ItemBuildSprites.IndexOf(referenceSprite);
-                    referenceSprite.Sprite.Sprite.Dispose();
-                    ItemBuildSprites.Remove(referenceSprite);
-                    Console.WriteLine("RemovedBuildSprite: {0}, {1}, {2}", referenceSprite.Item.ItemId, ret, ItemBuildSprites.Count);
+                    List<AutoBuySpriteInfo> list = null;
+                    int startId = 0;
+                    BuildLevler.BuildItem.ItemType type = CurrentBuilder.ItemIdList.First(x => x.ItemId == referenceSprite.Item.ItemId).Type;
+                    switch (type)
+                    {
+                        case BuildLevler.BuildItem.ItemType.Start:
+                            list = ItemBuildSpritesStart;
+                            break;
+
+                        case BuildLevler.BuildItem.ItemType.Summary:
+                            list = ItemBuildSpritesSummary;
+                            startId = ItemBuildSpritesStart.Count;
+                            break;
+                    }
+                    int ret = list.IndexOf(referenceSprite) + startId;
+                    if (referenceSprite.Sprite != null && referenceSprite.Sprite.Sprite != null)
+                    {
+                        referenceSprite.Sprite.Sprite.Dispose();
+                    }
+                    if (referenceSprite.Text != null && referenceSprite.Text.Text != null)
+                    {
+                        referenceSprite.Text.Text.Dispose();
+                    }
+                    list.Remove(referenceSprite);
+                    Console.WriteLine("RemovedBuildSprite: {0}, {1}, {2}", referenceSprite.Item.ItemId, ret, list.Count);
                     ReorderBuildSprites();
+                    Rectangle.Visible = false;
                     return ret;
                 }
 
                 private static void ReorderBuildSprites()
                 {
-                    for (int index = 0; index < ItemBuildSprites.Count; index++)
+                    Console.WriteLine("ReOrderBuildSprites Start: " + ItemBuildSpritesStart.Count);
+                    for (int index = 0; index < ItemBuildSpritesStart.Count; index++)
                     {
                         int i = 0 + index;
-                        var absi = ItemBuildSprites[i];
+                        var absi = ItemBuildSpritesStart[i];
+                        if (absi == null)
+                        {
+                            Console.WriteLine("Start: Failed");
+                        }
                         absi.Sprite.Sprite.PositionUpdate = delegate
                         {
-                            return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn);
+                            return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn, BuildLevler.BuildItem.ItemType.Start);
+                        };
+                    }
+
+                    Console.WriteLine("ReOrderBuildSprites Final: " + ItemBuildSpritesSummary.Count);
+                    for (int index = 0; index < ItemBuildSpritesSummary.Count; index++)
+                    {
+                        int i = 0 + index;
+                        var absi = ItemBuildSpritesSummary[i];
+                        absi.Sprite.Sprite.PositionUpdate = delegate
+                        {
+                            return GetItemSlotPositionBuild(i / BuildMaxRow, i % BuildMaxColumn, BuildLevler.BuildItem.ItemType.Summary);
                         };
                     }
                 }
 
-
-
-                public static Vector2 GetItemSlotPositionBuild(int row, int column)
+                public static Vector2 GetItemSlotPositionBuild(int row, int column, BuildLevler.BuildItem.ItemType type)
                 {
-                    return new Vector2(BuildSprite.Sprite.X + BuildStart.X + (BuildIncrement.X * column), BuildSprite.Sprite.Y + BuildStart.Y + (BuildIncrement.Y * row));
+                    if (type == BuildLevler.BuildItem.ItemType.Start)
+                    {
+                        return new Vector2(BuildSprite.Sprite.X + BuildStart.X + (BuildIncrement.X * column), BuildSprite.Sprite.Y + BuildStart.Y + (BuildIncrement.Y * row));
+                    }
+                    else if (type == BuildLevler.BuildItem.ItemType.Final)
+                    {
+                        return new Vector2(BuildSprite.Sprite.X + BuildFinal.X + (BuildIncrement.X * column), BuildSprite.Sprite.Y + BuildFinal.Y + (BuildIncrement.Y * row));
+                    }
+                    else if (type == BuildLevler.BuildItem.ItemType.Summary)
+                    {
+                        return new Vector2(BuildSprite.Sprite.X + BuildFinal.X + (BuildIncrement.X * column), BuildSprite.Sprite.Y + BuildFinal.Y + (BuildIncrement.Y * row));
+                    }
+                    else
+                    {
+                        return new Vector2(0, 0);
+                    }
                 }
             }
         }
