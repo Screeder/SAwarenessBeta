@@ -28,6 +28,15 @@ namespace SAssemblies.Timers
                 Game.OnUpdate -= a;
             };
             Game.OnUpdate += a;
+            Drawing.OnDraw += args =>
+            {
+                foreach (var objectType in ObjectManager.Get<Obj_AI_Base>())
+                {
+                    Drawing.DrawText(
+                        Drawing.WorldToScreen(objectType.ServerPosition).X,
+                        Drawing.WorldToScreen(objectType.ServerPosition).Y, System.Drawing.Color.Beige, objectType.Name);
+                }
+            };
         }
 
         ~Health()
@@ -97,7 +106,7 @@ namespace SAssemblies.Timers
                 foreach (Obj_AI_Minion health in ObjectManager.Get<Obj_AI_Minion>())
                 {
                     HealthObject nHealth = null;
-                    if (health.Name.Contains("Health"))
+                    if (health.Name.Contains("HealthRelic") || health.Name.Contains("OdinShieldRelic"))
                     {
                         HealthObject health1 = Healths.Find(jm => jm.Obj.NetworkId == health.NetworkId);
                         if (health1 == null)
@@ -139,7 +148,7 @@ namespace SAssemblies.Timers
         {
             foreach (Obj_AI_Minion objectType in ObjectManager.Get<Obj_AI_Minion>())
             {
-                if (objectType.Name.Contains("Health"))
+                if (objectType.Name.Contains("HealthRelic") || objectType.Name.Contains("OdinShieldRelic"))
                     Healths.Add(new HealthObject(objectType));
             }
         }
@@ -170,10 +179,18 @@ namespace SAssemblies.Timers
                 else
                     Position = new Vector3();
                 SpawnTime = (int)Game.ClockTime;
-                RespawnTime = 40;
+                if (GMap.Type == Utility.Map.MapType.HowlingAbyss)
+                {
+                    MapType = Utility.Map.MapType.HowlingAbyss;
+                    RespawnTime = 40;
+                }
+                else if (GMap.Type == Utility.Map.MapType.CrystalScar)
+                {
+                    MapType = Utility.Map.MapType.CrystalScar;
+                    RespawnTime = 32;
+                }
                 NextRespawnTime = 0;
                 Locked = false;
-                MapType = Utility.Map.MapType.HowlingAbyss;
                 Called = false;
                 TextMinimap = new Render.Text(0, 0, "", Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").GetValue<Slider>().Value, new ColorBGRA(Color4.White));
                 Timer.Timers.GetMenuItem("SAssembliesTimersTextScale").ValueChanged += HealthObject_ValueChanged;

@@ -67,7 +67,7 @@ namespace SAssemblies.Timers
                 {
                     foreach (RelicObject relic in Relics)
                     {
-                        if (sender.Name.Contains(relic.ObjectName))
+                        if (sender.Name.Contains(relic.ObjectName) && sender.Team == relic.Team)
                         {
                             relic.Obj = sender;
                             relic.Locked = false;
@@ -137,12 +137,12 @@ namespace SAssemblies.Timers
             //Crystal Scar
             Relics.Add(new RelicObject(
                 ObjectManager.Player.Team == GameObjectTeam.Order ? "Relic Green" : "Relic Red",
-                ObjectManager.Player.Team == GameObjectTeam.Order ? "Odin_Prism_Green.troy" : "Odin_Prism_Red.troy",
-                GameObjectTeam.Order, null, 180, 180, new Vector3(6799, 6475, -166), new Vector3(6799, 6475, -166)));
+                "OdinCenterRelic",
+                GameObjectTeam.Chaos, null, 180, 180, new Vector3(6799, 6475, -166), new Vector3(6799, 6475, -166)));
             Relics.Add(new RelicObject(
                 ObjectManager.Player.Team == GameObjectTeam.Chaos ? "Relic Green" : "Relic Red",
-                ObjectManager.Player.Team == GameObjectTeam.Chaos ? "Odin_Prism_Green.troy" : "Odin_Prism_Red.troy",
-                GameObjectTeam.Chaos, null, 180, 180, new Vector3(7137, 6461, -166), new Vector3(7137, 6461, -166)));
+                "OdinCenterRelic",
+                GameObjectTeam.Order, null, 180, 180, new Vector3(7137, 6461, -166), new Vector3(7137, 6461, -166)));
 
             foreach (GameObject objAiBase in ObjectManager.Get<GameObject>())
             {

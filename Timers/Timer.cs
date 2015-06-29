@@ -49,7 +49,7 @@ namespace SAssemblies.Timers
             Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersLocalPing", Language.GetString("GLOBAL_PING_LOCAL")).SetValue(true)));
             Timers.MenuItems.Add(
-                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersChatChoice", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
+                Timers.Menu.AddItem(new MenuItem("SAssembliesTimersChat", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
             Timers.MenuItems.Add(
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             Timers.MenuItems.Add(
@@ -79,7 +79,6 @@ namespace SAssemblies.Timers
             {
                 for (int i = 0; i < Timers.GetMenuItem("SAssembliesTimersPingTimes").GetValue<Slider>().Value; i++)
                 {
-                    GamePacket gPacketT;
                     if (Timers.GetMenuItem("SAssembliesTimersLocalPing").GetValue<bool>())
                     {
                         Game.ShowPing(PingCategory.Normal, pos, true);
@@ -97,6 +96,7 @@ namespace SAssemblies.Timers
                 if (Timers.GetMenuItem("SAssembliesTimersChat").GetValue<bool>() &&
                          Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
                 {
+                    Console.WriteLine("CALL!!!");
                     Game.Say(text);
                 }
             }
