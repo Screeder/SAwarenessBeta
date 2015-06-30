@@ -28,15 +28,6 @@ namespace SAssemblies.Timers
                 Game.OnUpdate -= a;
             };
             Game.OnUpdate += a;
-            Drawing.OnDraw += args =>
-            {
-                foreach (var objectType in ObjectManager.Get<Obj_AI_Base>())
-                {
-                    Drawing.DrawText(
-                        Drawing.WorldToScreen(objectType.ServerPosition).X,
-                        Drawing.WorldToScreen(objectType.ServerPosition).Y, System.Drawing.Color.Beige, objectType.Name);
-                }
-            };
         }
 
         ~Health()
