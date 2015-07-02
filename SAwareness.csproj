@@ -406,10 +406,6 @@
     <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-fr-FR.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\Evade.fakes" />
-    <Fakes Include="Fakes\Newtonsoft.Json.fakes" />
-    <Fakes Include="Fakes\InibinSharp.fakes" />
-    <Fakes Include="Fakes\LeagueSharp.GameFiles.fakes" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
