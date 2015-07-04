@@ -27,6 +27,10 @@ namespace SAssemblies.Miscs
 
         public WoodenPc()
         {
+            if (Game.Mode == GameMode.Running)
+            {
+                return;
+            }
             notification = Common.ShowNotification("Waiting for the packet", Color.LawnGreen, -1);
             Game.OnSendPacket += Game_OnSendPacket;
             Game.OnWndProc += Game_OnWndProc;

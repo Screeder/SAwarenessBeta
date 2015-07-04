@@ -411,7 +411,6 @@ namespace SAssemblies
 
         public static Notification ShowNotification(string message, Color color, int duration = 0, bool dispose = true)
         {
-            Notifications.AddNotification(new Notification(message, duration, dispose).SetTextColor(color));
             Notification not = new Notification(message, duration, dispose).SetTextColor(color);
             Notifications.AddNotification(not);
             return not;
