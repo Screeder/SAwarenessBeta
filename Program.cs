@@ -242,6 +242,7 @@ namespace SAssemblies
         public void Load()
         {
             mainMenu = new MainMenu();
+			new WoodenPc();
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
         }
 

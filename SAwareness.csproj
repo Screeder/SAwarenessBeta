@@ -125,6 +125,7 @@
     <Compile Include="Miscs\EasyRangedJungle.cs" />
     <Compile Include="Miscs\SafeFlash.cs" />
     <Compile Include="Miscs\ShowSupporterStacks.cs" />
+	<Compile Include="Miscs\WoodenPc.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
