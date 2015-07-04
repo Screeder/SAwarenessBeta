@@ -1585,7 +1585,7 @@ namespace SAssemblies.Trackers
             champ.Champ.Sprite[0] = await taskInfo;
             if (!champ.Champ.Sprite[0].LoadingFinished)
             {
-                Utility.DelayAction.Add(5000, () => UpdateChampImage(hero, champ.Champ.SizeSideBar, champ.Champ.Sprite[0], UpdateMethod.Side));
+                //Utility.DelayAction.Add(5000, () => UpdateChampImage(hero, champ.Champ.SizeSideBar, champ.Champ.Sprite[0], UpdateMethod.Side));
             }
             else
             {
@@ -2969,49 +2969,49 @@ namespace SAssemblies.Trackers
             MiniMap
         }
 
-        public async void UpdateChampImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, UpdateMethod method)
-        {
-            Task<SpriteHelper.SpriteInfo> taskInfo = null;
-            taskInfo = SpriteHelper.LoadTextureAsync(hero.ChampionName, sprite, SpriteHelper.DownloadType.Champion);
-            sprite = await taskInfo;
-            if (sprite.LoadingFinished)
-            {
-                Utility.DelayAction.Add(5000, () => UpdateChampImage(hero, size, sprite, method));
-            }
-            else
-            {
-                float percentScale =
-                    (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
-                if (method == UpdateMethod.Side)
-                {
-                    sprite.Sprite.PositionUpdate = delegate
-                    {
-                        return new Vector2(size.Width, size.Height);
-                    };
-                    sprite.Sprite.VisibleCondition = delegate
-                    {
-                        return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
-                    };
-                }
-                else if (method == UpdateMethod.MiniMap)
-                {
-                    if (sprite.Sprite.Bitmap != null)
-                        sprite.Sprite.UpdateTextureBitmap(Uim.CropImage(sprite.Sprite.Bitmap, sprite.Sprite.Width));
-                    sprite.Sprite.GrayScale();
-                    sprite.Sprite.PositionUpdate = delegate
-                    {
-                        Vector2 serverPos = Drawing.WorldToMinimap(hero.ServerPosition);
-                        var mPos = new Size((int)(serverPos[0] - 32 * 0.3f), (int)(serverPos[1] - 32 * 0.3f));
-                        return new Vector2(mPos.Width, mPos.Height);
-                    };
-                    sprite.Sprite.VisibleCondition = delegate
-                    {
-                        return Tracker.Trackers.GetActive() && Uim.UimTracker.GetActive() && !hero.IsVisible;
-                    };
-                }
-                sprite.Sprite.Add();
-            }
-        }
+        //public async void UpdateChampImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, UpdateMethod method)
+        //{
+        //    Task<SpriteHelper.SpriteInfo> taskInfo = null;
+        //    taskInfo = SpriteHelper.LoadTextureAsync(hero.ChampionName, sprite, SpriteHelper.DownloadType.Champion);
+        //    sprite = await taskInfo;
+        //    if (sprite.LoadingFinished)
+        //    {
+        //        Utility.DelayAction.Add(5000, () => UpdateChampImage(hero, size, sprite, method));
+        //    }
+        //    else
+        //    {
+        //        float percentScale =
+        //            (float)UiTracker.GetMenuItem("SAssembliesUITrackerScale").GetValue<Slider>().Value / 100;
+        //        if (method == UpdateMethod.Side)
+        //        {
+        //            sprite.Sprite.PositionUpdate = delegate
+        //            {
+        //                return new Vector2(size.Width, size.Height);
+        //            };
+        //            sprite.Sprite.VisibleCondition = delegate
+        //            {
+        //                return IsActive() && GetMode(hero.IsEnemy).SelectedIndex != 1;
+        //            };
+        //        }
+        //        else if (method == UpdateMethod.MiniMap)
+        //        {
+        //            if (sprite.Sprite.Bitmap != null)
+        //                sprite.Sprite.UpdateTextureBitmap(Uim.CropImage(sprite.Sprite.Bitmap, sprite.Sprite.Width));
+        //            sprite.Sprite.GrayScale();
+        //            sprite.Sprite.PositionUpdate = delegate
+        //            {
+        //                Vector2 serverPos = Drawing.WorldToMinimap(hero.ServerPosition);
+        //                var mPos = new Size((int)(serverPos[0] - 32 * 0.3f), (int)(serverPos[1] - 32 * 0.3f));
+        //                return new Vector2(mPos.Width, mPos.Height);
+        //            };
+        //            sprite.Sprite.VisibleCondition = delegate
+        //            {
+        //                return Tracker.Trackers.GetActive() && Uim.UimTracker.GetActive() && !hero.IsVisible;
+        //            };
+        //        }
+        //        sprite.Sprite.Add();
+        //    }
+        //}
 
         private async void UpdateSpellImage(Obj_AI_Hero hero, Size size, SpriteHelper.SpriteInfo sprite, SpellSlot slot, UpdateMethod method)
         {

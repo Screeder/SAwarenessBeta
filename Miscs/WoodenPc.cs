@@ -12,7 +12,7 @@ using SAssemblies;
 using SAssemblies.Miscs;
 using Menu = SAssemblies.Menu;
 
-namespace SAwareness.Miscs
+namespace SAssemblies.Miscs
 {
     class WoodenPc
     {

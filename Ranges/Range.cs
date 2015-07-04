@@ -24,7 +24,7 @@ namespace SAssemblies.Ranges
 
         private static void SetupMainMenu()
         {
-            var menu = new LeagueSharp.Common.Menu("SRanges", "SAwarenessSRanges", true);
+            var menu = new LeagueSharp.Common.Menu("SRanges", "SAssembliesSRanges", true);
             SetupMenu(menu);
             menu.AddToMainMenu();
         }
@@ -34,7 +34,7 @@ namespace SAssemblies.Ranges
             Language.SetLanguage();
             if (!useExisitingMenu)
             {
-                Ranges.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_RANGE_MAIN"), "SAwarenessRanges"));
+                Ranges.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_RANGE_MAIN"), "SAssembliesRanges"));
             }
             else
             {
@@ -42,7 +42,7 @@ namespace SAssemblies.Ranges
             }
             if (!useExisitingMenu)
             {
-                Ranges.MenuItems.Add(Ranges.Menu.AddItem(new MenuItem("SAwarenessRangesActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Ranges.MenuItems.Add(Ranges.Menu.AddItem(new MenuItem("SAssembliesRangesActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             }
             return Ranges;
         }

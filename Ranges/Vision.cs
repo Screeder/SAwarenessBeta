@@ -52,30 +52,30 @@ namespace SAssemblies.Ranges
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            VisionRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_VISION_MAIN"), "SAwarenessRangesVision"));
+            VisionRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_VISION_MAIN"), "SAssembliesRangesVision"));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("RANGES_ALL_MODE_ME"), 
                     Language.GetString("RANGES_ALL_MODE_ENEMY"), 
                     Language.GetString("RANGES_ALL_MODE_BOTH")
                 }))));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayMe", Language.GetString("RANGES_VISION_ME")).SetValue(false)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionDisplayMe", Language.GetString("RANGES_VISION_ME")).SetValue(false)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayChampion", Language.GetString("RANGES_VISION_CHAMPION")).SetValue(false)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionDisplayChampion", Language.GetString("RANGES_VISION_CHAMPION")).SetValue(false)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayTurret", Language.GetString("RANGES_VISION_TURRET")).SetValue(false)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionDisplayTurret", Language.GetString("RANGES_VISION_TURRET")).SetValue(false)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayMinion", Language.GetString("RANGES_VISION_MINION")).SetValue(false)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionDisplayMinion", Language.GetString("RANGES_VISION_MINION")).SetValue(false)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionDisplayWard", Language.GetString("RANGES_VISION_WARD")).SetValue(false)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionDisplayWard", Language.GetString("RANGES_VISION_WARD")).SetValue(false)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.Indigo)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.Indigo)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.Indigo)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.Indigo)));
             VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAwarenessRangesVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return VisionRange;
         }
 
@@ -83,48 +83,48 @@ namespace SAssemblies.Ranges
         {
             if (!IsActive())
                 return;
-            var mode = VisionRange.GetMenuItem("SAwarenessRangesVisionMode").GetValue<StringList>();
+            var mode = VisionRange.GetMenuItem("SAssembliesRangesVisionMode").GetValue<StringList>();
             switch (mode.SelectedIndex)
             {
                 case 0:
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>() && ObjectManager.Player.Position.IsOnScreen())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayMe").GetValue<bool>() && ObjectManager.Player.Position.IsOnScreen())
                     {
-                        Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                        Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayChampion").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayChampion").GetValue<bool>())
                     {
                         foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
                             if (!hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead && hero.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
                             {
-                                Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayTurret").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayTurret").GetValue<bool>())
                     {
                         foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
                             if (!turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead && turret.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
                             {
-                                Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMinion").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayMinion").GetValue<bool>())
                     {
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
                             if (!minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead && minion.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
                             {
-                                Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayWard").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayWard").GetValue<bool>())
                     {
                         foreach (var ward in ObjectManager.Get<GameObject>())
                         {
@@ -133,47 +133,47 @@ namespace SAssemblies.Ranges
                                 if (ward.Name.Contains(wards) && !ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead && ward.Position.IsOnScreen() &&
                                     ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
                                 {
-                                    Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                    Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                                 }
                             }
                         }
                     }
                     break;
                 case 1:
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayChampion").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayChampion").GetValue<bool>())
                     {
                         foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
                             if (hero.IsEnemy && hero.IsVisible && hero.IsValid && !hero.IsDead && hero.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) < 1800)
                             {
-                                Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayTurret").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayTurret").GetValue<bool>())
                     {
                         foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
                             if (turret.IsEnemy && turret.IsVisible && turret.IsValid && !turret.IsDead && turret.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(turret.ServerPosition) < 1800)
                             {
-                                Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMinion").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayMinion").GetValue<bool>())
                     {
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
                             if (minion.IsEnemy && minion.IsVisible && minion.IsValid && !minion.IsDead && minion.Position.IsOnScreen() &&
                                 ObjectManager.Player.ServerPosition.Distance(minion.ServerPosition) < 1800 && minion.Team != GameObjectTeam.Neutral)
                             {
-                                Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayWard").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayWard").GetValue<bool>())
                     {
                         foreach (var ward in ObjectManager.Get<GameObject>())
                         {
@@ -182,18 +182,18 @@ namespace SAssemblies.Ranges
                                 if (ward.Name.Contains(wards) && ward.IsEnemy && ward.IsVisible && ward.IsValid && !ward.IsDead && ward.Position.IsOnScreen() &&
                                     ObjectManager.Player.ServerPosition.Distance(ward.Position) < 1800)
                                 {
-                                    Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                    Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                                 }
                             }
                         }
                     }
                     break;
                 case 2:
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMe").GetValue<bool>() && ObjectManager.Player.Position.IsOnScreen())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayMe").GetValue<bool>() && ObjectManager.Player.Position.IsOnScreen())
                     {
-                        Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                        Utility.DrawCircle(ObjectManager.Player.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayChampion").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayChampion").GetValue<bool>())
                     {
                         foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
                         {
@@ -202,16 +202,16 @@ namespace SAssemblies.Ranges
                             {
                                 if (!hero.IsEnemy)
                                 {
-                                    Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                    Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                                 }
                                 else
                                 {
-                                    Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                    Utility.DrawCircle(hero.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                                 }
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayTurret").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayTurret").GetValue<bool>())
                     {
                         foreach (var turret in ObjectManager.Get<Obj_AI_Turret>())
                         {
@@ -220,16 +220,16 @@ namespace SAssemblies.Ranges
                             {
                                 if (!turret.IsEnemy)
                                 {
-                                    Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                    Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                                 }
                                 else
                                 {
-                                    Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                    Utility.DrawCircle(turret.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                                 }
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayMinion").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayMinion").GetValue<bool>())
                     {
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
@@ -238,16 +238,16 @@ namespace SAssemblies.Ranges
                             {
                                 if (!minion.IsEnemy)
                                 {
-                                    Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                    Utility.DrawCircle(minion.Position, 1100, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                                 }
                                 else
                                 {
-                                    Utility.DrawCircle(minion.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                    Utility.DrawCircle(minion.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                                 }
                             }
                         }
                     }
-                    if (VisionRange.GetMenuItem("SAwarenessRangesVisionDisplayWard").GetValue<bool>())
+                    if (VisionRange.GetMenuItem("SAssembliesRangesVisionDisplayWard").GetValue<bool>())
                     {
                         foreach (var ward in ObjectManager.Get<GameObject>())
                         {
@@ -258,11 +258,11 @@ namespace SAssemblies.Ranges
                                 {
                                     if (!ward.IsEnemy)
                                     {
-                                        Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorMe").GetValue<Color>());
+                                        Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorMe").GetValue<Color>());
                                     }
                                     else
                                     {
-                                        Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAwarenessRangesVisionColorEnemy").GetValue<Color>());
+                                        Utility.DrawCircle(ward.Position, 1200, VisionRange.GetMenuItem("SAssembliesRangesVisionColorEnemy").GetValue<Color>());
                                     }
                                 }
                             }

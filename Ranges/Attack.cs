@@ -11,7 +11,7 @@ namespace SAssemblies.Ranges
 {
     class Attack
     {
-        public static Menu.MenuItemSettings AttackRange = new Menu.MenuItemSettings(typeof(Ranges.Attack));
+        public static Menu.MenuItemSettings AttackRange = new Menu.MenuItemSettings(typeof(Attack));
 
         public Attack()
         {
@@ -34,20 +34,20 @@ namespace SAssemblies.Ranges
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            AttackRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_ATTACK_MAIN"), "SAwareness"));
+            AttackRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_ATTACK_MAIN"), "SAssembliesRangesAttack"));
             AttackRange.MenuItems.Add(
-                AttackRange.Menu.AddItem(new MenuItem("SAwarenessRangesAttackMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
+                AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("RANGES_ALL_MODE_ME"), 
                     Language.GetString("RANGES_ALL_MODE_ENEMY"), 
                     Language.GetString("RANGES_ALL_MODE_BOTH")
                 }))));
             AttackRange.MenuItems.Add(
-                AttackRange.Menu.AddItem(new MenuItem("SAwarenessRangesAttackColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
+                AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
             AttackRange.MenuItems.Add(
-                AttackRange.Menu.AddItem(new MenuItem("SAwarenessRangesAttackColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
+                AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
             AttackRange.MenuItems.Add(
-                AttackRange.Menu.AddItem(new MenuItem("SAwarenessRangesAttackActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return AttackRange;
         }
 
@@ -56,13 +56,13 @@ namespace SAssemblies.Ranges
             if (!IsActive())
                 return;
 
-            var mode = AttackRange.GetMenuItem("SAwarenessRangesAttackMode").GetValue<StringList>();
+            var mode = AttackRange.GetMenuItem("SAssembliesRangesAttackMode").GetValue<StringList>();
             switch (mode.SelectedIndex)
             {
                 case 0:
                     if (ObjectManager.Player.Position.IsOnScreen())
                     {
-                        Utility.DrawCircle(ObjectManager.Player.Position, ObjectManager.Player.AttackRange, AttackRange.GetMenuItem("SAwarenessRangesAttackColorMe").GetValue<Color>());
+                        Utility.DrawCircle(ObjectManager.Player.Position, ObjectManager.Player.AttackRange, AttackRange.GetMenuItem("SAssembliesRangesAttackColorMe").GetValue<Color>());
                     }
                     break;
                 case 1:
@@ -70,17 +70,17 @@ namespace SAssemblies.Ranges
                     {
                         if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
-                            Utility.DrawCircle(enemy.Position, enemy.AttackRange, AttackRange.GetMenuItem("SAwarenessRangesAttackColorEnemy").GetValue<Color>());
+                            Utility.DrawCircle(enemy.Position, enemy.AttackRange, AttackRange.GetMenuItem("SAssembliesRangesAttackColorEnemy").GetValue<Color>());
                         }
                     }
                     break;
                 case 2:
-                    Utility.DrawCircle(ObjectManager.Player.Position, ObjectManager.Player.AttackRange, AttackRange.GetMenuItem("SAwarenessRangesAttackColorMe").GetValue<Color>());
+                    Utility.DrawCircle(ObjectManager.Player.Position, ObjectManager.Player.AttackRange, AttackRange.GetMenuItem("SAssembliesRangesAttackColorMe").GetValue<Color>());
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
                         if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
-                            Utility.DrawCircle(enemy.Position, enemy.AttackRange, AttackRange.GetMenuItem("SAwarenessRangesAttackColorEnemy").GetValue<Color>());
+                            Utility.DrawCircle(enemy.Position, enemy.AttackRange, AttackRange.GetMenuItem("SAssembliesRangesAttackColorEnemy").GetValue<Color>());
                         }
                     }
                     break;

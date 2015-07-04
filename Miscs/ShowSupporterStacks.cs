@@ -8,5 +8,6 @@ namespace SAssemblies.Miscs
 {
     class ShowSupporterStacks
     {
+        public static Menu.MenuItemSettings ShowSupporterStacksMisc = new Menu.MenuItemSettings(typeof(ShowSupporterStacks));
     }
 }

@@ -11,7 +11,7 @@ namespace SAssemblies.Ranges
 {
     class SpellW
     {
-        public static Menu.MenuItemSettings SpellWRange = new Menu.MenuItemSettings(typeof(Ranges.SpellW));
+        public static Menu.MenuItemSettings SpellWRange = new Menu.MenuItemSettings(typeof(SpellW));
 
         public SpellW()
         {
@@ -34,20 +34,20 @@ namespace SAssemblies.Ranges
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            SpellWRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_SPELLW_MAIN"), "SAwarenessRangesSpellW"));
+            SpellWRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_SPELLW_MAIN"), "SAssembliesRangesSpellW"));
             SpellWRange.MenuItems.Add(
-                SpellWRange.Menu.AddItem(new MenuItem("SAwarenessRangesSpellWMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
+                SpellWRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellWMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("RANGES_ALL_MODE_ME"), 
                     Language.GetString("RANGES_ALL_MODE_ENEMY"), 
                     Language.GetString("RANGES_ALL_MODE_BOTH")
                 }))));
             SpellWRange.MenuItems.Add(
-                SpellWRange.Menu.AddItem(new MenuItem("SAwarenessRangesSpellWColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
+                SpellWRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellWColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
             SpellWRange.MenuItems.Add(
-                SpellWRange.Menu.AddItem(new MenuItem("SAwarenessRangesSpellWColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
+                SpellWRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellWColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
             SpellWRange.MenuItems.Add(
-                SpellWRange.Menu.AddItem(new MenuItem("SAwarenessRangesSpellWActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SpellWRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellWActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SpellWRange;
         }
 
@@ -56,14 +56,14 @@ namespace SAssemblies.Ranges
             if (!IsActive())
                 return;
 
-            var mode = SpellWRange.GetMenuItem("SAwarenessRangesSpellWMode").GetValue<StringList>();
+            var mode = SpellWRange.GetMenuItem("SAssembliesRangesSpellWMode").GetValue<StringList>();
             switch (mode.SelectedIndex)
             {
                 case 0:
                     if (ObjectManager.Player.Position.IsOnScreen())
                     {
                         Utility.DrawCircle(ObjectManager.Player.Position,
-                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAwarenessRangesSpellWColorMe").GetValue<Color>());
+                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAssembliesRangesSpellWColorMe").GetValue<Color>());
                     }
                     break;
                 case 1:
@@ -72,7 +72,7 @@ namespace SAssemblies.Ranges
                         if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position,
-                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAwarenessRangesSpellWColorEnemy").GetValue<Color>());
+                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAssembliesRangesSpellWColorEnemy").GetValue<Color>());
                         }
                     }
                     break;
@@ -80,14 +80,14 @@ namespace SAssemblies.Ranges
                     if (ObjectManager.Player.Position.IsOnScreen())
                     {
                         Utility.DrawCircle(ObjectManager.Player.Position,
-                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAwarenessRangesSpellWColorMe").GetValue<Color>());
+                            ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAssembliesRangesSpellWColorMe").GetValue<Color>());
                     }
                     foreach (Obj_AI_Hero enemy in ObjectManager.Get<Obj_AI_Hero>())
                     {
                         if (enemy.IsEnemy && enemy.IsVisible && enemy.IsValid && !enemy.IsDead && enemy.Position.IsOnScreen())
                         {
                             Utility.DrawCircle(enemy.Position,
-                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAwarenessRangesSpellWColorEnemy").GetValue<Color>());
+                                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.CastRange, SpellWRange.GetMenuItem("SAssembliesRangesSpellWColorEnemy").GetValue<Color>());
                         }
                     }
                     break;

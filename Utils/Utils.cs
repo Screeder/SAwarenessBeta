@@ -409,9 +409,12 @@ namespace SAssemblies
             return Utils.IsUnderRectangle(mousePos, windowPos.X, windowPos.Y, width, height);
         }
 
-        public static void ShowNotification(string message, Color color, int duration = 0, bool dispose = true)
+        public static Notification ShowNotification(string message, Color color, int duration = 0, bool dispose = true)
         {
             Notifications.AddNotification(new Notification(message, duration, dispose).SetTextColor(color));
+            Notification not = new Notification(message, duration, dispose).SetTextColor(color);
+            Notifications.AddNotification(not);
+            return not;
         }
 
         public static Color Interpolate(this Color source, Color target, float percent, int alpha = 255)

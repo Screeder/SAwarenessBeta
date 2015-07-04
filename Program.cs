@@ -13,6 +13,7 @@ using SAssemblies.Ranges;
 using SAssemblies.Timers;
 using SAssemblies.Trackers;
 using SAssemblies.Wards;
+using SAssemblies.Miscs;
 using SharpDX;
 using Color = System.Drawing.Color;
 using Gank = SAssemblies.Trackers.Gank;
@@ -242,7 +243,7 @@ namespace SAssemblies
         public void Load()
         {
             mainMenu = new MainMenu();
-			new WoodenPc();
+            new WoodenPc();
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
         }
 

@@ -10,7 +10,7 @@ namespace SAssemblies.Timers
 {
     class Execute
     {
-        public static Menu.MenuItemSettings ExecuteTimers = new Menu.MenuItemSettings(typeof(Execute));
+        public static Menu.MenuItemSettings ExecuteTimer = new Menu.MenuItemSettings(typeof(Execute));
 
         Dictionary<Obj_AI_Hero, int> lastDmg = new Dictionary<Obj_AI_Hero, int>(); 
 
@@ -37,18 +37,18 @@ namespace SAssemblies.Timers
         public bool IsActive()
         {
 #if TIMERS
-            return Timer.Timers.GetActive() && ExecuteTimers.GetActive();
+            return Timer.Timers.GetActive() && ExecuteTimer.GetActive();
 #else
-            return ExecuteTimers.GetActive();
+            return ExecuteTimer.GetActive();
 #endif
         }
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            ExecuteTimers.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_EXECUTE_MAIN"), "SAssembliesTimersExecute"));
-            ExecuteTimers.MenuItems.Add(
-                ExecuteTimers.Menu.AddItem(new MenuItem("SAssembliesTimersExecuteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
-            return ExecuteTimers;
+            ExecuteTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_EXECUTE_MAIN"), "SAssembliesTimersExecute"));
+            ExecuteTimer.MenuItems.Add(
+                ExecuteTimer.Menu.AddItem(new MenuItem("SAssembliesTimersExecuteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            return ExecuteTimer;
         }
 
         private void Game_OnGameUpdate(EventArgs args)

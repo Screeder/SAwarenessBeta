@@ -11,7 +11,7 @@ namespace SAssemblies.Ranges
 {
     class Shop
     {
-        public static Menu.MenuItemSettings ShopRange = new Menu.MenuItemSettings(typeof(Ranges.Shop));
+        public static Menu.MenuItemSettings ShopRange = new Menu.MenuItemSettings(typeof(Shop));
 
         public Shop()
         {
@@ -34,20 +34,20 @@ namespace SAssemblies.Ranges
 
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
-            ShopRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_SHOP_MAIN"), "SAwarenessRangesShop"));
+            ShopRange.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("RANGES_SHOP_MAIN"), "SAssembliesRangesShop"));
             ShopRange.MenuItems.Add(
-                ShopRange.Menu.AddItem(new MenuItem("SAwarenessRangesShopMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
+                ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopMode", Language.GetString("RANGES_ALL_MODE")).SetValue(new StringList(new[]
                 {
                     Language.GetString("RANGES_ALL_MODE_ME"), 
                     Language.GetString("RANGES_ALL_MODE_ENEMY"), 
                     Language.GetString("RANGES_ALL_MODE_BOTH")
                 }))));
             ShopRange.MenuItems.Add(
-                ShopRange.Menu.AddItem(new MenuItem("SAwarenessRangesShopColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.MidnightBlue)));
+                ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.MidnightBlue)));
             ShopRange.MenuItems.Add(
-                ShopRange.Menu.AddItem(new MenuItem("SAwarenessRangesShopColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.MidnightBlue)));
+                ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.MidnightBlue)));
             ShopRange.MenuItems.Add(
-                ShopRange.Menu.AddItem(new MenuItem("SAwarenessRangesShopActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return ShopRange;
         }
 
@@ -55,7 +55,7 @@ namespace SAssemblies.Ranges
         {
             if (!IsActive())
                 return;
-            var mode = ShopRange.GetMenuItem("SAwarenessRangesShopMode").GetValue<StringList>();
+            var mode = ShopRange.GetMenuItem("SAssembliesRangesShopMode").GetValue<StringList>();
             switch (mode.SelectedIndex)
             {
                 case 0:
@@ -63,7 +63,7 @@ namespace SAssemblies.Ranges
                     {
                         if (shop.IsValid && shop.IsValid && ObjectManager.Player.Team == shop.Team && shop.Position.IsOnScreen())
                         {
-                            Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorMe").GetValue<Color>());
+                            Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAssembliesRangesShopColorMe").GetValue<Color>());
                         }
                     }
                     break;
@@ -72,7 +72,7 @@ namespace SAssemblies.Ranges
                     {
                         if (shop.IsValid && shop.IsValid && ObjectManager.Player.Team != shop.Team && shop.Position.IsOnScreen())
                         {
-                            Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorEnemy").GetValue<Color>());
+                            Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAssembliesRangesShopColorEnemy").GetValue<Color>());
                         }
                     }
                     break;
@@ -83,11 +83,11 @@ namespace SAssemblies.Ranges
                         {
                             if (ObjectManager.Player.Team == shop.Team && shop.Position.IsOnScreen())
                             {
-                                Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorMe").GetValue<Color>());
+                                Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAssembliesRangesShopColorMe").GetValue<Color>());
                             }
                             if (ObjectManager.Player.Team != shop.Team && shop.Position.IsOnScreen())
                             {
-                                Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAwarenessRangesShopColorEnemy").GetValue<Color>());
+                                Utility.DrawCircle(shop.Position, 1250, ShopRange.GetMenuItem("SAssembliesRangesShopColorEnemy").GetValue<Color>());
                             }
                         }
                     }
