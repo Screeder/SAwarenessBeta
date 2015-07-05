@@ -74,6 +74,8 @@ namespace SAssemblies.Trackers
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
+                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerMinTime", Language.GetString("TRACKERS_SSCALLER_MINTIME")).SetValue(new Slider(5, 60, 1))));
+            SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerDisableTime", Language.GetString("TRACKERS_SSCALLER_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerCircleRange", Language.GetString("TRACKERS_SSCALLER_CIRCLE_RANGE")).SetValue(new Slider(2000, 15000, 100))));
@@ -81,6 +83,14 @@ namespace SAssemblies.Trackers
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerCircleActive", Language.GetString("TRACKERS_SSCALLER_CIRCLE_ACTIVE")).SetValue(false)));
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>())
+            {
+                if (hero.IsAlly || hero.IsMe)
+                    continue;
+
+                SsCallerTracker.MenuItems.Add(
+                    SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerIgnore" + hero.ChampionName, Language.GetString("TRACKERS_SSCALLER_IGNORE") + hero.ChampionName).SetValue(false).DontSave()));
+            }
             SsCallerTracker.MenuItems.Add(
                 SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SsCallerTracker;
@@ -102,7 +112,7 @@ namespace SAssemblies.Trackers
             foreach (var enemy in Enemies)
             {
                 Obj_AI_Hero hero = enemy.Key;
-                if (!hero.IsVisible && !hero.IsDead)
+                if (!hero.IsVisible && !hero.IsDead && !SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerIgnore" + hero.ChampionName).GetValue<bool>())
                 {
                     if (SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerCircleActive").GetValue<bool>() && enemy.Value.Teleport.Status != Packet.S2C.Teleport.Status.Start)
                     {
@@ -145,13 +155,13 @@ namespace SAssemblies.Trackers
         private void HandleSs(KeyValuePair<Obj_AI_Hero, Time> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            if (enemy.Value.InvisibleTime > 5 && !enemy.Value.Called && Game.Time - enemy.Value.LastTimeCalled > 30)
+            if (enemy.Value.InvisibleTime > SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerMinTime").GetValue<Slider>().Value &&
+                !enemy.Value.Called && Game.Time - enemy.Value.LastTimeCalled > 30 && !SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerIgnore" + hero.ChampionName).GetValue<bool>())
             {
-                var pos = new Vector2(hero.Position.X, hero.Position.Y);
+                var pos = new Vector2(enemy.Value.PredictedPosition.X, enemy.Value.PredictedPosition.Y);
                 var pingType = PingCategory.Normal;
                 var t = SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerPingType").GetValue<StringList>();
                 pingType = (PingCategory)t.SelectedIndex + 1;
-                GamePacket gPacketT;
                 for (int i = 0;
                     i < SsCallerTracker.GetMenuItem("SAssembliesTrackersSsCallerPingTimes").GetValue<Slider>().Value;
                     i++)
@@ -212,7 +222,7 @@ namespace SAssemblies.Trackers
                         enemy.Value.LastPosition.Y, enemy.Value.LastPosition.Z);
                 }
             }
-            if (hero.ServerPosition != enemy.Value.LastPosition)
+            if (hero.ServerPosition != enemy.Value.LastPosition && hero.IsVisible)
             {
                 Enemies[hero].LastPosition = hero.ServerPosition;
                 Enemies[hero].PredictedPosition = hero.ServerPosition;

@@ -768,4 +768,13 @@
   <data name="MISCS_SAFEFLASH_MAIN" xml:space="preserve">
     <value>Safe Flash</value>
   </data>
+  <data name="MISCS_PINGERNAME_IGNORE" xml:space="preserve">
+    <value>Ignore </value>
+  </data>
+  <data name="TRACKERS_SSCALLER_IGNORE" xml:space="preserve">
+    <value>Ignore </value>
+  </data>
+  <data name="TRACKERS_SSCALLER_MINTIME" xml:space="preserve">
+    <value>Miss Seconds</value>
+  </data>
 </root>
