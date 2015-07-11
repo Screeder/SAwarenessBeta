@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
-using LeagueSharp.SDK.Core.Extensions;
 using SAssemblies;
 using SAssemblies.Miscs;
 using Menu = SAssemblies.Menu;
