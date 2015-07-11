@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
+using LeagueSharp.SDK.Core.Extensions;
 using SAssemblies;
 using SAssemblies.Miscs;
 using Menu = SAssemblies.Menu;
@@ -31,17 +33,34 @@ namespace SAssemblies.Miscs
             {
                 return;
             }
+            SetupMenu();
+            WoodenPcMisc.GetMenuItem("SAssembliesMiscsWoodenPcActive").ValueChanged += Active_OnValueChanged;
             notification = Common.ShowNotification("Waiting for the packet", Color.LawnGreen, -1);
             Game.OnSendPacket += Game_OnSendPacket;
             Game.OnWndProc += Game_OnWndProc;
+            GameUpdate updateEvent = null;
+            updateEvent = delegate
+            {
+                if (Game.Mode == GameMode.Running)
+                {
+                    Console.WriteLine(LeagueSharp.Common.Menu.RootMenus.Remove(Assembly.GetExecutingAssembly().GetName().Name + "." + WoodenPcMisc.Menu.Name));
+                    WoodenPcMisc.GetMenuItem("SAssembliesMiscsWoodenPcActive").ValueChanged -= Active_OnValueChanged;
+                    WoodenPcMisc.Menu = null;
+                    Game.OnUpdate -= updateEvent;
+                }
+            };
+            Game.OnUpdate += updateEvent;
         }
 
         ~WoodenPc()
         {
             Game.OnSendPacket -= Game_OnSendPacket;
             Game.OnWndProc -= Game_OnWndProc;
-            Notifications.RemoveNotification(notification);
-            notification.Dispose();
+            if (notification != null)
+            {
+                Notifications.RemoveNotification(notification);
+                notification.Dispose();
+            }
             if (notificationRemaining != null)
             {
                 Notifications.RemoveNotification(notificationRemaining);
@@ -51,21 +70,48 @@ namespace SAssemblies.Miscs
 
         public bool IsActive()
         {
-#if MISCS
-            return Misc.Miscs.GetActive() && WoodenPcMisc.GetActive();
-#else
             return WoodenPcMisc.GetActive();
-#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu()
+        {
+            Language.SetLanguage();
+            WoodenPcMisc.Menu = new LeagueSharp.Common.Menu("SAwarenessWoodenPc", "SAwarenessWoodenPc", true);
+            WoodenPcMisc.MenuItems.Add(
+                WoodenPcMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWoodenPcActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            WoodenPcMisc.Menu.AddItem(new MenuItem("By Screeder", "By Screeder V" + Assembly.GetExecutingAssembly().GetName().Version));
+            WoodenPcMisc.Menu.AddToMainMenu();
+            return WoodenPcMisc;
+        }
+
+        private void Active_OnValueChanged(object sender, OnValueChangeEventArgs onValueChangeEventArgs)
+        {
+            Game.OnSendPacket -= Game_OnSendPacket;
+            Game.OnWndProc -= Game_OnWndProc;
+            if (packet != null)
+            {
+                Game.SendPacket(packet.ToArray(), PacketChannel.C2S, PacketProtocolFlags.Reliable);
+            }
+            if (notification != null)
+            {
+                Notifications.RemoveNotification(notification);
+                notification.Dispose();
+            }
+            if (notificationRemaining != null)
+            {
+                Notifications.RemoveNotification(notificationRemaining);
+                notificationRemaining.Dispose();
+            }
         }
 
         private void Game_OnSendPacket(GamePacketEventArgs args)
         {
             try
             {
-                if (Game.Mode != GameMode.Running)
+                if (Game.Mode != GameMode.Running && IsActive())
                 {
                     //Console.Write("Packet Sent: ");
-                    //args.PacketData.ForEach(x => Console.Write(x + " "));
+                    //Array.ForEach(args.PacketData, x => Console.Write(x + " "));
                     //Console.WriteLine();
                     if (args.PacketData.Length != 6 || packetSent || packet != null)
                         return;
@@ -82,8 +128,11 @@ namespace SAssemblies.Miscs
                             Console.WriteLine((ms + (250 * 1000)) + " " + DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
                             Game.SendPacket(packet.ToArray(), PacketChannel.C2S, PacketProtocolFlags.Reliable);
                             packetSent = true;
-                            Notifications.RemoveNotification(notification);
-                            notification.Dispose();
+                            if (notification != null)
+                            {
+                                Notifications.RemoveNotification(notification);
+                                notification.Dispose();
+                            }
                             if (notificationRemaining != null)
                             {
                                 Notifications.RemoveNotification(notificationRemaining);
@@ -111,6 +160,19 @@ namespace SAssemblies.Miscs
                     };
                     Drawing.OnDraw += drawingEvent;
                 }
+                else
+                {
+                    if (notification != null)
+                    {
+                        Notifications.RemoveNotification(notification);
+                        notification.Dispose();
+                    }
+                    if (notificationRemaining != null)
+                    {
+                        Notifications.RemoveNotification(notificationRemaining);
+                        notificationRemaining.Dispose();
+                    }
+                }
             }
             catch (Exception)
             {
@@ -119,12 +181,15 @@ namespace SAssemblies.Miscs
 
         private void Game_OnWndProc(WndEventArgs args)
         {
-            if ((WindowsMessages)args.Msg != WindowsMessages.WM_KEYUP || args.WParam != 32 || packetSent)
+            if ((WindowsMessages)args.Msg != WindowsMessages.WM_KEYUP || args.WParam != 32 || packetSent || packet == null || !IsActive())
                 return;
             Game.SendPacket(packet.ToArray(), PacketChannel.C2S, PacketProtocolFlags.Reliable);
             packetSent = true;
-            Notifications.RemoveNotification(notification);
-            notification.Dispose();
+            if (notification != null)
+            {
+                Notifications.RemoveNotification(notification);
+                notification.Dispose();
+            }
             if (notificationRemaining != null)
             {
                 Notifications.RemoveNotification(notificationRemaining);

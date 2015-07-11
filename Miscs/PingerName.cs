@@ -47,7 +47,7 @@ namespace SAssemblies.Miscs
                     continue;
 
                 PingerNameMisc.MenuItems.Add(
-                    PingerNameMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsPingerNameIgnore" + hero.Name, "Ignore " + hero.Name).SetValue(false).DontSave()));
+                    PingerNameMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsPingerNameIgnore" + hero.Name, Language.GetString("MISCS_PINGERNAME_IGNORE") + hero.Name).SetValue(false).DontSave()));
             }
             PingerNameMisc.MenuItems.Add(
                 PingerNameMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsPingerNameActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
