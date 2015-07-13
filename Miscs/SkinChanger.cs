@@ -1214,7 +1214,7 @@ namespace SAssemblies.Miscs
             SkinChangerMisc.MenuItems.Add(
                 SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameSplash", Language.GetString("MISCS_SKINCHANGER_SKIN_SPLASH")).SetValue(false).DontSave()));
             SkinChangerMisc.MenuItems.Add(
-                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerActive" + ObjectManager.Player.ChampionName, Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
             return SkinChangerMisc;
         }
 
