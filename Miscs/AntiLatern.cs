@@ -70,6 +70,12 @@ namespace SAssemblies.Miscs
         {
             AntiLaternMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ANTILATERN_MAIN"), "SAssembliesMiscsAntiLatern"));
             AntiLaternMisc.MenuItems.Add(
+                AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternSpells", Language.GetString("MISCS_ANTILATERN_SPELLS")).SetValue(false)));
+            AntiLaternMisc.MenuItems.Add(
+                AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternWards", Language.GetString("MISCS_ANTILATERN_WARDS")).SetValue(false)));
+            AntiLaternMisc.MenuItems.Add(
+                AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternMove", Language.GetString("MISCS_ANTILATERN_MOVE")).SetValue(false)));
+            AntiLaternMisc.MenuItems.Add(
                 AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
             AntiLaternMisc.MenuItems.Add(
                 AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
@@ -88,32 +94,32 @@ namespace SAssemblies.Miscs
             {
                 if (gObject.Name.Contains("ThreshLantern") && gObject.IsEnemy)
                 {
-                    //var spell = _spells.Find(x => x.Key.Equals(ObjectManager.Player.ChampionName));
-                    //var spellSlot = spell.Key != null ? spell.Value : SpellSlot.Unknown;
-                    //if (spellSlot != SpellSlot.Unknown)
-                    //{
-                    //    if (ObjectManager.Player.Spellbook.CanUseSpell(spellSlot) == SpellState.Ready && 
-                    //        ObjectManager.Player.Spellbook.GetSpell(spellSlot).SData.CastRange[0] > ObjectManager.Player.ServerPosition.Distance(gObject.Position))
-                    //    {
-                    //        ObjectManager.Player.Spellbook.CastSpell(spellSlot, gObject.Position);
-                    //        lastTimeUsed = Environment.TickCount;
-                    //        break;
-                    //    }
-                    //}
+                    var spell = _spells.Find(x => x.Key.Equals(ObjectManager.Player.ChampionName));
+                    var spellSlot = spell.Key != null ? spell.Value : SpellSlot.Unknown;
+                    if (spellSlot != SpellSlot.Unknown && AntiLaternMisc.GetMenuItem("SAssembliesMiscsAntiLaternSpells").GetValue<bool>())
+                    {
+                        if (ObjectManager.Player.Spellbook.CanUseSpell(spellSlot) == SpellState.Ready &&
+                            ObjectManager.Player.Spellbook.GetSpell(spellSlot).SData.CastRange > ObjectManager.Player.ServerPosition.Distance(gObject.Position))
+                        {
+                            ObjectManager.Player.Spellbook.CastSpell(spellSlot, gObject.Position);
+                            lastTimeUsed = Environment.TickCount;
+                            break;
+                        }
+                    }
 
-                    //InventorySlot invSlot = ObjectManager.Player.InventoryItems.FirstOrDefault(x => _wards.ContainsKey((int) x.Id));
-                    //if (invSlot != null)
-                    //{
-                    //    if (ObjectManager.Player.Spellbook.CanUseSpell(invSlot.SpellSlot) == SpellState.Ready &&
-                    //        ObjectManager.Player.Spellbook.GetSpell(invSlot.SpellSlot).SData.CastRange[0] > ObjectManager.Player.ServerPosition.Distance(gObject.Position))
-                    //    {
-                    //        ObjectManager.Player.Spellbook.CastSpell(invSlot.SpellSlot, gObject.Position);
-                    //        lastTimeUsed = Environment.TickCount;
-                    //        break;
-                    //    }
-                    //}
+                    InventorySlot invSlot = ObjectManager.Player.InventoryItems.FirstOrDefault(x => _wards.ContainsKey((int)x.Id));
+                    if (invSlot != null && AntiLaternMisc.GetMenuItem("SAssembliesMiscsAntiLaternWards").GetValue<bool>())
+                    {
+                        if (ObjectManager.Player.Spellbook.CanUseSpell(invSlot.SpellSlot) == SpellState.Ready &&
+                            ObjectManager.Player.Spellbook.GetSpell(invSlot.SpellSlot).SData.CastRange > ObjectManager.Player.ServerPosition.Distance(gObject.Position))
+                        {
+                            ObjectManager.Player.Spellbook.CastSpell(invSlot.SpellSlot, gObject.Position);
+                            lastTimeUsed = Environment.TickCount;
+                            break;
+                        }
+                    }
 
-                    if (gObject.Position.Distance(ObjectManager.Player.ServerPosition) < 400)
+                    if (gObject.Position.Distance(ObjectManager.Player.ServerPosition) < 400 && AntiLaternMisc.GetMenuItem("SAssembliesMiscsAntiLaternMove").GetValue<bool>())
                     {
                         ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, gObject);
                         break;

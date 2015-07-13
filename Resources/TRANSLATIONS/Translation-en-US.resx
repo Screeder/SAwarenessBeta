@@ -777,4 +777,13 @@
   <data name="TRACKERS_SSCALLER_MINTIME" xml:space="preserve">
     <value>Miss Seconds</value>
   </data>
+  <data name="MISCS_ANTILATERN_MOVE" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="MISCS_ANTILATERN_SPELLS" xml:space="preserve">
+    <value>Use Spells</value>
+  </data>
+  <data name="MISCS_ANTILATERN_WARDS" xml:space="preserve">
+    <value>Use Wards</value>
+  </data>
 </root>
