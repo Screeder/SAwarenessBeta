@@ -17,6 +17,7 @@ namespace SAssemblies.Trackers
         public static Menu.MenuItemSettings UimTracker = new Menu.MenuItemSettings(typeof(Uim));
 
         private static Dictionary<Obj_AI_Hero, InternalUimTracker> _enemies = new Dictionary<Obj_AI_Hero, InternalUimTracker>();
+
         private int lastGameUpdateTime = 0;
 
         public Uim()
@@ -29,7 +30,6 @@ namespace SAssemblies.Trackers
             };
             Game.OnUpdate += a;
             
-            new System.Threading.Thread(LoadSprites).Start();
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
             Game.OnUpdate += Game_OnGameUpdate;
         }
@@ -74,6 +74,7 @@ namespace SAssemblies.Trackers
                     _enemies.Add(hero, champ);
                 }
             }
+            new System.Threading.Thread(LoadSprites).Start();
         }
 
         InternalUimTracker LoadTexts(InternalUimTracker champ)
@@ -123,7 +124,6 @@ namespace SAssemblies.Trackers
 
         void LoadSprites()
         {
-            //RafLoader.InitLoader();
             foreach (var enemy in _enemies)
             {
                 enemy.Value.Name = SpriteHelper.DownloadImageRiot(enemy.Key.ChampionName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, "UIM");
@@ -136,6 +136,8 @@ namespace SAssemblies.Trackers
                 return;
 
             lastGameUpdateTime = Environment.TickCount;
+
+            
 
             float percentScale = (float)UimTracker.GetMenuItem("SAssembliesTrackersUimScale").GetValue<Slider>().Value / 100;
             foreach (var enemy in _enemies)
@@ -166,6 +168,7 @@ namespace SAssemblies.Trackers
                     };
                     enemy.Value.SpriteInfo.Sprite.Add(0);
                     enemy.Value.SpriteInfo.LoadingFinished = true;
+                    Console.WriteLine("Started Pic" + enemy.Key.ChampionName);
                 }
             }
         }

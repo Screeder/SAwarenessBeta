@@ -107,11 +107,9 @@ namespace SAssemblies.Trackers
             ////{
             ////    SpecUtils.GetInfo();
             ////}).Start();
-            new Thread(LoadSpritesAsync).Start();
             //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Game.OnUpdate += Game_OnGameUpdateAsyncSprites;
             Game.OnUpdate += Game_OnGameUpdate;
-            LoadObjectsSync();
             
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket; //TODO:Enable for Gold View currently bugged packet id never received
             Game.OnWndProc += Game_OnWndProc;
@@ -453,6 +451,8 @@ namespace SAssemblies.Trackers
                 }
             }
             InitCustomSpells();
+            new Thread(LoadSpritesAsync).Start();
+            LoadObjectsSync();
         }
 
         //public async Task Init()
