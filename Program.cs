@@ -1377,7 +1377,7 @@ namespace SAssemblies
                 mainMenu.UpdateDirEntry(ref MainMenu.VisionDetector, Vision.SetupMenu(MainMenu.Detector.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.RecallDetector, Recall.SetupMenu(MainMenu.Detector.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.GankDetector, Detectors.Gank.SetupMenu(MainMenu.Detector.Menu));
-                //mainMenu.UpdateDirEntry(ref MainMenu.DisconnectDetector, Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu));
+                mainMenu.UpdateDirEntry(ref MainMenu.DisconnectDetector, Detectors.DisReconnect.SetupMenu(MainMenu.Detector.Menu));
                 mainMenu.UpdateDirEntry(ref MainMenu.FoWSpellEnemyDetector, FoWSpellEnemy.SetupMenu(MainMenu.Detector.Menu));
 
                 MainMenu.Wards = Wards.Ward.SetupMenu(menu);
