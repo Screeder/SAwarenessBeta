@@ -166,6 +166,18 @@ namespace SAssemblies.Miscs
             info.Icon.Sprite.PositionUpdate = delegate
             {
                 //return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
+                //if (Drawing.WorldToScreen(info.Pos.To3D2()).IsOnScreen())
+                //{
+                //    return GetScreenPosition(Drawing.WorldToScreen(info.Pos.To3D2()), new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
+                //}
+                //else
+                //{
+                //    Vector2 myScreen = new Vector2(Drawing.Width / 2, Drawing.Height / 2);
+                //    Vector2 norm = Drawing.WorldToMinimap(info.Pos.To3D2()) - Drawing.WorldToMinimap(Drawing.Camera);
+                //    norm.Normalize();
+                //    myScreen * norm;
+                //    return GetScreenPosition(Drawing.WorldToMinimap(info.Pos.To3D2()), new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));
+                //}
                 Vector2 wts = new Vector2();
                 if (DirectXDrawer.WorldToScreen(info.Pos.To3D2(), ref wts))
                     return GetScreenPosition(wts, new Size(info.Icon.Sprite.Width, info.Icon.Sprite.Height));

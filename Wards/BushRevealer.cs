@@ -21,14 +21,14 @@ namespace SAssemblies.Wards
         public BushRevealer()
         {
             _playerInfo = ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsEnemy).Select(x => new PlayerInfo(x)).ToList();
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
         }
 
         ~BushRevealer()
         {
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
             _playerInfo = null;
         }
 
@@ -60,7 +60,7 @@ namespace SAssemblies.Wards
             return BushRevealerWard;
         }
 
-        private void Game_OnGameUpdate(object sender, EventArgs args)
+        private void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

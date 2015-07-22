@@ -25,16 +25,16 @@ namespace SAssemblies.Trackers
                 Game.OnUpdate -= a;
             };
             Game.OnUpdate += a;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Drawing.OnEndScene += Drawing_OnEndScene;
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
         }
 
         ~SsCaller()
         {
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             Drawing.OnEndScene -= Drawing_OnEndScene;
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
             Enemies = null;
@@ -139,7 +139,7 @@ namespace SAssemblies.Trackers
             }
         }
 
-        private void Game_OnGameUpdate(object sender, EventArgs args)
+        private void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(10, 50) > Environment.TickCount)
                 return;

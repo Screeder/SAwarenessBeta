@@ -16,13 +16,15 @@ namespace SAssemblies.Miscs
         public AntiNexusTurret()
         {
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
 
         ~AntiNexusTurret()
         {
             Obj_AI_Base.OnNewPath -= Obj_AI_Hero_OnNewPath;
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
         }
 
         public bool IsActive()
@@ -42,7 +44,7 @@ namespace SAssemblies.Miscs
             return AntiNexusTurretMisc;
         }
 
-        void Game_OnGameUpdate(object sender, EventArgs args)
+        void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive())
                 return;

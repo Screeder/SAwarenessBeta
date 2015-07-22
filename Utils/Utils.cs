@@ -155,171 +155,6 @@ namespace SAssemblies
         //public static MenuItemSettings  = new MenuItemSettings();
     }
 
-    //class Menu2
-    //{
-    //    protected Dictionary<MenuItemSettings, Func<dynamic>> MenuEntries;
-    //    public static MenuItemSettings GlobalSettings = new MenuItemSettings();
-
-    //    public static LeagueSharp.SDK.Core.UI.Menu CreateMainMenu()
-    //    {
-    //        Language.SetLanguage();
-    //        LeagueSharp.SDK.Core.UI.Menu mainMenu;
-    //        if (LeagueSharp.SDK.Core.UI.MenuManager.Instance["SAssemblies"] == null)
-    //        {
-    //            mainMenu = new LeagueSharp.SDK.Core.UI.Menu("SAssemblies", "SAssemblies", true);
-    //            mainMenu.Add(new LeagueSharp.SDK.Core.UI.Menu("By Screeder", "By Screeder V" + Assembly.GetExecutingAssembly().GetName().Version));
-    //            mainMenu.Attach();
-    //        }
-    //        else
-    //        {
-    //            mainMenu = LeagueSharp.SDK.Core.UI.MenuManager.Instance["SAssemblies"];
-    //        }
-    //        return mainMenu;
-    //    }
-
-    //    public static void CreateGlobalMenuItems(LeagueSharp.SDK.Core.UI.Menu menu)
-    //    {
-    //        if (GlobalSettings.Menu != null)
-    //            return;
-
-    //        AddComponent(ref menu, new LeagueSharp.SDK.Core.UI.Menu("SAssembliesGlobalSettings", "Global Settings"));
-    //        GlobalSettings.Menu = (LeagueSharp.SDK.Core.UI.Menu)menu["SAssembliesGlobalSettings"];
-    //        AddComponent(ref GlobalSettings.Menu, new LeagueSharp.SDK.Core.UI.MenuItem<LeagueSharp.SDK.Core.UI.Values.MenuBool>
-    //            ("SAssembliesGlobalSettingsServerChatPingActive", "Server Chat/Ping") { Value = new LeagueSharp.SDK.Core.UI.Values.MenuBool() });
-    //        AddComponent(ref GlobalSettings.Menu, new LeagueSharp.SDK.Core.UI.MenuItem<LeagueSharp.SDK.Core.UI.Values.MenuSlider>
-    //            ("SAssembliesGlobalSettingsVoiceVolume", "Voice Volume") { Value = new LeagueSharp.SDK.Core.UI.Values.MenuSlider() { MaxValue = 100, MinValue = 0, Value = 100 } });
-    //    }
-
-    //    public static void AddComponent(ref LeagueSharp.SDK.Core.UI.Menu menu, LeagueSharp.SDK.Core.UI.Abstracts.AMenuComponent component)
-    //    {
-    //        if (menu == null)
-    //            return;
-
-    //        if (!menu.Components.Any(x => x.Value.Name.Equals(component.Name)))
-    //        {
-    //            menu.Add(component);
-    //        }
-    //    }
-
-    //    public Tuple<MenuItemSettings, Func<dynamic>> GetDirEntry(MenuItemSettings menuItem)
-    //    {
-    //        return new Tuple<MenuItemSettings, Func<dynamic>>(menuItem, MenuEntries[menuItem]);
-    //    }
-
-    //    public Dictionary<MenuItemSettings, Func<dynamic>> GetDirEntries()
-    //    {
-    //        return MenuEntries;
-    //    }
-
-    //    public void UpdateDirEntry(ref MenuItemSettings oldMenuItem, MenuItemSettings newMenuItem)
-    //    {
-    //        Func<dynamic> save = MenuEntries[oldMenuItem];
-    //        MenuEntries.Remove(oldMenuItem);
-    //        MenuEntries.Add(newMenuItem, save);
-    //        oldMenuItem = newMenuItem;
-    //    }
-
-    //    public class MenuItemSettings
-    //    {
-    //        public bool ForceDisable;
-    //        public dynamic Item;
-    //        public LeagueSharp.SDK.Core.UI.Menu Menu;
-    //        public String Name;
-    //        public Type Type;
-
-    //        public MenuItemSettings(Type type, dynamic item)
-    //        {
-    //            Type = type;
-    //            Item = item;
-    //        }
-
-    //        public MenuItemSettings(dynamic item)
-    //        {
-    //            Item = item;
-    //        }
-
-    //        public MenuItemSettings(Type type)
-    //        {
-    //            Type = type;
-    //        }
-
-    //        public MenuItemSettings(String name)
-    //        {
-    //            Name = name;
-    //        }
-
-    //        public MenuItemSettings()
-    //        {
-    //        }
-
-    //        public bool GetActive()
-    //        {
-    //            if (Menu == null)
-    //                return false;
-    //            foreach (var menuComponent in Menu.Components)
-    //            {
-    //                if (menuComponent.Value.DisplayName == Language.GetString("GLOBAL_ACTIVE"))
-    //                {
-    //                    if (menuComponent.Value.GetValue<LeagueSharp.SDK.Core.UI.Values.MenuBool>().Value)
-    //                    {
-    //                        return true;
-    //                    }
-    //                    return false;
-    //                }
-    //            }
-    //            return false;
-    //        }
-
-    //        public void SetActive(bool active)
-    //        {
-    //            if (Menu == null)
-    //                return;
-    //            foreach (var menuComponent in Menu.Components)
-    //            {
-    //                if (menuComponent.Value.DisplayName == Language.GetString("GLOBAL_ACTIVE"))
-    //                {
-    //                    menuComponent.Value.GetValue<LeagueSharp.SDK.Core.UI.Values.MenuBool>().Value = active;
-    //                }
-    //            }
-    //        }
-
-    //        public void CreateActiveMenuItem(String menuName)
-    //        {
-    //            if (Menu == null)
-    //                return;
-
-    //            if (!Menu.Components.Any(x => x.Value.Name.Equals(menuName)))
-    //            {
-    //                Menu.Add(new LeagueSharp.SDK.Core.UI.MenuItem<LeagueSharp.SDK.Core.UI.Values.MenuBool>
-    //                    (menuName, Language.GetString("GLOBAL_ACTIVE")) { Value = new LeagueSharp.SDK.Core.UI.Values.MenuBool() });
-    //            }
-    //        }
-
-    //        public LeagueSharp.SDK.Core.UI.MenuItem<T> GetMenuItem<T>(String menuName) where T : LeagueSharp.SDK.Core.UI.Abstracts.AMenuValue
-    //        {
-    //            if (Menu == null)
-    //                return null;
-    //            foreach (var menuComponent in Menu.Components)
-    //            {
-    //                if (menuComponent.Value.Name == menuName)
-    //                {
-    //                    return (LeagueSharp.SDK.Core.UI.MenuItem<T>)menuComponent.Value;
-    //                }
-    //            }
-    //            return null;
-    //        }
-
-    //        public LeagueSharp.SDK.Core.UI.Menu GetSubMenu(String menuName)
-    //        {
-    //            if (Menu == null)
-    //                return null;
-    //            return (LeagueSharp.SDK.Core.UI.Menu)Menu[menuName];
-    //        }
-    //    }
-
-    //    //public static MenuItemSettings  = new MenuItemSettings();
-    //}
-
     internal static class Log
     {
         public static String File = "C:\\SAssemblies.log";
@@ -3754,6 +3589,28 @@ namespace SAssemblies
                     break;
             }
             UpdateLanguage(Thread.CurrentThread.CurrentUICulture.Name);
+        }
+    }
+
+    static class PacketCatcher
+    {
+        private static List<byte> exclude = new List<byte>() { 186, 176, 9, 54, 94, 55, 51, 231, 146, 153, 233, 215, 222, 45, 212, 197, 36, 192, 56, 252, 156, 106, 201, 170, 235, 178, 65, 187, 96, 10, 25, 160 };
+        private static List<byte> list = new List<byte>() { }; 
+
+        public static void Init()
+        {
+            Game.OnProcessPacket += delegate(GamePacketEventArgs eventArgs)
+            {
+                if (!list.Contains(eventArgs.PacketData[0]) && !exclude.Contains(eventArgs.PacketData[0]))
+                {
+                    list.Add(eventArgs.PacketData[0]);
+                    Console.Write("Got Packet: " + eventArgs.PacketData[0] + "; Length: " + eventArgs.PacketData.Length + "; ");
+                    Array.ForEach(eventArgs.PacketData, x => Console.Write(x + " "));
+                    Console.WriteLine();
+                }
+            };
+
+            Utility.DelayAction.Add(60000, () => list.ForEach(x => Console.Write(x + ", ")));
         }
     }
 }

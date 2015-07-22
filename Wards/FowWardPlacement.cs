@@ -49,14 +49,14 @@ namespace SAssemblies.Wards
                     _wards.Add(hero, wards);
                 }
             }
-            //Game.OnGameUpdate += Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
 
         ~FowWardPlacement()
         {
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
         }
 
         public bool IsActive()
@@ -83,7 +83,7 @@ namespace SAssemblies.Wards
             return FowWardPlacementWard;
         }
 		
-		private void Game_OnGameUpdate(object sender, EventArgs args)
+		private void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

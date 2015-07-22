@@ -137,8 +137,6 @@ namespace SAssemblies.Trackers
 
             lastGameUpdateTime = Environment.TickCount;
 
-            
-
             float percentScale = (float)UimTracker.GetMenuItem("SAssembliesTrackersUimScale").GetValue<Slider>().Value / 100;
             foreach (var enemy in _enemies)
             {
@@ -168,7 +166,6 @@ namespace SAssemblies.Trackers
                     };
                     enemy.Value.SpriteInfo.Sprite.Add(0);
                     enemy.Value.SpriteInfo.LoadingFinished = true;
-                    Console.WriteLine("Started Pic" + enemy.Key.ChampionName);
                 }
             }
         }

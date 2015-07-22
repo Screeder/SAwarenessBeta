@@ -64,8 +64,8 @@ namespace SAssemblies.Detectors
             GameObject.OnDelete += Obj_AI_Base_OnDelete;
             Drawing.OnDraw += Drawing_OnDraw;
             GameObject.OnCreate += GameObject_OnCreate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             foreach (var obj in ObjectManager.Get<GameObject>())
             {
                 GameObject_OnCreate(obj, new EventArgs());
@@ -79,8 +79,8 @@ namespace SAssemblies.Detectors
             GameObject.OnCreate -= GameObject_OnCreate;
             GameObject.OnDelete -= Obj_AI_Base_OnDelete;
             Drawing.OnDraw -= Drawing_OnDraw;
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             
             HidObjects = null;
             Objects = null;
@@ -109,7 +109,7 @@ namespace SAssemblies.Detectors
             return VisionDetector;
         }
 
-        void Game_OnGameUpdate(object sender, EventArgs args)
+        void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;

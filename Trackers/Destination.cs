@@ -28,8 +28,8 @@ namespace SAssemblies.Trackers
                 Game.OnUpdate -= a;
             };
             Game.OnUpdate += a;
-            //Game.OnGameUpdate += Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
             Drawing.OnDraw += Drawing_OnDraw;
@@ -37,8 +37,8 @@ namespace SAssemblies.Trackers
 
         ~Destination()
         {
-            //Game.OnGameUpdate -= Game_OnGameUpdate;
-            ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
+            Game.OnUpdate -= Game_OnGameUpdate;
+            //ThreadHelper.GetInstance().Called -= Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Hero_OnProcessSpellCast;
             GameObject.OnCreate -= Obj_AI_Base_OnCreate;
             Drawing.OnDraw -= Drawing_OnDraw;
@@ -321,7 +321,7 @@ namespace SAssemblies.Trackers
             }
         }
 
-        private void Game_OnGameUpdate(object sender, EventArgs args)
+        private void Game_OnGameUpdate(EventArgs args)
         {
             if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
                 return;
