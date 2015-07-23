@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
+using LeagueSharp.SDK.Core.Extensions;
 using SharpDX;
 using SharpDX.Direct3D9;
+using Color = System.Drawing.Color;
 
 namespace SAssemblies.Timers
 {
@@ -173,6 +175,11 @@ namespace SAssemblies.Timers
                 if (GMap.Type == Utility.Map.MapType.HowlingAbyss)
                 {
                     MapType = Utility.Map.MapType.HowlingAbyss;
+                    RespawnTime = 40;
+                }
+                else if (GMap.Type == 0)
+                {
+                    MapType = 0;
                     RespawnTime = 40;
                 }
                 else if (GMap.Type == Utility.Map.MapType.CrystalScar)
