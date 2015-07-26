@@ -64,8 +64,7 @@ namespace SAssemblies.Timers
             JungleTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_JUNGLE_MAIN"), "SAssembliesTimersJungle"));
             JungleTimer.MenuItems.Add(
                 JungleTimer.Menu.AddItem(new MenuItem("SAssembliesTimersJungleSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            JungleTimer.MenuItems.Add(
-                JungleTimer.Menu.AddItem(new MenuItem("SAssembliesTimersJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            JungleTimer.MenuItems.Add(JungleTimer.CreateActiveMenuItem("SAssembliesTimersJungleActive", () => new Jungle()));
             return JungleTimer;
         }
 

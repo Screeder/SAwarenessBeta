@@ -51,8 +51,7 @@ namespace SAssemblies.Timers
             HealthTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_HEALTH_MAIN"), "SAssembliesTimersHealth"));
             HealthTimer.MenuItems.Add(
                 HealthTimer.Menu.AddItem(new MenuItem("SAssembliesTimersHealthSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            HealthTimer.MenuItems.Add(
-                HealthTimer.Menu.AddItem(new MenuItem("SAssembliesTimersHealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            HealthTimer.MenuItems.Add(HealthTimer.CreateActiveMenuItem("SAssembliesTimersHealthActive", () => new Health()));
             return HealthTimer;
         }
 

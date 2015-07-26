@@ -44,7 +44,7 @@ namespace SAssemblies.Miscs
             }
             if (!useExisitingMenu)
             {
-                Miscs.MenuItems.Add(Miscs.Menu.AddItem(new MenuItem("SAssembliesMiscsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Miscs.MenuItems.Add(Miscs.CreateActiveMenuItem("SAssembliesMiscsActive"));
             }
             return Miscs;
         }

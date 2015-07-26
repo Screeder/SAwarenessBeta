@@ -57,8 +57,7 @@ namespace SAssemblies.Trackers
                 UimTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimScale", Language.GetString("TRACKERS_UIM_SCALE")).SetValue(new Slider(100, 100, 0))));
             UimTracker.MenuItems.Add(
                 UimTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimShowSS", Language.GetString("TRACKERS_UIM_TIME")).SetValue(false)));
-            UimTracker.MenuItems.Add(
-                UimTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            UimTracker.MenuItems.Add(UimTracker.CreateActiveMenuItem("SAssembliesTrackersUimActive", () => new Uim()));
             return UimTracker;
         }
 
@@ -114,7 +113,7 @@ namespace SAssemblies.Trackers
                         recall = true;
                     }
                 }
-                return IsActive() && recall || champ.Timer.InvisibleTime != 0;
+                return IsActive() && (recall || champ.Timer.InvisibleTime != 0);
             };
             champ.Text.OutLined = true;
             champ.Text.Centered = true;

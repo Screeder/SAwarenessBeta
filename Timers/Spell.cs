@@ -51,8 +51,7 @@ namespace SAssemblies.Timers
             SpellTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SPELL_MAIN"), "SAssembliesTimersSpell"));
             SpellTimer.MenuItems.Add(
                 SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            SpellTimer.MenuItems.Add(
-                SpellTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSpellActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SpellTimer.MenuItems.Add(SpellTimer.CreateActiveMenuItem("SAssembliesTimersSpellActive", () => new Spell()));
             return SpellTimer;
         }
 

@@ -58,8 +58,7 @@ namespace SAssemblies.Trackers
                GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankPing", Language.GetString("TRACKERS_GANK_PING")).SetValue(false)));
             GankTracker.MenuItems.Add(
                 GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            GankTracker.MenuItems.Add(
-                GankTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            GankTracker.MenuItems.Add(GankTracker.CreateActiveMenuItem("SAssembliesTrackersGankActive", () => new Gank()));
             return GankTracker;
         }
 

@@ -46,8 +46,7 @@ namespace SAssemblies.Timers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             ExecuteTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_EXECUTE_MAIN"), "SAssembliesTimersExecute"));
-            ExecuteTimer.MenuItems.Add(
-                ExecuteTimer.Menu.AddItem(new MenuItem("SAssembliesTimersExecuteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            ExecuteTimer.MenuItems.Add(ExecuteTimer.CreateActiveMenuItem("SAssembliesTimersExecuteActive", () => new Execute()));
             return ExecuteTimer;
         }
 

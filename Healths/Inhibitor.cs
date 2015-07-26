@@ -48,8 +48,7 @@ namespace SAssemblies.Healths
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             InhibitorHealth.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_INHIBITOR_MAIN"), "SAssembliesHealthsInhibitor"));
-            InhibitorHealth.MenuItems.Add(
-                InhibitorHealth.Menu.AddItem(new MenuItem("SAssembliesHealthsInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            InhibitorHealth.MenuItems.Add(InhibitorHealth.CreateActiveMenuItem("SAssembliesHealthsInhibitorActive", () => new Inhibitor()));
             return InhibitorHealth;
         }
 

@@ -78,8 +78,7 @@ namespace SAssemblies.Wards
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             FowWardPlacementWard.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_FOWWARDPLACEMENT_MAIN"), "SAssembliesWardsFowWardPlacement"));
-            FowWardPlacementWard.MenuItems.Add(
-                FowWardPlacementWard.Menu.AddItem(new MenuItem("SAssembliesWardsFowWardPlacementActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            FowWardPlacementWard.MenuItems.Add(FowWardPlacementWard.CreateActiveMenuItem("SAssembliesWardsFowWardPlacementActive", () => new FowWardPlacement()));
             return FowWardPlacementWard;
         }
 		

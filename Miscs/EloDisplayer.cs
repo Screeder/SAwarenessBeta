@@ -126,8 +126,7 @@ namespace SAssemblies.Miscs
             EloDisplayerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ELODISPLAYER_MAIN"), "SAssembliesMiscsEloDisplayer"));
             EloDisplayerMisc.MenuItems.Add(
                 EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesMiscsEloDisplayerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(9, KeyBindType.Toggle))));
-            EloDisplayerMisc.MenuItems.Add(
-                EloDisplayerMisc.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesMiscsEloDisplayerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            EloDisplayerMisc.MenuItems.Add(EloDisplayerMisc.CreateActiveMenuItem("SAssembliesMiscsEloDisplayerActive", () => new EloDisplayer()));
             return EloDisplayerMisc;
         }
 

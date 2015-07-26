@@ -132,6 +132,80 @@ namespace SAssemblies
         //public static MenuItemSettings ActivatorAutoQss = new MenuItemSettings(typeof(AutoQSS));
         //public static MenuItemSettings ActivatorAutoQssConfig = new MenuItemSettings(typeof(AutoQSS));
 
+        //public MainMenu()
+        //{
+        //    MenuEntries =
+        //    new Dictionary<MenuItemSettings, Func<dynamic>>
+        //    {
+        //        { UiTracker, () => new Ui() },
+        //        { UimTracker, () => new Uim() },
+        //        { SsCallerTracker, () => new SsCaller() },
+        //        { WaypointTracker, () => new Waypoint() },
+        //        { CloneTracker, () => new Clone() },
+        //        { GankTracker, () => new Gank() },
+        //        { DestinationTracker, () => new Destination() },
+        //        { KillableTracker, () => new Killable() },
+        //        { JunglerTracker, () => new Jungler() },
+
+        //        { JungleTimer, () => new Jungle() },
+        //        { RelictTimer, () => new Relic() },
+        //        { HealthTimer, () => new Health() },
+        //        { InhibitorTimer, () => new Inhibitor() },
+        //        { SummonerTimer, () => new Summoner() },
+        //        { ImmuneTimer, () => new Immune() },
+        //        { AltarTimer, () => new Altar() },
+        //        { SpellTimer, () => new Spell() },
+
+        //        { VisionDetector, () => new Vision() },
+        //        { RecallDetector, () => new Recall() },
+        //        { GankDetector, () => new Detectors.Gank() },
+        //        { DisconnectDetector, () => new DisReconnect() },
+        //        { FoWSpellEnemyDetector, () => new FoWSpellEnemy() },
+
+        //        { TurretHealth, () => new Turret() },
+        //        { InhibitorHealth, () => new Healths.Inhibitor() },
+
+        //        { TurretRange, () => new Ranges.Turret() },
+        //        { ShopRange, () => new Shop() },
+        //        { VisionRange, () => new Ranges.Vision() },
+        //        { ExperienceRange, () => new Experience() },
+        //        { AttackRange, () => new Attack() },
+        //        { SpellQRange, () => new SpellQ() },
+        //        { SpellWRange, () => new SpellW() },
+        //        { SpellERange, () => new SpellE() },
+        //        { SpellRRange, () => new SpellR() },
+
+        //        { WardCorrector, () => new WardCorrector() },
+        //        { BushRevealer, () => new BushRevealer() },
+        //        { InvisibleRevealer, () => new InvisibleRevealer() },
+        //        { FowWardPlacement, () => new FowWardPlacement() },
+
+        //        { AutoLevler, () => new AutoLevler() },
+        //        { SkinChanger, () => new SkinChanger() },
+        //        { SafeMovement, () => new SafeMovement() },
+        //        { MoveToMouse, () => new MoveToMouse() },
+        //        { SurrenderVote, () => new SurrenderVote() },
+        //        { AutoLatern, () => new AutoLatern() },
+        //        { AutoJump, () => new AutoJump() },
+        //        { TurnAround, () => new TurnAround() },
+        //        { MinionBars, () => new MinionBars() },
+        //        { MinionLocation, () => new MinionLocation() },
+        //        { FlashJuke, () => new FlashJuke() },
+        //        { EasyRangedJungle, () => new EasyRangedJungle() },
+        //        { RealTime, () => new RealTime() },
+        //        { ShowPing, () => new ShowPing() },
+        //        { PingerName, () => new PingerName() },
+        //        { AntiVisualScreenStealth, () => new AntiVisualScreenStealth() },
+        //        { EloDisplayer, () => new EloDisplayer() },
+        //        { SmartPingImprove, () => new SmartPingImprove() },
+        //        { WallJump, () => new WallJump() },
+        //        { AntiNexusTurret, () => new AntiNexusTurret() },
+        //        { AntiLatern, () => new AntiLatern() },   
+        //        { AutoBuy, () => new AutoBuy() },
+        //        { SafeFlash, () => new SafeFlash() },
+        //    };
+        //}
+
         public MainMenu()
         {
             MenuEntries =
@@ -155,13 +229,13 @@ namespace SAssemblies
                 { ImmuneTimer, () => new Immune() },
                 { AltarTimer, () => new Altar() },
                 { SpellTimer, () => new Spell() },
-                
+
                 { VisionDetector, () => new Vision() },
                 { RecallDetector, () => new Recall() },
                 { GankDetector, () => new Detectors.Gank() },
                 { DisconnectDetector, () => new DisReconnect() },
                 { FoWSpellEnemyDetector, () => new FoWSpellEnemy() },
-                
+
                 { TurretHealth, () => new Turret() },
                 { InhibitorHealth, () => new Healths.Inhibitor() },
 
@@ -200,7 +274,7 @@ namespace SAssemblies
                 { SmartPingImprove, () => new SmartPingImprove() },
                 { WallJump, () => new WallJump() },
                 { AntiNexusTurret, () => new AntiNexusTurret() },
-                { AntiLatern, () => new AntiLatern() },   
+                { AntiLatern, () => new AntiLatern() },
                 { AutoBuy, () => new AutoBuy() },
                 { SafeFlash, () => new SafeFlash() },
             };
@@ -215,6 +289,14 @@ namespace SAssemblies
         {
             return MenuEntries;
         }
+
+        //public void UpdateDirEntry(ref MenuItemSettings oldMenuItem, MenuItemSettings newMenuItem)
+        //{
+        //    Func<dynamic> save = MenuEntries[oldMenuItem];
+        //    MenuEntries.Remove(oldMenuItem);
+        //    MenuEntries.Add(newMenuItem, save);
+        //    oldMenuItem = newMenuItem;
+        //}
 
         public void UpdateDirEntry(ref MenuItemSettings oldMenuItem, MenuItemSettings newMenuItem)
         {
@@ -1450,8 +1532,8 @@ namespace SAssemblies
             CreateMenu();
             //Console.Clear();
             Common.ShowNotification("SAwareness loaded!", Color.LawnGreen, 5000);
-
-            new Thread(GameOnOnGameUpdate).Start();
+            //PacketCatcher.Init();
+            //new Thread(GameOnOnGameUpdate).Start();
         }
 
         private static bool threadActive = true;

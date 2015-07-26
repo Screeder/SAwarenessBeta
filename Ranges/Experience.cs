@@ -46,8 +46,7 @@ namespace SAssemblies.Ranges
                 ExperienceRange.Menu.AddItem(new MenuItem("SAssembliesRangesExperienceColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
             ExperienceRange.MenuItems.Add(
                 ExperienceRange.Menu.AddItem(new MenuItem("SAssembliesRangesExperienceColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
-            ExperienceRange.MenuItems.Add(
-                ExperienceRange.Menu.AddItem(new MenuItem("SAssembliesRangesExperienceActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            ExperienceRange.MenuItems.Add(ExperienceRange.CreateActiveMenuItem("SAssembliesRangesExperienceActive", () => new Experience()));
             return ExperienceRange;
         }
 

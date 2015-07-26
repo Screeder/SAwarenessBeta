@@ -39,6 +39,7 @@ namespace SAssemblies.Miscs
                 SafeMovementMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSafeMovementBlockIntervall", Language.GetString("MISCS_SAFEMOVEMENT_BLOCKINTERVAL")).SetValue(new Slider(20, 1000, 0))));
             SafeMovementMisc.MenuItems.Add(
                 SafeMovementMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSafeMovementActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SafeMovementMisc.MenuItems.Add(SafeMovementMisc.CreateActiveMenuItem("SAssembliesMiscsSafeMovementActive", () => new SafeMovement()));
             return SafeMovementMisc;
         }
 

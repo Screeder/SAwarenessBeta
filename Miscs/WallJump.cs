@@ -356,8 +356,7 @@ namespace SAssemblies.Miscs
             WallJumpMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_WALLJUMP_MAIN"), "SAssembliesMiscsWallJump"));
             WallJumpMisc.MenuItems.Add(
                 WallJumpMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWallJumpKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
-            WallJumpMisc.MenuItems.Add(
-                WallJumpMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWallJumpActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            WallJumpMisc.MenuItems.Add(WallJumpMisc.CreateActiveMenuItem("SAssembliesMiscsWallJumpActive", () => new WallJump()));
             return WallJumpMisc;
         }
 

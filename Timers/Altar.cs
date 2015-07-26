@@ -51,8 +51,7 @@ namespace SAssemblies.Timers
             AltarTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_ALTAR_MAIN"), "SAssembliesTimersAltar"));
             AltarTimer.MenuItems.Add(
                 AltarTimer.Menu.AddItem(new MenuItem("SAssembliesTimersAltarSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            AltarTimer.MenuItems.Add(
-                AltarTimer.Menu.AddItem(new MenuItem("SAssembliesTimersAltarActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AltarTimer.MenuItems.Add(AltarTimer.CreateActiveMenuItem("SAssembliesTimersAltarActive", () => new Altar()));
             return AltarTimer;
         }
 

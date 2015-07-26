@@ -37,8 +37,7 @@ namespace SAssemblies.Miscs
             AutoLaternMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOLATERN_MAIN"), "SAssembliesMiscsAutoLatern"));
             AutoLaternMisc.MenuItems.Add(
                 AutoLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLaternKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
-            AutoLaternMisc.MenuItems.Add(
-                AutoLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLaternActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AutoLaternMisc.MenuItems.Add(AutoLaternMisc.CreateActiveMenuItem("SAssembliesMiscsAutoLaternActive", () => new AutoLatern()));
             return AutoLaternMisc;
         }
 

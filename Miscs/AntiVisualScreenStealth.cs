@@ -13,8 +13,6 @@ namespace SAssemblies.Miscs
     {
         public static Menu.MenuItemSettings AntiVisualScreenStealthMisc = new Menu.MenuItemSettings(typeof(AntiVisualScreenStealth));
 
-        private static int Header = 0xE1;
-
         public AntiVisualScreenStealth()
         {
             bool available = false;
@@ -86,8 +84,7 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             AntiVisualScreenStealthMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ANTIVISUALSCREENSTEALTH_MAIN"), "SAssembliesMiscsAntiVisualScreenStealth"));
-            AntiVisualScreenStealthMisc.MenuItems.Add(
-                AntiVisualScreenStealthMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiVisualScreenStealthActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AntiVisualScreenStealthMisc.MenuItems.Add(AntiVisualScreenStealthMisc.CreateActiveMenuItem("SAssembliesMiscsAntiVisualScreenStealthActive", () => new AntiVisualScreenStealth()));
             return AntiVisualScreenStealthMisc;
         }
 
@@ -99,7 +96,7 @@ namespace SAssemblies.Miscs
             var reader = new BinaryReader(new MemoryStream(args.PacketData));
 
             byte packetId = reader.ReadByte();
-            if (packetId == Header)
+            if (packetId == 82 && args.PacketData.Length == 22)
             {
                 //reader.ReadInt32();
                 //byte visualStealthActive = reader.ReadByte();

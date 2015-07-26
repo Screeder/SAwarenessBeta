@@ -71,8 +71,7 @@ namespace SAssemblies.Miscs
             AutoJumpMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_AUTOJUMP_MAIN"), "SAssembliesMiscsAutoJump"));
             AutoJumpMisc.MenuItems.Add(
                 AutoJumpMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoJumpKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(85, KeyBindType.Press))));
-            AutoJumpMisc.MenuItems.Add(
-                AutoJumpMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoJumpActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AutoJumpMisc.MenuItems.Add(AutoJumpMisc.CreateActiveMenuItem("SAssembliesMiscsAutoJumpActive", () => new AutoJump()));
             return AutoJumpMisc;
         }
 

@@ -46,8 +46,7 @@ namespace SAssemblies.Ranges
                 AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
             AttackRange.MenuItems.Add(
                 AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
-            AttackRange.MenuItems.Add(
-                AttackRange.Menu.AddItem(new MenuItem("SAssembliesRangesAttackActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AttackRange.MenuItems.Add(AttackRange.CreateActiveMenuItem("SAssembliesRangesAttackActive", () => new Attack()));
             return AttackRange;
         }
 

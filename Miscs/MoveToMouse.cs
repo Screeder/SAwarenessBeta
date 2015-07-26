@@ -34,10 +34,10 @@ namespace SAssemblies.Miscs
             MoveToMouseMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MOVETOMOUSE_MAIN"), "SAssembliesMiscsMoveToMouse"));
             MoveToMouseMisc.MenuItems.Add(
                 MoveToMouseMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMoveToMouseKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(90, KeyBindType.Press))));
-            MoveToMouseMisc.MenuItems.Add(
-                MoveToMouseMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMoveToMouseActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            MoveToMouseMisc.MenuItems.Add(MoveToMouseMisc.CreateActiveMenuItem("SAssembliesMiscsMoveToMouseActive", () => new MoveToMouse()));
             return MoveToMouseMisc;
         }
+
 
         private void Game_OnGameUpdate(EventArgs args)
         {

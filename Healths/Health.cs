@@ -48,7 +48,7 @@ namespace SAssemblies.Healths
                 }))));
             if (!useExisitingMenu)
             {
-                Healths.MenuItems.Add(Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Healths.MenuItems.Add(Healths.CreateActiveMenuItem("SAssembliesHealthsActive"));
             }
             return Healths;
         }

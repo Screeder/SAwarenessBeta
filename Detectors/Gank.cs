@@ -78,8 +78,7 @@ namespace SAssemblies.Detectors
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankShowJungler", Language.GetString("DETECTORS_GANK_SHOWJUNGLER")).SetValue(false)));
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            GankDetector.MenuItems.Add(
-                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            GankDetector.MenuItems.Add(GankDetector.CreateActiveMenuItem("SAssembliesDetectorsGankActive", () => new Gank()));
             return GankDetector;
         }
 

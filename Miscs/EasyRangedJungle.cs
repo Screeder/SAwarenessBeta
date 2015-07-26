@@ -47,8 +47,7 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             EasyRangedJungleMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_EASYRANGEDJUNGLE_MAIN"), "SAssembliesMiscsEasyRangedJungle"));
-            EasyRangedJungleMisc.MenuItems.Add(
-                EasyRangedJungleMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsEasyRangedJungleActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            EasyRangedJungleMisc.MenuItems.Add(EasyRangedJungleMisc.CreateActiveMenuItem("SAssembliesMiscsEasyRangedJungleActive", () => new EasyRangedJungle()));
             return EasyRangedJungleMisc;
         }
 

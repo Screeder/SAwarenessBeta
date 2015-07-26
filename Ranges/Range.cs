@@ -42,7 +42,7 @@ namespace SAssemblies.Ranges
             }
             if (!useExisitingMenu)
             {
-                Ranges.MenuItems.Add(Ranges.Menu.AddItem(new MenuItem("SAssembliesRangesActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Ranges.MenuItems.Add(Ranges.CreateActiveMenuItem("SAssembliesRangesActive"));
             }
             return Ranges;
         }

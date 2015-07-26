@@ -65,8 +65,7 @@ namespace SAssemblies.Detectors
                 RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             RecallDetector.MenuItems.Add(
                 RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            RecallDetector.MenuItems.Add(
-                RecallDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsRecallActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            RecallDetector.MenuItems.Add(RecallDetector.CreateActiveMenuItem("SAssembliesDetectorsRecallActive", () => new Recall()));
             return RecallDetector;
         }
 

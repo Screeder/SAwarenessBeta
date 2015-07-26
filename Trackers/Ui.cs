@@ -23,8 +23,8 @@ namespace SAssemblies.Trackers
     {
         public static Menu.MenuItemSettings UiTracker = new Menu.MenuItemSettings(typeof(Ui));
 
-        public static readonly Dictionary<Obj_AI_Hero, ChampInfos> _allies = new Dictionary<Obj_AI_Hero, ChampInfos>();
-        public static readonly Dictionary<Obj_AI_Hero, ChampInfos> _enemies = new Dictionary<Obj_AI_Hero, ChampInfos>();
+        public readonly Dictionary<Obj_AI_Hero, ChampInfos> _allies = new Dictionary<Obj_AI_Hero, ChampInfos>();
+        public readonly Dictionary<Obj_AI_Hero, ChampInfos> _enemies = new Dictionary<Obj_AI_Hero, ChampInfos>();
         private static Size _backBarSize = new Size(96, 10);
         private static Size _champSize = new Size(64, 64);
         private static Size _healthManaBarSize = new Size(96, 5);
@@ -213,8 +213,7 @@ namespace SAssemblies.Trackers
              //Menu.UiTracker.MenuItems.Add(Menu.UiTracker.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesUITrackerCameraMoveActive", "Camera move active").SetValue(false)));
              UiTracker.MenuItems.Add(
                  UiTracker.Menu.AddItem(new MenuItem("SAssembliesUITrackerPingActive", Language.GetString("TRACKERS_UI_PING")).SetValue(false)));
-             UiTracker.MenuItems.Add(
-                 UiTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUiActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            UiTracker.MenuItems.Add(UiTracker.CreateActiveMenuItem("SAssembliesTrackersUiActive", () => new Ui()));
              return UiTracker;
          }
 

@@ -48,8 +48,7 @@ namespace SAssemblies.Ranges
                 TurretRange.Menu.AddItem(new MenuItem("SAssembliesRangesTurretColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.DarkRed)));
             TurretRange.MenuItems.Add(
                 TurretRange.Menu.AddItem(new MenuItem("SAssembliesRangesTurretRange", Language.GetString("RANGES_TURRET_RANGE")).SetValue(new Slider(2000, 10000, 0))));
-            TurretRange.MenuItems.Add(
-                TurretRange.Menu.AddItem(new MenuItem("SAssembliesRangesTurretActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            TurretRange.MenuItems.Add(TurretRange.CreateActiveMenuItem("SAssembliesRangesTurretActive", () => new Turret()));
             return TurretRange;
         }
 

@@ -74,8 +74,7 @@ namespace SAssemblies.Ranges
                 VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.Indigo)));
             VisionRange.MenuItems.Add(
                 VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.Indigo)));
-            VisionRange.MenuItems.Add(
-                VisionRange.Menu.AddItem(new MenuItem("SAssembliesRangesVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            VisionRange.MenuItems.Add(VisionRange.CreateActiveMenuItem("SAssembliesRangesVisionActive", () => new Vision()));
             return VisionRange;
         }
 

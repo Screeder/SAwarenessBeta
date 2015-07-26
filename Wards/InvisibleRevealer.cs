@@ -69,8 +69,7 @@ namespace SAssemblies.Wards
                 }))));
             InvisibleRevealerWard.MenuItems.Add(
                 InvisibleRevealerWard.Menu.AddItem(new MenuItem("SAssembliesWardsInvisibleRevealerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(32, KeyBindType.Press))));
-            InvisibleRevealerWard.MenuItems.Add(
-                InvisibleRevealerWard.Menu.AddItem(new MenuItem("SAssembliesWardsInvisibleRevealerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            InvisibleRevealerWard.MenuItems.Add(InvisibleRevealerWard.CreateActiveMenuItem("SAssembliesWardsInvisibleRevealerActive", () => new InvisibleRevealer()));
             return InvisibleRevealerWard;
         }
 

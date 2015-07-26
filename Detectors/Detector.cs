@@ -42,7 +42,7 @@ namespace SAssemblies.Detectors
             }
             if (!useExisitingMenu)
             {
-                Detectors.MenuItems.Add(Detectors.Menu.AddItem(new MenuItem("SAssembliesDetectorsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Detectors.MenuItems.Add(Detectors.CreateActiveMenuItem("SAssembliesDetectorsActive"));
             }
             return Detectors;
         }

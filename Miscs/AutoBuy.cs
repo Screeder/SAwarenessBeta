@@ -110,8 +110,7 @@ namespace SAssemblies.Miscs
             AutoBuyMisc.MenuItems.Add(
                 AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyDeleteBuild", Language.GetString("MISCS_AUTOBUY_DELETE_BUILD")).SetValue(false)
                         .DontSave()));
-            AutoBuyMisc.MenuItems.Add(
-                AutoBuyMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoBuyActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false).DontSave()));
+            AutoBuyMisc.MenuItems.Add(AutoBuyMisc.CreateActiveMenuItem("SAssembliesMiscsAutoBuyActive", () => new AutoBuy()));
             return AutoBuyMisc;
         }
 

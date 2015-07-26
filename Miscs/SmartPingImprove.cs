@@ -46,6 +46,7 @@ namespace SAssemblies.Miscs
             SmartPingImproveMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SMARTPINGIMPROVE_MAIN"), "SAssembliesMiscsSmartPingImprove"));
             SmartPingImproveMisc.MenuItems.Add(
                 SmartPingImproveMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSmartPingImproveActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SmartPingImproveMisc.MenuItems.Add(SmartPingImproveMisc.CreateActiveMenuItem("SAssembliesMiscsSmartPingImproveActive", () => new SmartPingImprove()));
             return SmartPingImproveMisc;
         }
 

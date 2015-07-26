@@ -77,8 +77,7 @@ namespace SAssemblies.Detectors
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             FoWSpellEnemyDetector.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("DETECTORS_FOWSPELLENEMY_MAIN"), "SAssembliesDetectorsFoWSpellEnemy"));
-            FoWSpellEnemyDetector.MenuItems.Add(
-                FoWSpellEnemyDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsFoWSpellEnemyActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            FoWSpellEnemyDetector.MenuItems.Add(FoWSpellEnemyDetector.CreateActiveMenuItem("SAssembliesDetectorsFoWSpellEnemyActive", () => new FoWSpellEnemy()));
             return FoWSpellEnemyDetector;
         }
     }

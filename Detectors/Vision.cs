@@ -104,8 +104,7 @@ namespace SAssemblies.Detectors
                 VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionDrawVisionRange", Language.GetString("DETECTORS_VISION_VISIONRANGE")).SetValue(false)));
             VisionDetector.MenuItems.Add(
                 VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionDrawRealVisionRange", Language.GetString("DETECTORS_VISION_REALRANGE")).SetValue(false)));
-            VisionDetector.MenuItems.Add(
-                VisionDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsVisionActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            VisionDetector.MenuItems.Add(VisionDetector.CreateActiveMenuItem("SAssembliesDetectorsVisionActive", () => new Vision()));
             return VisionDetector;
         }
 

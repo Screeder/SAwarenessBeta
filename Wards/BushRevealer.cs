@@ -53,8 +53,7 @@ namespace SAssemblies.Wards
             BushRevealerWard.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_BUSHREVEALER_MAIN"), "SAssembliesWardsBushRevealer"));
             BushRevealerWard.MenuItems.Add(
                 BushRevealerWard.Menu.AddItem(new MenuItem("SAssembliesWardsBushRevealerKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(32, KeyBindType.Press))));
-            BushRevealerWard.MenuItems.Add(
-                BushRevealerWard.Menu.AddItem(new MenuItem("SAssembliesWardsBushRevealerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            BushRevealerWard.MenuItems.Add(BushRevealerWard.CreateActiveMenuItem("SAssembliesWardsBushRevealerActive", () => new BushRevealer()));
             BushRevealerWard.MenuItems.Add(
                 BushRevealerWard.Menu.AddItem(new MenuItem("By Beaving & Blm95", "By Beaving & Blm95")));
             return BushRevealerWard;

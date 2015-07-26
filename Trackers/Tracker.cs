@@ -40,9 +40,9 @@ namespace SAssemblies.Trackers
             {
                 Trackers.Menu = menu;
             }
-            if (!useExisitingMenu)
+            if (!useExisitingMenu) 
             {
-                Trackers.MenuItems.Add(Trackers.Menu.AddItem(new MenuItem("SAssembliesTrackerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Trackers.MenuItems.Add(Trackers.CreateActiveMenuItem("SAssembliesTrackerActive"));
             }
             return Trackers;
         }

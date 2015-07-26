@@ -39,8 +39,7 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             AntiNexusTurretMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_ANTINEXUSTURRET_MAIN"), "SAssembliesMiscsAntiNexusTurret"));
-            AntiNexusTurretMisc.MenuItems.Add(
-                AntiNexusTurretMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiNexusTurretActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AntiNexusTurretMisc.MenuItems.Add(AntiNexusTurretMisc.CreateActiveMenuItem("SAssembliesMiscsAntiNexusTurretActive", () => new AntiNexusTurret()));
             return AntiNexusTurretMisc;
         }
 

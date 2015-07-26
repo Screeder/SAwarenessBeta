@@ -77,8 +77,7 @@ namespace SAssemblies.Miscs
                 AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternMove", Language.GetString("MISCS_ANTILATERN_MOVE")).SetValue(false)));
             AntiLaternMisc.MenuItems.Add(
                 AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternKey", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(84, KeyBindType.Press))));
-            AntiLaternMisc.MenuItems.Add(
-                AntiLaternMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAntiLaternActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AntiLaternMisc.MenuItems.Add(AntiLaternMisc.CreateActiveMenuItem("SAssembliesMiscsAntiLaternActive", () => new AntiLatern()));
             return AntiLaternMisc;
         }
 

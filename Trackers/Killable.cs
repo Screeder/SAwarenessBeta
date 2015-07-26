@@ -50,8 +50,7 @@ namespace SAssemblies.Trackers
             KillableTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_KILLABLE_MAIN"), "SAssembliesTrackersKillable"));
             KillableTracker.MenuItems.Add(
                 KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            KillableTracker.MenuItems.Add(
-                KillableTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersKillableActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            KillableTracker.MenuItems.Add(KillableTracker.CreateActiveMenuItem("SAssembliesTrackersKillableActive", () => new Killable()));
             return KillableTracker;
         }
 

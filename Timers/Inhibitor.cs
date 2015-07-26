@@ -50,8 +50,7 @@ namespace SAssemblies.Timers
             InhibitorTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_INHIBITOR_MAIN"), "SAssembliesTimersInhibitor"));
             InhibitorTimer.MenuItems.Add(
                 InhibitorTimer.Menu.AddItem(new MenuItem("SAssembliesTimersInhibitorSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            InhibitorTimer.MenuItems.Add(
-                InhibitorTimer.Menu.AddItem(new MenuItem("SAssembliesTimersInhibitorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            InhibitorTimer.MenuItems.Add(InhibitorTimer.CreateActiveMenuItem("SAssembliesTimersInhibitorActive", () => new Inhibitor()));
             return InhibitorTimer;
         }
 

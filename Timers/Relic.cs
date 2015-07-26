@@ -52,8 +52,7 @@ namespace SAssemblies.Timers
             RelicTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_RELIC_MAIN"), "SAssembliesTimersRelic"));
             RelicTimer.MenuItems.Add(
                 RelicTimer.Menu.AddItem(new MenuItem("SAssembliesTimersRelicSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            RelicTimer.MenuItems.Add(
-                RelicTimer.Menu.AddItem(new MenuItem("SAssembliesTimersRelicActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            RelicTimer.MenuItems.Add(RelicTimer.CreateActiveMenuItem("SAssembliesTimersRelicActive", () => new Relic()));
             return RelicTimer;
         }
 

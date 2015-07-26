@@ -91,8 +91,7 @@ namespace SAssemblies.Trackers
                 SsCallerTracker.MenuItems.Add(
                     SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerIgnore" + hero.ChampionName, Language.GetString("TRACKERS_SSCALLER_IGNORE") + hero.ChampionName).SetValue(false).DontSave()));
             }
-            SsCallerTracker.MenuItems.Add(
-                SsCallerTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersSsCallerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SsCallerTracker.MenuItems.Add(SsCallerTracker.CreateActiveMenuItem("SAssembliesTrackersSsCallerActive", () => new SsCaller()));
             return SsCallerTracker;
         }
 

@@ -38,6 +38,7 @@ namespace SAssemblies.Miscs
             MinionLocationMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MINIONLOCATION_MAIN"), "SAssembliesMiscsMinionLocation"));
             MinionLocationMisc.MenuItems.Add(
                 MinionLocationMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMinionLocationActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            MinionLocationMisc.MenuItems.Add(MinionLocationMisc.CreateActiveMenuItem("SAssembliesMiscsMinionLocationActive", () => new MinionLocation()));
             return MinionLocationMisc;
         }
 

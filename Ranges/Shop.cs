@@ -46,8 +46,7 @@ namespace SAssemblies.Ranges
                 ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.MidnightBlue)));
             ShopRange.MenuItems.Add(
                 ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.MidnightBlue)));
-            ShopRange.MenuItems.Add(
-                ShopRange.Menu.AddItem(new MenuItem("SAssembliesRangesShopActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            ShopRange.MenuItems.Add(ShopRange.CreateActiveMenuItem("SAssembliesRangesShopActive", () => new Shop()));
             return ShopRange;
         }
 

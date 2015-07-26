@@ -35,8 +35,7 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             SafeFlashMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SAFEFLASH_MAIN"), "SAssembliesMiscsSafeFlash"));
-            SafeFlashMisc.MenuItems.Add(
-                SafeFlashMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSafeFlashActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SafeFlashMisc.MenuItems.Add(SafeFlashMisc.CreateActiveMenuItem("SAssembliesMiscsSafeFlashActive", () => new SafeFlash()));
             return SafeFlashMisc;
         }
 

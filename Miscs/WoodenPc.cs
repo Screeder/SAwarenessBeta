@@ -76,8 +76,7 @@ namespace SAssemblies.Miscs
         {
             Language.SetLanguage();
             WoodenPcMisc.Menu = new LeagueSharp.Common.Menu("SAwarenessWoodenPc", "SAwarenessWoodenPc", true);
-            WoodenPcMisc.MenuItems.Add(
-                WoodenPcMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWoodenPcActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            WoodenPcMisc.MenuItems.Add(WoodenPcMisc.CreateActiveMenuItem("SAssembliesMiscsWoodenPcActive"));
             WoodenPcMisc.Menu.AddItem(new MenuItem("By Screeder", "By Screeder V" + Assembly.GetExecutingAssembly().GetName().Version));
             WoodenPcMisc.Menu.AddToMainMenu();
             return WoodenPcMisc;

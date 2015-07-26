@@ -57,8 +57,7 @@ namespace SAssemblies.Trackers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             DestinationTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_DESTINATION_MAIN"), "SAssembliesTrackersDestination"));
-            DestinationTracker.MenuItems.Add(
-                DestinationTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersDestinationActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            DestinationTracker.MenuItems.Add(DestinationTracker.CreateActiveMenuItem("SAssembliesTrackersDestinationActive", () => new Destination()));
             return DestinationTracker;
         }
 

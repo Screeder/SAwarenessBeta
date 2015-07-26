@@ -37,8 +37,7 @@ namespace SAssemblies.Trackers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             WaypointTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_WAYPOINT_MAIN"), "SAssembliesTrackersWaypoint"));
-            WaypointTracker.MenuItems.Add(
-                WaypointTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersWaypointActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            WaypointTracker.MenuItems.Add(WaypointTracker.CreateActiveMenuItem("SAssembliesTrackersWaypointActive", () => new Waypoint()));
             return WaypointTracker;
         }
 

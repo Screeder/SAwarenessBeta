@@ -43,8 +43,7 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             TurnAroundMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_TURNAROUND_MAIN"), "SAssembliesMiscsTurnAround"));
-            TurnAroundMisc.MenuItems.Add(
-                TurnAroundMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsTurnAroundActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            TurnAroundMisc.MenuItems.Add(TurnAroundMisc.CreateActiveMenuItem("SAssembliesMiscsTurnAroundActive", () => new TurnAround()));
             return TurnAroundMisc;
         }
 

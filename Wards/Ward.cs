@@ -44,9 +44,9 @@ namespace SAssemblies.Wards
             {
                 Wards.Menu = menu;
             }
-            if (!useExisitingMenu)
+            if (!useExisitingMenu) 
             {
-                Wards.MenuItems.Add(Wards.Menu.AddItem(new MenuItem("SAssembliesWardsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Wards.MenuItems.Add(Wards.CreateActiveMenuItem("SAssembliesWardsActive"));
             }
             return Wards;
         }

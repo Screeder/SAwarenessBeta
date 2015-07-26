@@ -132,8 +132,7 @@ namespace SAssemblies.Miscs
                     Language.GetString("MISCS_AUTOLEVLER_MODE_SEQUENCE"), 
                     Language.GetString("MISCS_AUTOLEVLER_MODE_R")
                 }))));
-            AutoLevlerMisc.MenuItems.Add(
-                AutoLevlerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsAutoLevlerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AutoLevlerMisc.MenuItems.Add(AutoLevlerMisc.CreateActiveMenuItem("SAssembliesMiscsAutoLevlerActive", () => new AutoLevler()));
             return AutoLevlerMisc;
         }
 

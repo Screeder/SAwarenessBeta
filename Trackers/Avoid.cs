@@ -117,8 +117,7 @@ namespace SAwareness.Trackers
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             AvoidTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_AVOID_MAIN"), "SAssembliesTrackersAvoid"));
-            AvoidTracker.MenuItems.Add(
-                AvoidTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersAvoidActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            AvoidTracker.MenuItems.Add(AvoidTracker.CreateActiveMenuItem("SAssembliesTrackersAvoidActive", () => new Avoid()));
             return AvoidTracker;
         }
 

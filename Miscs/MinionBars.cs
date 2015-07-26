@@ -36,8 +36,7 @@ namespace SAssemblies.Miscs
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             MinionBarsMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_MINIONBARS_MAIN"), "SAssembliesMiscsMinionBars"));
-            MinionBarsMisc.MenuItems.Add(
-                MinionBarsMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsMinionBarsActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            MinionBarsMisc.MenuItems.Add(MinionBarsMisc.CreateActiveMenuItem("SAssembliesMiscsMinionBarsActive", () => new MinionBars()));
             return MinionBarsMisc;
         }
 

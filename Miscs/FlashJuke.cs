@@ -110,8 +110,7 @@ namespace SAssemblies.Miscs
                 FlashJukeMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsFlashJukeKeyActive", Language.GetString("GLOBAL_KEY")).SetValue(new KeyBind(90, KeyBindType.Press))));
             FlashJukeMisc.MenuItems.Add(
                 FlashJukeMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsFlashJukeRecall", Language.GetString("MISCS_FLASHJUKE_RECALL")).SetValue(false)));
-            FlashJukeMisc.MenuItems.Add(
-                FlashJukeMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsFlashJukeActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            FlashJukeMisc.MenuItems.Add(FlashJukeMisc.CreateActiveMenuItem("SAssembliesMiscsFlashJukeActive", () => new FlashJuke()));
             return FlashJukeMisc;
         }
 

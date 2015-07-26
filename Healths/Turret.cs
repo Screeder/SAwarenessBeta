@@ -48,8 +48,7 @@ namespace SAssemblies.Healths
         public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
         {
             TurretHealth.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("HEALTHS_TURRET_MAIN"), "SAssembliesHealthsTurret"));
-            TurretHealth.MenuItems.Add(
-                TurretHealth.Menu.AddItem(new MenuItem("SAssembliesHealthsTurretActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            TurretHealth.MenuItems.Add(TurretHealth.CreateActiveMenuItem("SAssembliesHealthsTurretActive", () => new Turret()));
             return TurretHealth;
         }
 

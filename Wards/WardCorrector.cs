@@ -138,8 +138,7 @@ namespace SAssemblies.Wards
             WardCorrectorWard.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("WARDS_WARDCORRECTOR_MAIN"), "SAssembliesWardsWardCorrector"));
             WardCorrectorWard.MenuItems.Add(
                 WardCorrectorWard.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorKey", Language.GetString("WARDS_WARDCORRECTOR_TRINKET")).SetValue(new KeyBind(52, KeyBindType.Press))));
-            WardCorrectorWard.MenuItems.Add(
-                WardCorrectorWard.Menu.AddItem(new MenuItem("SAssembliesWardsWardCorrectorActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            WardCorrectorWard.MenuItems.Add(WardCorrectorWard.CreateActiveMenuItem("SAssembliesWardsWardCorrectorActive", () => new WardCorrector()));
             return WardCorrectorWard;
         }
 

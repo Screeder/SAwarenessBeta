@@ -49,8 +49,7 @@ namespace SAssemblies.Timers
             SummonerTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_SUMMONER_MAIN"), "SAssembliesTimersSummoner"));
             SummonerTimer.MenuItems.Add(
                 SummonerTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSummonerSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            SummonerTimer.MenuItems.Add(
-                SummonerTimer.Menu.AddItem(new MenuItem("SAssembliesTimersSummonerActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SummonerTimer.MenuItems.Add(SummonerTimer.CreateActiveMenuItem("SAssembliesTimersSummonerActive", () => new Summoner()));
             return SummonerTimer;
         }
 

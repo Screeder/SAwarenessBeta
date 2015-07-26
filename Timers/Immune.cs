@@ -51,8 +51,7 @@ namespace SAssemblies.Timers
             ImmuneTimer.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TIMERS_IMMUNE_MAIN"), "SAssembliesTimersImmune"));
             ImmuneTimer.MenuItems.Add(
                 ImmuneTimer.Menu.AddItem(new MenuItem("SAssembliesTimersImmuneSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            ImmuneTimer.MenuItems.Add(
-                ImmuneTimer.Menu.AddItem(new MenuItem("SAssembliesTimersImmuneActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            ImmuneTimer.MenuItems.Add(ImmuneTimer.CreateActiveMenuItem("SAssembliesTimersImmuneActive", () => new Immune()));
             return ImmuneTimer;
         }
 

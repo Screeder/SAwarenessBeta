@@ -46,8 +46,7 @@ namespace SAssemblies.Ranges
                 SpellRRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellRColorMe", Language.GetString("RANGES_ALL_COLORME")).SetValue(Color.LawnGreen)));
             SpellRRange.MenuItems.Add(
                 SpellRRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellRColorEnemy", Language.GetString("RANGES_ALL_COLORENEMY")).SetValue(Color.IndianRed)));
-            SpellRRange.MenuItems.Add(
-                SpellRRange.Menu.AddItem(new MenuItem("SAssembliesRangesSpellRActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SpellRRange.MenuItems.Add(SpellRRange.CreateActiveMenuItem("SAssembliesRangesSpellRActive", () => new SpellR()));
             return SpellRRange;
         }
 

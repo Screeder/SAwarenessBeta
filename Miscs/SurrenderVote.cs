@@ -35,8 +35,7 @@ namespace SAssemblies.Miscs
             SurrenderVoteMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SURRENDERVOTE_MAIN"), "SAssembliesMiscsSurrenderVote"));
             SurrenderVoteMisc.MenuItems.Add(
                 SurrenderVoteMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSurrenderVoteChat", Language.GetString("GLOBAL_CHAT")).SetValue(false)));
-            SurrenderVoteMisc.MenuItems.Add(
-                SurrenderVoteMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSurrenderVoteActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            SurrenderVoteMisc.MenuItems.Add(SurrenderVoteMisc.CreateActiveMenuItem("SAssembliesMiscsSurrenderVoteActive", () => new SurrenderVote()));
             return SurrenderVoteMisc;
         }
 

@@ -42,8 +42,7 @@ namespace SAssemblies.Detectors
                 DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectNotification", Language.GetString("GLOBAL_NOTIFICATION")).SetValue(false)));
             DisReconnectDetector.MenuItems.Add(
                 DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectSpeech", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
-            DisReconnectDetector.MenuItems.Add(
-                DisReconnectDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsDisReconnectActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+            DisReconnectDetector.MenuItems.Add(DisReconnectDetector.CreateActiveMenuItem("SAssembliesDetectorsDisReconnectActive", () => new DisReconnect()));
             return DisReconnectDetector;
         }
 
@@ -61,7 +60,7 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 224 || args.PacketData.Length != 12)
+                if (packetId != 249 || args.PacketData.Length != 12)
                     return;
                 if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
@@ -89,7 +88,7 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 74 || args.PacketData.Length != 12)
+                if (packetId != 142 || args.PacketData.Length != 6)
                     return;
                 if (
                     DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&

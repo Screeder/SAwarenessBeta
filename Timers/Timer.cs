@@ -56,7 +56,7 @@ namespace SAssemblies.Timers
                 Timers.Menu.AddItem(new MenuItem("SAssembliesTimersTextScale", Language.GetString("TIMERS_TIMER_SCALE")).SetValue(new Slider(12, 8, 20))));
             if (!useExisitingMenu)
             {
-                Timers.MenuItems.Add(Timers.Menu.AddItem(new MenuItem("SAssembliesTimersActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(false)));
+                Timers.MenuItems.Add(Timers.CreateActiveMenuItem("SAssembliesTimersActive"));
             }
             return Timers;
         }
