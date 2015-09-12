@@ -96,7 +96,7 @@ namespace SAssemblies.Miscs
             var reader = new BinaryReader(new MemoryStream(args.PacketData));
 
             byte packetId = reader.ReadByte();
-            if (packetId == 82 && args.PacketData.Length == 22)
+            if (packetId == 57)
             {
                 //reader.ReadInt32();
                 //byte visualStealthActive = reader.ReadByte();
