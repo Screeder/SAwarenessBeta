@@ -417,8 +417,8 @@
   <data name="MISCS_AUTOLEVLER_SEQUENCE_MAIN" xml:space="preserve">
     <value>Sequence</value>
   </data>
-  <data name="MISCS_EASYRANGEDJUNGLE_MAIN" xml:space="preserve">
-    <value>Easy Ranged Jungle</value>
+  <data name="MISCS_EASYBLUEJUNGLE_MAIN" xml:space="preserve">
+    <value>Easy Blue Jungle</value>
   </data>
   <data name="MISCS_ELODISPLAYER_MAIN" xml:space="preserve">
     <value>Elo Displayer</value>
@@ -785,5 +785,8 @@
   </data>
   <data name="MISCS_ANTILATERN_WARDS" xml:space="preserve">
     <value>Use Wards</value>
+  </data>
+  <data name="GLOBAL_COOLDOWN" xml:space="preserve">
+    <value>Cooldown</value>
   </data>
 </root>

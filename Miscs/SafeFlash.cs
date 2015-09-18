@@ -28,7 +28,7 @@ namespace SAssemblies.Miscs
 #if MISCS
             return Misc.Miscs.GetActive() && SafeFlashMisc.GetActive();
 #else
-            return TurnAroundMisc.GetActive();
+            return SafeFlashMisc.GetActive();
 #endif
         }
 

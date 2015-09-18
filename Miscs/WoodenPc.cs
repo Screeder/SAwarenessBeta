@@ -25,6 +25,7 @@ namespace SAssemblies.Miscs
         private Notification notificationRemaining = null;
         private long ms = -1;
         private DrawingDraw drawingEvent = null;
+        private int delay = 420;
 
         public WoodenPc()
         {
@@ -42,13 +43,11 @@ namespace SAssemblies.Miscs
             {
                 if (Game.Mode == GameMode.Running)
                 {
-                    Console.WriteLine(LeagueSharp.Common.Menu.RootMenus.Remove(Assembly.GetExecutingAssembly().GetName().Name + "." + WoodenPcMisc.Menu.Name));
-                    WoodenPcMisc.GetMenuItem("SAssembliesMiscsWoodenPcActive").ValueChanged -= Active_OnValueChanged;
-                    WoodenPcMisc.Menu = null;
+                    LeagueSharp.Common.Menu.RootMenus.Remove(Assembly.GetCallingAssembly().GetName().Name + "." + WoodenPcMisc.Menu.Name);
                     Game.OnUpdate -= updateEvent;
                 }
             };
-            Game.OnUpdate += updateEvent;
+            
         }
 
         ~WoodenPc()
@@ -76,7 +75,8 @@ namespace SAssemblies.Miscs
         {
             Language.SetLanguage();
             WoodenPcMisc.Menu = new LeagueSharp.Common.Menu("SAwarenessWoodenPc", "SAwarenessWoodenPc", true);
-            WoodenPcMisc.MenuItems.Add(WoodenPcMisc.CreateActiveMenuItem("SAssembliesMiscsWoodenPcActive"));
+            WoodenPcMisc.MenuItems.Add(
+                WoodenPcMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsWoodenPcActive", Language.GetString("GLOBAL_ACTIVE")).SetValue(true)));
             WoodenPcMisc.Menu.AddItem(new MenuItem("By Screeder", "By Screeder V" + Assembly.GetExecutingAssembly().GetName().Version));
             WoodenPcMisc.Menu.AddToMainMenu();
             return WoodenPcMisc;
@@ -109,21 +109,21 @@ namespace SAssemblies.Miscs
                 if (Game.Mode != GameMode.Running && IsActive())
                 {
                     //Console.Write("Packet Sent: ");
-                    //Array.ForEach(args.PacketData, x => Console.Write(x + " "));
+                    //args.PacketData.ForEach(x => Console.Write(x + " "));
                     //Console.WriteLine();
                     if (args.PacketData.Length != 6 || packetSent || packet != null)
                         return;
                     args.Process = false;
                     packet = new MemoryStream(args.PacketData, 0, args.PacketData.Length);
+                    Console.Write("Got Packet: " + args.PacketData[0] + "; Length: " + args.PacketData.Length + "; ");
                     Notifications.RemoveNotification(notification);
                     notification.Dispose();
                     notification = Common.ShowNotification("Press spacebar to continue.", Color.YellowGreen, -1);
                     ms = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     drawingEvent = delegate
                     {
-                        if (!packetSent && (ms + (250 * 1000)) < (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond))
+                        if (!packetSent && (ms + (delay * 1000)) < (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond))
                         {
-                            Console.WriteLine((ms + (250 * 1000)) + " " + DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
                             Game.SendPacket(packet.ToArray(), PacketChannel.C2S, PacketProtocolFlags.Reliable);
                             packetSent = true;
                             if (notification != null)
@@ -146,13 +146,13 @@ namespace SAssemblies.Miscs
                                 notificationRemaining =
                                 Common.ShowNotification(
                                     "Remaining: " +
-                                    (ms + (250 * 1000) - DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
-                                    Color.YellowGreen, 250 * 1000);
+                                    (ms + (delay * 1000) - DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
+                                    Color.YellowGreen, delay * 1000);
                             }
                             else
                             {
                                 notificationRemaining.Text = "Remaining: " +
-                                    ((ms + (250 * 1000) - DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) / 1000).ToString() + "s";
+                                    ((ms + (delay * 1000) - DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) / 1000).ToString() + "s";
                             }
                         }
                     };
@@ -179,7 +179,7 @@ namespace SAssemblies.Miscs
 
         private void Game_OnWndProc(WndEventArgs args)
         {
-            if ((WindowsMessages)args.Msg != WindowsMessages.WM_KEYUP || args.WParam != 32 || packetSent || packet == null || !IsActive())
+            if ((WindowsMessages)args.Msg != WindowsMessages.WM_KEYUP || args.WParam != 32 || packetSent || !IsActive())
                 return;
             Game.SendPacket(packet.ToArray(), PacketChannel.C2S, PacketProtocolFlags.Reliable);
             packetSent = true;

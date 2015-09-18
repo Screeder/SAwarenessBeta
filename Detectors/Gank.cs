@@ -75,11 +75,25 @@ namespace SAssemblies.Detectors
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankDisableTime", Language.GetString("DETECTORS_GANK_DISABLETIME")).SetValue(new Slider(20, 180, 1))));
             GankDetector.MenuItems.Add(
+                GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankCooldown", Language.GetString("GLOBAL_COOLDOWN")).SetValue(new Slider(5, 60, 1))));
+            GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankShowJungler", Language.GetString("DETECTORS_GANK_SHOWJUNGLER")).SetValue(false)));
             GankDetector.MenuItems.Add(
                 GankDetector.Menu.AddItem(new MenuItem("SAssembliesDetectorsGankVoice", Language.GetString("GLOBAL_VOICE")).SetValue(false)));
             GankDetector.MenuItems.Add(GankDetector.CreateActiveMenuItem("SAssembliesDetectorsGankActive", () => new Gank()));
             return GankDetector;
+        }
+
+        private void Game_OnGameUpdate(EventArgs args)
+        {
+            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+                return;
+
+            lastGameUpdateTime = Environment.TickCount;
+            foreach (var enemy in Enemies)
+            {
+                UpdateTime(enemy);
+            }
         }
 
         private void Init()
@@ -98,7 +112,7 @@ namespace SAssemblies.Detectors
                 };
                 text.VisibleCondition = sender =>
                 {
-                    return IsVisible(hero);
+                    return IsSmiteVisible(hero);
                 };
                 text.OutLined = true;
                 text.Centered = true;
@@ -114,7 +128,7 @@ namespace SAssemblies.Detectors
                 };
                 line.VisibleCondition = sender =>
                 {
-                    return IsVisible(hero);
+                    return IsSmiteVisible(hero);
                 };
                 line.Add();
                 if (hero.IsEnemy)
@@ -124,19 +138,7 @@ namespace SAssemblies.Detectors
             }
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
-        {
-            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
-                return;
-
-            lastGameUpdateTime = Environment.TickCount;
-            foreach (var enemy in Enemies)
-            {
-                UpdateTime(enemy);
-            }
-        }
-
-        private bool IsVisible(Obj_AI_Hero hero)
+        private bool IsSmiteVisible(Obj_AI_Hero hero)
         {
             bool hasSmite = false;
             foreach (SpellDataInst spell in hero.Spellbook.Spells)
@@ -202,7 +204,7 @@ namespace SAssemblies.Detectors
         private void HandleGank(KeyValuePair<Obj_AI_Hero, InternalGankDetector> enemy)
         {
             Obj_AI_Hero hero = enemy.Key;
-            if (enemy.Value.Time.InvisibleTime > 5)
+            if (enemy.Value.Time.InvisibleTime > GankDetector.GetMenuItem("SAssembliesDetectorsGankCooldown").GetValue<Slider>().Value)
             {
                 if (!enemy.Value.Time.CalledInvisible && hero.IsValid && !hero.IsDead && hero.IsVisible &&
                     Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition) >
