@@ -60,7 +60,7 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 194 || args.PacketData.Length != 12)
+                if (packetId != 59 || args.PacketData.Length != 12)
                     return;
                 if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
@@ -88,7 +88,7 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 244 || args.PacketData.Length != 8)
+                if (packetId != 24 || args.PacketData.Length != 8)
                     return;
                 if (
                     DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
