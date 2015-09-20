@@ -57,13 +57,13 @@ namespace SAssemblies.Miscs
             Game.OnWndProc -= Game_OnWndProc;
             if (notification != null)
             {
-                Notifications.RemoveNotification(notification);
                 notification.Dispose();
+                Notifications.RemoveNotification(notification);
             }
             if (notificationRemaining != null)
             {
-                Notifications.RemoveNotification(notificationRemaining);
                 notificationRemaining.Dispose();
+                Notifications.RemoveNotification(notificationRemaining);
             }
         }
 
@@ -93,13 +93,13 @@ namespace SAssemblies.Miscs
             }
             if (notification != null)
             {
-                Notifications.RemoveNotification(notification);
                 notification.Dispose();
+                Notifications.RemoveNotification(notification);
             }
             if (notificationRemaining != null)
             {
-                Notifications.RemoveNotification(notificationRemaining);
                 notificationRemaining.Dispose();
+                Notifications.RemoveNotification(notificationRemaining);
             }
         }
 
