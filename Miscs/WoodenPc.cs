@@ -26,6 +26,7 @@ namespace SAssemblies.Miscs
         private long ms = -1;
         private DrawingDraw drawingEvent = null;
         private int delay = 420;
+        private bool disabledBecauseOfBrokerAPI = true;
 
         public WoodenPc()
         {
@@ -68,7 +69,7 @@ namespace SAssemblies.Miscs
 
         public bool IsActive()
         {
-            return WoodenPcMisc.GetActive();
+            return WoodenPcMisc.GetActive() && !disabledBecauseOfBrokerAPI;
         }
 
         public static Menu.MenuItemSettings SetupMenu()
