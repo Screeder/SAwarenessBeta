@@ -93,12 +93,10 @@ namespace SAssemblies.Miscs
             }
             if (notification != null)
             {
-                notification.Dispose();
                 Notifications.RemoveNotification(notification);
             }
             if (notificationRemaining != null)
             {
-                notificationRemaining.Dispose();
                 Notifications.RemoveNotification(notificationRemaining);
             }
         }
