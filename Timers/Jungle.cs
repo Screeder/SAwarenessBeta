@@ -200,7 +200,7 @@ namespace SAssemblies.Timers
                 {
                     foreach (var jungleCamp in JungleCamps)
                     {
-                        if (jungleCamp.CampId == 6)
+                        if (jungleCamp.CampId == 6 && !jungleCamp.Called)
                         {
                             jungleCamp.NextRespawnTime = (int)Game.ClockTime + jungleCamp.RespawnTime;
                             jungleCamp.Dead = true;
