@@ -789,4 +789,19 @@
   <data name="GLOBAL_COOLDOWN" xml:space="preserve">
     <value>Cooldown</value>
   </data>
+  <data name="GLOBAL_CIRCLE_THICKNESS" xml:space="preserve">
+    <value>Thickness</value>
+  </data>
+  <data name="GLOBAL_CIRCLE_WIDTH" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="GLOBAL_COLOR" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="GLOBAL_SCALE" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="TRACKERS_CLONE_DOUBLE" xml:space="preserve">
+    <value>Double Circles</value>
+  </data>
 </root>

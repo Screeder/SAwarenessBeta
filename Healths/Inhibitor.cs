@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace SAssemblies.Healths
 {
@@ -26,6 +27,7 @@ namespace SAssemblies.Healths
             };
             Game.OnUpdate += a;
             Game.OnUpdate += Game_OnGameUpdate;
+            Health.Healths.GetMenuItem("SAssembliesHealthsTextScale").ValueChanged += Inhibitor_ValueChanged;
             //ThreadHelper.GetInstance().Called += Game_OnGameUpdate;
         }
 
@@ -175,6 +177,22 @@ namespace SAssemblies.Healths
                 Text.Add();
 
                 healthConf.Add(new Health.HealthConf(inhibitor, Text));
+            }
+        }
+
+        void Inhibitor_ValueChanged(object sender, OnValueChangeEventArgs e)
+        {
+            foreach (var conf in healthConf)
+            {
+                conf.Text.Remove();
+                conf.Text.TextFontDescription = new FontDescription
+                {
+                    FaceName = "Calibri",
+                    Height = e.GetNewValue<Slider>().Value,
+                    OutputPrecision = FontPrecision.Default,
+                    Quality = FontQuality.Default,
+                };
+                conf.Text.Add();
             }
         }
     }

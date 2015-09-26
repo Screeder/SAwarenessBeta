@@ -46,6 +46,8 @@ namespace SAssemblies.Healths
                     Language.GetString("GLOBAL_MODE_PERCENT"), 
                     Language.GetString("GLOBAL_MODE_VALUE")
                 }))));
+            Healths.MenuItems.Add(
+                Healths.Menu.AddItem(new MenuItem("SAssembliesHealthsTextScale", Language.GetString("GLOBAL_SCALE")).SetValue(new Slider(14, 8, 20))));
             if (!useExisitingMenu)
             {
                 Healths.MenuItems.Add(Healths.CreateActiveMenuItem("SAssembliesHealthsActive"));

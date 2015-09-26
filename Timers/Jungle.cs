@@ -31,7 +31,7 @@ namespace SAssemblies.Timers
             Game.OnUpdate += Game_OnGameUpdate;
             //Game.OnGameProcessPacket += Game_OnGameProcessPacket;
             GameUpdate a = null;
-            a = delegate(EventArgs args)
+            a = delegate
             {
                 Init();
                 Game.OnUpdate -= a;

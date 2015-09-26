@@ -19,7 +19,7 @@ namespace SAssemblies.Detectors
 
         ~Detector()
         {
-            
+
         }
 
         private static void SetupMainMenu()

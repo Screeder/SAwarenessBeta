@@ -64,10 +64,12 @@ namespace SAssemblies.Trackers
                 {
                     Combo nCombo = CalculateKillable(enemy, null);
                     InternalKillable killable = new InternalKillable(null, null);
+                    Vector2 barOffset = new Vector2(10f, 29f);
+                    int barWidth = 104;
                     Render.Text text = new Render.Text(new Vector2(0, 0), "", 28, SharpDX.Color.OrangeRed);
                     text.Centered = true;
                     text.OutLined = true;
-                    text.VisibleCondition = sender =>
+                    text.VisibleCondition = delegate
                     {
                         return (killable.Combo != null ? killable.Combo.Killable : false) && enemy.IsVisible && !enemy.IsDead &&
                             IsActive();
@@ -81,7 +83,7 @@ namespace SAssemblies.Trackers
                         if (killable.Combo == null)
                             return "";
                         Combo combo = killable.Combo;
-                        String killText = "Killable " + enemy.ChampionName + ": ";
+                        String killText = "Killable " + enemy.ChampionName + ": AA / ";
                         if (combo.Spells != null && combo.Spells.Count > 0)
                             combo.Spells.ForEach(x => killText += x.Name + "/");
                         if (combo.Items != null && combo.Items.Count > 0)
@@ -91,6 +93,31 @@ namespace SAssemblies.Trackers
                         return killText;
                     };
                     text.Add();
+
+                    Render.Rectangle rect = new Render.Rectangle(0, 0, 1, 10, SharpDX.Color.Gray);
+                    rect.VisibleCondition = delegate
+                    {
+                        return enemy.IsVisible && !enemy.IsDead &&
+                            enemy.IsHPBarRendered && enemy.Position.IsOnScreen() && IsActive();
+                    };
+                    rect.PositionUpdate = delegate
+                    {
+                        if (killable.Combo == null)
+                            return new Vector2(0, 0);
+
+                        double damagePercentage = ((enemy.Health - killable.Combo.Damage) > 0 ? (enemy.Health - killable.Combo.Damage) : 0) /
+                                               enemy.MaxHealth;
+
+                        Vector2 startPos =
+                            new Vector2((float)(enemy.HPBarPosition.X + barOffset.X + damagePercentage * barWidth),
+                                (float)(enemy.HPBarPosition.Y + barOffset.Y) - 10);
+                        rect.Width = (int)((enemy.HPBarPosition.X + barOffset.X + (enemy.Health / enemy.MaxHealth) * barWidth) + 1 -
+                                        startPos.X);
+                        //rect.Height = 5;
+                        return startPos;
+                    };
+                    rect.Add();
+
                     killable = new InternalKillable(nCombo, text);
                     _enemies.Add(enemy, killable);
                 }
@@ -138,6 +165,13 @@ namespace SAssemblies.Trackers
             double enoughDmg = 0;
             double enoughMana = 0;
 
+            enoughDmg += ObjectManager.Player.GetAutoAttackDamage(enemy, true);
+            if (enemy.Health < enoughDmg)
+            {
+                Speak(killable, enemy);
+                return new Combo(tempSpellList, tempItemList, true, enoughDmg);
+            }
+
             foreach (var item in creationItemList)
             {
                 if (item.Key.IsReady())
@@ -148,7 +182,7 @@ namespace SAssemblies.Trackers
                 if (enemy.Health < enoughDmg)
                 {
                     Speak(killable, enemy);
-                    return new Combo(null, tempItemList, true);
+                    return new Combo(null, tempItemList, true, enoughDmg);
                 }
             }
 
@@ -169,9 +203,9 @@ namespace SAssemblies.Trackers
                     if (ObjectManager.Player.Mana >= enoughMana)
                     {
                         Speak(killable, enemy);
-                        return new Combo(tempSpellList, tempItemList, true);
+                        return new Combo(tempSpellList, tempItemList, true, enoughDmg);
                     }
-                    return new Combo(null, null, false);
+                    return new Combo(null, null, false, 0);
                 }
             }
 
@@ -180,16 +214,17 @@ namespace SAssemblies.Trackers
                 enoughDmg += ObjectManager.Player.GetSummonerSpellDamage(enemy, Damage.SummonerSpell.Ignite);
                 tempSpellList.Add(new Spell("Ignite", ignite.Slot));
             }
+
             if (enemy.Health < enoughDmg)
             {
                 Speak(killable, enemy);
-                return new Combo(tempSpellList, tempItemList, true);
+                return new Combo(tempSpellList, tempItemList, true, enoughDmg);
             }
             if (killable != null)
             {
                 killable.Spoken = false;
             }
-            return new Combo();
+            return new Combo(tempSpellList, tempItemList, false, enoughDmg);
         }
 
         private void Speak(InternalKillable killable, Obj_AI_Hero hero)
@@ -229,15 +264,16 @@ namespace SAssemblies.Trackers
         public class Combo
         {
             public List<Item> Items = new List<Item>();
-
             public bool Killable = false;
             public List<Spell> Spells = new List<Spell>();
+            public double Damage = 0;
 
-            public Combo(List<Spell> spells, List<Item> items, bool killable)
+            public Combo(List<Spell> spells, List<Item> items, bool killable, double damage)
             {
                 Spells = spells;
                 Items = items;
                 Killable = killable;
+                Damage = damage;
             }
 
             public Combo()
