@@ -54,10 +54,11 @@ namespace SAssemblies.Detectors
             DetectReconnect(args);
         }
 
-        private void DetectDisconnect(GamePacketEventArgs args)
+        private void DetectDisconnect(GamePacketEventArgs args) //Does not work anymore since 5.19
         {
             try
             {
+                return;
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
                 if (packetId != 59 || args.PacketData.Length != 12)
@@ -88,7 +89,7 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 24 || args.PacketData.Length != 8)
+                if (packetId != 252)
                     return;
                 if (
                     DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
