@@ -200,7 +200,7 @@ namespace SAssemblies.Timers
                 {
                     foreach (var jungleCamp in JungleCamps)
                     {
-                        if (jungleCamp.CampId == 6 && !jungleCamp.Called)
+                        if (jungleCamp.CampId == 6)
                         {
                             jungleCamp.NextRespawnTime = (int)Game.ClockTime + jungleCamp.RespawnTime;
                             jungleCamp.Dead = true;
@@ -339,7 +339,8 @@ namespace SAssemblies.Timers
         public void Init()
         {
             JungleMobs.Add(new JungleMob("SRU_Baron12.1.1", null, true, true, true, Utility.Map.MapType.SummonersRift));
-            JungleMobs.Add(new JungleMob("SRU_Dragon6.1.1", null, true, false, true, Utility.Map.MapType.SummonersRift));
+            JungleMobs.Add(new JungleMob("SRU_Dragon6.1.1", null, true, true, true, Utility.Map.MapType.SummonersRift));
+            JungleMobs.Add(new JungleMob("SRU_RiftHerald", null, true, true, true, Utility.Map.MapType.SummonersRift));
 
             JungleMobs.Add(new JungleMob("SRU_Blue1.1.1", null, true, true, false, Utility.Map.MapType.SummonersRift));
             JungleMobs.Add(new JungleMob("SRU_Murkwolf2.1.1", null, true, false, false, Utility.Map.MapType.SummonersRift));
@@ -498,6 +499,9 @@ namespace SAssemblies.Timers
             JungleCamps.Add(new JungleCamp("nashor", GameObjectTeam.Neutral, 12, 20 * 60, 420,
                 Utility.Map.MapType.SummonersRift, new Vector3(4940, 10406, -71), new Vector3(4951.034f, 10831.035f, 1027.482f),
                 new[] { GetJungleMobByName("SRU_Baron12.1.1", Utility.Map.MapType.SummonersRift) }));
+            JungleCamps.Add(new JungleCamp("herald", GameObjectTeam.Neutral, 17, 4 * 60, 300,
+                Utility.Map.MapType.SummonersRift, new Vector3(4940, 10406, -71), new Vector3(4951.034f, 10831.035f, 1027.482f),
+                new[] { GetJungleMobByName("SRU_RiftHerald", Utility.Map.MapType.SummonersRift) }));
 
             JungleCamps.Add(new JungleCamp("wraiths", GameObjectTeam.Order, 1, 100, 75,
                 Utility.Map.MapType.TwistedTreeline, new Vector3(4270, 5871, -106), new Vector3(4414, 5774, 60),
