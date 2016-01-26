@@ -60,7 +60,16 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 68 || args.PacketData.Length != 12)
+                int packet = -1;
+                if (Game.Version.Contains("5.24"))
+                {
+                    packet = 68;
+                }
+                if (Game.Version.Contains("6.1"))
+                {
+                    packet = 33;
+                }
+                if (packetId != packet || args.PacketData.Length != 12)
                     return;
                 if (DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&
                         Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive").GetValue<bool>())
@@ -88,7 +97,16 @@ namespace SAssemblies.Detectors
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                if (packetId != 98) //Length 7
+                int packet = -1;
+                if (Game.Version.Contains("5.24"))
+                {
+                    packet = 98;
+                }
+                if (Game.Version.Contains("6.1"))
+                {
+                    packet = 253;
+                }
+                if (packetId != packet) //Length 7
                     return;
                 if (
                     DisReconnectDetector.GetMenuItem("SAssembliesDetectorsDisReconnectChat").GetValue<bool>() &&

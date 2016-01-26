@@ -96,12 +96,22 @@ namespace SAssemblies.Miscs
             var reader = new BinaryReader(new MemoryStream(args.PacketData));
 
             byte packetId = reader.ReadByte();
-            if (packetId == 36 || packetId == 21)
+            List<int> packetIds = new List<int>();
+            if (Game.Version.Contains("5.24"))
             {
-                //reader.ReadInt32();
-                //byte visualStealthActive = reader.ReadByte();
-                //if (visualStealthActive == 1)
+                packetIds.Add(21);
+                packetIds.Add(36);
+            }
+            if (Game.Version.Contains("6.1"))
+            {
+                packetIds.Add(77);
+            }
+            foreach (int id in packetIds)
+            {
+                if (packetId == id)
+                {
                     args.Process = false;
+                }
             }
         }
     }
