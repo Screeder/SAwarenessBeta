@@ -37,6 +37,6 @@ using System.Security;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.8.6.1")]
-[assembly: AssemblyFileVersion("0.8.6.1")]
+[assembly: AssemblyVersion("0.8.6.3")]
+[assembly: AssemblyFileVersion("0.8.6.3")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
