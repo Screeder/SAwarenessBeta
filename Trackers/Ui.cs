@@ -213,6 +213,7 @@ namespace SAssemblies.Trackers
              //Menu.UiTracker.MenuItems.Add(Menu.UiTracker.Menu.AddItem(new LeagueSharp.Common.MenuItem("SAssembliesUITrackerCameraMoveActive", "Camera move active").SetValue(false)));
              UiTracker.MenuItems.Add(
                  UiTracker.Menu.AddItem(new MenuItem("SAssembliesUITrackerPingActive", Language.GetString("TRACKERS_UI_PING")).SetValue(false)));
+				 UiTracker.Menu.AddItem(new MenuItem("SAssembliesUITrackerDisableSkillOnCd", Language.GetString("TRACKERS_UI_DISABLESKILL_ONCD")).SetValue(false));
             UiTracker.MenuItems.Add(UiTracker.CreateActiveMenuItem("SAssembliesTrackersUiActive", () => new Ui()));
              return UiTracker;
          }
@@ -3275,7 +3276,7 @@ namespace SAssemblies.Trackers
                                 }
                             }
 
-                            if (enemy.Value.SpellQ.Custom != null)
+                            if (enemy.Value.SpellQ.Custom != null && (enemy.Value.SpellQ.Custom.ActualCooldown - Game.Time) > 0)
                             {
                                 enemy.Value.SpellQ.Value = (int) (enemy.Value.SpellQ.Custom.ActualCooldown - Game.Time);
                             }
@@ -3287,7 +3288,7 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.SpellQ.Value = 0;
                             }
-                            if (enemy.Value.SpellW.Custom != null)
+                            if (enemy.Value.SpellW.Custom != null && (enemy.Value.SpellW.Custom.ActualCooldown - Game.Time) > 0)
                             {
                                 enemy.Value.SpellW.Value = (int)(enemy.Value.SpellW.Custom.ActualCooldown - Game.Time);
                             }
@@ -3299,7 +3300,7 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.SpellW.Value = 0;
                             }
-                            if (enemy.Value.SpellE.Custom != null)
+                            if (enemy.Value.SpellE.Custom != null && (enemy.Value.SpellE.Custom.ActualCooldown - Game.Time) > 0)
                             {
                                 enemy.Value.SpellE.Value = (int)(enemy.Value.SpellE.Custom.ActualCooldown - Game.Time);
                             }
@@ -3311,7 +3312,7 @@ namespace SAssemblies.Trackers
                             {
                                 enemy.Value.SpellE.Value = 0;
                             }
-                            if (enemy.Value.SpellR.Custom != null)
+                            if (enemy.Value.SpellR.Custom != null && (enemy.Value.SpellR.Custom.ActualCooldown - Game.Time) > 0)
                             {
                                 enemy.Value.SpellR.Value = (int)(enemy.Value.SpellR.Custom.ActualCooldown - Game.Time);
                             }
@@ -3430,6 +3431,9 @@ namespace SAssemblies.Trackers
 
         private void UpdateOHRec(Dictionary<Obj_AI_Hero, ChampInfos> heroes)
         {
+            var hideSkill = UiTracker.GetMenuItem("SAssembliesUITrackerDisableSkillOnCd")
+                            .GetValue<bool>();
+
             foreach (var champ in heroes)
             {
                 if (champ.Value.SpellQ.Rectangle[1] != null && 
@@ -3442,6 +3446,16 @@ namespace SAssemblies.Trackers
                         champ.Value.SpellQ.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellQ.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellQ.Rectangle[1].Color = SharpDX.Color.Red;
+                        if (!hideSkill)
+                        {
+                            champ.Value.SpellQ.Sprite[0].Sprite.Show();
+                            champ.Value.SpellQ.Sprite[1].Sprite.Show();
+                        }
+                        else if (hideSkill && champ.Value.SpellQ.Value > 0.0f)
+                        {
+                            champ.Value.SpellQ.Sprite[0].Sprite.Hide();
+                            champ.Value.SpellQ.Sprite[1].Sprite.Hide();
+                        }
                     }
                     else
                     {
@@ -3460,6 +3474,16 @@ namespace SAssemblies.Trackers
                         champ.Value.SpellW.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellW.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellW.Rectangle[1].Color = SharpDX.Color.Red;
+                        if (!hideSkill)
+                        {
+                            champ.Value.SpellW.Sprite[0].Sprite.Show();
+                            champ.Value.SpellW.Sprite[1].Sprite.Show();
+                        }
+                        else if (hideSkill && champ.Value.SpellW.Value > 0.0f)
+                        {
+                            champ.Value.SpellW.Sprite[0].Sprite.Hide();
+                            champ.Value.SpellW.Sprite[1].Sprite.Hide();
+                        }
                     }
                     else
                     {
@@ -3478,6 +3502,16 @@ namespace SAssemblies.Trackers
                         champ.Value.SpellE.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellE.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellE.Rectangle[1].Color = SharpDX.Color.Red;
+                        if (!hideSkill)
+                        {
+                            champ.Value.SpellE.Sprite[0].Sprite.Show();
+                            champ.Value.SpellE.Sprite[1].Sprite.Show();
+                        }
+                        else if (hideSkill && champ.Value.SpellE.Value > 0.0f)
+                        {
+                            champ.Value.SpellE.Sprite[0].Sprite.Hide();
+                            champ.Value.SpellE.Sprite[1].Sprite.Hide();
+                        }
                     }
                     else
                     {
@@ -3495,8 +3529,17 @@ namespace SAssemblies.Trackers
                     {
                         champ.Value.SpellR.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellR.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
-                        champ.Value.SpellR.Rectangle[0].Color = SharpDX.Color.Red;
                         champ.Value.SpellR.Rectangle[1].Color = SharpDX.Color.Red;
+                        if (!hideSkill)
+                        {
+                            champ.Value.SpellR.Sprite[0].Sprite.Show();
+                            champ.Value.SpellR.Sprite[1].Sprite.Show();
+                        }
+                        else if (hideSkill && champ.Value.SpellR.Value > 0.0f)
+                        {
+                            champ.Value.SpellR.Sprite[0].Sprite.Hide();
+                            champ.Value.SpellR.Sprite[1].Sprite.Hide();
+                        }
                     }
                     else
                     {
@@ -3514,6 +3557,16 @@ namespace SAssemblies.Trackers
                     {
                         champ.Value.SpellSum1.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellSum1.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        if (!hideSkill)
+                        {
+                            champ.Value.SpellSum1.Sprite[0].Sprite.Show();
+                            champ.Value.SpellSum1.Sprite[1].Sprite.Show();
+                        }
+                        else if(hideSkill && champ.Value.SpellSum1.Value > 0.0f)
+                        {
+                            champ.Value.SpellSum1.Sprite[0].Sprite.Hide();
+                            champ.Value.SpellSum1.Sprite[1].Sprite.Hide();
+                        }
                     }
                     else
                     {
@@ -3529,6 +3582,16 @@ namespace SAssemblies.Trackers
                     {
                         champ.Value.SpellSum2.Sprite[0].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
                         champ.Value.SpellSum2.Sprite[1].Sprite.Color = SharpDX.Color.AdjustSaturation(SharpDX.Color.Gray, 0.0f);
+                        if (!hideSkill)
+                        {
+                            champ.Value.SpellSum2.Sprite[0].Sprite.Show();
+                            champ.Value.SpellSum2.Sprite[1].Sprite.Show();
+                        }
+                        else if (hideSkill && champ.Value.SpellSum2.Value > 0.0f)
+                        {
+                            champ.Value.SpellSum2.Sprite[0].Sprite.Hide();
+                            champ.Value.SpellSum2.Sprite[1].Sprite.Hide();
+                        }
                     }
                     else
                     {

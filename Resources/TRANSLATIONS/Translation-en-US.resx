@@ -804,4 +804,7 @@
   <data name="TRACKERS_CLONE_DOUBLE" xml:space="preserve">
     <value>Double Circles</value>
   </data>
+  <data name="TRACKERS_UI_DISABLESKILL_ONCD" xml:space="preserve">
+    <value>Disable show Skill on Cd</value>
+  </data>
 </root>
