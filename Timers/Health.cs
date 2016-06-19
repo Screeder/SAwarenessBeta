@@ -173,7 +173,7 @@ namespace SAssemblies.Timers
                 if (GMap.Type == Utility.Map.MapType.HowlingAbyss)
                 {
                     MapType = Utility.Map.MapType.HowlingAbyss;
-                    RespawnTime = 40;
+                    RespawnTime = 60;
                 }
                 else if (GMap.Type == 0)
                 {
