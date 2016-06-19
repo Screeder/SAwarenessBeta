@@ -505,14 +505,14 @@ namespace SAssemblies.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", "AutoLevler", "autolevel.conf"
             });
             try
             {
                 String output = JsonConvert.SerializeObject(sLevler.Where(x => !x.Web));
                 Directory.CreateDirectory(
-                    Path.Combine(SandboxConfig.DataDirectory, "Assemblies", "cache", "SAssemblies", "AutoLevler"));
+                    Path.Combine(Config.AppDataDirectory, "Assemblies", "cache", "SAssemblies", "AutoLevler"));
                 if (output.Contains("[]"))
                 {
                     throw new Exception("[], your latest changes are not getting saved!");
@@ -541,7 +541,7 @@ namespace SAssemblies.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", "AutoLevler", "autolevel.conf"
             });
             try

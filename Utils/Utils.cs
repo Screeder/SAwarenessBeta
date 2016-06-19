@@ -1113,10 +1113,10 @@ namespace SAssemblies
     //    {
     //        string loc = Path.Combine(new[]
     //        {
-    //            SandboxConfig.DataDirectory, "Assemblies", "cache",
+    //            Config.AppDataDirectory, "Assemblies", "cache",
     //            "SAssemblies", subFolder, name  + ".png"
     //        });
-    //        Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
+    //        Directory.CreateDirectory(Path.Combine(Config.AppDataDirectory,
     //                    "Assemblies", "cache", "SAssemblies", subFolder));
     //        File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
     //    }
@@ -1129,7 +1129,7 @@ namespace SAssemblies
     //        name = ConvertNames(name);
     //        string loc = Path.Combine(new[]
     //        {
-    //            SandboxConfig.DataDirectory, "Assemblies", "cache",
+    //            Config.AppDataDirectory, "Assemblies", "cache",
     //            "SAssemblies", subFolder, name  + ".png"
     //        });
     //        try
@@ -2018,10 +2018,10 @@ namespace SAssemblies
         {
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name
             });
-            Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
+            Directory.CreateDirectory(Path.Combine(Config.AppDataDirectory,
                         "Assemblies", "cache", "SAssemblies", subFolder));
             File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
         }
@@ -2036,7 +2036,7 @@ namespace SAssemblies
             name = ConvertNames(name);
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name
             });
             try

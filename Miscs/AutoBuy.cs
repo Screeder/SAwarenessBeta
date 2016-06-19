@@ -618,7 +618,7 @@ namespace SAssemblies.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", "AutoBuilder", "autobuild.conf"
             });
             try
@@ -635,14 +635,14 @@ namespace SAssemblies.Miscs
         {
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", "AutoBuilder", "autobuild.conf"
             });
             try
             {
                 String output = JsonConvert.SerializeObject(builds.Where(x => !x.Web));
                 Directory.CreateDirectory(
-                    Path.Combine(SandboxConfig.DataDirectory, "Assemblies", "cache", "SAssemblies", "AutoBuilder"));
+                    Path.Combine(Config.AppDataDirectory, "Assemblies", "cache", "SAssemblies", "AutoBuilder"));
                 if (output.Contains("[]"))
                 {
                     throw new Exception("[], your latest changes are not getting saved!");
