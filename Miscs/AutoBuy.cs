@@ -1450,7 +1450,7 @@ namespace SAssemblies.Miscs
                 List<ItemInfo> itemInfoList = new List<ItemInfo>();
                 try
                 {
-                    String url = "http://ddragon.leagueoflegends.com/cdn/5.12.1/data/en_US/item.json"; //temp fix for riot fault otherwise + version +
+                    String url = "http://ddragon.leagueoflegends.com/cdn/6.12.1/data/en_US/item.json"; //temp fix for riot fault otherwise + version +
                     String json = new WebClient().DownloadString(url);
                     JObject data = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject<Object>(json);
                     JToken token = data["data"].First;
