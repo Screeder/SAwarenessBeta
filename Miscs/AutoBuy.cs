@@ -1482,10 +1482,9 @@ namespace SAssemblies.Miscs
                             do
                             {
                                 GameMapId gmId = (GameMapId) Convert.ToInt32(((JProperty) mapToken).Name);
-                                if (!((JProperty)mapToken).Value<bool>())
+                                if (!((JProperty)mapToken).First.Value<bool>())
                                 {
                                     itemInfo.MapId.Add(gmId);
-                                    
                                 }
                             } while ((mapToken = mapToken.Next) != null);
                         }

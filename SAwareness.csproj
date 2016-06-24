@@ -57,41 +57,36 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>H:\Programme\LeagueSharp\System\clipper_library.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Evade">
-      <HintPath>H:\Programme\LeagueSharp\System\Evade.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\Evade.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp, Version=1.0.0.25, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.dll</HintPath>
+    <Reference Include="LeagueSharp">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\LeagueSharp.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.Common, Version=1.0.0.2, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.Common.dll</HintPath>
+    <Reference Include="LeagueSharp.Common">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\LeagueSharp.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="LeagueSharp.Data">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\LeagueSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.GameFiles, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.GameFiles.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\LeagueSharp.GameFiles.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\LeagueSharp.Sandbox.dll</HintPath>
+    <Reference Include="LeagueSharp.Sandbox">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\LeagueSharp.Sandbox.dll</HintPath>
+    </Reference>
+    <Reference Include="LeagueSharp.SDKEx">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\LeagueSharp.SDKEx.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct3D9, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>H:\Programme\LeagueSharp\System\SharpDX.Direct3D9.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Toolkit">
-      <HintPath>H:\Programme\LeagueSharp\System\SharpDX.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Toolkit.Graphics">
-      <HintPath>H:\Programme\LeagueSharp\System\SharpDX.Toolkit.Graphics.dll</HintPath>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>D:\Spiele\Riot Games\PlaySharp\System\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -125,7 +120,7 @@
     <Compile Include="Miscs\EasyRangedJungle.cs" />
     <Compile Include="Miscs\SafeFlash.cs" />
     <Compile Include="Miscs\ShowSupporterStacks.cs" />
-	<Compile Include="Miscs\WoodenPc.cs" />
+    <Compile Include="Miscs\WoodenPc.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
