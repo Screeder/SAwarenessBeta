@@ -1482,13 +1482,11 @@ namespace SAssemblies.Miscs
                             do
                             {
                                 GameMapId gmId = (GameMapId) Convert.ToInt32(((JProperty) mapToken).Name);
-                                if ((int) itemInfo.ItemId == 3187)
-                                    Console.WriteLine(gmId);
-                                if (gmId == (GameMapId) 1)
+                                if (!((JProperty)mapToken).Value<bool>())
                                 {
-                                    gmId = (GameMapId) 11;
+                                    itemInfo.MapId.Add(gmId);
+                                    
                                 }
-                                itemInfo.MapId.Add(gmId);
                             } while ((mapToken = mapToken.Next) != null);
                         }
                         itemInfo.PictureName = token.First["image"]["full"].ToString();
