@@ -151,17 +151,17 @@ namespace SAssemblies.Detectors
                     }
                 }
                 
-                if (sender is Obj_SpellLineMissile && ObjectManager.Player.Team != ((Obj_SpellMissile)sender).SpellCaster.Team)
+                if (sender is MissileClient && ObjectManager.Player.Team != ((MissileClient)sender).SpellCaster.Team)
                 {
-                    if (((Obj_SpellMissile)sender).SData.Name.ToLower().Contains("itemplacementmissile"))
+                    if (((MissileClient)sender).SData.Name.ToLower().Contains("itemplacementmissile"))
                     {
                         Utility.DelayAction.Add(10, () =>
                         {
-                            if (!ObjectExist(((Obj_SpellMissile)sender).EndPosition))
+                            if (!ObjectExist(((MissileClient)sender).EndPosition))
                             {
 
-                                HidObjects.Add(new ObjectData(new Object(ObjectType.Unknown, "Unknown", "Unknown", "Unknown", 180.0f, 0, 0, Color.Yellow), ((Obj_SpellMissile)sender).EndPosition, Game.Time + 180.0f, sender.Name,
-                                    sender.NetworkId, ((Obj_SpellMissile)sender).StartPosition));
+                                HidObjects.Add(new ObjectData(new Object(ObjectType.Unknown, "Unknown", "Unknown", "Unknown", 180.0f, 0, 0, Color.Yellow), ((MissileClient)sender).EndPosition, Game.Time + 180.0f, sender.Name,
+                                    sender.NetworkId, ((MissileClient)sender).StartPosition));
                             }
                         });
                         
